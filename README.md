@@ -3,7 +3,7 @@
 Javascript Utils para Brasil (cpf, cnpj...)
 
 
-[![Build Status](https://travis-ci.org/mariohmol/ng-brazil.svg?branch=master)](https://travis-ci.org/mariohmol/ng-brazil)
+[![Build Status](https://travis-ci.org/mariohmol/js-brasil.svg?branch=master)](https://travis-ci.org/mariohmol/js-brasil)
 
 
 `npm i js-brasil` 
