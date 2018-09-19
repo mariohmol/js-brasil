@@ -1,0 +1,27 @@
+{
+  "name": "js-brasil",
+  "version": "1.0.3",
+  "description": "Javascript Utils para Brasil (cpf, cnpj...)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariohmol/js-brasil.git"
+  },
+  "author": "Mario Mol <mariohmol@gmail.com> (http://rama.net.br)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariohmol/js-brasil/issues"
+  },
+  "homepage": "https://github.com/mariohmol/js-brasil#readme",
+  "dependencies": {
+    "text-mask-addons": "^3.8.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}
