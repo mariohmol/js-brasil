@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 const testGeneric = (key) => {
   let val = fakerBr[key]();
-  val = val.replace(/[^\d]+/g, '');
+  val = val.replace(/[^\d\w]+/g, '');
   const valMask = maskBr[key](val);
   expect(validateBr[key](valMask)).to.be.true;
 }
@@ -12,11 +12,11 @@ const testGeneric = (key) => {
 describe('Mask test', () => {
   it('To generate any data', () => {
     expect(maskBr.cep('123')).to.exist;
-    // expect(maskBr.cnpj('123)).to.exist;
+    expect(maskBr.cnpj('123')).to.exist;
     expect(maskBr.cpf('123')).to.exist;
-    // expect(maskBr.currency('123)).to.exist;
-    // expect(maskBr.inscricaoestadual('123)).to.exist;
-    // expect(maskBr.percentage('123)).to.exist;
+    expect(maskBr.currency('123')).to.exist;
+    expect(maskBr.inscricaoestadual('mg','123')).to.exist;
+    expect(maskBr.percentage('123')).to.exist;
     expect(maskBr.rg('123')).to.exist;
     expect(maskBr.placa('123')).to.exist;
     expect(maskBr.telefone('123')).to.exist;
@@ -26,43 +26,47 @@ describe('Mask test', () => {
 
   it('Generic Testing with Faker , Mask and Validate', () => {
     testGeneric('cep');
-    // testGeneric('cnp');
-    // testGeneric('cpf');
-    // // testGeneric('currenc');
-    // // testGeneric('inscricaoestadua');
-    // // testGeneric('percentag');
-    // testGeneric('rg');
-    // testGeneric('placa');
+    testGeneric('cnpj');
+    testGeneric('cpf');
+    // testGeneric('currency');
+    // testGeneric('inscricaoestadual');
+    // testGeneric('percentage');
+    testGeneric('rg');
+    testGeneric('placa');
     // testGeneric('telefone');
     // testGeneric('time');
-    // testGeneric('titulo');
+    testGeneric('titulo');
   });
 
 
   it('CEP', () => {
-
+    const cep = '30456098';
+    expect(maskBr.cep(cep)).to.be.equal('30.456-098');
   });
-  // it('CNPJ', () => {
-  //   const cnpj = fakerBr.cnpj();
-  //   console.log(cnpj)
-  //   expect(validateBr.cnpj(cnpj)).to.be.true;
-  // });
-  // // it('CPF', () => {
-  // //   const cpf = fakerBr.cpf();
-  // //   expect(validateBr.cpf(cpf)).to.be.true;
-  // // });
-  // // it('RG', () => {
-  // //   const rg = fakerBr.rg();
-  // //   expect(validateBr.rg(rg)).to.be.true;
-  // // });
-  // // it('PLACA', () => {
-  // //   const placa = fakerBr.placa();
-  // //   expect(validateBr.placa(placa)).to.be.true;
-  // // });
-  // // it('Telefone', () => {
-  // //   const telefone = fakerBr.telefone();
-  // //   expect(validateBr.telefone(telefone)).to.be.true;
-  // // });
+  it('CNPJ', () => {
+    const cnpj = '83529443183182';
+    expect(maskBr.cnpj(cnpj)).to.be.equal('83.529.443/1831-82');
+  });
+  it('CPF', () => {
+    const cpf = '92044202271';
+    expect(maskBr.cpf(cpf)).to.be.equal('920.442.022-71');
+  });
+  it('RG MG', () => {
+    const rg = 'mg11164324';
+    expect(maskBr.rg(rg)).to.be.equal('mg-11.164.324');
+  });
+  it('PLACA', () => {
+    const placa = 'ABC1234';
+    expect(maskBr.placa(placa)).to.be.equal('ABC-1234');
+  });
+  it('Telefone', () => {
+    const telefone = '3135003500';
+    expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');
+  });
+  it('Telefone 9 Digito', () => {
+    const telefone = '31988886565';
+    expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
+  });
   // // it('Time', () => {
   // //   const time = fakerBr.time();
   // //   expect(validateBr.time(time)).to.be.true;

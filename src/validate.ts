@@ -183,11 +183,17 @@ export function cep_ranges(cep) {
 export function validate_telefone(tel) {
   const telClean = tel.replace(/[^\d]+/g, '');
   tel = tel.replace(/_/g, '');
-  const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
-  const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
-  if (!exp.test(tel) && !exp5.test(tel) && !(telClean.length === 10 || telClean.length === 11)) {
+  if(!(telClean.length === 10 || telClean.length === 11)){
     return false;
   }
+  if(telClean[0]==0 || telClean[2]==0){
+    return false;
+  }
+  // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
+  // const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
+  // if (!exp.test(tel) && !exp5.test(tel)) {
+  //   return false;
+  // }
   return true;
 }
 
@@ -222,9 +228,9 @@ export function validate_percentage(percentage) {
 
 export function validate_placa(placa) {
   const placaClean = placa.replace(/-/g, '');
-  const exp = /[a-z]{3}\-\d{4}/;
-  const expClean = /[a-z]{3}\d{4}/;
-  const letters = placa.substr(0, 3).toUpperCase();
+  const exp = /[A-Za-z]{3}\-\d{4}/;
+  const expClean = /[A-Za-z]{3}\d{4}/;
+  // const letters = placa.substr(0, 3).toUpperCase();
 
   if (!exp.test(placa) && !expClean.test(placaClean)) {
     return false;
@@ -233,23 +239,31 @@ export function validate_placa(placa) {
 }
 
 export function validate_titulo(titulo) {
-  const tituloClean = titulo.replace(/./, '');
+  const tituloClean = titulo.replace(/\./g, '');
   const exp = /\d{4}\.\d{4}\.\d{4}/;
   const expClean = /\d{4}\d{4}\d{4}/;
-
-  if (!exp.test(titulo) && !expClean.test(titulo)) {
+  if (!exp.test(tituloClean) && !expClean.test(tituloClean)) {
     return false;
   }
   return validaTituloVerificador(titulo);
 }
 
-
 function validaTituloVerificador(titulo) {
+  const {dig1, dig2} =create_titulo(titulo);
+  const tam = titulo.length;
+  const digitos = titulo.substr(tam - 2, 2);
+  if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function create_titulo(titulo) {
   const tit = titulo;
   let dig1 = 0;
   let dig2 = 0;
   const tam = tit.length;
-  const digitos = tit.substr(tam - 2, 2);
   const estado = tit.substr(tam - 4, 2);
   titulo = tit.substr(0, tam - 2);
   titulo = '000000000000' + titulo;
@@ -287,9 +301,5 @@ function validaTituloVerificador(titulo) {
       dig2 = 11 - resto;
     }
   }
-  if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
-    return true;
-  } else {
-    return false;
-  }
+  return {dig1, dig2};
 }

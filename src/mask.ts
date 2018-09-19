@@ -5,9 +5,14 @@ const makeGeneric = (key) => {
     if (!value) {
       return '';
     }
+
+    let mask = MASKS[key].textMask
+    if (MASKS[key].textMaskFunction) {
+      mask = MASKS[key].textMaskFunction(value);
+    }
     return conformToMask(
       value,
-      MASKS[key].textMask,
+      mask,
       { guide: false }
     ).conformedValue;
   }
@@ -19,7 +24,7 @@ export const maskBr = {
   cnpj: makeGeneric('cnpj'),
   rg: makeGeneric('rg'),
   telefone: makeGeneric('telefone'),
-  inscricaoestadual: (inscricaoestadualValue, estado)=>{
+  inscricaoestadual: (inscricaoestadualValue, estado) => {
     if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
       !MASKS.inscricaoestadual[estado].textMask) {
       return '';
@@ -31,7 +36,7 @@ export const maskBr = {
     ).conformedValue;
   },
   time: makeGeneric('time'),
-  currency: (currencyValue)=>{
+  currency: (currencyValue) => {
     if (!currencyValue) {
       return '';
     }
@@ -44,7 +49,7 @@ export const maskBr = {
       { guide: false }
     ).conformedValue + ',' + vals[1];
   },
-  percentage: (percentageValue)=>{
+  percentage: (percentageValue) => {
     if (!percentageValue) {
       return '';
     }

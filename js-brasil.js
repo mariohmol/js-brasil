@@ -32,19 +32,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
 var validate_1 = require("./validate");
 var randexp_1 = require("randexp");
-var makeGeneric = function (val) {
+var makeGeneric = function (val, options) {
+    if (options === void 0) { options = null; }
     return function () {
-        var newData = val.textMask.map(function (c) {
+        if (!val.textMask || !val.textMask.map) {
+            return '';
+        }
+        var newData = val.textMask.map(function (c, index) {
+            if (options && options[index]) {
+                return options[index]();
+            }
             c = c.toString();
             if (c === /\d/.toString()) {
-                return Math.floor(Math.random() * 10);
+                return Math.floor(Math.random() * 10).toString();
             }
             else if (c === /[A-Za-z]/.toString()) {
-                var num = Math.floor((Math.random() * 57)) + 65;
-                return String.fromCharCode(num);
+                return randomLetter(1).toString();
             }
             else if (c === /[1-9]/.toString()) {
-                return Math.floor(Math.random() * 9) + 1;
+                return (Math.floor(Math.random() * 9) + 1).toString();
             }
             else {
                 return c;
@@ -53,6 +59,31 @@ var makeGeneric = function (val) {
         return newData.join('');
     };
 };
+function randomLetter(size, onlyCapitals) {
+    if (size === void 0) { size = 1; }
+    if (onlyCapitals === void 0) { onlyCapitals = false; }
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (onlyCapitals = false) {
+        possible += "abcdefghijklmnopqrstuvwxyz";
+    }
+    possible = possible.split('');
+    for (var i = 0; i < size; i++) {
+        var pos = Math.floor(Math.random() * possible.length);
+        text += possible[pos];
+    }
+    return text;
+}
+var randomEstadoSigla = function () {
+    var total = utils_1.ESTADOS_SIGLA.length;
+    return utils_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
+};
+var random = randomEstadoSigla();
+random = random.split('');
+var makeRg = makeGeneric(utils_1.MASKS['rg'], {
+    0: function () { return random[0]; },
+    1: function () { return random[1]; }
+});
 exports.fakerBr = {
     cep: makeGeneric(utils_1.MASKS['cep']),
     cepState: function (state) {
@@ -61,6 +92,8 @@ exports.fakerBr = {
     cpf: function () {
         var cpf = makeGeneric(utils_1.MASKS['cpf'])();
         var restos = validate_1.create_cpf(cpf);
+        cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+        restos = validate_1.create_cpf(cpf);
         return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
     },
     cnpj: function () {
@@ -71,14 +104,19 @@ exports.fakerBr = {
         restos = validate_1.create_cnpj(cnpj);
         return cnpj.substr(0, cnpj.length - 1) + restos[1];
     },
-    rg: makeGeneric(utils_1.MASKS['rg']),
+    rg: makeRg,
     telefone: makeGeneric(utils_1.MASKS['telefone']),
+    celular: makeGeneric(utils_1.MASKS['celular']),
     inscricaoestadual: makeGeneric(utils_1.MASKS['inscricaoestadual']),
     time: makeGeneric(utils_1.MASKS['time']),
-    // currency: makeGeneric(MASKS['currency']),
+    currency: makeGeneric(utils_1.MASKS['currency']),
     percentage: makeGeneric(utils_1.MASKS['percentage']),
     placa: makeGeneric(utils_1.MASKS['placa']),
-    titulo: makeGeneric(utils_1.MASKS['titulo'])
+    titulo: function () {
+        var titulo = makeGeneric(utils_1.MASKS['titulo'])();
+        var _a = validate_1.create_titulo(titulo), dig1 = _a.dig1, dig2 = _a.dig2;
+        return titulo.substr(0, titulo.length - 2) + dig1 + dig2;
+    }
 };
 
 },{"./utils":5,"./validate":6,"randexp":8}],3:[function(require,module,exports){
@@ -766,7 +804,11 @@ var makeGeneric = function (key) {
         if (!value) {
             return '';
         }
-        return utils_1.conformToMask(value, utils_1.MASKS[key].textMask, { guide: false }).conformedValue;
+        var mask = utils_1.MASKS[key].textMask;
+        if (utils_1.MASKS[key].textMaskFunction) {
+            mask = utils_1.MASKS[key].textMaskFunction(value);
+        }
+        return utils_1.conformToMask(value, mask, { guide: false }).conformedValue;
     };
 };
 exports.maskBr = {
@@ -808,6 +850,10 @@ exports.maskBr = {
 Object.defineProperty(exports, "__esModule", { value: true });
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
+exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
+    'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
+    'sc', 'se', 'sp', 'to'
+];
 exports.MASKS = {
     cpf: {
         text: '000.000.000-00',
@@ -823,26 +869,24 @@ exports.MASKS = {
     },
     telefone: {
         text: '(00) 0000-0000',
-        textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+        textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
         textMaskFunction: function mask(userInput) {
-            // const DDD5digits = { '11': 'sp', '11': 'sp'  }
-            var ddd;
             var numbers = userInput.match(/\d/g);
             var numberLength = 0;
             if (numbers) {
                 numberLength = numbers.join('').length;
             }
-            if (userInput.length > 2) {
-                var splits = userInput.split('');
-                ddd = splits[1] + splits[2];
-            }
-            if (!userInput || numberLength > 10) { // || ddd in DDD5digits
-                return ['(', /[1-9]/, /[1-9]/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+            if (!userInput || numberLength > 10) {
+                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
             }
             else {
-                return ['(', /[1-9]/, /[1-9]/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
             }
         }
+    },
+    celular: {
+        text: '(00) 00000-0000',
+        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     },
     cep: {
         text: '00.000-000',
@@ -1322,11 +1366,17 @@ exports.cep_ranges = cep_ranges;
 function validate_telefone(tel) {
     var telClean = tel.replace(/[^\d]+/g, '');
     tel = tel.replace(/_/g, '');
-    var exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
-    var exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
-    if (!exp.test(tel) && !exp5.test(tel) && !(telClean.length === 10 || telClean.length === 11)) {
+    if (!(telClean.length === 10 || telClean.length === 11)) {
         return false;
     }
+    if (telClean[0] == 0 || telClean[2] == 0) {
+        return false;
+    }
+    // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
+    // const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
+    // if (!exp.test(tel) && !exp5.test(tel)) {
+    //   return false;
+    // }
     return true;
 }
 exports.validate_telefone = validate_telefone;
@@ -1359,9 +1409,9 @@ function validate_percentage(percentage) {
 exports.validate_percentage = validate_percentage;
 function validate_placa(placa) {
     var placaClean = placa.replace(/-/g, '');
-    var exp = /[a-z]{3}\-\d{4}/;
-    var expClean = /[a-z]{3}\d{4}/;
-    var letters = placa.substr(0, 3).toUpperCase();
+    var exp = /[A-Za-z]{3}\-\d{4}/;
+    var expClean = /[A-Za-z]{3}\d{4}/;
+    // const letters = placa.substr(0, 3).toUpperCase();
     if (!exp.test(placa) && !expClean.test(placaClean)) {
         return false;
     }
@@ -1369,21 +1419,31 @@ function validate_placa(placa) {
 }
 exports.validate_placa = validate_placa;
 function validate_titulo(titulo) {
-    var tituloClean = titulo.replace(/./, '');
+    var tituloClean = titulo.replace(/\./g, '');
     var exp = /\d{4}\.\d{4}\.\d{4}/;
     var expClean = /\d{4}\d{4}\d{4}/;
-    if (!exp.test(titulo) && !expClean.test(titulo)) {
+    if (!exp.test(tituloClean) && !expClean.test(tituloClean)) {
         return false;
     }
     return validaTituloVerificador(titulo);
 }
 exports.validate_titulo = validate_titulo;
 function validaTituloVerificador(titulo) {
+    var _a = create_titulo(titulo), dig1 = _a.dig1, dig2 = _a.dig2;
+    var tam = titulo.length;
+    var digitos = titulo.substr(tam - 2, 2);
+    if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function create_titulo(titulo) {
     var tit = titulo;
     var dig1 = 0;
     var dig2 = 0;
     var tam = tit.length;
-    var digitos = tit.substr(tam - 2, 2);
     var estado = tit.substr(tam - 4, 2);
     titulo = tit.substr(0, tam - 2);
     titulo = '000000000000' + titulo;
@@ -1427,13 +1487,9 @@ function validaTituloVerificador(titulo) {
             dig2 = 11 - resto;
         }
     }
-    if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return { dig1: dig1, dig2: dig2 };
 }
+exports.create_titulo = create_titulo;
 
 },{}],7:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */

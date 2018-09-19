@@ -1,6 +1,11 @@
 import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
+export const ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
+  'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
+  'sc', 'se', 'sp', 'to'
+];
+
 export const MASKS = {
   cpf: {
     text: '000.000.000-00',
@@ -16,26 +21,23 @@ export const MASKS = {
   },
   telefone: {
     text: '(00) 0000-0000',
-    textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     textMaskFunction: function mask(userInput) {
-      // const DDD5digits = { '11': 'sp', '11': 'sp'  }
-      let ddd;
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
       if (numbers) {
         numberLength = numbers.join('').length;
       }
-      if (userInput.length > 2) {
-        const splits = userInput.split('');
-        ddd = splits[1] + splits[2];
-      }
-
-      if (!userInput || numberLength > 10) { // || ddd in DDD5digits
-        return ['(', /[1-9]/, /[1-9]/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+      if (!userInput || numberLength > 10) {
+        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
       } else {
-        return ['(', /[1-9]/, /[1-9]/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
       }
     }
+  },
+  celular: {
+    text: '(00) 00000-0000',
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
   },
   cep: {
     text: '00.000-000',
@@ -368,7 +370,7 @@ export function isString(value) {
 }
 
 export function isNumber(value: any) {
-  return typeof value === 'number'  && !isNaN(value); // && value.length === undefined
+  return typeof value === 'number' && !isNaN(value); // && value.length === undefined
 }
 
 export function isNil(value) {

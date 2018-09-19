@@ -22,13 +22,16 @@ describe('Validate test', () => {
   });
 
   it('Telefone', () => {
-    // expect(validateBr.placa('LGH1234')).to.be.true;
     expect(validateBr.telefone('31 999876767')).to.be.true;
+    expect(validateBr.telefone('31 99876767')).to.be.true;
+    expect(validateBr.telefone('(90) 1057-1600')).to.be.true;
+    expect(validateBr.telefone('(90) 0057-1600')).to.be.false;
+    
   });
 
   it('TITULO', () => {
-    // expect(validateBr.time('12:34')).to.be.true;
-    // expect(validateBr.titulo('1234')).to.be.true;
+    expect(validateBr.titulo('6490.8084.4421')).to.be.true;
+    expect(validateBr.titulo('6490.8084.4422')).to.be.false;
   });
 
   it('To check when is NOT valid', () => {
@@ -36,7 +39,7 @@ describe('Validate test', () => {
     expect(validateBr.cnpj('1234')).to.be.false;
     expect(validateBr.cpf('1234')).to.be.false;
     expect(validateBr.currency('1234')).to.be.false;
-    // expect(validateBr.inscricaoestadual('1234')).to.be.false;
+    expect(validateBr.inscricaoestadual('1234', 'mg')).to.be.false;
     expect(validateBr.percentage('1234')).to.be.false;
     expect(validateBr.rg('1234')).to.be.false;
     expect(validateBr.placa('1234')).to.be.false;
