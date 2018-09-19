@@ -2,6 +2,12 @@
 
 Javascript Utils para Brasil (cpf, cnpj...)
 
+`npm i js-brasil` 
+
+ ou 
+
+`<script src="js-brasil.js"></script>`
+
 # Validate
 
 Verifique se os dados dos seus usuários são válidos
@@ -20,9 +26,9 @@ const cpf = validateBr.cpf('123.456.789-00');
 
 Browser:
 ```html
-<script src="js-brasil.js">
+<script src="js-brasil.js"></script>
 <script>
-var cpf = jsbrasil.validateBr.cpf('123.456.789-00')
+var cpf = jsbrasil.validateBr.cpf('123.456.789-00');
 </script>  
 ```
 
@@ -45,9 +51,9 @@ const cep = fakerBr.cep();
 
 Browser:
 ```html
-<script src="js-brasil.js">
+<script src="js-brasil.js"></script>
 <script>
-var cep = jsbrasil.fakerBr.cep(')
+var cep = jsbrasil.fakerBr.cep();
 </script>  
 ```
 
