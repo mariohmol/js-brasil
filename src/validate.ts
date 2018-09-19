@@ -4,7 +4,21 @@
 //if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
 */
 export function validate_cnpj(cnpj) {
+  cnpj = cnpj.replace(/[^\d]+/g, '');
+  let tamanho = cnpj.length - 2
+  const digitos = cnpj.substring(tamanho);
+  const resultados = create_cnpj(cnpj);
+  if (resultados[0] !== parseInt(digitos.charAt(0), 10)) {
+    return false;
+  }
 
+  if (resultados[1] !== parseInt(digitos.charAt(1), 10)) {
+    return false;
+  }
+  return true;
+}
+
+export function create_cnpj(cnpj) {
   cnpj = cnpj.replace(/[^\d]+/g, '');
 
   if (cnpj === '') {
@@ -32,7 +46,6 @@ export function validate_cnpj(cnpj) {
   // Valida DVs
   let tamanho = cnpj.length - 2
   let numeros = cnpj.substring(0, tamanho);
-  const digitos = cnpj.substring(tamanho);
   let soma = 0;
   let pos = tamanho - 7;
   for (let i = tamanho; i >= 1; i--) {
@@ -42,10 +55,8 @@ export function validate_cnpj(cnpj) {
     }
 
   }
-  let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-  if (resultado !== parseInt(digitos.charAt(0), 10)) {
-    return false;
-  }
+  const resultados = [0, 0];
+  resultados[0] = soma % 11 < 2 ? 0 : 11 - soma % 11;
 
   tamanho = tamanho + 1;
   numeros = cnpj.substring(0, tamanho);
@@ -57,16 +68,26 @@ export function validate_cnpj(cnpj) {
       pos = 9;
     }
   }
-  resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-  if (resultado !== parseInt(digitos.charAt(1), 10)) {
-    return false;
-  }
-
-  return true;
+  resultados[1] = soma % 11 < 2 ? 0 : 11 - soma % 11;
+  return resultados;
 }
 
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
 export function validate_cpf(strCPF) {
+  strCPF = strCPF.replace(/[^\d]+/g, '');
+  const restos = create_cpf(strCPF);
+
+  if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
+    return false;
+  }
+
+  if (restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+    return false;
+  }
+  return true;
+}
+
+export function create_cpf(strCPF) {
   strCPF = strCPF.replace(/[^\d]+/g, '');
   let soma;
   let resto;
@@ -84,9 +105,9 @@ export function validate_cpf(strCPF) {
   if ((resto === 10) || (resto === 11)) {
     resto = 0;
   }
-  if (resto !== parseInt(strCPF.substring(9, 10), 10)) {
-    return false;
-  }
+
+  const restos = [];
+  restos.push(resto);
 
   soma = 0;
   for (let i = 1; i <= 10; i++) {
@@ -97,14 +118,13 @@ export function validate_cpf(strCPF) {
   if ((resto === 10) || (resto === 11)) {
     resto = 0;
   }
-  if (resto !== parseInt(strCPF.substring(10, 11), 10)) {
-    return false;
-  }
-  return true;
+
+  restos.push(resto);
+  return restos;
 }
 
 
-const CEPRange = {
+export const CEPRange = {
   'SP': /^([1][0-9]{3}|[01][0-9]{4})[0-9]{3}$/g,
   'RJ': /^[2][0-8][0-9]{3}[0-9]{3}$/g,
   'MS': /^[7][9][0-9]{3}[0-9]{3}$/g,

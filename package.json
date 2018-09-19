@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
   "dependencies": {
+    "randexp": "^0.5.3",
     "text-mask-addons": "^3.8.0"
   },
   "devDependencies": {
