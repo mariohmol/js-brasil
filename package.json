@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "mocha"
+    "test": "mocha",
+    "browserify": "browserify dist/index.js --standalone jsbrasil -o js-brasil.js",
+    "dist": "npm run build && npm run browserify"
   },
   "repository": {
     "type": "git",
