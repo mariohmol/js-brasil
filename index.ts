@@ -6,7 +6,7 @@ import {
   validate_placa, validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo
 } from './src/validate';
 import { validar } from './src/inscricaoestadual';
-import { fakerBr } from './src/faker';
+import * as faker from './src/faker';
 
 export const validateBr = {
   cep: valida_cep,
@@ -26,6 +26,8 @@ export const utilsBr = {
   isPresent,
   MASKS
 };
+
+export const fakerBr = faker.fakerBr;
 
 export default {
   validateBr, utilsBr, fakerBr
