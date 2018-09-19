@@ -37,6 +37,36 @@ var cpf = jsbrasil.validateBr.cpf('123.456.789-00');
 ```
 
 
+# Mask 
+
+Formate seus dados com mascaras de tipos de dados brasileiros
+
+Javascript:
+```js
+const { maskBr } = require('js-brasil');
+const cpf = maskBr.cpf('12345678900'); 
+console.log(cpf) // '123.456.789-00'
+```
+
+Typescript:
+```ts
+import { maskBr } from 'js-brasil';
+const cpf = maskBr.cpf('12345678900'); 
+console.log(cpf) // '123.456.789-00'
+```
+
+Browser:
+```html
+<script src="js-brasil.js"></script>
+<script>
+var cpf = jsbrasil.maskBr.cpf('12345678900'); 
+console.log(cpf) // '123.456.789-00'
+</script>  
+```
+
+
+
+
 # Faker
 
 Gere dados de teste usando tipos de dados brasileiro, similar o fakejs
@@ -74,3 +104,9 @@ var cep = jsbrasil.fakerBr.cep();
 * telefone
 * time
 * titulo
+
+
+Utilizado pelo projeto
+
+* ng-brazil - angular support for brazil apps -  https://github.com/mariohmol/ng-brazil
+
