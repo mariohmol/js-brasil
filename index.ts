@@ -28,7 +28,3 @@ export const utilsBr = {
 };
 
 export const fakerBr = faker.fakerBr;
-
-export default {
-  validateBr, utilsBr, fakerBr
-}

@@ -7,14 +7,22 @@
   <title>JS Brasil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../js-brasil.js"></script>
+  <!-- <script src="https://rawgit.com/mariohmol/js-brasil/master/js-brasil.js"></script> -->
   <script>
-    var repeat = require('repeat - string');
-    console.log(repeat)
+    window.onload = ()=>{
+      document.querySelector('#fakercep').innerHTML = jsbrasil.fakerBr.cep();
+    }
+    
   </script>
 </head>
 
 <body>
 
+  <h1>JS Brasil</h1>
+
+  <h2>Faker</h2>
+
+  <p>CEP: <span id="fakercep"></span></p>
 </body>
 
 </html>
