@@ -7,6 +7,7 @@ import {
 } from './src/validate';
 import { validar } from './src/inscricaoestadual';
 import * as faker from './src/faker';
+import * as mask from './src/mask';
 
 export const validateBr = {
   cep: valida_cep,
@@ -27,4 +28,5 @@ export const utilsBr = {
   MASKS
 };
 
+export const maskBr = mask.maskBr;
 export const fakerBr = faker.fakerBr;

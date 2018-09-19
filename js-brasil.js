@@ -5,6 +5,7 @@ var utils_1 = require("./src/utils");
 var validate_1 = require("./src/validate");
 var inscricaoestadual_1 = require("./src/inscricaoestadual");
 var faker = require("./src/faker");
+var mask = require("./src/mask");
 exports.validateBr = {
     cep: validate_1.valida_cep,
     cnpj: validate_1.validate_cnpj,
@@ -22,9 +23,10 @@ exports.utilsBr = {
     isPresent: utils_1.isPresent,
     MASKS: utils_1.MASKS
 };
+exports.maskBr = mask.maskBr;
 exports.fakerBr = faker.fakerBr;
 
-},{"./src/faker":2,"./src/inscricaoestadual":3,"./src/utils":4,"./src/validate":5}],2:[function(require,module,exports){
+},{"./src/faker":2,"./src/inscricaoestadual":3,"./src/mask":4,"./src/utils":5,"./src/validate":6}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -79,7 +81,7 @@ exports.fakerBr = {
     titulo: makeGeneric(utils_1.MASKS['titulo'])
 };
 
-},{"./utils":4,"./validate":5,"randexp":7}],3:[function(require,module,exports){
+},{"./utils":5,"./validate":6,"randexp":8}],3:[function(require,module,exports){
 "use strict";
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -758,6 +760,52 @@ function lookup(ie) {
 },{}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("./utils");
+var makeGeneric = function (key) {
+    return function (value) {
+        if (!value) {
+            return '';
+        }
+        return utils_1.conformToMask(value, utils_1.MASKS[key].textMask, { guide: false }).conformedValue;
+    };
+};
+exports.maskBr = {
+    cep: makeGeneric('cep'),
+    cpf: makeGeneric('cpf'),
+    cnpj: makeGeneric('cnpj'),
+    rg: makeGeneric('rg'),
+    telefone: makeGeneric('telefone'),
+    inscricaoestadual: function (inscricaoestadualValue, estado) {
+        if (!inscricaoestadualValue || !estado || !utils_1.MASKS.inscricaoestadual[estado] ||
+            !utils_1.MASKS.inscricaoestadual[estado].textMask) {
+            return '';
+        }
+        return utils_1.conformToMask(inscricaoestadualValue, utils_1.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
+    },
+    time: makeGeneric('time'),
+    currency: function (currencyValue) {
+        if (!currencyValue) {
+            return '';
+        }
+        var vals = currencyValue.split(',');
+        var mask = utils_1.MASKS.currency.textMask(vals[0]);
+        return utils_1.conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+    },
+    percentage: function (percentageValue) {
+        if (!percentageValue) {
+            return '';
+        }
+        var vals = percentageValue.split(',');
+        var mask = utils_1.MASKS.percentage.textMask(vals[0]);
+        return utils_1.conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+    },
+    placa: makeGeneric('placa'),
+    titulo: makeGeneric('titulo')
+};
+
+},{"./utils":5}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 exports.MASKS = {
@@ -842,8 +890,271 @@ function isPresent(obj) {
     return obj !== undefined && obj !== null;
 }
 exports.isPresent = isPresent;
+/**
+ * FROM TEXT-MASK
+ */
+exports.placeholderChar = '_';
+exports.strFunction = 'function';
+var defaultPlaceholderChar = exports.placeholderChar;
+var emptyArray = [];
+var emptyString = '';
+function conformToMask(rawValue, mask, config) {
+    if (rawValue === void 0) { rawValue = emptyString; }
+    if (mask === void 0) { mask = emptyArray; }
+    if (config === void 0) { config = {}; }
+    if (!isArray(mask)) {
+        // If someone passes a function as the mask property, we should call the
+        // function to get the mask array - Normally this is handled by the
+        // `createTextMaskInputElement:update` function - this allows mask functions
+        // to be used directly with `conformToMask`
+        if (typeof mask === exports.strFunction) {
+            // call the mask function to get the mask array
+            mask = mask(rawValue, config);
+            // mask functions can setup caret traps to have some control over how the caret moves. We need to process
+            // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask
+            mask = processCaretTraps(mask).maskWithoutCaretTraps;
+        }
+        else {
+            throw new Error('Text-mask:conformToMask; The mask property must be an array.');
+        }
+    }
+    // These configurations tell us how to conform the mask
+    var guide = config.guide || true;
+    var previousConformedValue = config.previousConformedValue || emptyString;
+    var placeholder = convertMaskToPlaceholder(mask, exports.placeholderChar);
+    var currentCaretPosition = config.currentCaretPosition;
+    var keepCharPositions = config.keepCharPositions;
+    // The configs below indicate that the user wants the algorithm to work in *no guide* mode
+    var suppressGuide = guide === false && previousConformedValue !== undefined;
+    // Calculate lengths once for performance
+    var rawValueLength = rawValue.length;
+    var previousConformedValueLength = previousConformedValue.length;
+    var placeholderLength = placeholder.length;
+    var maskLength = mask.length;
+    // This tells us the number of edited characters and the direction in which they were edited (+/-)
+    var editDistance = rawValueLength - previousConformedValueLength;
+    // In *no guide* mode, we need to know if the user is trying to add a character or not
+    var isAddition = editDistance > 0;
+    // Tells us the index of the first change. For (438) 394-4938 to (38) 394-4938, that would be 1
+    var indexOfFirstChange = currentCaretPosition + (isAddition ? -editDistance : 0);
+    // We're also gonna need the index of last change, which we can derive as follows...
+    var indexOfLastChange = indexOfFirstChange + Math.abs(editDistance);
+    // If `conformToMask` is configured to keep character positions, that is, for mask 111, previous value
+    // _2_ and raw value 3_2_, the new conformed value should be 32_, not 3_2 (default behavior). That's in the case of
+    // addition. And in the case of deletion, previous value _23, raw value _3, the new conformed string should be
+    // __3, not _3_ (default behavior)
+    //
+    // The next block of logic handles keeping character positions for the case of deletion. (Keeping
+    // character positions for the case of addition is further down since it is handled differently.)
+    // To do this, we want to compensate for all characters that were deleted
+    if (keepCharPositions === true && !isAddition) {
+        // We will be storing the new placeholder characters in this variable.
+        var compensatingPlaceholderChars = emptyString;
+        // For every character that was deleted from a placeholder position, we add a placeholder char
+        for (var i = indexOfFirstChange; i < indexOfLastChange; i++) {
+            if (placeholder[i] === exports.placeholderChar) {
+                compensatingPlaceholderChars += exports.placeholderChar;
+            }
+        }
+        // Now we trick our algorithm by modifying the raw value to make it contain additional placeholder characters
+        // That way when the we start laying the characters again on the mask, it will keep the non-deleted characters
+        // in their positions.
+        rawValue = (rawValue.slice(0, indexOfFirstChange) +
+            compensatingPlaceholderChars +
+            rawValue.slice(indexOfFirstChange, rawValueLength));
+    }
+    // Convert `rawValue` string to an array, and mark characters based on whether they are newly added or have
+    // existed in the previous conformed value. Identifying new and old characters is needed for `conformToMask`
+    // to work if it is configured to keep character positions.
+    var rawValueArr = rawValue
+        .split(emptyString)
+        .map(function (char, i) { return ({ char: char, isNew: i >= indexOfFirstChange && i < indexOfLastChange }); });
+    // The loop below removes masking characters from user input. For example, for mask
+    // `00 (111)`, the placeholder would be `00 (___)`. If user input is `00 (234)`, the loop below
+    // would remove all characters but `234` from the `rawValueArr`. The rest of the algorithm
+    // then would lay `234` on top of the available placeholder positions in the mask.
+    for (var i = rawValueLength - 1; i >= 0; i--) {
+        var char = rawValueArr[i].char;
+        if (char !== exports.placeholderChar) {
+            var shouldOffset = i >= indexOfFirstChange && previousConformedValueLength === maskLength;
+            if (char === placeholder[(shouldOffset) ? i - editDistance : i]) {
+                rawValueArr.splice(i, 1);
+            }
+        }
+    }
+    // This is the variable that we will be filling with characters as we figure them out
+    // in the algorithm below
+    var conformedValue = emptyString;
+    var someCharsRejected = false;
+    // Ok, so first we loop through the placeholder looking for placeholder characters to fill up.
+    placeholderLoop: for (var i = 0; i < placeholderLength; i++) {
+        var charInPlaceholder = placeholder[i];
+        // We see one. Let's find out what we can put in it.
+        if (charInPlaceholder === exports.placeholderChar) {
+            // But before that, do we actually have any user characters that need a place?
+            if (rawValueArr.length > 0) {
+                // We will keep chipping away at user input until either we run out of characters
+                // or we find at least one character that we can map.
+                while (rawValueArr.length > 0) {
+                    // Let's retrieve the first user character in the queue of characters we have left
+                    var _a = rawValueArr.shift(), rawValueChar = _a.char, isNew = _a.isNew;
+                    // If the character we got from the user input is a placeholder character (which happens
+                    // regularly because user input could be something like (540) 90_-____, which includes
+                    // a bunch of `_` which are placeholder characters) and we are not in *no guide* mode,
+                    // then we map this placeholder character to the current spot in the placeholder
+                    if (rawValueChar === exports.placeholderChar && suppressGuide !== true) {
+                        conformedValue += exports.placeholderChar;
+                        // And we go to find the next placeholder character that needs filling
+                        continue placeholderLoop;
+                        // Else if, the character we got from the user input is not a placeholder, let's see
+                        // if the current position in the mask can accept it.
+                    }
+                    else if (mask[i].test(rawValueChar)) {
+                        // we map the character differently based on whether we are keeping character positions or not.
+                        // If any of the conditions below are met, we simply map the raw value character to the
+                        // placeholder position.
+                        if (keepCharPositions !== true ||
+                            isNew === false ||
+                            previousConformedValue === emptyString ||
+                            guide === false ||
+                            !isAddition) {
+                            conformedValue += rawValueChar;
+                        }
+                        else {
+                            // We enter this block of code if we are trying to keep character positions and none of the conditions
+                            // above is met. In this case, we need to see if there's an available spot for the raw value character
+                            // to be mapped to. If we couldn't find a spot, we will discard the character.
+                            //
+                            // For example, for mask `1111`, previous conformed value `_2__`, raw value `942_2__`. We can map the
+                            // `9`, to the first available placeholder position, but then, there are no more spots available for the
+                            // `4` and `2`. So, we discard them and end up with a conformed value of `92__`.
+                            var rawValueArrLength = rawValueArr.length;
+                            var indexOfNextAvailablePlaceholderChar = null;
+                            // Let's loop through the remaining raw value characters. We are looking for either a suitable spot, ie,
+                            // a placeholder character or a non-suitable spot, ie, a non-placeholder character that is not new.
+                            // If we see a suitable spot first, we store its position and exit the loop. If we see a non-suitable
+                            // spot first, we exit the loop and our `indexOfNextAvailablePlaceholderChar` will stay as `null`.
+                            for (var i_1 = 0; i_1 < rawValueArrLength; i_1++) {
+                                var charData = rawValueArr[i_1];
+                                if (charData.char !== exports.placeholderChar && charData.isNew === false) {
+                                    break;
+                                }
+                                if (charData.char === exports.placeholderChar) {
+                                    indexOfNextAvailablePlaceholderChar = i_1;
+                                    break;
+                                }
+                            }
+                            // If `indexOfNextAvailablePlaceholderChar` is not `null`, that means the character is not blocked.
+                            // We can map it. And to keep the character positions, we remove the placeholder character
+                            // from the remaining characters
+                            if (indexOfNextAvailablePlaceholderChar !== null) {
+                                conformedValue += rawValueChar;
+                                rawValueArr.splice(indexOfNextAvailablePlaceholderChar, 1);
+                                // If `indexOfNextAvailablePlaceholderChar` is `null`, that means the character is blocked. We have to
+                                // discard it.
+                            }
+                            else {
+                                i--;
+                            }
+                        }
+                        // Since we've mapped this placeholder position. We move on to the next one.
+                        continue placeholderLoop;
+                    }
+                    else {
+                        someCharsRejected = true;
+                    }
+                }
+            }
+            // We reach this point when we've mapped all the user input characters to placeholder
+            // positions in the mask. In *guide* mode, we append the left over characters in the
+            // placeholder to the `conformedString`, but in *no guide* mode, we don't wanna do that.
+            //
+            // That is, for mask `(111)` and user input `2`, we want to return `(2`, not `(2__)`.
+            if (suppressGuide === false) {
+                conformedValue += placeholder.substr(i, placeholderLength);
+            }
+            // And we break
+            break;
+            // Else, the charInPlaceholder is not a placeholderChar. That is, we cannot fill it
+            // with user input. So we just map it to the final output
+        }
+        else {
+            conformedValue += charInPlaceholder;
+        }
+    }
+    // The following logic is needed to deal with the case of deletion in *no guide* mode.
+    //
+    // Consider the silly mask `(111) /// 1`. What if user tries to delete the last placeholder
+    // position? Something like `(589) /// `. We want to conform that to `(589`. Not `(589) /// `.
+    // That's why the logic below finds the last filled placeholder character, and removes everything
+    // from that point on.
+    if (suppressGuide && isAddition === false) {
+        var indexOfLastFilledPlaceholderChar = null;
+        // Find the last filled placeholder position and substring from there
+        for (var i = 0; i < conformedValue.length; i++) {
+            if (placeholder[i] === exports.placeholderChar) {
+                indexOfLastFilledPlaceholderChar = i;
+            }
+        }
+        if (indexOfLastFilledPlaceholderChar !== null) {
+            // We substring from the beginning until the position after the last filled placeholder char.
+            conformedValue = conformedValue.substr(0, indexOfLastFilledPlaceholderChar + 1);
+        }
+        else {
+            // If we couldn't find `indexOfLastFilledPlaceholderChar` that means the user deleted
+            // the first character in the mask. So we return an empty string.
+            conformedValue = emptyString;
+        }
+    }
+    return { conformedValue: conformedValue, meta: { someCharsRejected: someCharsRejected } };
+}
+exports.conformToMask = conformToMask;
+function convertMaskToPlaceholder(mask, placeholderChar) {
+    if (mask === void 0) { mask = emptyArray; }
+    if (placeholderChar === void 0) { placeholderChar = defaultPlaceholderChar; }
+    if (!isArray(mask)) {
+        throw new Error('Text-mask:convertMaskToPlaceholder; The mask property must be an array.');
+    }
+    if (mask.indexOf(placeholderChar) !== -1) {
+        throw new Error('Placeholder character must not be used as part of the mask. Please specify a character ' +
+            'that is not present in your mask as your placeholder character.\n\n' +
+            ("The placeholder character that was received is: " + JSON.stringify(placeholderChar) + "\n\n") +
+            ("The mask that was received is: " + JSON.stringify(mask)));
+    }
+    return mask.map(function (char) {
+        return (char instanceof RegExp) ? placeholderChar : char;
+    }).join('');
+}
+exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
+function isArray(value) {
+    return (Array.isArray && Array.isArray(value)) || value instanceof Array;
+}
+exports.isArray = isArray;
+function isString(value) {
+    return typeof value === 'string' || value instanceof String;
+}
+exports.isString = isString;
+function isNumber(value) {
+    return typeof value === 'number' && !isNaN(value); // && value.length === undefined
+}
+exports.isNumber = isNumber;
+function isNil(value) {
+    return typeof value === 'undefined' || value === null;
+}
+exports.isNil = isNil;
+var strCaretTrap = '[]';
+function processCaretTraps(mask) {
+    var indexes = [];
+    var indexOfCaretTrap;
+    while (indexOfCaretTrap = mask.indexOf(strCaretTrap), indexOfCaretTrap !== -1) { // eslint-disable-line
+        indexes.push(indexOfCaretTrap);
+        mask.splice(indexOfCaretTrap, 1);
+    }
+    return { maskWithoutCaretTraps: mask, indexes: indexes };
+}
+exports.processCaretTraps = processCaretTraps;
 
-},{"./inscricaoestadual":3,"text-mask-addons/dist/createNumberMask":13}],5:[function(require,module,exports){
+},{"./inscricaoestadual":3,"text-mask-addons/dist/createNumberMask":14}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
@@ -1124,7 +1435,7 @@ function validaTituloVerificador(titulo) {
     }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */
 
 
@@ -1302,7 +1613,7 @@ class DRange {
 
 module.exports = DRange;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 const ret    = require('ret');
 const DRange = require('drange');
 const types  = ret.types;
@@ -1565,7 +1876,7 @@ module.exports = class RandExp {
   }
 };
 
-},{"drange":6,"ret":8}],8:[function(require,module,exports){
+},{"drange":7,"ret":9}],9:[function(require,module,exports){
 const util      = require('./util');
 const types     = require('./types');
 const sets      = require('./sets');
@@ -1849,14 +2160,14 @@ module.exports = (regexpStr) => {
 
 module.exports.types = types;
 
-},{"./positions":9,"./sets":10,"./types":11,"./util":12}],9:[function(require,module,exports){
+},{"./positions":10,"./sets":11,"./types":12,"./util":13}],10:[function(require,module,exports){
 const types = require('./types');
 exports.wordBoundary = () => ({ type: types.POSITION, value: 'b' });
 exports.nonWordBoundary = () => ({ type: types.POSITION, value: 'B' });
 exports.begin = () => ({ type: types.POSITION, value: '^' });
 exports.end = () => ({ type: types.POSITION, value: '$' });
 
-},{"./types":11}],10:[function(require,module,exports){
+},{"./types":12}],11:[function(require,module,exports){
 const types = require('./types');
 
 const INTS = () => [{ type: types.RANGE , from: 48, to: 57 }];
@@ -1907,7 +2218,7 @@ exports.whitespace = () => ({ type: types.SET, set: WHITESPACE(), not: false });
 exports.notWhitespace = () => ({ type: types.SET, set: WHITESPACE(), not: true });
 exports.anyChar = () => ({ type: types.SET, set: NOTANYCHAR(), not: true });
 
-},{"./types":11}],11:[function(require,module,exports){
+},{"./types":12}],12:[function(require,module,exports){
 module.exports = {
   ROOT       : 0,
   GROUP      : 1,
@@ -1919,7 +2230,7 @@ module.exports = {
   CHAR       : 7,
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 const types = require('./types');
 const sets  = require('./sets');
 
@@ -2029,7 +2340,7 @@ exports.error = (regexp, msg) => {
   throw new SyntaxError('Invalid regular expression: /' + regexp + '/: ' + msg);
 };
 
-},{"./sets":10,"./types":11}],13:[function(require,module,exports){
+},{"./sets":11,"./types":12}],14:[function(require,module,exports){
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.createNumberMask=t():e.createNumberMask=t()}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var i=o[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(2)},,function(e,t){"use strict";function o(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,t=e.length;if(e===l||e[0]===y[0]&&1===t)return y.split(l).concat([v]).concat(g.split(l));if(e===k&&M)return y.split(l).concat(["0",k,v]).concat(g.split(l));var o=e[0]===s&&q;o&&(e=e.toString().substr(1));var c=e.lastIndexOf(k),u=c!==-1,a=void 0,b=void 0,h=void 0;if(e.slice(T*-1)===g&&(e=e.slice(0,T*-1)),u&&(M||$)?(a=e.slice(e.slice(0,R)===y?R:0,c),b=e.slice(c+1,t),b=n(b.replace(f,l))):a=e.slice(0,R)===y?e.slice(R):e,P&&("undefined"==typeof P?"undefined":r(P))===p){var S="."===j?"[.]":""+j,w=(a.match(new RegExp(S,"g"))||[]).length;a=a.slice(0,P+w*Z)}return a=a.replace(f,l),E||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?i(a,j):a,h=n(a),(u&&M||$===!0)&&(e[c-1]!==k&&h.push(m),h.push(k,m),b&&(("undefined"==typeof L?"undefined":r(L))===p&&(b=b.slice(0,L)),h=h.concat(b)),$===!0&&e[c-1]===k&&h.push(v)),R>0&&(h=y.split(l).concat(h)),o&&(h.length===R&&h.push(v),h=[d].concat(h)),g.length>0&&(h=h.concat(g.split(l))),h}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},o=t.prefix,y=void 0===o?c:o,b=t.suffix,g=void 0===b?l:b,h=t.includeThousandsSeparator,x=void 0===h||h,S=t.thousandsSeparatorSymbol,j=void 0===S?u:S,w=t.allowDecimal,M=void 0!==w&&w,N=t.decimalSymbol,k=void 0===N?a:N,D=t.decimalLimit,L=void 0===D?2:D,O=t.requireDecimal,$=void 0!==O&&O,_=t.allowNegative,q=void 0!==_&&_,B=t.allowLeadingZeroes,E=void 0!==B&&B,I=t.integerLimit,P=void 0===I?null:I,R=y&&y.length||0,T=g&&g.length||0,Z=j&&j.length||0;return e.instanceOf="createNumberMask",e}function n(e){return e.split(l).map(function(e){return v.test(e)?v:e})}function i(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=o;var c="$",l="",u=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,m="[]"}])});
 },{}]},{},[1])(1)
 });
