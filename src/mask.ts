@@ -24,6 +24,7 @@ export const maskBr = {
   cnpj: makeGeneric('cnpj'),
   rg: makeGeneric('rg'),
   telefone: makeGeneric('telefone'),
+  celular: makeGeneric('celular'),
   inscricaoestadual: (inscricaoestadualValue, estado) => {
     if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
       !MASKS.inscricaoestadual[estado].textMask) {
