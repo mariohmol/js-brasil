@@ -183,10 +183,28 @@ export function cep_ranges(cep) {
 export function validate_telefone(tel) {
   const telClean = tel.replace(/[^\d]+/g, '');
   tel = tel.replace(/_/g, '');
-  if(!(telClean.length === 10 || telClean.length === 11)){
+  if(!(telClean.length === 10)){
     return false;
   }
   if(telClean[0]==0 || telClean[2]==0){
+    return false;
+  }
+  // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
+  // const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
+  // if (!exp.test(tel) && !exp5.test(tel)) {
+  //   return false;
+  // }
+  return true;
+}
+
+
+export function validate_celular(cel) {
+  const celClean = cel.replace(/[^\d]+/g, '');
+  cel = cel.replace(/_/g, '');
+  if(!(celClean.length === 11)){
+    return false;
+  }
+  if(celClean[0]==0 || celClean[2]==0){
     return false;
   }
   // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
