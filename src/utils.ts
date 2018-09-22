@@ -37,7 +37,7 @@ export const MASKS = {
   },
   celular: {
     text: '(00) 00000-0000',
-    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
   },
   cep: {
     text: '00.000-000',
@@ -79,6 +79,24 @@ export const MASKS = {
   titulo: {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
+  },
+  processo: {
+    text: '0000000-00.0000.AAA.0000',
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '.', /\d/, /\d/, /\d/, /\d/]
+  },
+  renavam: {
+    textMaskFunction: function mask(userInput) {
+      const numbers = userInput.match(/\d/g);
+      let numberLength = 0;
+      if (numbers) {
+        numberLength = numbers.join('').length;
+      }
+      if (!userInput || numberLength < 9) {
+        return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/];
+      } else {
+        return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/];
+      }
+    }
   }
 }
 

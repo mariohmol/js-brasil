@@ -817,6 +817,7 @@ exports.maskBr = {
     cnpj: makeGeneric('cnpj'),
     rg: makeGeneric('rg'),
     telefone: makeGeneric('telefone'),
+    celular: makeGeneric('celular'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
         if (!inscricaoestadualValue || !estado || !utils_1.MASKS.inscricaoestadual[estado] ||
             !utils_1.MASKS.inscricaoestadual[estado].textMask) {
@@ -886,7 +887,7 @@ exports.MASKS = {
     },
     celular: {
         text: '(00) 00000-0000',
-        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     },
     cep: {
         text: '00.000-000',

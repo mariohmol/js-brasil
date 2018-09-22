@@ -183,10 +183,10 @@ export function cep_ranges(cep) {
 export function validate_telefone(tel) {
   const telClean = tel.replace(/[^\d]+/g, '');
   tel = tel.replace(/_/g, '');
-  if(!(telClean.length === 10 || telClean.length === 11)){
+  if (!(telClean.length === 10 || telClean.length === 11)) {
     return false;
   }
-  if(telClean[0]==0 || telClean[2]==0){
+  if (telClean[0] == 0 || telClean[2] == 0) {
     return false;
   }
   // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
@@ -197,6 +197,18 @@ export function validate_telefone(tel) {
   return true;
 }
 
+
+export function validate_celular(cel) {
+  const celClean = cel.replace(/[^\d]+/g, '');
+  cel = cel.replace(/_/g, '');
+  if (!(celClean.length === 10 || celClean.length === 11)) {
+    return false;
+  }
+  if (celClean[0] == 0 || celClean[2] < 5) {
+    return false;
+  }
+  return true;
+}
 
 export function validate_rg(rg) {
   let rgClean = rg.replace(/\./g, '');
@@ -249,7 +261,7 @@ export function validate_titulo(titulo) {
 }
 
 function validaTituloVerificador(titulo) {
-  const {dig1, dig2} =create_titulo(titulo);
+  const { dig1, dig2 } = create_titulo(titulo);
   const tam = titulo.length;
   const digitos = titulo.substr(tam - 2, 2);
   if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
@@ -301,5 +313,52 @@ export function create_titulo(titulo) {
       dig2 = 11 - resto;
     }
   }
-  return {dig1, dig2};
+  return { dig1, dig2 };
+}
+
+export function validate_processo(processo) {
+  let processoClean = processo.replace(/\./g, '');
+  processoClean = processoClean.replace(/\-/g, '');
+  const exp = /\d{7}\-\d{2}\.\d{4}\.\d{3}\.\d{4}/;
+  const expClean = /\d{7}\d{4}\d{4}/;
+  if (!exp.test(processoClean) && !expClean.test(processoClean)) {
+    return false;
+  }
+  return true;
+}
+
+
+export function validate_renavam(renavam) {
+  let renavamClean = renavam.replace(/\./g, '');
+  renavamClean = renavamClean.replace(/\-/g, '');
+  // const expClean = /\d{10}\d{4}\d{4}/;
+  // if (!exp.test(renavamClean) && !expClean.test(renavamClean)) {
+  //   return false;
+  // }
+  const dv = create_renavam(renavam);
+  const tam = renavam.length;
+  const digitos = renavam.substr(tam - 1, 1);
+  if (digitos.charCodeAt(0) - 48 === dv) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function create_renavam(renavam) {
+  let dig1 = 0;
+  const tam = renavam.length;
+  renavam = renavam.substr(0, tam - 2);
+  renavam = '000000000000' + renavam;
+  renavam = renavam.substr(renavam.length - 11, renavam.length - 1);
+  dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
+    (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
+    (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;
+  dig1 = dig1 * 10;
+  let resto = (dig1 % 11);
+  if (resto === 10) {
+    return 0;
+  } else {
+    return resto;
+  }
 }

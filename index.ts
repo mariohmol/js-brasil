@@ -3,7 +3,7 @@ import {
 } from './src/utils';
 import {
   valida_cep, validate_cnpj, validate_cpf, validate_telefone,
-  validate_placa, validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo
+  validate_placa, validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo, validate_processo, validate_celular
 } from './src/validate';
 import { validar } from './src/inscricaoestadual';
 import * as faker from './src/faker';
@@ -19,8 +19,10 @@ export const validateBr = {
   rg: validate_rg,
   placa: validate_placa,
   telefone: validate_telefone,
+  celular: validate_celular,
   time: validate_time,
-  titulo: validate_titulo
+  titulo: validate_titulo,
+  processo: validate_processo
 };
 
 export const utilsBr = {

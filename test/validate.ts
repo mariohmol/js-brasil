@@ -34,6 +34,12 @@ describe('Validate test', () => {
     expect(validateBr.titulo('6490.8084.4422')).to.be.false;
   });
 
+  it('PROCESSO', () => {
+    expect(validateBr.processo('0123456-15.2008.100.0000')).to.be.true;
+  });
+
+
+
   it('To check when is NOT valid', () => {
     expect(validateBr.cep('1234')).to.be.false;
     expect(validateBr.cnpj('1234')).to.be.false;

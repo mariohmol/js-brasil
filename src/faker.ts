@@ -1,10 +1,10 @@
 import { MASKS, ESTADOS_SIGLA } from './utils';
-import { create_cpf, create_cnpj, CEPRange, create_titulo } from './validate';
+import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam } from './validate';
 import { randexp } from 'randexp';
 
 const makeGeneric = (val, options = null) => {
   return () => {
-    if(!val.textMask || !val.textMask.map){
+    if (!val.textMask || !val.textMask.map) {
       return '';
     }
     const newData = val.textMask.map((c, index) => {
@@ -16,8 +16,11 @@ const makeGeneric = (val, options = null) => {
         return Math.floor(Math.random() * 10).toString()
       } else if (c === /[A-Za-z]/.toString()) {
         return randomLetter(1).toString();
-      } else if (c === /[1-9]/.toString()) {
-        return (Math.floor(Math.random() * 9) + 1).toString();
+      } else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
+        c = c.replace('/[', '').replace(']/', '').split('-')
+        const mult = c[1] - c[0];
+        const plus = parseInt(c[0]);
+        return (Math.floor(Math.random() * mult) + plus).toString();
       } else {
         return c;
       }
@@ -82,10 +85,16 @@ export const fakerBr = {
   currency: makeGeneric(MASKS['currency']),
   percentage: makeGeneric(MASKS['percentage']),
   placa: makeGeneric(MASKS['placa']),
+  processo: makeGeneric(MASKS['processo']),
   titulo: () => {
     const titulo = makeGeneric(MASKS['titulo'])();
-    const {dig1, dig2} = create_titulo(titulo);
+    const { dig1, dig2 } = create_titulo(titulo);
     return titulo.substr(0, titulo.length - 2) + dig1 + dig2;
+  },
+  renavam: () => {
+    const renavam = makeGeneric(MASKS['renavam'])();
+    const dv = create_renavam(renavam);
+    return renavam.substr(0, renavam.length - 1) + dv;
   }
 };
 

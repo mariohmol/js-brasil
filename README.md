@@ -1,6 +1,6 @@
 # js-brasil
 
-Javascript Utils para Brasil (cpf, cnpj...)
+Javascript Utils para Brasil (cpf, cnpj, inscrição estadual,  ...)
 
 
 [![Build Status](https://travis-ci.org/mariohmol/js-brasil.svg?branch=master)](https://travis-ci.org/mariohmol/js-brasil)
@@ -12,7 +12,9 @@ Javascript Utils para Brasil (cpf, cnpj...)
 
 `<script src="js-brasil.js"></script>`
 
-# Validate
+Módilos ValidateBR, MaskBR e FakerBR
+
+# ValidateBR
 
 Verifique se os dados dos seus usuários são válidos
 
@@ -37,7 +39,7 @@ var cpf = jsbrasil.validateBr.cpf('123.456.789-00');
 ```
 
 
-# Mask 
+# MaskBR
 
 Formate seus dados com mascaras de tipos de dados brasileiros
 
@@ -67,9 +69,9 @@ console.log(cpf) // '123.456.789-00'
 
 
 
-# Faker
+# FakerBR
 
-Gere dados de teste usando tipos de dados brasileiro, similar o fakejs
+Gerador de dados de teste usando tipos de dados brasileiro, similar o fakejs
 
 Javascript:
 ```js
@@ -100,10 +102,12 @@ var cep = jsbrasil.fakerBr.cep();
 * inscricaoestadual - Todos os estados do Brasil
 * percentage
 * rg
-* placa
+* placa de carro
 * telefone
+* celular
 * time
-* titulo
+* titulo de eleitor
+* processo da justiça
 
 
 Utilizado pelo projeto

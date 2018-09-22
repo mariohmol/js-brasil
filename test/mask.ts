@@ -22,6 +22,7 @@ describe('Mask test', () => {
     expect(maskBr.telefone('123')).to.exist;
     expect(maskBr.time('123')).to.exist;
     expect(maskBr.titulo('123')).to.exist;
+    expect(maskBr.processo('123')).to.exist;
   });
 
   it('Generic Testing with Faker , Mask and Validate', () => {
@@ -36,6 +37,7 @@ describe('Mask test', () => {
     // testGeneric('telefone');
     // testGeneric('time');
     testGeneric('titulo');
+    // testGeneric('processo');
   });
 
 
@@ -66,6 +68,10 @@ describe('Mask test', () => {
   it('Telefone 9 Digito', () => {
     const telefone = '31988886565';
     expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
+  });
+  it('Processos', () => {
+    const processo = '000001001520081000000';
+    // expect(maskBr.processo(processo)).to.be.equal('00000100-15.2008.100.0000');
   });
   // // it('Time', () => {
   // //   const time = fakerBr.time();

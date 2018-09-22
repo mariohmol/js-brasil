@@ -24,6 +24,7 @@ export const maskBr = {
   cnpj: makeGeneric('cnpj'),
   rg: makeGeneric('rg'),
   telefone: makeGeneric('telefone'),
+  celular: makeGeneric('celular'),
   inscricaoestadual: (inscricaoestadualValue, estado) => {
     if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
       !MASKS.inscricaoestadual[estado].textMask) {
@@ -63,5 +64,6 @@ export const maskBr = {
     ).conformedValue + ',' + vals[1];
   },
   placa: makeGeneric('placa'),
-  titulo: makeGeneric('titulo')
+  titulo: makeGeneric('titulo'),
+  processo: makeGeneric('processo')
 };
