@@ -1,11 +1,10 @@
-
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Gerador e Validador de Título de Eleitor - Nacionais Brasileiros</title>
+  <title>Gerador e Validador de Título de Eleitor</title>
   <link rel="stylesheet" href="index.css">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -18,7 +17,7 @@
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Título de Eleitors Nacionais Brasileiros </h1>
+    <h1>Gerador e Validador de Título de Eleitor</h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -67,35 +66,63 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o Título de Eleitor por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
-              <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/Título de Eleitor/">Receita Federal</a></li>
-            </ul>
-          </div>
+            Para realizar o cálculo dos dígitos verificadores (DV) do Título Eleitoral brasileiro, deve-se levar em
+            consideração alguns aspectos:[4]
+
+            Em geral, o número do título possui 12 dígitos, sendo que o nono e décimo dígitos correspondem à Unidade
+            Federativa (UF) no qual ele pertence (vide mapa abaixo). Se o título eleitoral não é expedido no Brasil,
+            considera-se que o número da UF é 28 (ZZ).
+            Os DVs correspondem ao décimo primeiro e décimo segundo dígitos.
+            Os oito primeiros dígitos correspondem ao número sequencial.[nota 1]
+            Para o cálculo, tomamos como exemplo o título eleitoral 0043 5687, emitido em Santa Catarina. Seus fatores
+            multiplicativos são representados pela sequência {\displaystyle
+            x_{1}=2;x_{2}=3;x_{3}=4;x_{4}=5;x_{5}=6;x_{6}=7;x_{7}=8;x_{8}=9} {\displaystyle
+            x_{1}=2;x_{2}=3;x_{3}=4;x_{4}=5;x_{5}=6;x_{6}=7;x_{7}=8;x_{8}=9}, para calcular o v1 (1º DV).[nota 2]
+
+            Aplicando para o número exemplificado acima, temos:
+
+            {\displaystyle v_{1}=[{(0{\times }x_{1})+(0{\times }x_{2})+(4{\times }x_{3})+(3{\times }x_{4})+(5{\times
+            }x_{5})+(6{\times }x_{6})+(8{\times }x_{7})+(7{\times }x_{8})};\mod 11]} {\displaystyle v_{1}=[{(0{\times
+            }x_{1})+(0{\times }x_{2})+(4{\times }x_{3})+(3{\times }x_{4})+(5{\times }x_{5})+(6{\times }x_{6})+(8{\times
+            }x_{7})+(7{\times }x_{8})};\mod 11]}. Portanto, a soma dos fatores resultou em 230, e o resto em sua
+            divisão por 11 (ou {\displaystyle \mod 11} {\displaystyle \mod 11}) é 10, logo o v1 é 0.[nota 3]
+
+            Para o cálculo do v2 (2º DV), consideremos a sequência 09 0, sendo 09 o código da UF, e 0 o v1.
+            Consideremos ainda seus fatores multiplicativos sendo representados pela sequência {\displaystyle
+            x_{9}=7;x_{10}=8;x_{11}=9} {\displaystyle x_{9}=7;x_{10}=8;x_{11}=9}. Aplicando para o mesmo número, temos:
+            {\displaystyle v_{2}=[{(0{\times }x_{9})+(9{\times }x_{10})+(0{\times }x_{11})};\mod 11]} {\displaystyle
+            v_{2}=[{(0{\times }x_{9})+(9{\times }x_{10})+(0{\times }x_{11})};\mod 11]}. Portanto, a soma dos fatores
+            resultou em 72, e o {\displaystyle \mod 11} {\displaystyle \mod 11} (v2) é 6. Vale lembrar que
+            {\displaystyle n} n, em {\displaystyle x_{n}} x_n, representa a posição do algarismo na composição do
+            número do título eleitoral, da esquerda para a direita, considerando-se que este possua 12 dígitos.
+
+            Eis aqui o número completo após os devidos cálculos: 0043 5687 09 06.
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/T%C3%ADtulo_eleitoral">Wikipedia</a></li>
+            <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/Título de Eleitor/">Receita
+                Federal</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->

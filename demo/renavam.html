@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Gerador e Validador de Renavam - Nacionais Brasileiros</title>
+  <title>Gerador e Validador de Registro Nacional de Veículos Automotores (RENAVAM)</title>
   <link rel="stylesheet" href="index.css">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -17,7 +17,7 @@
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Renavams Nacionais Brasileiros </h1>
+    <h1>Gerador e Validador de Registro Nacional de Veículos Automotores (RENAVAM) </h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -66,35 +66,38 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o Renavam por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
-              <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/Renavam/">Receita Federal</a></li>
-            </ul>
-          </div>
+            O chamado código renavam é o número identificador único de cada veículo que o referencia dentro do sistema.
+            É um número composto de onze dígitos. Inicialmente, o número era composto de nove dígitos (oito dígitos e
+            mais um
+            dígito verificador), sendo que os dois primeiros dígitos identificavam o estado onde havia sido feito o
+            primeiro registro do veículo, e tal numeração vigorou de 00xxxxxx-x até 59xxxxxx-x. A partir do número
+            60000000-0, a numeração passou a ser nacional e única.
+
+            A partir de 01 de abril de 2013, a numeração foi estendida para 11 dígitos.
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Registro_Nacional_de_Ve%C3%ADculos_Automotores">Wikipedia</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->

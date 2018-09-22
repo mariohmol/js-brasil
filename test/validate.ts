@@ -21,6 +21,11 @@ describe('Validate test', () => {
     expect(validateBr.rg('mg 11124567')).to.be.true;
   });
 
+  it('PLACA', () => {
+    expect(validateBr.placa('ABC1234')).to.be.true;
+    expect(validateBr.placa('SAW0002')).to.be.false;
+  });
+
   it('Telefone', () => {
     expect(validateBr.telefone('31 999876767')).to.be.true;
     expect(validateBr.telefone('31 99876767')).to.be.true;
