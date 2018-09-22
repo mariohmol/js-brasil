@@ -14,6 +14,9 @@ Javascript Utils para Brasil (cpf, cnpj, inscrição estadual,  ...)
 
 Módilos ValidateBR, MaskBR e FakerBR para nodejs ou browser.
 
+
+Veja tudo em ação no Gerador Brasileiro - http://geradorbrasileiro.com/
+
 # ValidateBR
 
 Verifique se os dados dos seus usuários são válidos
