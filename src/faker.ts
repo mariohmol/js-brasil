@@ -48,12 +48,7 @@ const randomEstadoSigla = () => {
   return ESTADOS_SIGLA[Math.floor(Math.random() * total)];
 }
 
-let random: any = randomEstadoSigla();
-random = random.split('');
-const makeRg = makeGeneric(MASKS['rg'], {
-  0: () => random[0],
-  1: () => random[1]
-});
+
 
 export const fakerBr = {
   cep: makeGeneric(MASKS['cep']),
@@ -77,7 +72,15 @@ export const fakerBr = {
     restos = create_cnpj(cnpj);
     return cnpj.substr(0, cnpj.length - 1) + restos[1];
   },
-  rg: makeRg,
+  rg: ()=>{
+    let random: any = randomEstadoSigla();
+    random = random.split('');
+    const makeRg = makeGeneric(MASKS['rg'], {
+      0: () => random[0],
+      1: () => random[1]
+    });
+    return makeRg();
+  },
   telefone: makeGeneric(MASKS['telefone']),
   celular: makeGeneric(MASKS['celular']),
   inscricaoestadual: makeGeneric(MASKS['inscricaoestadual']),

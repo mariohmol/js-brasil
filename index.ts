@@ -8,6 +8,8 @@ import {
 import { validar } from './src/inscricaoestadual';
 import * as faker from './src/faker';
 import * as mask from './src/mask';
+import { PLACAS_RANGE } from './src/placa';
+import { ESTADOS } from './src/estados';
 
 export const validateBr = {
   cep: valida_cep,
@@ -27,7 +29,9 @@ export const validateBr = {
 
 export const utilsBr = {
   isPresent,
-  MASKS
+  MASKS,
+  PLACAS_RANGE,
+  ESTADOS
 };
 
 export const maskBr = mask.maskBr;

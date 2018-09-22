@@ -11,7 +11,8 @@
     "browserify": "browserify dist/index.js --standalone jsbrasil -o js-brasil.js",
     "dist": "npm run build && npm run browserify",
     "publish-npm": "npm run dist && npm publish",
-    "demo": "cp js-brasil.js demo/ && cd demo && http-server"
+    "demo": "cp js-brasil.js demo/ && cd demo && http-server",
+    "demo-full": "npm run dist && cp js-brasil.js demo/ && cd demo && http-server"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,4 @@
+import { PLACAS_RANGE } from "./placa";
 
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
 /*
@@ -247,7 +248,15 @@ export function validate_placa(placa) {
   if (!exp.test(placa) && !expClean.test(placaClean)) {
     return false;
   }
-  return true;
+
+  const found = PLACAS_RANGE.find(p=>placa >= p.start && placa <= p.end);
+  if(found){
+    return true;
+  }else {
+    // TODO: not with false here because needs to finish the ranges
+    return true;
+  }
+  
 }
 
 export function validate_titulo(titulo) {
