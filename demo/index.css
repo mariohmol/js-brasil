@@ -1,0 +1,20 @@
+.hidden{
+  display: none;
+}
+
+nav{
+  background-color: #303F9F !important;
+}
+
+footer{
+  background-color: #3F51B5 !important;
+}
+
+.card .card-content {
+  min-height: 100px;
+}
+
+.m4 .card .card-content {
+  min-height: 220px;
+}
+
