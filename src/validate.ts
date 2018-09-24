@@ -1,4 +1,4 @@
-import { PLACAS_RANGE, PLACAS_INVALID } from "./placa";
+import { modulo11 } from "./utils";
 
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
 /*
@@ -90,37 +90,15 @@ export function validate_cpf(strCPF) {
 
 export function create_cpf(strCPF) {
   strCPF = strCPF.replace(/[^\d]+/g, '');
-  let soma;
-  let resto;
-  soma = 0;
   if (strCPF === '00000000000') {
     return false;
   }
 
-  for (let i = 1; i <= 9; i++) {
-    // tslint:disable-next-line:radix
-    soma = soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-  }
-  resto = (soma * 10) % 11;
+  const restos = [
+    modulo11(strCPF, 9, 11),
+    modulo11(strCPF, 10, 12)
+  ];
 
-  if ((resto === 10) || (resto === 11)) {
-    resto = 0;
-  }
-
-  const restos = [];
-  restos.push(resto);
-
-  soma = 0;
-  for (let i = 1; i <= 10; i++) {
-    soma = soma + parseInt(strCPF.substring(i - 1, i), 10) * (12 - i);
-  }
-  resto = (soma * 10) % 11;
-
-  if ((resto === 10) || (resto === 11)) {
-    resto = 0;
-  }
-
-  restos.push(resto);
   return restos;
 }
 
@@ -190,11 +168,6 @@ export function validate_telefone(tel) {
   if (telClean[0] == 0 || telClean[2] == 0) {
     return false;
   }
-  // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
-  // const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
-  // if (!exp.test(tel) && !exp5.test(tel)) {
-  //   return false;
-  // }
   return true;
 }
 
@@ -239,23 +212,6 @@ export function validate_percentage(percentage) {
   return regex.test(percentage);
 }
 
-export function validate_placa(placa) {
-  const placaClean = placa.replace(/-/g, '').toUpperCase();
-  const exp = /[A-Za-z]{3}\-\d{4}/;
-  const expClean = /[A-Za-z]{3}\d{4}/;
-  // const letters = placa.substr(0, 3).toUpperCase();
-
-  if (!exp.test(placa) && !expClean.test(placaClean)) {
-    return false;
-  }
-  const found = placa >= PLACAS_INVALID.start && placa <= PLACAS_INVALID.end;
-  if (found) {
-    return false;
-  } else {
-    return true;
-  }
-
-}
 
 export function validate_titulo(titulo) {
   const tituloClean = titulo.replace(/\./g, '');
@@ -350,10 +306,10 @@ export function validate_renavam(renavam) {
 
 export function create_renavam(renavam) {
   let dig1 = 0;
-  const tam = renavam.length;
-  renavam = renavam.substr(0, tam - 2);
-  renavam = '000000000000' + renavam;
-  renavam = renavam.substr(renavam.length - 11, renavam.length - 1);
+  while (renavam.length < 11) {
+    renavam = '0' + renavam;
+  }
+
   dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
     (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
     (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;

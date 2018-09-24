@@ -12,6 +12,8 @@ describe('Validate test', () => {
 
   it('CPF', () => {
     expect(validateBr.cpf('127.529.875-36')).to.be.true;
+    expect(validateBr.cpf('127.529.875-46')).to.be.false;
+    expect(validateBr.cpf('127.529.875-37')).to.be.false;
   });
 
   it('RG', () => {
@@ -24,6 +26,11 @@ describe('Validate test', () => {
   it('PLACA', () => {
     expect(validateBr.placa('ABC1234')).to.be.true;
     expect(validateBr.placa('SAW0002')).to.be.false;
+  });
+
+  it('RENAVAM', () => {
+    expect(validateBr.renavam('72176426415')).to.be.true;
+    expect(validateBr.renavam('72176426415')).to.be.true;
   });
 
   it('Telefone', () => {

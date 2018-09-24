@@ -137,3 +137,21 @@ export const PLACAS_RANGE = [
 ];
 
 export const PLACAS_INVALID = { start: 'SAW0001', end: 'ZZZ9999' } // || Sequências ainda não definidas
+
+export function validate_placa(placa) {
+  const placaClean = placa.replace(/-/g, '').toUpperCase();
+  const exp = /[A-Za-z]{3}\-\d{4}/;
+  const expClean = /[A-Za-z]{3}\d{4}/;
+  // const letters = placa.substr(0, 3).toUpperCase();
+
+  if (!exp.test(placa) && !expClean.test(placaClean)) {
+    return false;
+  }
+  const found = placa >= PLACAS_INVALID.start && placa <= PLACAS_INVALID.end;
+  if (found) {
+    return false;
+  } else {
+    return true;
+  }
+
+}

@@ -1,6 +1,8 @@
-import { MASKS, ESTADOS_SIGLA } from './utils';
-import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam, validate_placa } from './validate';
+import { ESTADOS_SIGLA } from './estados';
+import { MASKS } from './mask';
+import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam } from './validate';
 import { randexp } from 'randexp';
+import { validate_placa } from './placa';
 
 const makeGeneric = (val, options = null) => {
   return () => {
