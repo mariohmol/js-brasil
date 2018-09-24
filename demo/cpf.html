@@ -17,7 +17,7 @@
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Cadastro de Pessoas Físicas (CPF ou CPF-MF) </h1>
+    <h1>Gerador e Validador de CPF - Cadastro de Pessoas Físicas</h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -27,7 +27,7 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar CPF</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar se o CPF tem o formato padrão</span>
                   <input id="validated" type="text" class="validate">
                   <label for="validated">Digite o CPF</label>
 
@@ -49,7 +49,8 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar CPF</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar um número de CPF de exemplo no
+                    formato padrão</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
@@ -66,35 +67,40 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o CPF por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
-              <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/CPF/">Receita Federal</a></li>
-            </ul>
-          </div>
+            Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que
+            compõe o CPF por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse
+            algoritmo é conhecido como "módulo 11".
+
+            Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
+            estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
+
+            No caso do CPF é feito o módulo 11 duas vezes, gerando dois digitos verificadores.
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
+            <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/CPF/">Receita
+                Federal</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->

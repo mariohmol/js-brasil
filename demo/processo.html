@@ -17,7 +17,7 @@
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Processo judicial </h1>
+    <h1>Gerador e Validador de Número no padrão de Processo Judicial </h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -27,7 +27,8 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar Processos</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar se o número do Processo Judicial
+                    tem a formatação correta</span>
                   <input id="validated" type="text" class="validate">
                   <label for="validated">Digite o Processos</label>
 
@@ -49,7 +50,8 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar Processos</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar um número de processo aleatório no
+                    formato padrão</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
@@ -66,32 +68,39 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-                Todos os processos judiciais no Direito Brasileiro possuem uma numeração. Com a criação do Conselho Nacional de Justiça, os processos 
-                que já possuíam números gerados por tribunais locais, passaram a ter um formato de numeração padronizado.
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Processo_judicial">Wikipedia</a></li>
-            </ul>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
+
+            Todos os processos judiciais no Direito Brasileiro possuem uma numeração. Com a criação do Conselho
+            Nacional de Justiça, os processos
+            que já possuíam números gerados por tribunais locais, passaram a ter um formato de numeração padronizado.
+
+            De acordo com a Resolução 16, do Conselho Nacional de Justiça, o padrão será NNNNNNN-DD.AAAA.JTR.OOOO. Cada
+            tribunal recebeu um número específico. Assim, o STF é identificado pelo número 1 no lugar do código J, o
+            CNJ, pelo número 2, e o Superior Tribunal de Justiça pelo número 3.
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Processo_judicial">Wikipedia</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://www.conjur.com.br/2009-jan-23/cnj-define-padrao-numeracao-processos-todos-tribunais">Conjur</a></li>
+
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->

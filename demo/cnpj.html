@@ -27,7 +27,7 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar CNPJ</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar se o CNPJ está no formato padrão</span>
                   <input id="validated" type="text" class="validate">
                   <label for="validated">Digite o CNPJ</label>
 
@@ -49,7 +49,7 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar CNPJ</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar um número de CNPJ de exemplo utilizando o padrão</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
@@ -66,36 +66,40 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-          
-                Os oito primeiros números (XX.XXX.XXX) formam a "raiz", que identifica a empresa. Os quatro dígitos seguintes após a 
-                barra (YYYY) formam o sufixo, que identifica uma unidade de atuação de empresa, ou seja, um endereço de atividade da pessoa
-                 jurídica e os dois últimos, após o traço (ZZ) formam o "dígito verificador", que é resultado de uma equação com os 
-                 doze números anteriores. Deste modo, os CNPJs no formato XX.XXX.XXX/0001-ZZ identificam a matriz da empresa.
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_Nacional_da_Pessoa_Jur%C3%ADdica">Wikipedia</a></li>
-              
-            </ul>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
+
+
+            Os oito primeiros números (XX.XXX.XXX) formam a "raiz", que identifica a empresa. Os quatro dígitos
+            seguintes após a
+            barra (YYYY) formam o sufixo, que identifica uma unidade de atuação de empresa, ou seja, um endereço de
+            atividade da pessoa
+            jurídica e os dois últimos, após o traço (ZZ) formam o "dígito verificador", que é resultado de uma equação
+            com os
+            doze números anteriores. Deste modo, os CNPJs no formato XX.XXX.XXX/0001-ZZ identificam a matriz da
+            empresa.
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_Nacional_da_Pessoa_Jur%C3%ADdica">Wikipedia</a></li>
+
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->
