@@ -18,3 +18,11 @@ footer{
   min-height: 220px;
 }
 
+.text-lighten-4 {
+  font-size: 20px;
+}
+
+.text-lighten-4 img{
+  width: 30px
+}
+

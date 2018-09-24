@@ -107,7 +107,7 @@ var cep = jsbrasil.fakerBr.cep();
 * Telefone  - http://geradorbrasileiro.com/telefone.html
 * Celular - http://geradorbrasileiro.com/celular.html
 * Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
-* processo da justiça
+* Processo da justiça - http://geradorbrasileiro.com/processo.html
 * Outros: currency, percentage, time (data/hora) - http://geradorbrasileiro.com/others.html
 
 
