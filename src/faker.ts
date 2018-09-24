@@ -1,5 +1,5 @@
 import { MASKS, ESTADOS_SIGLA } from './utils';
-import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam } from './validate';
+import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam, validate_placa } from './validate';
 import { randexp } from 'randexp';
 
 const makeGeneric = (val, options = null) => {
@@ -103,7 +103,13 @@ export const fakerBr = {
   time: makeGeneric(MASKS['time']),
   currency: makeGeneric(MASKS['currency']),
   percentage: makeGeneric(MASKS['percentage']),
-  placa: makeGeneric(MASKS['placa']),
+  placa: () => {
+    let placa;
+    do {
+      placa = makeGeneric(MASKS['placa'])();
+    } while (!validate_placa(placa));
+    return placa;
+  },
   processo: makeGeneric(MASKS['processo']),
   titulo: () => {
     const titulo = makeGeneric(MASKS['titulo'])();
