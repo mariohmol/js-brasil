@@ -18,15 +18,31 @@ const makeGeneric = (val, options = null) => {
         return randomLetter(1).toString();
       } else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
         c = c.replace('/[', '').replace(']/', '').split('-')
-        const mult = c[1] - c[0];
-        const plus = parseInt(c[0]);
-        return (Math.floor(Math.random() * mult) + plus).toString();
+        if (parseInt(c[1])) {
+          const mult = c[1] - c[0];
+          const plus = parseInt(c[0]);
+          return (Math.floor(Math.random() * mult) + plus).toString();
+        } else {
+          return rand(1, [c[0], c[1]]);
+        }
       } else {
         return c;
       }
     });
     return newData.join('');
   };
+}
+
+function rand(length, ...ranges) {
+  var str = "";                                                       // the string (initialized to "")
+  while (length--) {                                                   // repeat this length of times
+    var ind = Math.floor(Math.random() * ranges.length);              // get a random range from the ranges object
+    var min = ranges[ind][0].charCodeAt(0),                           // get the minimum char code allowed for this range
+      max = ranges[ind][1].charCodeAt(0);                           // get the maximum char code allowed for this range
+    var c = Math.floor(Math.random() * (max - min + 1)) + min;        // get a random char code between min and max
+    str += String.fromCharCode(c);                                    // convert it back into a character and append it to the string str
+  }
+  return str;                                                         // return str
 }
 
 function randomLetter(size = 1, onlyCapitals = false) {
@@ -72,7 +88,7 @@ export const fakerBr = {
     restos = create_cnpj(cnpj);
     return cnpj.substr(0, cnpj.length - 1) + restos[1];
   },
-  rg: ()=>{
+  rg: () => {
     let random: any = randomEstadoSigla();
     random = random.split('');
     const makeRg = makeGeneric(MASKS['rg'], {

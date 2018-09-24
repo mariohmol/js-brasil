@@ -200,9 +200,9 @@ export function validate_telefone(tel) {
 
 
 export function validate_celular(cel) {
-  const celClean = cel.replace(/[^\d]+/g, '');
-  cel = cel.replace(/_/g, '');
-  if (!(celClean.length === 10 || celClean.length === 11)) {
+  let celClean = cel.replace(/[^\d]+/g, '');
+  celClean = celClean.replace(/_/g, '');
+  if (celClean.length !== 11) {
     return false;
   }
   if (celClean[0] == 0 || celClean[2] < 5) {
@@ -240,7 +240,7 @@ export function validate_percentage(percentage) {
 }
 
 export function validate_placa(placa) {
-  const placaClean = placa.replace(/-/g, '');
+  const placaClean = placa.replace(/-/g, '').toUpperCase();
   const exp = /[A-Za-z]{3}\-\d{4}/;
   const expClean = /[A-Za-z]{3}\d{4}/;
   // const letters = placa.substr(0, 3).toUpperCase();
@@ -338,10 +338,6 @@ export function validate_processo(processo) {
 export function validate_renavam(renavam) {
   let renavamClean = renavam.replace(/\./g, '');
   renavamClean = renavamClean.replace(/\-/g, '');
-  // const expClean = /\d{10}\d{4}\d{4}/;
-  // if (!exp.test(renavamClean) && !expClean.test(renavamClean)) {
-  //   return false;
-  // }
   const dv = create_renavam(renavam);
   const tam = renavam.length;
   const digitos = renavam.substr(tam - 1, 1);

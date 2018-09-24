@@ -43,7 +43,6 @@ describe('Faker test', () => {
   });
   it('Faker celular', () => {
     const celular = fakerBr.celular();
-    console.log(celular)
     expect(validateBr.celular(celular)).to.be.true;
   });
   // it('Faker Time', () => {

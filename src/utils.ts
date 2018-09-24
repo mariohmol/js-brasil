@@ -21,7 +21,7 @@ export const MASKS = {
   },
   telefone: {
     text: '(00) 0000-0000',
-    textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     textMaskFunction: function mask(userInput) {
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
@@ -74,7 +74,7 @@ export const MASKS = {
   },
   placa: {
     text: 'AAA-0000',
-    textMask: [/[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, /\d/, /\d/]
+    textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
   },
   titulo: {
     text: '0000.0000.0000',
