@@ -150,7 +150,8 @@ export const maskBr = {
         { guide: false }
       ).conformedValue + ',' + vals[1];
     } else {
-      const mask = MASKS.currency.textMask(currencyValue + '');
+      currencyValue += '';
+      const mask = MASKS.currency.textMask(currencyValue);
 
       return conformToMask(
         currencyValue,

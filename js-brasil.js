@@ -1019,7 +1019,8 @@ exports.maskBr = {
             return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
         }
         else {
-            var mask = exports.MASKS.currency.textMask(currencyValue + '');
+            currencyValue += '';
+            var mask = exports.MASKS.currency.textMask(currencyValue);
             return conformToMask(currencyValue, mask, { guide: false }).conformedValue;
         }
     },
