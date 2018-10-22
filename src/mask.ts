@@ -82,7 +82,7 @@ export const MASKS = {
   },
   renavam: {
     text: '0000000000-00',
-    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/,  /\d/, /\d/, /\d/, '-', /\d/],
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/],
     textMaskFunction: function mask(userInput) {
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
@@ -140,14 +140,26 @@ export const maskBr = {
     if (!currencyValue) {
       return '';
     }
-    const vals = currencyValue.split(',');
-    const mask = MASKS.currency.textMask(vals[0]);
+    if (currencyValue.split) {
+      const vals = currencyValue.split(',');
+      const mask = MASKS.currency.textMask(vals[0]);
 
-    return conformToMask(
-      currencyValue,
-      mask,
-      { guide: false }
-    ).conformedValue + ',' + vals[1];
+      return conformToMask(
+        currencyValue,
+        mask,
+        { guide: false }
+      ).conformedValue + ',' + vals[1];
+    } else {
+      const mask = MASKS.currency.textMask(currencyValue);
+
+      return conformToMask(
+        currencyValue,
+        mask,
+        { guide: false }
+      ).conformedValue;
+    }
+
+
   },
   percentage: (percentageValue) => {
     if (!percentageValue) {
