@@ -4,39 +4,40 @@ window.onload = () => {
   componentCustom();
 }
 
-
 function componentCustom() {
   const dataId = document.querySelector('body').getAttribute('data-id');
   switch (dataId) {
     default:
-      generalAction(dataId);
+      generalAction(dataId, '');
       break;
   }
 }
 
 
-function generalAction(dataId) {
-  const validatedAction = document.querySelector('#validatedAction');
-  const generatedAction = document.querySelector('#generatedAction');
+function generalAction(dataId, type) {
+  const validatedAction = document.querySelector('#validatedAction'+type);
+  const generatedAction = document.querySelector('#generatedAction'+type);
 
   generatedAction.onclick = () => {
-    const generatedInput = document.querySelector('#generated');
+    console.log(`generatedAction.onclick`)
+    const generatedInput = document.querySelector('#generated'+type);
     generatedInput.value = jsbrasil.fakerBr[dataId]();
   }
 
   validatedAction.onclick = () => {
-    const validatedInput = document.querySelector('#validated');
+    console.log(`validatedAction.onclick`)
+    const validatedInput = document.querySelector('#validated'+type);
     const masked = jsbrasil.maskBr[dataId](validatedInput.value);
     const validated = jsbrasil.validateBr[dataId](validatedInput.value);
 
-    document.querySelector('#validatedResult').classList.remove('hidden');
+    document.querySelector('#validatedResult'+type).classList.remove('hidden');
 
     if (validated) {
-      document.querySelector('#valicon').innerHTML = 'thumb_up';
-      document.querySelector('#valtext').innerHTML = 'Parabéns, '+ masked + ' tem a formatação válida!';
+      document.querySelector('#valicon'+type).innerHTML = 'thumb_up';
+      document.querySelector('#valtext'+type).innerHTML = 'Parabéns, '+ masked + ' tem a formatação válida!';
     } else {
-      document.querySelector('#valicon').innerHTML = 'thumb_down';
-      document.querySelector('#valtext').innerHTML = 'Esta informação NÃO está correta!';
+      document.querySelector('#valicon'+type).innerHTML = 'thumb_down';
+      document.querySelector('#valtext'+type).innerHTML = 'Esta informação NÃO está correta!';
     }
   }
 }

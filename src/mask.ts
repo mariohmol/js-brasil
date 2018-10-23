@@ -140,27 +140,18 @@ export const maskBr = {
     if (!currencyValue) {
       return '';
     }
-    if (currencyValue.split) {
-      const vals = currencyValue.split(',');
-      const mask = MASKS.currency.textMask(vals[0]);
-
-      return conformToMask(
-        currencyValue,
-        mask,
-        { guide: false }
-      ).conformedValue + ',' + vals[1];
-    } else {
+    if (!currencyValue.split) {
       currencyValue += '';
-      const mask = MASKS.currency.textMask(currencyValue);
-
-      return conformToMask(
-        currencyValue,
-        mask,
-        { guide: false }
-      ).conformedValue;
+      currencyValue = currencyValue.replace('.', ',');
     }
 
-
+    const vals = currencyValue.split(',');
+    const mask = MASKS.currency.textMask(vals[0]);
+    return conformToMask(
+      currencyValue,
+      mask,
+      { guide: false }
+    ).conformedValue + ',' + vals[1];
   },
   percentage: (percentageValue) => {
     if (!percentageValue) {

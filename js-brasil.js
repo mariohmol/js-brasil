@@ -181,7 +181,14 @@ exports.fakerBr = {
     celular: makeGeneric(mask_1.MASKS['celular']),
     inscricaoestadual: makeGeneric(mask_1.MASKS['inscricaoestadual']),
     time: makeGeneric(mask_1.MASKS['time']),
-    currency: makeGeneric(mask_1.MASKS['currency']),
+    currency: function () {
+        var x = Math.random() * 10000;
+        return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    },
+    currencyNumber: function () {
+        var x = Math.random() * 10000;
+        return parseFloat(x.toFixed(2));
+    },
     percentage: makeGeneric(mask_1.MASKS['percentage']),
     placa: function () {
         var placa;
@@ -1013,16 +1020,13 @@ exports.maskBr = {
         if (!currencyValue) {
             return '';
         }
-        if (currencyValue.split) {
-            var vals = currencyValue.split(',');
-            var mask = exports.MASKS.currency.textMask(vals[0]);
-            return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
-        }
-        else {
+        if (!currencyValue.split) {
             currencyValue += '';
-            var mask = exports.MASKS.currency.textMask(currencyValue);
-            return conformToMask(currencyValue, mask, { guide: false }).conformedValue;
+            currencyValue = currencyValue.replace('.', ',');
         }
+        var vals = currencyValue.split(',');
+        var mask = exports.MASKS.currency.textMask(vals[0]);
+        return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
     },
     percentage: function (percentageValue) {
         if (!percentageValue) {

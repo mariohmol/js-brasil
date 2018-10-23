@@ -103,7 +103,14 @@ export const fakerBr = {
   celular: makeGeneric(MASKS['celular']),
   inscricaoestadual: makeGeneric(MASKS['inscricaoestadual']),
   time: makeGeneric(MASKS['time']),
-  currency: makeGeneric(MASKS['currency']),
+  currency: () => {
+    const x = Math.random() * 10000;
+    return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
+  },
+  currencyNumber: () => {
+    const x = Math.random() * 10000;
+    return parseFloat(x.toFixed(2));
+  },
   percentage: makeGeneric(MASKS['percentage']),
   placa: () => {
     let placa;

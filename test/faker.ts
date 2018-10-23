@@ -53,9 +53,15 @@ describe('Faker test', () => {
     const titulo = fakerBr.titulo();
     expect(validateBr.titulo(titulo)).to.be.true;
   });
-  it('Faker Others', () => {
-    // const currency  = fakerBr.currency();
+
+  it('Faker Moeda', () => {
+    const currency = fakerBr.currency();
+    const currencyNumber = fakerBr.currencyNumber();
     // expect(validateBr.currency(currency)).to.be.true;
+    expect(validateBr.currency(currencyNumber)).to.be.true;
+  });
+
+  it('Faker Others', () => {
 
     // const inscricaoestadual  = fakerBr.inscricaoestadual();
     // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;

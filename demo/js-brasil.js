@@ -6,6 +6,7 @@ var validate_1 = require("./src/validate");
 var inscricaoestadual_1 = require("./src/inscricaoestadual");
 var faker = require("./src/faker");
 var mask = require("./src/mask");
+var mask_1 = require("./src/mask");
 var placa_1 = require("./src/placa");
 var estados_1 = require("./src/estados");
 exports.validateBr = {
@@ -16,7 +17,8 @@ exports.validateBr = {
     inscricaoestadual: inscricaoestadual_1.validar,
     percentage: validate_1.validate_percentage,
     rg: validate_1.validate_rg,
-    placa: validate_1.validate_placa,
+    placa: placa_1.validate_placa,
+    renavam: validate_1.validate_renavam,
     telefone: validate_1.validate_telefone,
     celular: validate_1.validate_celular,
     time: validate_1.validate_time,
@@ -25,7 +27,7 @@ exports.validateBr = {
 };
 exports.utilsBr = {
     isPresent: utils_1.isPresent,
-    MASKS: utils_1.MASKS,
+    MASKS: mask_1.MASKS,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS
 };
@@ -35,6 +37,10 @@ exports.fakerBr = faker.fakerBr;
 },{"./src/estados":2,"./src/faker":3,"./src/inscricaoestadual":4,"./src/mask":5,"./src/placa":6,"./src/utils":7,"./src/validate":8}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
+    'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
+    'sc', 'se', 'sp', 'to'
+];
 exports.ESTADOS = [
     { name: 'Acre', shortname: 'AC', slug: 'acre' },
     { name: 'Alagoas', shortname: 'AL', slug: 'alagoas' },
@@ -68,9 +74,11 @@ exports.ESTADOS = [
 },{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("./utils");
+var estados_1 = require("./estados");
+var mask_1 = require("./mask");
 var validate_1 = require("./validate");
 var randexp_1 = require("randexp");
+var placa_1 = require("./placa");
 var makeGeneric = function (val, options) {
     if (options === void 0) { options = null; }
     return function () {
@@ -90,9 +98,14 @@ var makeGeneric = function (val, options) {
             }
             else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
                 c = c.replace('/[', '').replace(']/', '').split('-');
-                var mult = c[1] - c[0];
-                var plus = parseInt(c[0]);
-                return (Math.floor(Math.random() * mult) + plus).toString();
+                if (parseInt(c[1])) {
+                    var mult = c[1] - c[0];
+                    var plus = parseInt(c[0]);
+                    return (Math.floor(Math.random() * mult) + plus).toString();
+                }
+                else {
+                    return rand(1, [c[0], c[1]]);
+                }
             }
             else {
                 return c;
@@ -101,6 +114,21 @@ var makeGeneric = function (val, options) {
         return newData.join('');
     };
 };
+function rand(length) {
+    var ranges = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        ranges[_i - 1] = arguments[_i];
+    }
+    var str = ""; // the string (initialized to "")
+    while (length--) { // repeat this length of times
+        var ind = Math.floor(Math.random() * ranges.length); // get a random range from the ranges object
+        var min = ranges[ind][0].charCodeAt(0), // get the minimum char code allowed for this range
+        max = ranges[ind][1].charCodeAt(0); // get the maximum char code allowed for this range
+        var c = Math.floor(Math.random() * (max - min + 1)) + min; // get a random char code between min and max
+        str += String.fromCharCode(c); // convert it back into a character and append it to the string str
+    }
+    return str; // return str
+}
 function randomLetter(size, onlyCapitals) {
     if (size === void 0) { size = 1; }
     if (onlyCapitals === void 0) { onlyCapitals = false; }
@@ -117,23 +145,23 @@ function randomLetter(size, onlyCapitals) {
     return text;
 }
 var randomEstadoSigla = function () {
-    var total = utils_1.ESTADOS_SIGLA.length;
-    return utils_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
+    var total = estados_1.ESTADOS_SIGLA.length;
+    return estados_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
 };
 exports.fakerBr = {
-    cep: makeGeneric(utils_1.MASKS['cep']),
+    cep: makeGeneric(mask_1.MASKS['cep']),
     cepState: function (state) {
         return randexp_1.randexp(validate_1.CEPRange[state]);
     },
     cpf: function () {
-        var cpf = makeGeneric(utils_1.MASKS['cpf'])();
+        var cpf = makeGeneric(mask_1.MASKS['cpf'])();
         var restos = validate_1.create_cpf(cpf);
         cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
         restos = validate_1.create_cpf(cpf);
         return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
     },
     cnpj: function () {
-        var cnpj = makeGeneric(utils_1.MASKS['cnpj'])();
+        var cnpj = makeGeneric(mask_1.MASKS['cnpj'])();
         cnpj = cnpj.replace(/[^\d]+/g, '');
         var restos = validate_1.create_cnpj(cnpj);
         cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0];
@@ -143,33 +171,39 @@ exports.fakerBr = {
     rg: function () {
         var random = randomEstadoSigla();
         random = random.split('');
-        var makeRg = makeGeneric(utils_1.MASKS['rg'], {
+        var makeRg = makeGeneric(mask_1.MASKS['rg'], {
             0: function () { return random[0]; },
             1: function () { return random[1]; }
         });
         return makeRg();
     },
-    telefone: makeGeneric(utils_1.MASKS['telefone']),
-    celular: makeGeneric(utils_1.MASKS['celular']),
-    inscricaoestadual: makeGeneric(utils_1.MASKS['inscricaoestadual']),
-    time: makeGeneric(utils_1.MASKS['time']),
-    currency: makeGeneric(utils_1.MASKS['currency']),
-    percentage: makeGeneric(utils_1.MASKS['percentage']),
-    placa: makeGeneric(utils_1.MASKS['placa']),
-    processo: makeGeneric(utils_1.MASKS['processo']),
+    telefone: makeGeneric(mask_1.MASKS['telefone']),
+    celular: makeGeneric(mask_1.MASKS['celular']),
+    inscricaoestadual: makeGeneric(mask_1.MASKS['inscricaoestadual']),
+    time: makeGeneric(mask_1.MASKS['time']),
+    currency: makeGeneric(mask_1.MASKS['currency']),
+    percentage: makeGeneric(mask_1.MASKS['percentage']),
+    placa: function () {
+        var placa;
+        do {
+            placa = makeGeneric(mask_1.MASKS['placa'])();
+        } while (!placa_1.validate_placa(placa));
+        return placa;
+    },
+    processo: makeGeneric(mask_1.MASKS['processo']),
     titulo: function () {
-        var titulo = makeGeneric(utils_1.MASKS['titulo'])();
+        var titulo = makeGeneric(mask_1.MASKS['titulo'])();
         var _a = validate_1.create_titulo(titulo), dig1 = _a.dig1, dig2 = _a.dig2;
         return titulo.substr(0, titulo.length - 2) + dig1 + dig2;
     },
     renavam: function () {
-        var renavam = makeGeneric(utils_1.MASKS['renavam'])();
+        var renavam = makeGeneric(mask_1.MASKS['renavam'])();
         var dv = validate_1.create_renavam(renavam);
         return renavam.substr(0, renavam.length - 1) + dv;
     }
 };
 
-},{"./utils":7,"./validate":8,"randexp":10}],4:[function(require,module,exports){
+},{"./estados":2,"./mask":5,"./placa":6,"./validate":8,"randexp":10}],4:[function(require,module,exports){
 "use strict";
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -849,81 +883,8 @@ function lookup(ie) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
-var makeGeneric = function (key) {
-    return function (value) {
-        if (!value) {
-            return '';
-        }
-        var mask = utils_1.MASKS[key].textMask;
-        if (utils_1.MASKS[key].textMaskFunction) {
-            mask = utils_1.MASKS[key].textMaskFunction(value);
-        }
-        return utils_1.conformToMask(value, mask, { guide: false }).conformedValue;
-    };
-};
-exports.maskBr = {
-    cep: makeGeneric('cep'),
-    cpf: makeGeneric('cpf'),
-    cnpj: makeGeneric('cnpj'),
-    rg: makeGeneric('rg'),
-    telefone: makeGeneric('telefone'),
-    celular: makeGeneric('celular'),
-    inscricaoestadual: function (inscricaoestadualValue, estado) {
-        if (!inscricaoestadualValue || !estado || !utils_1.MASKS.inscricaoestadual[estado] ||
-            !utils_1.MASKS.inscricaoestadual[estado].textMask) {
-            return '';
-        }
-        return utils_1.conformToMask(inscricaoestadualValue, utils_1.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
-    },
-    time: makeGeneric('time'),
-    currency: function (currencyValue) {
-        if (!currencyValue) {
-            return '';
-        }
-        var vals = currencyValue.split(',');
-        var mask = utils_1.MASKS.currency.textMask(vals[0]);
-        return utils_1.conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
-    },
-    percentage: function (percentageValue) {
-        if (!percentageValue) {
-            return '';
-        }
-        var vals = percentageValue.split(',');
-        var mask = utils_1.MASKS.percentage.textMask(vals[0]);
-        return utils_1.conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + vals[1];
-    },
-    placa: makeGeneric('placa'),
-    titulo: makeGeneric('titulo'),
-    processo: makeGeneric('processo')
-};
-
-},{"./utils":7}],6:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PLACAS_RANGE = [
-    {
-        state: 'PR',
-        start: 'AAA0001',
-        end: 'BEZ9999',
-        since: '02/1990'
-    },
-    {
-        state: 'SP',
-        start: 'BFA 0001',
-        end: 'GKI 9999',
-        since: '10/1991'
-    }
-];
-
-},{}],7:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
-exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
-    'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
-    'sc', 'se', 'sp', 'to'
-];
 exports.MASKS = {
     cpf: {
         text: '000.000.000-00',
@@ -939,7 +900,7 @@ exports.MASKS = {
     },
     telefone: {
         text: '(00) 0000-0000',
-        textMask: ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
         textMaskFunction: function mask(userInput) {
             var numbers = userInput.match(/\d/g);
             var numberLength = 0;
@@ -993,7 +954,7 @@ exports.MASKS = {
     },
     placa: {
         text: 'AAA-0000',
-        textMask: [/[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, /\d/, /\d/]
+        textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
     },
     titulo: {
         text: '0000.0000.0000',
@@ -1004,6 +965,8 @@ exports.MASKS = {
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '.', /\d/, /\d/, /\d/, /\d/]
     },
     renavam: {
+        text: '0000000000-00',
+        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/],
         textMaskFunction: function mask(userInput) {
             var numbers = userInput.match(/\d/g);
             var numberLength = 0;
@@ -1019,10 +982,60 @@ exports.MASKS = {
         }
     }
 };
-function isPresent(obj) {
-    return obj !== undefined && obj !== null;
-}
-exports.isPresent = isPresent;
+var makeGeneric = function (key) {
+    return function (value) {
+        if (!value) {
+            return '';
+        }
+        var mask = exports.MASKS[key].textMask;
+        if (exports.MASKS[key].textMaskFunction) {
+            mask = exports.MASKS[key].textMaskFunction(value);
+        }
+        return conformToMask(value, mask, { guide: false }).conformedValue;
+    };
+};
+exports.maskBr = {
+    cep: makeGeneric('cep'),
+    cpf: makeGeneric('cpf'),
+    cnpj: makeGeneric('cnpj'),
+    rg: makeGeneric('rg'),
+    telefone: makeGeneric('telefone'),
+    celular: makeGeneric('celular'),
+    inscricaoestadual: function (inscricaoestadualValue, estado) {
+        if (!inscricaoestadualValue || !estado || !exports.MASKS.inscricaoestadual[estado] ||
+            !exports.MASKS.inscricaoestadual[estado].textMask) {
+            return '';
+        }
+        return conformToMask(inscricaoestadualValue, exports.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
+    },
+    time: makeGeneric('time'),
+    currency: function (currencyValue) {
+        if (!currencyValue) {
+            return '';
+        }
+        if (currencyValue.split) {
+            var vals = currencyValue.split(',');
+            var mask = exports.MASKS.currency.textMask(vals[0]);
+            return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+        }
+        else {
+            currencyValue += '';
+            var mask = exports.MASKS.currency.textMask(currencyValue);
+            return conformToMask(currencyValue, mask, { guide: false }).conformedValue;
+        }
+    },
+    percentage: function (percentageValue) {
+        if (!percentageValue) {
+            return '';
+        }
+        var vals = percentageValue.split(',');
+        var mask = exports.MASKS.percentage.textMask(vals[0]);
+        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+    },
+    placa: makeGeneric('placa'),
+    titulo: makeGeneric('titulo'),
+    processo: makeGeneric('processo')
+};
 /**
  * FROM TEXT-MASK
  */
@@ -1035,7 +1048,7 @@ function conformToMask(rawValue, mask, config) {
     if (rawValue === void 0) { rawValue = emptyString; }
     if (mask === void 0) { mask = emptyArray; }
     if (config === void 0) { config = {}; }
-    if (!isArray(mask)) {
+    if (!utils_1.isArray(mask)) {
         // If someone passes a function as the mask property, we should call the
         // function to get the mask array - Normally this is handled by the
         // `createTextMaskInputElement:update` function - this allows mask functions
@@ -1045,7 +1058,7 @@ function conformToMask(rawValue, mask, config) {
             mask = mask(rawValue, config);
             // mask functions can setup caret traps to have some control over how the caret moves. We need to process
             // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask
-            mask = processCaretTraps(mask).maskWithoutCaretTraps;
+            mask = utils_1.processCaretTraps(mask).maskWithoutCaretTraps;
         }
         else {
             throw new Error('Text-mask:conformToMask; The mask property must be an array.');
@@ -1245,7 +1258,7 @@ exports.conformToMask = conformToMask;
 function convertMaskToPlaceholder(mask, placeholderChar) {
     if (mask === void 0) { mask = emptyArray; }
     if (placeholderChar === void 0) { placeholderChar = defaultPlaceholderChar; }
-    if (!isArray(mask)) {
+    if (!utils_1.isArray(mask)) {
         throw new Error('Text-mask:convertMaskToPlaceholder; The mask property must be an array.');
     }
     if (mask.indexOf(placeholderChar) !== -1) {
@@ -1259,6 +1272,172 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
     }).join('');
 }
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
+
+},{"./inscricaoestadual":4,"./utils":7,"text-mask-addons/dist/createNumberMask":16}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PLACAS_RANGE = [
+    { start: 'AAA0001', end: 'BEZ9999', state: '', desc: 'Paraná]] (PR)', since: '02/1990' },
+    { start: 'BFA0001', end: 'GKI9999', state: '', desc: 'São Paulo (estado)|São Paulo]] (SP)', since: '10/1991' },
+    { start: 'GKJ0001', end: 'HOK9999', state: '', desc: 'Minas Gerais]] (MG)', since: '09/1991' },
+    { start: 'HOL0001', end: 'HQE9999', state: '', desc: 'Maranhão]] (MA)', since: '01/1992' },
+    { start: 'HQF0001', end: 'HTW9999', state: '', desc: 'Mato Grosso do Sul]] (MS)', since: '03/1992' },
+    { start: 'HTX0001', end: 'HZA9999', state: '', desc: 'Ceará]] (CE)', since: '10/1992' },
+    { start: 'HZB0001', end: 'IAP9999', state: '', desc: 'Sergipe]] (SE)', since: '09/1993' },
+    { start: 'IAQ0001', end: 'JDO9999', state: '', desc: 'Rio Grande do Sul]] (RS)', since: '03/1992' },
+    { start: 'JDP0001', end: 'JKR9999', state: '', desc: 'Distrito Federal (Brasil)|Distrito Federal]] (DF)', since: '04/1994' },
+    { start: 'JKS0001', end: 'JSZ9999', state: '', desc: 'Bahia]] (BA)', since: '08/1993' },
+    { start: 'JTA0001', end: 'JWE9999', state: '', desc: 'Pará]] (PA)', since: '07/1993' },
+    { start: 'JWF0001', end: 'JXY9999', state: '', desc: 'Amazonas]] (AM)', since: '09/1993' },
+    { start: 'JXZ0001', end: 'KAU9999', state: '', desc: 'Mato Grosso]] (MT)', since: '09/1993' },
+    { start: 'KAV0001', end: 'KFC9999', state: '', desc: 'Goiás]] (GO)', since: '05/1994' },
+    { start: 'KFD0001', end: 'KME9999', state: '', desc: 'Pernambuco]] (PE) ', since: '08/1994' },
+    { start: 'KMF0001', end: 'LVE9999', state: '', desc: 'Rio de Janeiro (estado)|Rio de Janeiro]] (RJ)', since: '05/1994' },
+    { start: 'LVF0001', end: 'LWQ9999', state: '', desc: 'Piauí]] (PI)', since: '04/1996' },
+    { start: 'LWR0001', end: 'MMM9999', state: '', desc: 'Santa Catarina]] (SC)', since: '06/1996' },
+    { start: 'MMN0001', end: 'MOW9999', state: '', desc: 'Paraíba]] (PB)', since: '07/1996' },
+    { start: 'MOX0001', end: 'MTZ9999', state: '', desc: 'Espírito Santo (estado)|Espírito Santo]] (ES)', since: '12/1995' },
+    { start: 'MUA0001', end: 'MVK9999', state: '', desc: 'Alagoas]] (AL)', since: '08/1996' },
+    { start: 'MVL0001', end: 'MXG9999', state: '', desc: 'Tocantins]] (TO)', since: '11/1996' },
+    { start: 'MXH0001', end: 'MZM9999', state: '', desc: 'Rio Grande do Norte]] (RN)', since: '06/1998' },
+    { start: 'MZN0001', end: 'NAG9999', state: '', desc: 'Acre]] (AC)', since: '06/1998' },
+    { start: 'NAH0001', end: 'NBA9999', state: '', desc: 'Roraima]] (RR)', since: '07/1998' },
+    { start: 'NBB0001', end: 'NEH9999', state: '', desc: 'Rondônia]] (RO)', since: '07/1998' },
+    { start: 'NEI0001', end: 'NFB9999', state: '', desc: 'Amapá]] (AP)', since: '09/1998' },
+    { start: 'NFC0001', end: 'NGZ9999', state: '', desc: 'Goiás]] (GO) 2ª sequência', since: '08/2003' },
+    { start: 'NHA0001', end: 'NHT9999', state: '', desc: 'Maranhão]] (MA) 2ª sequência', since: '12/2006' },
+    { start: 'NHU0001', end: 'NIX9999', state: '', desc: 'Piauí]] (PI) 2ª sequência', since: '05/2007' },
+    { start: 'NIY0001', end: 'NJW9999', state: '', desc: 'Mato Grosso]] (MT) 2ª sequência', since: '10/2007' },
+    { start: 'NJX0001', end: 'NLU9999', state: '', desc: 'Goiás]] (GO) 3ª sequência', since: '11/2007' },
+    { start: 'NLV0001', end: 'NMO9999', state: '', desc: 'Alagoas]] (AL) 2ª sequência', since: '01/2008' },
+    { start: 'NMP0001', end: 'NNI9999', state: '', desc: 'Maranhão]] (MA) 3ª sequência', since: '05/2008' },
+    { start: 'NNJ0001', end: 'NOH9999', state: '', desc: 'Rio Grande do Norte]] (RN) 2ª sequência', since: '07/2008' },
+    { start: 'NOI0001', end: 'NPB9999', state: '', desc: 'Amazonas]] (AM) 2ª sequência', since: '07/2008' },
+    { start: 'NPC0001', end: 'NPQ9999', state: '', desc: 'Mato Grosso]] (MT) 3ª sequência', since: '09/2008' },
+    { start: 'NPR0001', end: 'NQK9999', state: '', desc: 'Paraíba]] (PB) 2ª sequência', since: '11/2008' },
+    { start: 'NQL0001', end: 'NRE9999', state: '', desc: 'Ceará]] (CE) 2ª sequência', since: '12/2008' },
+    { start: 'NRF0001', end: 'NSD9999', state: '', desc: 'Mato Grosso do Sul]] (MS) 2ª sequência', since: '11/2009' },
+    { start: 'NSE0001', end: 'NTC9999', state: '', desc: 'Pará]] (PA) 2ª sequência', since: '11/2009' },
+    { start: 'NTD0001', end: 'NTW9999', state: '', desc: 'Bahia]] (BA) 2ª sequência', since: '02/2010' },
+    { start: 'NTX0001', end: 'NUG9999', state: '', desc: 'Mato Grosso]] (MT) 4ª sequência', since: '03/2010' },
+    { start: 'NUH0001', end: 'NUL9999', state: '', desc: 'Roraima]] (RR) 2ª sequência', since: '06/2010' },
+    { start: 'NUM0001', end: 'NVF9999', state: '', desc: 'Ceará]] (CE) 3ª sequência', since: '06/2010' },
+    { start: 'NVG0001', end: 'NVN9999', state: '', desc: 'Sergipe]] (SE) 2ª sequência', since: '03/2010' },
+    { start: 'NVO0001', end: 'NWR9999', state: '', desc: 'Goiás]] (GO) 4ª sequência', since: '03/2010' },
+    { start: 'NWS0001', end: 'NXQ9999', state: '', desc: 'Maranhão]] (MA) 4ª sequência', since: '07/2010' },
+    { start: 'NXR0001', end: 'NXT9999', state: '', desc: 'Acre]] (AC) 2ª sequência', since: '05/2011' },
+    { start: 'NXU0001', end: 'NXW9999', state: '', desc: 'Pernambuco]] (PE) 2ª sequência', since: '07/2010' },
+    { start: 'NXX0001', end: 'NYG9999', state: '', desc: 'Minas Gerais]] (MG) 2ª sequência', since: '10/2011' },
+    { start: 'NYH0001', end: 'NZZ9999', state: '', desc: 'Bahia]] (BA) 3ª sequência', since: '10/2010' },
+    { start: 'OAA0001', end: 'OAO9999', state: '', desc: 'Amazonas]] (AM) 3ª sequência', since: '12/2010' },
+    { start: 'OAP0001', end: 'OBS9999', state: '', desc: 'Mato Grosso]] (MT) 5ª sequência', since: '05/2011' },
+    { start: 'OBT0001', end: 'OCA9999', state: '', desc: 'Pará]] (PA) 3ª sequência', since: '07/2011' },
+    { start: 'OCB0001', end: 'OCU9999', state: '', desc: 'Ceará]] (CE) 4ª sequência', since: '02/2011' },
+    { start: 'OCV0001', end: 'ODT9999', state: '', desc: 'spírito Santo (estado)|Espírito Santo]] (ES) 2ª sequênci', since: '05/2011' },
+    { start: 'ODU0001', end: 'OEI9999', state: '', desc: 'Piauí]] (PI) 3ª sequência', since: '09/2011' },
+    { start: 'OEJ0001', end: 'OES9999', state: '', desc: 'Sergipe]] (SE) 3ª sequência', since: '08/2011' },
+    { start: 'OET0001', end: 'OFH9999', state: '', desc: 'Paraíba]] (PB) 3ª sequência', since: '04/2011' },
+    { start: 'OFI0001', end: 'OFW9999', state: '', desc: 'Pará]] (PA) 4ª sequência', since: '03/2011' },
+    { start: 'OFX0001', end: 'OGG9999', state: '', desc: 'Paraíba]] (PB) 4ª sequência', since: '06/2011' },
+    { start: 'OGH0001', end: 'OHA9999', state: '', desc: 'Goiás]] (GO) 5ª sequência', since: '04/2011' },
+    { start: 'OHB0001', end: 'OHK9999', state: '', desc: 'Alagoas]] (AL) 3ª sequência', since: '09/2011' },
+    { start: 'OHL0001', end: 'OHW9999', state: '', desc: 'Rondônia]] (RO) 2ª sequência', since: '11/2011' },
+    { start: 'OHX0001', end: 'OIQ9999', state: '', desc: 'Ceará]] (CE) 5ª sequência', since: '12/2011' },
+    { start: 'OIR0001', end: 'OJQ9999', state: '', desc: 'Maranhão]] (MA) 5ª sequência', since: '01/2012' },
+    { start: 'OJR0001', end: 'OKC9999', state: '', desc: 'Rio Grande do Norte]] (RN) 3ª sequência', since: '04/2012' },
+    { start: 'OKD0001', end: 'OKH9999', state: '', desc: 'Santa Catarina]] (SC) 2ª sequência', since: '02/2014' },
+    { start: 'OKI0001', end: 'OLG9999', state: '', desc: 'Bahia]] (BA) 4ª sequência', since: '10/2011' },
+    { start: 'OLH0001', end: 'OLN9999', state: '', desc: 'Tocantins]] (TO) 2ª sequência', since: '02/2012' },
+    { start: 'OLO0001', end: 'OMH9999', state: '', desc: 'Minas Gerais]] (MG) 3ª sequência', since: '03/2012' },
+    { start: 'OMI0001', end: 'OOF9999', state: '', desc: 'Goiás]] (GO) 6ª sequência', since: '04/2012' },
+    { start: 'OOG0001', end: 'OOU9999', state: '', desc: 'Mato Grosso do Sul]] (MS) 3ª sequência', since: '02/2012' },
+    { start: 'OOV0001', end: 'ORC9999', state: '', desc: 'Minas Gerais]] (MG) 4ª sequência', since: '06/2012' },
+    { start: 'ORD0001', end: 'ORM9999', state: '', desc: 'Alagoas]] (AL) 4ªsequência', since: '01/2012' },
+    { start: 'ORN0001', end: 'OSV9999', state: '', desc: 'Ceará]] (CE) 6ª sequência', since: '07/2012' },
+    { start: 'OSW0001', end: 'OTZ9999', state: '', desc: 'Pará]] (PA) 5ª sequência', since: '08/2012' },
+    { start: 'OUA0001', end: 'OUE9999', state: '', desc: 'Piauí]] (PI) 4ª sequência', since: '11/2012' },
+    { start: 'OUF0001', end: 'OVD9999', state: '', desc: 'Bahia]] (BA) 5ª sequência', since: '12/2012' },
+    { start: 'OVE0001', end: 'OVF9999', state: '', desc: 'spírito Santo (estado)|Espírito Santo]] (ES) 3ª sequênci', since: '12/2012' },
+    { start: 'OVG0001', end: 'OVG9999', state: '', desc: 'Acre]] (AC) 3ª sequência', since: '05/2013' },
+    { start: 'OVH0001', end: 'OVL9999', state: '', desc: 'spírito Santo (estado)|Espírito Santo]] (ES) 4ª sequênci', since: '07/2013' },
+    { start: 'OVM0001', end: 'OVV9999', state: '', desc: 'Distrito Federal]] (DF) 2ª sequência', since: '11/2013' },
+    { start: 'OVW0001', end: 'OVY9999', state: '', desc: 'Piauí]] (PI) 5ª sequência', since: '10/2013' },
+    { start: 'OVZ0001', end: 'OWG9999', state: '', desc: 'Rio Grande do Norte]] (RN) 4ª sequência', since: '06/2013' },
+    { start: 'OWH0001', end: 'OXK9999', state: '', desc: 'Minas Gerais]] (MG) 5ª sequência', since: '10/2013' },
+    { start: 'OXL0001', end: 'OXL9999', state: '', desc: 'Rondônia]] (RO) 3ª sequência', since: '11/2013' },
+    { start: 'OXM0001', end: 'OXM9999', state: '', desc: 'Amazonas]] (AM) 4ª sequência', since: '11/2013' },
+    { start: 'OXN0001', end: 'OXN9999', state: '', desc: 'Alagoas]] (AL) 5ª sequência', since: '11/2013' },
+    { start: 'OXO0001', end: 'OXO9999', state: '', desc: 'Paraíba]] (PB) 5ª sequência', since: '11/2013' },
+    { start: 'OXP0001', end: 'OXP9999', state: '', desc: 'Acre]] (AC) 4ª sequência', since: '12/2013' },
+    { start: 'OXQ0001', end: 'OXZ9999', state: '', desc: 'Maranhão]] (MA) 6ª sequência', since: '04/2014' },
+    { start: 'OYA0001', end: 'OYC9999', state: '', desc: 'Tocantins]] (TO) 3ª sequência', since: '11/2013' },
+    { start: 'OYD0001', end: 'OYK9999', state: '', desc: 'spírito Santo (estado)|Espírito Santo]] (ES) 5ª sequênci', since: '12/2013' },
+    { start: 'OYL0001', end: 'OYZ9999', state: '', desc: 'Pernambuco]] (PE) 6ª sequência', since: '02/2014' },
+    { start: 'OZA0001', end: 'OZA9999', state: '', desc: 'Ceará]] (CE) 7ª sequência', since: '01/2014' },
+    { start: 'OZB0001', end: 'OZB9999', state: '', desc: 'Sergipe]] (SE) 4ª sequência', since: '01/2014' },
+    { start: 'OZC0001', end: 'OZV9999', state: '', desc: 'Bahia]] (BA) 6ª sequência', since: '03/2014' },
+    { start: 'OZW0001', end: 'PBZ9999', state: '', desc: 'Distrito Federal]] (DF) 3ª sequência', since: '05/2014' },
+    { start: 'PCA0001', end: 'PED9999', state: '', desc: 'Pernambuco]] (PE) 7ª sequência', since: '12/2014' },
+    { start: 'PEE0001', end: 'PFQ9999', state: '', desc: 'Pernambuco]] (PE) 3ª sequência', since: '09/2010' },
+    { start: 'PFR0001', end: 'PGK9999', state: '', desc: 'Pernambuco]] (PE) 4ª sequência', since: '07/2012' },
+    { start: 'PGL0001', end: 'PGU9999', state: '', desc: 'Pernambuco]] (PE) 5ª sequência', since: '10/2013' },
+    { start: 'PGV0001', end: 'PGZ9999', state: '', desc: 'Pernambuco]] (PE) 8ª sequência', since: '12/2014' },
+    { start: 'PHA0001', end: 'PHZ9999', state: '', desc: 'Amazonas]] (AM) 5ª sequência', since: '06/2014' },
+    { start: 'PIA0001', end: 'PIZ9999', state: '', desc: 'Piauí]] (PI) 6ª sequência', since: '06/2014' },
+    { start: 'PJA0001', end: 'PLZ9999', state: '', desc: 'Bahia]] (BA) 7ª sequência', since: '10/2014' },
+    { start: 'PMA0001', end: 'POZ9999', state: '', desc: 'Ceará]] (CE) 8ª sequência', since: '06/2014' },
+    { start: 'PPA0001', end: 'PPZ9999', state: '', desc: 'spírito Santo (estado)|Espírito Santo]] (ES) 6ª sequênci', since: '08/2014' },
+    { start: 'PQA0001', end: 'PRZ9999', state: '', desc: 'Goiás]] (GO) 7ª sequência', since: '03/2015' },
+    { start: 'PSA0001', end: 'PTZ9999', state: '', desc: 'Maranhão]] (MA) 7ª sequência', since: '12/2014' },
+    { start: 'PUA0001', end: 'PZZ9999', state: '', desc: 'Minas Gerais]] (MG) 6ª sequência', since: '05/2014' },
+    { start: 'QAA0001', end: 'QAZ9999', state: '', desc: 'Mato Grosso do Sul]] (MS) 4ª sequência', since: '12/2014' },
+    { start: 'QBA0001', end: 'QCZ9999', state: '', desc: 'Mato Grosso]] (MT) 6ª sequência', since: '05/2014' },
+    { start: 'QDA0001', end: 'QEZ9999', state: '', desc: 'Pará]] (PA) 6ª sequência', since: '10/2014' },
+    { start: 'QFA0001', end: 'QFZ9999', state: '', desc: 'Paraíba]] (PB) 6ª sequência', since: '05/2014' },
+    { start: 'QGA0001', end: 'QGZ9999', state: '', desc: 'Rio Grande do Norte]] (RN) 5ª sequência', since: '09/2014' },
+    { start: 'QHA0001', end: 'QJZ9999', state: '', desc: 'Santa Catarina]] (SC) 3ª sequência', since: '05/2014' },
+    { start: 'QKA0001', end: 'QKM9999', state: '', desc: 'Tocantins]] (TO) 4ª sequência', since: '11/2014' },
+    { start: 'QKN0001', end: 'QKZ9999', state: '', desc: 'Sergipe]] (SE) 5ª sequência', since: '06/2014' },
+    { start: 'QLA0001', end: 'QLM9999', state: '', desc: 'Alagoas]] (AL) 6ª sequência', since: '09/2015' },
+    { start: 'QLN0001', end: 'QLT9999', state: '', desc: 'Amapá]] (AP) 2ª sequência', since: '01/2015' },
+    { start: 'QLU0001', end: 'QLZ9999', state: '', desc: 'Acre]] (AC) 5ª sequência', since: '08/2014' },
+    { start: 'QMA0001', end: 'QMP9999', state: '', desc: 'Sergipe]] (SE) 6ª sequência', since: '03/2017' },
+    { start: 'QMQ0001', end: 'QQZ9999', state: '', desc: 'Minas Gerais]] (MG) 7ª sequência ', since: '07/2017' },
+    { start: 'QRA0001', end: 'QRA9999', state: '', desc: 'Rondônia]] (RO) 4ª sequência', since: '11/2017' },
+    { start: 'QRB0001', end: 'QRZ9999', state: '', desc: 'Espírito Santo (estado)|Espírito Santo]] (ES) 7ª sequência', since: '05/2018' },
+    { start: 'QSA0001', end: 'QSZ9999', state: '', desc: 'Paraíba]] (PB) 7ª sequência', since: '04/2018' },
+    { start: 'QTA0001', end: 'QTB9999', state: '', desc: 'Rondônia]] (RO) 5ª sequência', since: '08/2018' },
+    { start: 'QTC0001', end: 'RIN9999', state: '', desc: 'quên', since: 'inidas ' },
+    { start: 'RIO0001', end: 'RIO9999', state: '', desc: 'Rio de Janeiro (estado)|Rio de Janeiro]] (RJ) 2ª sequência ', since: '9/2018}' },
+    { start: 'RLA0001', end: 'SAU9999', state: '', desc: 'equên', since: 'inidas ' },
+    { start: 'SAV0001', end: 'SAV9999', state: '', desc: 'ão Paulo (estado)|São Paulo]] (SP) 2º sequência', since: '09/2009' },
+];
+exports.PLACAS_INVALID = { start: 'SAW0001', end: 'ZZZ9999' }; // || Sequências ainda não definidas
+function validate_placa(placa) {
+    var placaClean = placa.replace(/-/g, '').toUpperCase();
+    var exp = /[A-Za-z]{3}\-\d{4}/;
+    var expClean = /[A-Za-z]{3}\d{4}/;
+    // const letters = placa.substr(0, 3).toUpperCase();
+    if (!exp.test(placa) && !expClean.test(placaClean)) {
+        return false;
+    }
+    var found = placa >= exports.PLACAS_INVALID.start && placa <= exports.PLACAS_INVALID.end;
+    if (found) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+exports.validate_placa = validate_placa;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function isPresent(obj) {
+    return obj !== undefined && obj !== null;
+}
+exports.isPresent = isPresent;
 function isArray(value) {
     return (Array.isArray && Array.isArray(value)) || value instanceof Array;
 }
@@ -1286,11 +1465,23 @@ function processCaretTraps(mask) {
     return { maskWithoutCaretTraps: mask, indexes: indexes };
 }
 exports.processCaretTraps = processCaretTraps;
+exports.modulo11 = function (string, size, mod) {
+    var soma = 0;
+    for (var i = 1; i <= size; i++) {
+        // tslint:disable-next-line:radix
+        soma = soma + parseInt(string.substring(i - 1, i)) * (mod - i);
+    }
+    var resto = (soma * 10) % 11;
+    if ((resto === 10) || (resto === 11)) {
+        resto = 0;
+    }
+    return resto;
+};
 
-},{"./inscricaoestadual":4,"text-mask-addons/dist/createNumberMask":16}],8:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var placa_1 = require("./placa");
+var utils_1 = require("./utils");
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
 /*
 //if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
@@ -1372,31 +1563,13 @@ function validate_cpf(strCPF) {
 exports.validate_cpf = validate_cpf;
 function create_cpf(strCPF) {
     strCPF = strCPF.replace(/[^\d]+/g, '');
-    var soma;
-    var resto;
-    soma = 0;
     if (strCPF === '00000000000') {
         return false;
     }
-    for (var i = 1; i <= 9; i++) {
-        // tslint:disable-next-line:radix
-        soma = soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-    }
-    resto = (soma * 10) % 11;
-    if ((resto === 10) || (resto === 11)) {
-        resto = 0;
-    }
-    var restos = [];
-    restos.push(resto);
-    soma = 0;
-    for (var i = 1; i <= 10; i++) {
-        soma = soma + parseInt(strCPF.substring(i - 1, i), 10) * (12 - i);
-    }
-    resto = (soma * 10) % 11;
-    if ((resto === 10) || (resto === 11)) {
-        resto = 0;
-    }
-    restos.push(resto);
+    var restos = [
+        utils_1.modulo11(strCPF, 9, 11),
+        utils_1.modulo11(strCPF, 10, 12)
+    ];
     return restos;
 }
 exports.create_cpf = create_cpf;
@@ -1462,18 +1635,13 @@ function validate_telefone(tel) {
     if (telClean[0] == 0 || telClean[2] == 0) {
         return false;
     }
-    // const exp = /\(\d{2}\)\ \d{4}\-\d{4}/;
-    // const exp5 = /\(\d{2}\)\ \d{5}\-\d{4}/;
-    // if (!exp.test(tel) && !exp5.test(tel)) {
-    //   return false;
-    // }
     return true;
 }
 exports.validate_telefone = validate_telefone;
 function validate_celular(cel) {
     var celClean = cel.replace(/[^\d]+/g, '');
-    cel = cel.replace(/_/g, '');
-    if (!(celClean.length === 10 || celClean.length === 11)) {
+    celClean = celClean.replace(/_/g, '');
+    if (celClean.length !== 11) {
         return false;
     }
     if (celClean[0] == 0 || celClean[2] < 5) {
@@ -1509,24 +1677,6 @@ function validate_percentage(percentage) {
     return regex.test(percentage);
 }
 exports.validate_percentage = validate_percentage;
-function validate_placa(placa) {
-    var placaClean = placa.replace(/-/g, '');
-    var exp = /[A-Za-z]{3}\-\d{4}/;
-    var expClean = /[A-Za-z]{3}\d{4}/;
-    // const letters = placa.substr(0, 3).toUpperCase();
-    if (!exp.test(placa) && !expClean.test(placaClean)) {
-        return false;
-    }
-    var found = placa_1.PLACAS_RANGE.find(function (p) { return placa >= p.start && placa <= p.end; });
-    if (found) {
-        return true;
-    }
-    else {
-        // TODO: not with false here because needs to finish the ranges
-        return true;
-    }
-}
-exports.validate_placa = validate_placa;
 function validate_titulo(titulo) {
     var tituloClean = titulo.replace(/\./g, '');
     var exp = /\d{4}\.\d{4}\.\d{4}/;
@@ -1613,10 +1763,6 @@ exports.validate_processo = validate_processo;
 function validate_renavam(renavam) {
     var renavamClean = renavam.replace(/\./g, '');
     renavamClean = renavamClean.replace(/\-/g, '');
-    // const expClean = /\d{10}\d{4}\d{4}/;
-    // if (!exp.test(renavamClean) && !expClean.test(renavamClean)) {
-    //   return false;
-    // }
     var dv = create_renavam(renavam);
     var tam = renavam.length;
     var digitos = renavam.substr(tam - 1, 1);
@@ -1630,10 +1776,9 @@ function validate_renavam(renavam) {
 exports.validate_renavam = validate_renavam;
 function create_renavam(renavam) {
     var dig1 = 0;
-    var tam = renavam.length;
-    renavam = renavam.substr(0, tam - 2);
-    renavam = '000000000000' + renavam;
-    renavam = renavam.substr(renavam.length - 11, renavam.length - 1);
+    while (renavam.length < 11) {
+        renavam = '0' + renavam;
+    }
     dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
         (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
         (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;
@@ -1648,7 +1793,7 @@ function create_renavam(renavam) {
 }
 exports.create_renavam = create_renavam;
 
-},{"./placa":6}],9:[function(require,module,exports){
+},{"./utils":7}],9:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */
 
 

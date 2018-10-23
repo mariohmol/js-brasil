@@ -14,8 +14,9 @@ describe('Mask test', () => {
     expect(maskBr.cep('123')).to.exist;
     expect(maskBr.cnpj('123')).to.exist;
     expect(maskBr.cpf('123')).to.exist;
-    expect(maskBr.currency('123')).to.exist;
-    expect(maskBr.inscricaoestadual('mg','123')).to.exist;
+    // expect(maskBr.currency('123')).to.exist;
+    // expect(maskBr.currency(123)).to.exist;
+    expect(maskBr.inscricaoestadual('mg', '123')).to.exist;
     expect(maskBr.percentage('123')).to.exist;
     expect(maskBr.rg('123')).to.exist;
     expect(maskBr.placa('123')).to.exist;
@@ -73,6 +74,17 @@ describe('Mask test', () => {
     const processo = '000001001520081000000';
     // expect(maskBr.processo(processo)).to.be.equal('00000100-15.2008.100.0000');
   });
+
+  it('Moeda', () => {
+    const currency = 'R$ 5.103,94';
+    const currencyText = '5.103,94';
+    const currencyNumber = 5103.94;
+
+    expect(maskBr.currency(currency)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumber)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyText)).to.be.equal('R$ 5.103,94');
+  });
+
   // // it('Time', () => {
   // //   const time = fakerBr.time();
   // //   expect(validateBr.time(time)).to.be.true;

@@ -17,11 +17,12 @@
   PERCENTAGE
   TIME
 -->
+
 <body data-id="percentage">
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Porcentagems Nacionais Brasileiros </h1>
+    <h1>Gerador e Validador Tipos de Dados Brasileiros </h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -32,20 +33,20 @@
               <div class="card">
                 <div class="card-content">
                   <span class="card-title activator grey-text text-darken-4">Validar Porcentagem</span>
-                  <input id="validated" type="text" class="validate">
-                  <label for="validated">Digite o Porcentagem</label>
+                  <input id="validatedpercentage" type="text" class="validate">
+                  <label for="validatedpercentage">Digite o Porcentagem</label>
 
-                  <ul id="validatedResult" class=" hidden">
+                  <ul id="validatedResultpercentage" class=" hidden">
                     <li>
                       <div class="collapsible-header">
-                        <i class="material-icons" id="valicon">filter_drama</i>
-                        <span id="valtext"></span>
+                        <i class="material-icons" id="valiconpercentage">filter_drama</i>
+                        <span id="valtextpercentage"></span>
                         <!-- <span class="new badge">4</span></div> -->
                     </li>
                   </ul>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn" id="validatedAction"><i class="material-icons right">check</i>validar</a>
+                  <a class="waves-effect waves-light btn" id="validatedActionpercentage"><i class="material-icons right">check</i>validar</a>
                 </div>
               </div>
             </div>
@@ -54,11 +55,95 @@
               <div class="card">
                 <div class="card-content">
                   <span class="card-title activator grey-text text-darken-4">Gerar Porcentagem</span>
-                  <input id="generated" type="text" class="validate">
+                  <input id="generatedpercentage" type="text" class="validate">
+                  <label for="generatedpercentage"></label>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="generatedActionpercentage"><i class="material-icons right">add</i>gerar
+                    novo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="row">
+            <div class="input-field col s6">
+
+
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Validar Moeda</span>
+                  <input id="validatedcurrency" type="text" class="validate">
+                  <label for="validatedcurrency">Digite a Moeda</label>
+
+                  <ul id="validatedResultcurrency" class=" hidden">
+                    <li>
+                      <div class="collapsible-header">
+                        <i class="material-icons" id="valiconcurrency">filter_drama</i>
+                        <span id="valtextcurrency"></span>
+                        <!-- <span class="new badge">4</span></div> -->
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="validatedActioncurrency"><i class="material-icons right">check</i>validar</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-field col s6">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Gerar Moeda</span>
+                  <input id="generatedcurrency" type="text" class="validate">
+                  <label for="generatedcurrency"></label>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="generatedActioncurrency"><i class="material-icons right">add</i>gerar
+                    novo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="input-field col s6">
+
+
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Validar Hora e Minutos (Tempo)</span>
+                  <input id="validatedtime" type="text" class="validate">
+                  <label for="validatedtime">Digite a Hora e Minuto</label>
+
+                  <ul id="validatedResulttime" class=" hidden">
+                    <li>
+                      <div class="collapsible-header">
+                        <i class="material-icons" id="valicontime">filter_drama</i>
+                        <span id="valtexttime"></span>
+                        <!-- <span class="new badge">4</span></div> -->
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="validatedActiontime"><i class="material-icons right">check</i>validar</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-field col s6">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Gerar Tempo</span>
+                  <input id="generatedtime" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn" id="generatedAction"><i class="material-icons right">add</i>gerar
+                  <a class="waves-effect waves-light btn" id="generatedActiontime"><i class="material-icons right">add</i>gerar
                     novo</a>
                 </div>
               </div>
@@ -70,41 +155,54 @@
   </main>
 
   <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o Porcentagem por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
-              <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/Porcentagem/">Receita Federal</a></li>
-            </ul>
-          </div>
+            Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que
+            compõe o Porcentagem por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse
+            algoritmo é conhecido como "módulo 11".
+
+            Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
+            estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Cadastro_de_pessoas_f%C3%ADsicas">Wikipedia</a></li>
+            <li><a class="grey-text text-lighten-3" href="http://www.receita.fazenda.gov.br/Aplicacoes/ATCTA/Porcentagem/">Receita
+                Federal</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-copyright">
-        <div class="container">
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
         © 2018 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
-        </div>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="js-brasil.js"></script>
   <script src="index.js"></script>
+  <script>
+
+    window.onload = () => {
+      makeHeader();
+      generalAction('currency', 'currency');
+      generalAction('time', 'time');
+      generalAction('percentage', 'percentage');
+    }
+
+  </script>
 </body>
 
 </html>
