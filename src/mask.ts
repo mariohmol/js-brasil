@@ -147,11 +147,13 @@ export const maskBr = {
 
     const vals = currencyValue.split(',');
     const mask = MASKS.currency.textMask(vals[0]);
+    const decimals = vals.length > 1 ? vals[1] : '00';
+
     return conformToMask(
       currencyValue,
       mask,
       { guide: false }
-    ).conformedValue + ',' + vals[1];
+    ).conformedValue + ',' + decimals;
   },
   percentage: (percentageValue) => {
     if (!percentageValue) {
@@ -159,12 +161,13 @@ export const maskBr = {
     }
     const vals = percentageValue.split(',');
     const mask = MASKS.percentage.textMask(vals[0]);
+    const decimals = vals.length > 1 ? vals[1] : '00';
 
     return conformToMask(
       percentageValue,
       mask,
       { guide: false }
-    ).conformedValue + ',' + vals[1];
+    ).conformedValue + ',' + decimals;
   },
   placa: makeGeneric('placa'),
   titulo: makeGeneric('titulo'),

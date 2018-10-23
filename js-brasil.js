@@ -1026,7 +1026,8 @@ exports.maskBr = {
         }
         var vals = currencyValue.split(',');
         var mask = exports.MASKS.currency.textMask(vals[0]);
-        return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+        var decimals = vals.length > 1 ? vals[1] : '00';
+        return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     percentage: function (percentageValue) {
         if (!percentageValue) {
@@ -1034,7 +1035,8 @@ exports.maskBr = {
         }
         var vals = percentageValue.split(',');
         var mask = exports.MASKS.percentage.textMask(vals[0]);
-        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+        var decimals = vals.length > 1 ? vals[1] : '00';
+        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     placa: makeGeneric('placa'),
     titulo: makeGeneric('titulo'),
