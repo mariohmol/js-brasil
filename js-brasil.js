@@ -1026,7 +1026,10 @@ exports.maskBr = {
         }
         var vals = currencyValue.split(',');
         var mask = exports.MASKS.currency.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1] : '00';
+        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        if (decimals.length > 2) {
+            decimals = decimals.substring(0, 2);
+        }
         return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     percentage: function (percentageValue) {

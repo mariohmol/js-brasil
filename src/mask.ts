@@ -147,7 +147,10 @@ export const maskBr = {
 
     const vals = currencyValue.split(',');
     const mask = MASKS.currency.textMask(vals[0]);
-    const decimals = vals.length > 1 ? vals[1] : '00';
+    let decimals = vals.length > 1 ? vals[1] + '' : '00';
+    if (decimals.length > 2) {
+      decimals = decimals.substring(0, 2);
+    }
 
     return conformToMask(
       currencyValue,

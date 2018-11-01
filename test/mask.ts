@@ -82,6 +82,7 @@ describe('Mask test', () => {
     const currencyNoDecimals = 'R$ 5.103';
     const currencyTextNoDecimals = '5.103';
     const currencyNumberNoDecimals = 5103;
+    const currencyNumberMany = 5103.9423234;
 
     expect(maskBr.currency(currencyNoDecimals)).to.be.equal('R$ 5.103,00');
     expect(maskBr.currency(currencyTextNoDecimals)).to.be.equal('R$ 5.103,00');
@@ -90,6 +91,7 @@ describe('Mask test', () => {
     expect(maskBr.currency(currency)).to.be.equal('R$ 5.103,94');
     expect(maskBr.currency(currencyNumber)).to.be.equal('R$ 5.103,94');
     expect(maskBr.currency(currencyText)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumberMany)).to.be.equal('R$ 5.103,94');
   });
 
   // // it('Time', () => {
