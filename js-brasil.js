@@ -1560,6 +1560,9 @@ exports.create_cnpj = create_cnpj;
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
 function validate_cpf(strCPF) {
     strCPF = strCPF.replace(/[^\d]+/g, '');
+    if (strCPF.length !== 11) {
+        return false;
+    }
     var restos = create_cpf(strCPF);
     if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
         return false;
