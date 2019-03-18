@@ -210,6 +210,11 @@ export function validate_currency(currency) {
   return regex.test(currency);
 }
 
+export function validate_number(number) {
+  const regex = /^\d+(?:\.\d{0,2})$/;
+  return regex.test(number);
+}
+
 export function validate_percentage(percentage) {
   const regex = /^\d+(?:\.\d{0,2})$/;
   return regex.test(percentage);

@@ -111,6 +111,10 @@ export const fakerBr = {
     const x = Math.random() * 10000;
     return parseFloat(x.toFixed(2));
   },
+  number: () => {
+    const x = Math.random() * 10000;
+    return parseFloat(x.toFixed(2));
+  },
   percentage: makeGeneric(MASKS['percentage']),
   placa: () => {
     let placa;

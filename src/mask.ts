@@ -56,6 +56,18 @@ export const MASKS = {
       suffix: ''
     })
   },
+  number: {
+    text: '0.000,00',
+    textMask: createNumberMask({
+      decimalLimit: 2,
+      thousandsSeparatorSymbol: '.',
+      decimalSymbol: ',',
+      allowDecimal: true,
+      integerLimit: 15,
+      prefix: '',
+      suffix: ''
+    })
+  },
   percentage: {
     text: '00,00%',
     textMask: createNumberMask({
@@ -154,6 +166,28 @@ export const maskBr = {
 
     return conformToMask(
       currencyValue,
+      mask,
+      { guide: false }
+    ).conformedValue + ',' + decimals;
+  },
+  number: (numberValue) => {
+    if (!numberValue) {
+      return '';
+    }
+    if (!numberValue.split) {
+      numberValue += '';
+      numberValue = numberValue.replace('.', ',');
+    }
+
+    const vals = numberValue.split(',');
+    const mask = MASKS.number.textMask(vals[0]);
+    let decimals = vals.length > 1 ? vals[1] + '' : '00';
+    if (decimals.length > 2) {
+      decimals = decimals.substring(0, 2);
+    }
+
+    return conformToMask(
+      numberValue,
       mask,
       { guide: false }
     ).conformedValue + ',' + decimals;

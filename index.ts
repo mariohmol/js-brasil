@@ -3,7 +3,7 @@ import {
 } from './src/utils';
 import {
   valida_cep, validate_cnpj, validate_cpf, validate_telefone,
-  validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo, validate_processo, validate_celular, validate_renavam
+  validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo, validate_processo, validate_celular, validate_renavam, validate_number
 } from './src/validate';
 import { validar } from './src/inscricaoestadual';
 import * as faker from './src/faker';
@@ -17,6 +17,7 @@ export const validateBr = {
   cnpj: validate_cnpj,
   cpf: validate_cpf,
   currency: validate_currency,
+  number: validate_number,
   inscricaoestadual: validar,
   percentage: validate_percentage,
   rg: validate_rg,

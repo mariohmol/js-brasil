@@ -14,6 +14,7 @@ exports.validateBr = {
     cnpj: validate_1.validate_cnpj,
     cpf: validate_1.validate_cpf,
     currency: validate_1.validate_currency,
+    number: validate_1.validate_number,
     inscricaoestadual: inscricaoestadual_1.validar,
     percentage: validate_1.validate_percentage,
     rg: validate_1.validate_rg,
@@ -186,6 +187,10 @@ exports.fakerBr = {
         return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     },
     currencyNumber: function () {
+        var x = Math.random() * 10000;
+        return parseFloat(x.toFixed(2));
+    },
+    number: function () {
         var x = Math.random() * 10000;
         return parseFloat(x.toFixed(2));
     },
@@ -947,6 +952,18 @@ exports.MASKS = {
             suffix: ''
         })
     },
+    number: {
+        text: '0.000,00',
+        textMask: createNumberMask_1.default({
+            decimalLimit: 2,
+            thousandsSeparatorSymbol: '.',
+            decimalSymbol: ',',
+            allowDecimal: true,
+            integerLimit: 15,
+            prefix: '',
+            suffix: ''
+        })
+    },
     percentage: {
         text: '00,00%',
         textMask: createNumberMask_1.default({
@@ -1031,6 +1048,22 @@ exports.maskBr = {
             decimals = decimals.substring(0, 2);
         }
         return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
+    },
+    number: function (numberValue) {
+        if (!numberValue) {
+            return '';
+        }
+        if (!numberValue.split) {
+            numberValue += '';
+            numberValue = numberValue.replace('.', ',');
+        }
+        var vals = numberValue.split(',');
+        var mask = exports.MASKS.number.textMask(vals[0]);
+        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        if (decimals.length > 2) {
+            decimals = decimals.substring(0, 2);
+        }
+        return conformToMask(numberValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     percentage: function (percentageValue) {
         if (!percentageValue) {
@@ -1684,6 +1717,11 @@ function validate_currency(currency) {
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
+function validate_number(number) {
+    var regex = /^\d+(?:\.\d{0,2})$/;
+    return regex.test(number);
+}
+exports.validate_number = validate_number;
 function validate_percentage(percentage) {
     var regex = /^\d+(?:\.\d{0,2})$/;
     return regex.test(percentage);
