@@ -24,6 +24,14 @@ describe('Validate test', () => {
     expect(validateBr.rg('mg 11124567')).to.be.true;
   });
 
+
+  it('Inscricao Estadual', () => {
+    expect(validateBr.inscricaoestadual('862.445.372/2351', 'mg')).to.be.true;
+    expect(validateBr.inscricaoestadual('094.290.083', 'sc')).to.be.true;
+    expect(validateBr.inscricaoestadual('094.290.0839', 'sc')).to.be.false;
+    expect(validateBr.inscricaoestadual('111111111111', 'mg').message).to.be.equal('ie com todos dígitos iguais');
+  });
+
   it('PLACA', () => {
     expect(validateBr.placa('ABC1234')).to.be.true;
     expect(validateBr.placa('SAW0002')).to.be.false;

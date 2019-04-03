@@ -1,3 +1,4 @@
+import { allNumbersAreSame } from "./utils";
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -559,11 +560,11 @@ export function validar(ie, estado) {
   estado = estado.toLowerCase();
 
   if (estado !== '' && !(estado in funcoes)) {
-    throw new Error('estado não é válido');
+    return new Error('estado não é válido');
   }
 
   if (eIndefinido(ie)) {
-    throw new Error('ie deve ser fornecida');
+    return new Error('ie deve ser fornecida');
   }
 
   if (Array.isArray(ie)) {
@@ -571,7 +572,11 @@ export function validar(ie, estado) {
   }
 
   if (typeof ie !== 'string') {
-    throw new Error('ie deve ser string ou array de strings');
+    return new Error('ie deve ser string ou array de strings');
+  }
+
+  if(!allNumbersAreSame(ie)){
+    return new Error('ie com todos dígitos iguais');
   }
 
   if (ie.match(/^ISENTO$/i)) {
@@ -587,6 +592,7 @@ export function validar(ie, estado) {
   if (/^\d+$/.test(ie) || estado === 'sp') {
     return funcoes[estado](ie);
   }
+
 
   return false;
 }
@@ -783,8 +789,10 @@ function calculoTrivialGenerate(valor, base = null, validarTamanho = null) {
   if (!validarTamanho && tamanhoNaoE(valor)) {
     return false;
   }
-
   if (eIndefinido(base)) {
+    base = primeiros(valor);
+  }
+  if(!base){
     base = primeiros(valor);
   }
 

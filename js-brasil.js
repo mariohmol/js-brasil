@@ -217,10 +217,11 @@ exports.fakerBr = {
 
 },{"./estados":2,"./mask":5,"./placa":6,"./validate":8,"randexp":10}],4:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 var funcoesGenerate = {
     ac: function (valor) {
         if (tamanhoNaoE(valor, 13)) {
@@ -656,16 +657,19 @@ function validar(ie, estado) {
     }
     estado = estado.toLowerCase();
     if (estado !== '' && !(estado in funcoes)) {
-        throw new Error('estado não é válido');
+        return new Error('estado não é válido');
     }
     if (eIndefinido(ie)) {
-        throw new Error('ie deve ser fornecida');
+        return new Error('ie deve ser fornecida');
     }
     if (Array.isArray(ie)) {
         return ie.map(function (i) { return validar(i, estado); });
     }
     if (typeof ie !== 'string') {
-        throw new Error('ie deve ser string ou array de strings');
+        return new Error('ie deve ser string ou array de strings');
+    }
+    if (!utils_1.allNumbersAreSame(ie)) {
+        return new Error('ie com todos dígitos iguais');
     }
     if (ie.match(/^ISENTO$/i)) {
         return true;
@@ -864,6 +868,9 @@ function calculoTrivialGenerate(valor, base, validarTamanho) {
     if (eIndefinido(base)) {
         base = primeiros(valor);
     }
+    if (!base) {
+        base = primeiros(valor);
+    }
     var digito = substracaoPor11SeMaiorQue2CasoContrario0(mod(base));
     return base + digito;
 }
@@ -891,7 +898,7 @@ function lookup(ie) {
     }
 }
 
-},{}],5:[function(require,module,exports){
+},{"./utils":7}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -1519,6 +1526,25 @@ exports.modulo11 = function (string, size, mod) {
     }
     return resto;
 };
+/**
+ *
+ * @param input
+ * ^ - Match line start
+  (\d) - match first digit and capture it in back reference #1 i.e. \1
+  (?!..) is a negative lookahead
+  (?!\1+$) means disallow the match if first digit is followed by same digit (captured group) till end.
+  \d{11}$ match next 11 digit followed by line end
+ */
+function allNumbersAreSame(input) {
+    input = getAllDigits(input);
+    var reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + (input.length - 1) + '}$');
+    return reg.test(input);
+}
+exports.allNumbersAreSame = allNumbersAreSame;
+function getAllDigits(input) {
+    return input.match(/\d/g).join("");
+}
+exports.getAllDigits = getAllDigits;
 
 },{}],8:[function(require,module,exports){
 "use strict";

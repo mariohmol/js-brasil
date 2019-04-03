@@ -32,7 +32,7 @@ export function processCaretTraps(mask) {
   return { maskWithoutCaretTraps: mask, indexes }
 }
 
-export const modulo11 = (string, size, mod)=>{
+export const modulo11 = (string, size, mod) => {
   let soma = 0;
   for (let i = 1; i <= size; i++) {
     // tslint:disable-next-line:radix
@@ -44,4 +44,23 @@ export const modulo11 = (string, size, mod)=>{
     resto = 0;
   }
   return resto;
+}
+
+/**
+ * 
+ * @param input 
+ * ^ - Match line start
+  (\d) - match first digit and capture it in back reference #1 i.e. \1
+  (?!..) is a negative lookahead
+  (?!\1+$) means disallow the match if first digit is followed by same digit (captured group) till end.
+  \d{11}$ match next 11 digit followed by line end
+ */
+export function allNumbersAreSame(input) {
+  input = getAllDigits(input);
+  const reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + (input.length - 1) + '}$');
+  return reg.test(input);
+}
+
+export function getAllDigits(input) {
+  return input.match(/\d/g).join("");
 }
