@@ -53,6 +53,12 @@ const yyyymmdd = function (date) {
   ].join('');
 };
 
+const parseMoney = function(money){
+  if(money){
+    return parseFloat(money.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
+  }
+  return 0;
+}
 /**
  * 
  * @param {*} nome MARIO SILVA
@@ -78,7 +84,7 @@ const makeCard = (dados) => {
     juros,
   } = dados;
 
-  const total = valorPrincipal + multa + juros; //  12,46
+  const total = (parseMoney(valorPrincipal) + parseMoney(multa) + parseMoney(juros)).toLocaleString(); //  12,46
 
   //optional
   const numreferencia = dados.numreferencia || '';
