@@ -15,31 +15,37 @@ function componentCustom() {
 
 
 function generalAction(dataId, type) {
-  const validatedAction = document.querySelector('#validatedAction'+type);
-  const generatedAction = document.querySelector('#generatedAction'+type);
+  const validatedAction = document.querySelector('#validatedAction' + type);
+  const generatedAction = document.querySelector('#generatedAction' + type);
 
-  generatedAction.onclick = () => {
-    console.log(`generatedAction.onclick`)
-    const generatedInput = document.querySelector('#generated'+type);
-    generatedInput.value = jsbrasil.fakerBr[dataId]();
-  }
-
-  validatedAction.onclick = () => {
-    console.log(`validatedAction.onclick`)
-    const validatedInput = document.querySelector('#validated'+type);
-    const masked = jsbrasil.maskBr[dataId](validatedInput.value);
-    const validated = jsbrasil.validateBr[dataId](validatedInput.value);
-
-    document.querySelector('#validatedResult'+type).classList.remove('hidden');
-
-    if (validated) {
-      document.querySelector('#valicon'+type).innerHTML = 'thumb_up';
-      document.querySelector('#valtext'+type).innerHTML = 'Parabéns, '+ masked + ' tem a formatação válida!';
-    } else {
-      document.querySelector('#valicon'+type).innerHTML = 'thumb_down';
-      document.querySelector('#valtext'+type).innerHTML = 'Esta informação NÃO está correta!';
+  if (generatedAction) {
+    generatedAction.onclick = () => {
+      console.log(`generatedAction.onclick`)
+      const generatedInput = document.querySelector('#generated' + type);
+      generatedInput.value = jsbrasil.fakerBr[dataId]();
     }
   }
+
+
+  if (validatedAction) {
+    validatedAction.onclick = () => {
+      console.log(`validatedAction.onclick`)
+      const validatedInput = document.querySelector('#validated' + type);
+      const masked = jsbrasil.maskBr[dataId](validatedInput.value);
+      const validated = jsbrasil.validateBr[dataId](validatedInput.value);
+
+      document.querySelector('#validatedResult' + type).classList.remove('hidden');
+
+      if (validated) {
+        document.querySelector('#valicon' + type).innerHTML = 'thumb_up';
+        document.querySelector('#valtext' + type).innerHTML = 'Parabéns, ' + masked + ' tem a formatação válida!';
+      } else {
+        document.querySelector('#valicon' + type).innerHTML = 'thumb_down';
+        document.querySelector('#valtext' + type).innerHTML = 'Esta informação NÃO está correta!';
+      }
+    }
+  }
+
 }
 function makeHeader() {
   const header = `

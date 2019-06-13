@@ -1,0 +1,178 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gerador e Validador de Celular - Cadastro de Pessoas Físicas</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body data-id="celular">
+  <header></header>
+
+  <main class="container">
+    <h1>Gerador e Validador DARF </h1>
+    <section>
+      <div class="row">
+        <form class="col s12" onsubmit="runDocument(event)">
+          <div class="row">
+            <div class="input-field col s6">
+
+
+              <div class="card">
+                <!-- <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Validar </span>
+                  <input id="validated" type="text" class="validate">
+                  <label for="validated">Digite o DARF</label>
+
+                  <ul id="validatedResult" class=" hidden">
+                    <li>
+                      <div class="collapsible-header">
+                        <i class="material-icons" id="valicon">filter_drama</i>
+                        <span id="valtext"></span>
+                    </li>
+                  </ul>
+                </div> 
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="validatedAction"><i class="material-icons right">check</i>validar</a>
+                </div>
+-->
+                <div class="card-action">
+                  <button class="waves-effect waves-light btn" type="button" onclick="runExemplo()"><i
+                      class="material-icons right">add</i>Exibir um exemplo</button>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="input-field col s6">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Gerar um DARF de exemplo</span>
+
+
+                  <input id="nome" placeholder="MARIO DA SILVA" type="text" class="validate" required>
+                  <input id="cidade" placeholder="BELO HORIZONTE - MG" type="text" class="validate" required>
+                  <input id="periodo" placeholder="01/01/2019" type="date" class="validate" required>
+                  <input id="cpf" placeholder="915.062.303-69" type="text" class="validate" required>
+                  <input id="codreceita" placeholder="5029" type="number" class="validate" required>
+                  <input id="numreferencia" placeholder="" type="text" class="validate">
+                  <input id="vencimento" placeholder="01/01/2019" type="text" class="validate" required>
+                  <input id="valorPrincipal" placeholder="12,33" type="text" class="validate" required>
+                  <input id="multa" placeholder="0,12" type="text" class="validate" required>
+                  <input id="juros" placeholder="0,01" type="text" class="validate" required>
+
+                  
+                  <label for="generated"></label>
+                </div>
+                <div class="card-action">
+                  <button class="waves-effect waves-light btn"><i class="material-icons right">add</i>gerar
+                    novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+
+
+        <div id="close" class="hidden">
+          <a class=" waves-effect waves-light btn" onclick="toggle()"><i class="material-icons right">add</i>gerar de
+            novo</a>
+        </div>
+        <div id="darf" class="hidden"></div>
+
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
+
+            TODO
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3"
+                href="http://www.receita.fazenda.gov.br/Aplicacoes/ATSPO/SicalcWeb/default.asp?TipTributo=1&FormaPagto=1">Receita</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        © 2018 Gerador Brasileiro
+        <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js-brasil.js"></script>
+  <script src="darf.js"></script>
+  <script src="index.js"></script>
+
+  <script>
+    // document.querySelector('#darf').innerHTML = generateHTML();
+
+    runExemplo = () => {
+      const data = {
+        nome: 'MARIO DA SILVA',
+        cidade: 'BELO HORIZONTE - MG',
+        periodo: '01/01/2019',
+        cpf: '915.062.303-69',
+        codreceita: '5029',
+        vencimento: '01/01/2019',
+        valorPrincipal: '12,33',
+        multa: '0,12',
+        juros: '0,01'
+      }
+
+      document.querySelector('#darf').innerHTML = generateHTML(data);
+      this.toggle();
+    }
+
+    runDocument = (e) => {
+      e.preventDefault();
+      const data = {
+        nome: document.querySelector('#nome').value,
+        cidade: document.querySelector('#cidade').value,
+        periodo: document.querySelector('#periodo').value,
+        cpf: document.querySelector('#cpf').value,
+        codreceita: document.querySelector('#codreceita').value,
+        vencimento: document.querySelector('#vencimento').value,
+        valorPrincipal: document.querySelector('#valorPrincipal').value,
+        multa: document.querySelector('#multa').value,
+        juros: document.querySelector('#juros').value
+      }
+      document.querySelector('#darf').innerHTML = generateHTML(data);
+      this.toggle();
+    }
+
+    toggle = () => {
+      document.querySelector('#close').classList.toggle('hidden');
+      document.querySelector('#darf').classList.toggle('hidden');
+      document.querySelector('form').classList.toggle('hidden');
+    }
+  </script>
+</body>
+
+</html>

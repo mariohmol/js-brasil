@@ -14,6 +14,7 @@ exports.validateBr = {
     cnpj: validate_1.validate_cnpj,
     cpf: validate_1.validate_cpf,
     currency: validate_1.validate_currency,
+    number: validate_1.validate_number,
     inscricaoestadual: inscricaoestadual_1.validar,
     percentage: validate_1.validate_percentage,
     rg: validate_1.validate_rg,
@@ -181,7 +182,18 @@ exports.fakerBr = {
     celular: makeGeneric(mask_1.MASKS['celular']),
     inscricaoestadual: makeGeneric(mask_1.MASKS['inscricaoestadual']),
     time: makeGeneric(mask_1.MASKS['time']),
-    currency: makeGeneric(mask_1.MASKS['currency']),
+    currency: function () {
+        var x = Math.random() * 10000;
+        return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    },
+    currencyNumber: function () {
+        var x = Math.random() * 10000;
+        return parseFloat(x.toFixed(2));
+    },
+    number: function () {
+        var x = Math.random() * 10000;
+        return parseFloat(x.toFixed(2));
+    },
     percentage: makeGeneric(mask_1.MASKS['percentage']),
     placa: function () {
         var placa;
@@ -205,10 +217,11 @@ exports.fakerBr = {
 
 },{"./estados":2,"./mask":5,"./placa":6,"./validate":8,"randexp":10}],4:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 var funcoesGenerate = {
     ac: function (valor) {
         if (tamanhoNaoE(valor, 13)) {
@@ -644,16 +657,19 @@ function validar(ie, estado) {
     }
     estado = estado.toLowerCase();
     if (estado !== '' && !(estado in funcoes)) {
-        throw new Error('estado não é válido');
+        return new Error('estado não é válido');
     }
     if (eIndefinido(ie)) {
-        throw new Error('ie deve ser fornecida');
+        return new Error('ie deve ser fornecida');
     }
     if (Array.isArray(ie)) {
         return ie.map(function (i) { return validar(i, estado); });
     }
     if (typeof ie !== 'string') {
-        throw new Error('ie deve ser string ou array de strings');
+        return new Error('ie deve ser string ou array de strings');
+    }
+    if (!utils_1.allNumbersAreSame(ie)) {
+        return new Error('ie com todos dígitos iguais');
     }
     if (ie.match(/^ISENTO$/i)) {
         return true;
@@ -852,6 +868,9 @@ function calculoTrivialGenerate(valor, base, validarTamanho) {
     if (eIndefinido(base)) {
         base = primeiros(valor);
     }
+    if (!base) {
+        base = primeiros(valor);
+    }
     var digito = substracaoPor11SeMaiorQue2CasoContrario0(mod(base));
     return base + digito;
 }
@@ -879,7 +898,7 @@ function lookup(ie) {
     }
 }
 
-},{}],5:[function(require,module,exports){
+},{"./utils":7}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -937,6 +956,18 @@ exports.MASKS = {
             allowDecimal: true,
             integerLimit: 15,
             prefix: 'R$ ',
+            suffix: ''
+        })
+    },
+    number: {
+        text: '0.000,00',
+        textMask: createNumberMask_1.default({
+            decimalLimit: 2,
+            thousandsSeparatorSymbol: '.',
+            decimalSymbol: ',',
+            allowDecimal: true,
+            integerLimit: 15,
+            prefix: '',
             suffix: ''
         })
     },
@@ -1013,16 +1044,33 @@ exports.maskBr = {
         if (!currencyValue) {
             return '';
         }
-        if (currencyValue.split) {
-            var vals = currencyValue.split(',');
-            var mask = exports.MASKS.currency.textMask(vals[0]);
-            return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + vals[1];
-        }
-        else {
+        if (!currencyValue.split) {
             currencyValue += '';
-            var mask = exports.MASKS.currency.textMask(currencyValue);
-            return conformToMask(currencyValue, mask, { guide: false }).conformedValue;
+            currencyValue = currencyValue.replace('.', ',');
         }
+        var vals = currencyValue.split(',');
+        var mask = exports.MASKS.currency.textMask(vals[0]);
+        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        if (decimals.length > 2) {
+            decimals = decimals.substring(0, 2);
+        }
+        return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
+    },
+    number: function (numberValue) {
+        if (!numberValue) {
+            return '';
+        }
+        if (!numberValue.split) {
+            numberValue += '';
+            numberValue = numberValue.replace('.', ',');
+        }
+        var vals = numberValue.split(',');
+        var mask = exports.MASKS.number.textMask(vals[0]);
+        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        if (decimals.length > 2) {
+            decimals = decimals.substring(0, 2);
+        }
+        return conformToMask(numberValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     percentage: function (percentageValue) {
         if (!percentageValue) {
@@ -1030,7 +1078,8 @@ exports.maskBr = {
         }
         var vals = percentageValue.split(',');
         var mask = exports.MASKS.percentage.textMask(vals[0]);
-        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + vals[1];
+        var decimals = vals.length > 1 ? vals[1] : '00';
+        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     placa: makeGeneric('placa'),
     titulo: makeGeneric('titulo'),
@@ -1477,6 +1526,25 @@ exports.modulo11 = function (string, size, mod) {
     }
     return resto;
 };
+/**
+ *
+ * @param input
+ * ^ - Match line start
+  (\d) - match first digit and capture it in back reference #1 i.e. \1
+  (?!..) is a negative lookahead
+  (?!\1+$) means disallow the match if first digit is followed by same digit (captured group) till end.
+  \d{11}$ match next 11 digit followed by line end
+ */
+function allNumbersAreSame(input) {
+    input = getAllDigits(input);
+    var reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + (input.length - 1) + '}$');
+    return reg.test(input);
+}
+exports.allNumbersAreSame = allNumbersAreSame;
+function getAllDigits(input) {
+    return input.match(/\d/g).join("");
+}
+exports.getAllDigits = getAllDigits;
 
 },{}],8:[function(require,module,exports){
 "use strict";
@@ -1551,6 +1619,9 @@ exports.create_cnpj = create_cnpj;
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
 function validate_cpf(strCPF) {
     strCPF = strCPF.replace(/[^\d]+/g, '');
+    if (strCPF.length !== 11) {
+        return false;
+    }
     var restos = create_cpf(strCPF);
     if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
         return false;
@@ -1672,6 +1743,11 @@ function validate_currency(currency) {
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
+function validate_number(number) {
+    var regex = /^\d+(?:\.\d{0,2})$/;
+    return regex.test(number);
+}
+exports.validate_number = validate_number;
 function validate_percentage(percentage) {
     var regex = /^\d+(?:\.\d{0,2})$/;
     return regex.test(percentage);
