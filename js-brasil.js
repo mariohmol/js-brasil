@@ -1011,6 +1011,14 @@ exports.MASKS = {
                 return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/];
             }
         }
+    },
+    utils: {
+        numberToString: function (n) {
+            if (!n || typeof n === 'string') {
+                return n;
+            }
+            return (n + '').replace('.', ',');
+        }
     }
 };
 var makeGeneric = function (key) {
@@ -1083,15 +1091,7 @@ exports.maskBr = {
     },
     placa: makeGeneric('placa'),
     titulo: makeGeneric('titulo'),
-    processo: makeGeneric('processo'),
-    utils: {
-        numberToString: function (n) {
-            if (!n || typeof n === 'string') {
-                return n;
-            }
-            return (n + '').replace('.', ',');
-        }
-    }
+    processo: makeGeneric('processo')
 };
 /**
  * FROM TEXT-MASK

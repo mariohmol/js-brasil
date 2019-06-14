@@ -107,6 +107,14 @@ export const MASKS = {
         return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/];
       }
     }
+  },
+  utils: {
+    numberToString: (n) => {
+      if (!n || typeof n === 'string') {
+        return n;
+      }
+      return (n + '').replace('.', ',');
+    }
   }
 }
 
@@ -208,15 +216,7 @@ export const maskBr = {
   },
   placa: makeGeneric('placa'),
   titulo: makeGeneric('titulo'),
-  processo: makeGeneric('processo'),
-  utils: {
-    numberToString: (n) => {
-      if (!n || typeof n === 'string') {
-        return n;
-      }
-      return (n + '').replace('.', ',');
-    }
-  }
+  processo: makeGeneric('processo')
 };
 
 
