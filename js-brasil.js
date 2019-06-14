@@ -1083,7 +1083,15 @@ exports.maskBr = {
     },
     placa: makeGeneric('placa'),
     titulo: makeGeneric('titulo'),
-    processo: makeGeneric('processo')
+    processo: makeGeneric('processo'),
+    utils: {
+        numberToString: function (n) {
+            if (!n || typeof n === 'string') {
+                return n;
+            }
+            return (n + '').replace('.', ',');
+        }
+    }
 };
 /**
  * FROM TEXT-MASK
