@@ -32,7 +32,7 @@ export function processCaretTraps(mask: any) {
   return { maskWithoutCaretTraps: mask, indexes }
 }
 
-export const modulo11 = (string: { substring: (arg0: number, arg1: number) => string; }, size: number, mod: number) => {
+export const modulo11 = (string: string, size: number, mod: number) => {
   let soma = 0;
   for (let i = 1; i <= size; i++) {
     // tslint:disable-next-line:radix
@@ -61,8 +61,9 @@ export function allNumbersAreSame(inputValue: string) {
     const reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + ((<string>input).length - 1) + '}$');
     return reg.test(input);
   }
+  return false;
 }
 
-export function getAllDigits(input: { match: (arg0: RegExp) => { join: (arg0: string) => void; }; }) {
+export function getAllDigits(input: string) {
   return input.match(/\d/g).join("");
 }

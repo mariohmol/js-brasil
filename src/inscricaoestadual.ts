@@ -552,7 +552,7 @@ const funcoes = {
 
 
 
-export function validar(ie: string, estado: any) {
+export function validar(ie: string | Array<string>, estado: any) {
   if (eIndefinido(estado) || estado === null) {
     estado = '';
   }
@@ -568,14 +568,20 @@ export function validar(ie: string, estado: any) {
   }
 
   if (Array.isArray(ie)) {
-    return ie.map(function (i) { return validar(i, estado); });
+    let retorno = true;
+    ie.forEach(function (i) { 
+      if(!validar(i, estado)) {
+        retorno = false;
+      } 
+    });
+    return retorno;
   }
 
   if (typeof ie !== 'string') {
     return new Error('ie deve ser string ou array de strings');
   }
 
-  if(!allNumbersAreSame(ie)){
+  if (!allNumbersAreSame(ie)) {
     return new Error('ie com todos dígitos iguais');
   }
 
@@ -586,7 +592,11 @@ export function validar(ie: string, estado: any) {
   ie = ie.replace(/[\.|\-|\/|\s]/g, '');
 
   if (estado === '') {
-    return lookup(ie);
+    if (lookup(ie)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   if (/^\d+$/.test(ie) || estado === 'sp') {
@@ -677,7 +687,7 @@ export const IEMASKS = {
   rn: {
     text: '20.040.040-1',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/],
-    textMaskFunction: function mask(userInput: { match: (arg0: RegExp) => void; }) {
+    textMaskFunction: function mask(userInput: any) {
       const numbers: any = userInput.match(/\d/g);
       let numberLength = 0;
       if (numbers) {
@@ -780,19 +790,14 @@ function mod(valor: string, multiplicadores = serie(2, 9), divisor = 11) {
   }, 0) % divisor;
 }
 
-function calculoTrivial(valor: any, base = null, validarTamanho = null) {
-  return valor === calculoTrivialGenerate(valor);
-}
-
-
-function calculoTrivialGenerate(valor: any, base = null, validarTamanho = null) {
+function calculoTrivialGenerate(valor: any, base: any = null, validarTamanho = false) {
   if (!validarTamanho && tamanhoNaoE(valor)) {
     return false;
   }
   if (eIndefinido(base)) {
     base = primeiros(valor);
   }
-  if(!base){
+  if (!base) {
     base = primeiros(valor);
   }
 

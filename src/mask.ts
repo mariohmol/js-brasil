@@ -354,7 +354,12 @@ export function conformToMask(rawValue = emptyString, mask = emptyArray, config:
         // or we find at least one character that we can map.
         while (rawValueArr.length > 0) {
           // Let's retrieve the first user character in the queue of characters we have left
-          const { char: rawValueChar, isNew } = rawValueArr.shift()
+          const shift = rawValueArr.shift();
+          let rawValueChar: string, isNew: boolean;
+          if (shift) {
+            rawValueChar = shift.char;
+            isNew = shift.isNew;
+          } 
 
           // If the character we got from the user input is a placeholder character (which happens
           // regularly because user input could be something like (540) 90_-____, which includes

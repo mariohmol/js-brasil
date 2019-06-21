@@ -663,7 +663,13 @@ function validar(ie, estado) {
         return new Error('ie deve ser fornecida');
     }
     if (Array.isArray(ie)) {
-        return ie.map(function (i) { return validar(i, estado); });
+        var retorno_1 = true;
+        ie.forEach(function (i) {
+            if (!validar(i, estado)) {
+                retorno_1 = false;
+            }
+        });
+        return retorno_1;
     }
     if (typeof ie !== 'string') {
         return new Error('ie deve ser string ou array de strings');
@@ -676,7 +682,12 @@ function validar(ie, estado) {
     }
     ie = ie.replace(/[\.|\-|\/|\s]/g, '');
     if (estado === '') {
-        return lookup(ie);
+        if (lookup(ie)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     if (/^\d+$/.test(ie) || estado === 'sp') {
         return funcoes[estado](ie);
@@ -854,14 +865,9 @@ function mod(valor, multiplicadores, divisor) {
         return (multiplicadores[i++] * parseInt(atual, 10)) + anterior;
     }, 0) % divisor;
 }
-function calculoTrivial(valor, base, validarTamanho) {
-    if (base === void 0) { base = null; }
-    if (validarTamanho === void 0) { validarTamanho = null; }
-    return valor === calculoTrivialGenerate(valor);
-}
 function calculoTrivialGenerate(valor, base, validarTamanho) {
     if (base === void 0) { base = null; }
-    if (validarTamanho === void 0) { validarTamanho = null; }
+    if (validarTamanho === void 0) { validarTamanho = false; }
     if (!validarTamanho && tamanhoNaoE(valor)) {
         return false;
     }
@@ -1017,7 +1023,7 @@ exports.MASKS = {
             if (!n || typeof n === 'string') {
                 return n;
             }
-            return (n + '').replace('.', ',');
+            return (n.toString()).replace('.', ',');
         }
     }
 };
@@ -1048,21 +1054,22 @@ exports.maskBr = {
         return conformToMask(inscricaoestadualValue, exports.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
     },
     time: makeGeneric('time'),
-    currency: function (currencyValue) {
-        if (!currencyValue) {
+    currency: function (currencyValueInput) {
+        if (!currencyValueInput) {
             return '';
         }
-        if (!currencyValue.split) {
-            currencyValue += '';
+        var currencyValue = currencyValueInput.toString();
+        if (typeof currencyValueInput === 'number') {
             currencyValue = currencyValue.replace('.', ',');
         }
         var vals = currencyValue.split(',');
         var mask = exports.MASKS.currency.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        var decimals = vals.length > 1 ? vals[1].toString() : '00';
         if (decimals.length > 2) {
             decimals = decimals.substring(0, 2);
         }
-        return conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
+        var finalValue = conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
+        return finalValue;
     },
     number: function (numberValue) {
         if (!numberValue) {
@@ -1074,7 +1081,7 @@ exports.maskBr = {
         }
         var vals = numberValue.split(',');
         var mask = exports.MASKS.number.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1] + '' : '00';
+        var decimals = vals.length > 1 ? vals[1].toString() : '00';
         if (decimals.length > 2) {
             decimals = decimals.substring(0, 2);
         }
@@ -1200,7 +1207,12 @@ function conformToMask(rawValue, mask, config) {
                 // or we find at least one character that we can map.
                 while (rawValueArr.length > 0) {
                     // Let's retrieve the first user character in the queue of characters we have left
-                    var _a = rawValueArr.shift(), rawValueChar = _a.char, isNew = _a.isNew;
+                    var shift = rawValueArr.shift();
+                    var rawValueChar = void 0, isNew = void 0;
+                    if (shift) {
+                        rawValueChar = shift.char;
+                        isNew = shift.isNew;
+                    }
                     // If the character we got from the user input is a placeholder character (which happens
                     // regularly because user input could be something like (540) 90_-____, which includes
                     // a bunch of `_` which are placeholder characters) and we are not in *no guide* mode,
@@ -1471,14 +1483,16 @@ exports.PLACAS_RANGE = [
 ];
 exports.PLACAS_INVALID = { start: 'SAW0001', end: 'ZZZ9999' }; // || Sequências ainda não definidas
 function validate_placa(placa) {
-    var placaClean = placa.replace(/-/g, '').toUpperCase();
+    var placaClean = placa.toString();
+    placaClean = placaClean.replace(/-/g, '').toUpperCase();
     var exp = /[A-Za-z]{3}\-\d{4}/;
     var expClean = /[A-Za-z]{3}\d{4}/;
     // const letters = placa.substr(0, 3).toUpperCase();
-    if (!exp.test(placa) && !expClean.test(placaClean)) {
+    var placaString = placa.toString();
+    if (!exp.test(placaString) && !expClean.test(placaClean)) {
         return false;
     }
-    var found = placa >= exports.PLACAS_INVALID.start && placa <= exports.PLACAS_INVALID.end;
+    var found = placaString >= exports.PLACAS_INVALID.start && placaString <= exports.PLACAS_INVALID.end;
     if (found) {
         return false;
     }
@@ -1543,10 +1557,13 @@ exports.modulo11 = function (string, size, mod) {
   (?!\1+$) means disallow the match if first digit is followed by same digit (captured group) till end.
   \d{11}$ match next 11 digit followed by line end
  */
-function allNumbersAreSame(input) {
-    input = getAllDigits(input);
-    var reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + (input.length - 1) + '}$');
-    return reg.test(input);
+function allNumbersAreSame(inputValue) {
+    var input = getAllDigits(inputValue);
+    if (typeof input === 'string') {
+        var reg = new RegExp('^(\\d)(?!\\1+$)\\d{' + (input.length - 1) + '}$');
+        return reg.test(input);
+    }
+    return false;
 }
 exports.allNumbersAreSame = allNumbersAreSame;
 function getAllDigits(input) {
@@ -1691,10 +1708,11 @@ function valida_cep(cep) {
 }
 exports.valida_cep = valida_cep;
 function cep_ranges(cep) {
-    cep = cep.replace(/[^\d]+/g, '');
+    cep = (cep.toString()).replace(/[^\d]+/g, '');
     cep = parseInt(cep, 10);
+    var cepString = cep.toString();
     var found = Object.keys(exports.CEPRange).find(function (estado) {
-        var r = new RegExp(exports.CEPRange[estado]).test(cep);
+        var r = new RegExp(exports.CEPRange[estado]).test(cepString);
         if (r) {
             return true;
         }
@@ -1743,12 +1761,13 @@ function validate_rg(rg) {
 exports.validate_rg = validate_rg;
 function validate_time(time) {
     var expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
-    return expression.test(time.value);
+    var value = time.toString();
+    return expression.test(value);
 }
 exports.validate_time = validate_time;
 function validate_currency(currency) {
     var regex = /^\d+(?:\.\d{0,2})$/;
-    return regex.test(currency);
+    return regex.test(currency.toString());
 }
 exports.validate_currency = validate_currency;
 function validate_number(number) {

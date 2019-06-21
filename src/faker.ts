@@ -35,7 +35,7 @@ const makeGeneric = (val: any, options = null) => {
   };
 }
 
-function rand(length: number, ...ranges: (any[] | { charCodeAt: (arg0: number) => void; }[])[]) {
+function rand(length: number, ...ranges: any[]) {
   var str = "";                                                       // the string (initialized to "")
   while (length--) {                                                   // repeat this length of times
     var ind = Math.floor(Math.random() * ranges.length);              // get a random range from the ranges object
