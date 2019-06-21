@@ -355,7 +355,7 @@ export function conformToMask(rawValue = emptyString, mask = emptyArray, config:
         while (rawValueArr.length > 0) {
           // Let's retrieve the first user character in the queue of characters we have left
           const shift = rawValueArr.shift();
-          let rawValueChar: string, isNew: boolean;
+          let rawValueChar: string = '', isNew: boolean = false;
           if (shift) {
             rawValueChar = shift.char;
             isNew = shift.isNew;

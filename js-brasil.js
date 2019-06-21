@@ -1208,7 +1208,7 @@ function conformToMask(rawValue, mask, config) {
                 while (rawValueArr.length > 0) {
                     // Let's retrieve the first user character in the queue of characters we have left
                     var shift = rawValueArr.shift();
-                    var rawValueChar = void 0, isNew = void 0;
+                    var rawValueChar = '', isNew = false;
                     if (shift) {
                         rawValueChar = shift.char;
                         isNew = shift.isNew;
@@ -1567,7 +1567,11 @@ function allNumbersAreSame(inputValue) {
 }
 exports.allNumbersAreSame = allNumbersAreSame;
 function getAllDigits(input) {
-    return input.match(/\d/g).join("");
+    var match = input.match(/\d/g);
+    if (match) {
+        return match.join("");
+    }
+    return;
 }
 exports.getAllDigits = getAllDigits;
 

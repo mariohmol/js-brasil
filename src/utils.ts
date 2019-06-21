@@ -65,5 +65,9 @@ export function allNumbersAreSame(inputValue: string) {
 }
 
 export function getAllDigits(input: string) {
-  return input.match(/\d/g).join("");
+  const match = input.match(/\d/g);
+  if(match){
+    return match.join("");
+  }
+  return;
 }
