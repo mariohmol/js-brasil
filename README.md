@@ -12,10 +12,14 @@ Javascript Utils para Brasil (cpf, cnpj, inscrição estadual,  ...)
 
 `<script src="js-brasil.js"></script>`
 
-Módilos ValidateBR, MaskBR e FakerBR para nodejs ou browser.
+Módulos ValidateBR, MaskBR e FakerBR para nodejs ou browser.
 
+Plugins para [Angular](https://github.com/mariohmol/ng-brazil) e 
+[React](https://github.com/mariohmol/react-brazil)
 
 Veja tudo em ação no Gerador Brasileiro - http://geradorbrasileiro.com/
+
+
 
 # ValidateBR
 
@@ -113,7 +117,14 @@ var cep = jsbrasil.fakerBr.cep();
 
 # Angular 
 
-Utilize em angular 6 com: 
+Utilize em angular 2 a 7 com: 
 
 * ng-brazil - angular support for brazil apps -  https://github.com/mariohmol/ng-brazil
+
+# React 
+
+Utilize com React: 
+
+* react-brazil - react support for brazil apps -  https://github.com/mariohmol/react-brazil
+
 
