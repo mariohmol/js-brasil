@@ -18,7 +18,7 @@ export const MASKS = {
   telefone: {
     text: '(00) 0000-0000',
     textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-    textMaskFunction: function mask(userInput) {
+    textMaskFunction: function mask(userInput: any) {
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
       if (numbers) {
@@ -95,7 +95,7 @@ export const MASKS = {
   renavam: {
     text: '0000000000-00',
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/],
-    textMaskFunction: function mask(userInput) {
+    textMaskFunction: function mask(userInput: any) {
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
       if (numbers) {
@@ -109,18 +109,18 @@ export const MASKS = {
     }
   },
   utils: {
-    numberToString: (n) => {
+    numberToString: (n: number) => {
       if (!n || typeof n === 'string') {
         return n;
       }
-      return (n + '').replace('.', ',');
+      return (n.toString()).replace('.', ',');
     }
   }
 }
 
 
-const makeGeneric = (key) => {
-  return (value) => {
+const makeGeneric = (key: string) => {
+  return (value: string) => {
     if (!value) {
       return '';
     }
@@ -144,7 +144,7 @@ export const maskBr = {
   rg: makeGeneric('rg'),
   telefone: makeGeneric('telefone'),
   celular: makeGeneric('celular'),
-  inscricaoestadual: (inscricaoestadualValue, estado) => {
+  inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {
     if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
       !MASKS.inscricaoestadual[estado].textMask) {
       return '';
@@ -156,29 +156,34 @@ export const maskBr = {
     ).conformedValue;
   },
   time: makeGeneric('time'),
-  currency: (currencyValue) => {
-    if (!currencyValue) {
+  currency: (currencyValueInput: string | number) => {
+  
+    if (!currencyValueInput) {
       return '';
     }
-    if (!currencyValue.split) {
-      currencyValue += '';
+
+    let currencyValue: string = currencyValueInput.toString();
+
+    if(typeof currencyValueInput === 'number'){
       currencyValue = currencyValue.replace('.', ',');
     }
 
     const vals = currencyValue.split(',');
     const mask = MASKS.currency.textMask(vals[0]);
-    let decimals = vals.length > 1 ? vals[1] + '' : '00';
+    let decimals = vals.length > 1 ? vals[1].toString() : '00';
     if (decimals.length > 2) {
       decimals = decimals.substring(0, 2);
     }
 
-    return conformToMask(
+    const finalValue = conformToMask(
       currencyValue,
       mask,
       { guide: false }
     ).conformedValue + ',' + decimals;
+
+    return finalValue
   },
-  number: (numberValue) => {
+  number: (numberValue: string) => {
     if (!numberValue) {
       return '';
     }
@@ -189,7 +194,7 @@ export const maskBr = {
 
     const vals = numberValue.split(',');
     const mask = MASKS.number.textMask(vals[0]);
-    let decimals = vals.length > 1 ? vals[1] + '' : '00';
+    let decimals = vals.length > 1 ? vals[1].toString() : '00';
     if (decimals.length > 2) {
       decimals = decimals.substring(0, 2);
     }
@@ -200,7 +205,7 @@ export const maskBr = {
       { guide: false }
     ).conformedValue + ',' + decimals;
   },
-  percentage: (percentageValue) => {
+  percentage: (percentageValue: string) => {
     if (!percentageValue) {
       return '';
     }
@@ -490,7 +495,7 @@ export function convertMaskToPlaceholder(mask = emptyArray, placeholderChar = de
     )
   }
 
-  return mask.map((char) => {
+  return mask.map((char: any) => {
     return (char instanceof RegExp) ? placeholderChar : char
   }).join('')
 }

@@ -4,12 +4,12 @@ import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam } from
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
 
-const makeGeneric = (val, options = null) => {
+const makeGeneric = (val: any, options = null) => {
   return () => {
     if (!val.textMask || !val.textMask.map) {
       return '';
     }
-    const newData = val.textMask.map((c, index) => {
+    const newData = val.textMask.map((c: string | any[], index: string | number) => {
       if (options && options[index]) {
         return options[index]();
       }
@@ -35,7 +35,7 @@ const makeGeneric = (val, options = null) => {
   };
 }
 
-function rand(length, ...ranges) {
+function rand(length: number, ...ranges: (any[] | { charCodeAt: (arg0: number) => void; }[])[]) {
   var str = "";                                                       // the string (initialized to "")
   while (length--) {                                                   // repeat this length of times
     var ind = Math.floor(Math.random() * ranges.length);              // get a random range from the ranges object
@@ -70,7 +70,7 @@ const randomEstadoSigla = () => {
 
 export const fakerBr = {
   cep: makeGeneric(MASKS['cep']),
-  cepState: (state) => {
+  cepState: (state: string | number) => {
     return randexp(CEPRange[state]);
   },
   cpf: () => {
@@ -117,7 +117,7 @@ export const fakerBr = {
   },
   percentage: makeGeneric(MASKS['percentage']),
   placa: () => {
-    let placa;
+    let placa: any;
     do {
       placa = makeGeneric(MASKS['placa'])();
     } while (!validate_placa(placa));

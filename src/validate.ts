@@ -4,7 +4,7 @@ import { modulo11 } from "./utils";
 /*
 //if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
 */
-export function validate_cnpj(cnpj) {
+export function validate_cnpj(cnpj: any) {
   cnpj = cnpj.replace(/[^\d]+/g, '');
   let tamanho = cnpj.length - 2
   const digitos = cnpj.substring(tamanho);
@@ -19,7 +19,7 @@ export function validate_cnpj(cnpj) {
   return true;
 }
 
-export function create_cnpj(cnpj) {
+export function create_cnpj(cnpj: string) {
   cnpj = cnpj.replace(/[^\d]+/g, '');
 
   if (cnpj === '') {
@@ -45,9 +45,9 @@ export function create_cnpj(cnpj) {
   }
 
   // Valida DVs
-  let tamanho = cnpj.length - 2
-  let numeros = cnpj.substring(0, tamanho);
-  let soma = 0;
+  let tamanho: number = cnpj.length - 2
+  let numeros: any = cnpj.substring(0, tamanho);
+  let soma: any = 0;
   let pos = tamanho - 7;
   for (let i = tamanho; i >= 1; i--) {
     soma += numeros.charAt(tamanho - i) * pos--;
@@ -74,7 +74,7 @@ export function create_cnpj(cnpj) {
 }
 
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
-export function validate_cpf(strCPF) {
+export function validate_cpf(strCPF: any) {
   strCPF = strCPF.replace(/[^\d]+/g, '');
   if (strCPF.length !== 11) {
     return false;
@@ -91,7 +91,7 @@ export function validate_cpf(strCPF) {
   return true;
 }
 
-export function create_cpf(strCPF) {
+export function create_cpf(strCPF: string) {
   strCPF = strCPF.replace(/[^\d]+/g, '');
   if (strCPF === '00000000000') {
     return false;
@@ -136,7 +136,7 @@ export const CEPRange = {
   'TO': /^[7][7][0-9]{3}[0-9]{3}$/g,
 }
 
-export function valida_cep(cep) {
+export function valida_cep(cep: string) {
   const cepClean = cep.replace(/[^\d]+/g, '');
   const exp = /\d{2}\.\d{3}\-\d{3}/;
   if (!exp.test(cep) && cepClean.length !== 8) {
@@ -145,12 +145,12 @@ export function valida_cep(cep) {
   return true;
 }
 
-export function cep_ranges(cep) {
-  cep = cep.replace(/[^\d]+/g, '');
+export function cep_ranges(cep: string | number) {
+  cep = (cep.toString()).replace(/[^\d]+/g, '');
   cep = parseInt(cep, 10);
-
+  const cepString: string = cep.toString();
   const found = Object.keys(CEPRange).find(estado => {
-    const r = new RegExp(CEPRange[estado]).test(cep);
+    const r = new RegExp(CEPRange[estado]).test(cepString);
     if (r) {
       return true;
     }
@@ -162,7 +162,7 @@ export function cep_ranges(cep) {
 }
 
 
-export function validate_telefone(tel) {
+export function validate_telefone(tel: any) {
   const telClean = tel.replace(/[^\d]+/g, '');
   tel = tel.replace(/_/g, '');
   if (!(telClean.length === 10 || telClean.length === 11)) {
@@ -175,7 +175,7 @@ export function validate_telefone(tel) {
 }
 
 
-export function validate_celular(cel) {
+export function validate_celular(cel: any) {
   let celClean = cel.replace(/[^\d]+/g, '');
   celClean = celClean.replace(/_/g, '');
   if (celClean.length !== 11) {
@@ -187,7 +187,7 @@ export function validate_celular(cel) {
   return true;
 }
 
-export function validate_rg(rg) {
+export function validate_rg(rg: string) {
   let rgClean = rg.replace(/\./g, '');
   rgClean = rgClean.replace(/-/g, '');
   const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
@@ -200,28 +200,29 @@ export function validate_rg(rg) {
   return true;
 }
 
-export function validate_time(time) {
+export function validate_time(time: string | number) {
   const expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
-  return expression.test(time.value);
+  const value = time.toString();
+  return expression.test(value);
 }
 
-export function validate_currency(currency) {
+export function validate_currency(currency: string | number) {
   const regex = /^\d+(?:\.\d{0,2})$/;
-  return regex.test(currency);
+  return regex.test(currency.toString());
 }
 
-export function validate_number(number) {
+export function validate_number(number: string) {
   const regex = /^\d+(?:\.\d{0,2})$/;
   return regex.test(number);
 }
 
-export function validate_percentage(percentage) {
+export function validate_percentage(percentage: string) {
   const regex = /^\d+(?:\.\d{0,2})$/;
   return regex.test(percentage);
 }
 
 
-export function validate_titulo(titulo) {
+export function validate_titulo(titulo: any) {
   const tituloClean = titulo.replace(/\./g, '');
   const exp = /\d{4}\.\d{4}\.\d{4}/;
   const expClean = /\d{4}\d{4}\d{4}/;
@@ -231,7 +232,7 @@ export function validate_titulo(titulo) {
   return validaTituloVerificador(titulo);
 }
 
-function validaTituloVerificador(titulo) {
+function validaTituloVerificador(titulo: string) {
   const { dig1, dig2 } = create_titulo(titulo);
   const tam = titulo.length;
   const digitos = titulo.substr(tam - 2, 2);
@@ -242,7 +243,7 @@ function validaTituloVerificador(titulo) {
   }
 }
 
-export function create_titulo(titulo) {
+export function create_titulo(titulo: string) {
   const tit = titulo;
   let dig1 = 0;
   let dig2 = 0;
@@ -287,7 +288,7 @@ export function create_titulo(titulo) {
   return { dig1, dig2 };
 }
 
-export function validate_processo(processo) {
+export function validate_processo(processo: any) {
   let processoClean = processo.replace(/\./g, '');
   processoClean = processoClean.replace(/\-/g, '');
   const exp = /\d{7}\-\d{2}\.\d{4}\.\d{3}\.\d{4}/;
@@ -299,7 +300,7 @@ export function validate_processo(processo) {
 }
 
 
-export function validate_renavam(renavam) {
+export function validate_renavam(renavam: any) {
   let renavamClean = renavam.replace(/\./g, '');
   renavamClean = renavamClean.replace(/\-/g, '');
   const dv = create_renavam(renavam);
@@ -312,7 +313,7 @@ export function validate_renavam(renavam) {
   }
 }
 
-export function create_renavam(renavam) {
+export function create_renavam(renavam: string) {
   let dig1 = 0;
   while (renavam.length < 11) {
     renavam = '0' + renavam;

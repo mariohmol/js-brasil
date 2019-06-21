@@ -6,7 +6,7 @@ import { allNumbersAreSame } from "./utils";
 
 
 const funcoesGenerate = {
-  ac: function (valor) {
+  ac: function (valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -23,7 +23,7 @@ const funcoesGenerate = {
     return base + primeiroDigito + segundoDigito;
   },
 
-  am: function (valor) {
+  am: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -31,7 +31,7 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor);
   },
 
-  al: function (valor) {
+  al: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -51,7 +51,7 @@ const funcoesGenerate = {
     //     return false;
     // }
 
-    const base = primeiros(valor);
+    const base: any = primeiros(valor);
 
     let resto = mod(base) * 10;
 
@@ -62,7 +62,7 @@ const funcoesGenerate = {
     return base + digito;
   },
 
-  ap: function (valor) {
+  ap: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -71,9 +71,9 @@ const funcoesGenerate = {
       return false;
     }
 
-    const base = primeiros(valor);
+    const base: any = primeiros(valor);
 
-    let p, d;
+    let p: number, d: number;
 
     if (entre(base, 3000001, 3017000)) {
       p = 5;
@@ -88,7 +88,7 @@ const funcoesGenerate = {
 
     const resto = mod(p + base, [2, 3, 4, 5, 6, 7, 8, 9, 1]);
 
-    let digito;
+    let digito: number;
     if (resto === 1) {
       digito = 0;
     } else if (resto === 0) {
@@ -100,18 +100,18 @@ const funcoesGenerate = {
     return base + digito;
   },
 
-  ba: function (valor) {
+  ba: function (valor: any) {
     if (tamanhoNaoE(valor, 8) && tamanhoNaoE(valor)) {
       return false;
     }
 
-    const base = primeiros(valor, valor.length - 2);
-    let primeiroDigito, segundoDigito;
+    const base: any = primeiros(valor, valor.length - 2);
+    let primeiroDigito: number, segundoDigito: number;
 
     const segundoMultiplicador = serie(2, 7);
     const primeiroMultiplicador = serie(2, 8);
 
-    let primeiroResto, segundoResto;
+    let primeiroResto: number, segundoResto: number;
     let digitoComparacao = valor.substring(0, 1);
 
     if (tamanhoE(valor, 9)) {
@@ -137,14 +137,14 @@ const funcoesGenerate = {
     return base + primeiroDigito + segundoDigito;
   },
 
-  ce: function (valor) {
+  ce: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
     return calculoTrivialGenerate(valor);
   },
 
-  df: function (valor) {
+  df: function (valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -153,7 +153,7 @@ const funcoesGenerate = {
       return false;
     }
 
-    const base = primeiros(valor, 11);
+    const base: any = primeiros(valor, 11);
 
     const primeiro = substracaoPor11SeMaiorQue2CasoContrario0(mod(base));
     const segundo = substracaoPor11SeMaiorQue2CasoContrario0(mod(base + primeiro));
@@ -161,10 +161,10 @@ const funcoesGenerate = {
     return base + primeiro + segundo;
   },
 
-  es: function (valor) {
+  es: function (valor: any) {
     return calculoTrivialGenerate(valor);
   },
-  go: function (valor) {
+  go: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -173,14 +173,14 @@ const funcoesGenerate = {
       return false;
     }
 
-    const base = primeiros(valor);
+    const base: any = primeiros(valor);
 
     if (base === '11094402') {
       return valor.substr(8) === '1' || valor.substr(8) === '0';
     }
 
     const resto = mod(base);
-    let digito;
+    let digito: number;
 
     if (resto === 0) {
       digito = 0;
@@ -196,7 +196,7 @@ const funcoesGenerate = {
 
     return base + digito;
   },
-  ma: function (valor) {
+  ma: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -208,7 +208,7 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor);
   },
 
-  mg: function (valor) {
+  mg: function (valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -228,7 +228,7 @@ const funcoesGenerate = {
       return anterior + parseInt(atual, 10);
     }, 0);
 
-    let primeiro = ((Math.floor(produtorioLiteral / 10) + 1) * 10) - produtorioLiteral;
+    let primeiro: any = ((Math.floor(produtorioLiteral / 10) + 1) * 10) - produtorioLiteral;
     if (primeiro === 10) {
       primeiro = 0;
     }
@@ -238,14 +238,14 @@ const funcoesGenerate = {
     return base + primeiro + segundo;
   },
 
-  ms: function (valor) {
+  ms: function (valor: any) {
     if (naoComecaCom(valor, '28')) {
       return false;
     }
 
     return calculoTrivialGenerate(valor);
   },
-  mt: function (valor) {
+  mt: function (valor: any) {
     if (tamanhoNaoE(valor, 11) && tamanhoNaoE(valor)) {
       return false;
     }
@@ -253,7 +253,7 @@ const funcoesGenerate = {
     const base = tamanhoE(valor, 11) ? valor.substring(0, 10) : primeiros(valor);
     return calculoTrivialGenerate(valor, base, true);
   },
-  pa: function (valor) {
+  pa: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -265,7 +265,7 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor);
   },
 
-  pb: function (valor) {
+  pb: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -273,8 +273,8 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor);
   },
 
-  pe: function (valor) {
-    const base = valor.substring(0, valor.length - 2);
+  pe: function (valor: any) {
+    const base: any = valor.substring(0, valor.length - 2);
 
     const restoPrimeiro = mod(base);
     const primeiro = 11 - restoPrimeiro >= 10 ? 0 : 11 - restoPrimeiro;
@@ -285,11 +285,11 @@ const funcoesGenerate = {
     return base + primeiro + segundo;
   },
 
-  pi: function (valor) {
+  pi: function (valor: any) {
     return calculoTrivialGenerate(valor);
   },
 
-  pr: function (valor) {
+  pr: function (valor: any) {
     if (tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -304,7 +304,7 @@ const funcoesGenerate = {
 
     return base + primeiro + segundo;
   },
-  rj: function (valor) {
+  rj: function (valor: any) {
     if (tamanhoNaoE(valor, 8)) {
       return false;
     }
@@ -315,7 +315,7 @@ const funcoesGenerate = {
     return base + digito;
   },
 
-  rn: function (valor) {
+  rn: function (valor: any) {
     if (tamanhoNaoE(valor) && tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -336,8 +336,8 @@ const funcoesGenerate = {
 
     return base + digito;
   },
-  ro: function (valor) {
-    let base, digito, resultadoMod;
+  ro: function (valor: any) {
+    let base: any, digito: number, resultadoMod: number;
 
     if (tamanhoE(valor, 9)) {
       base = valor.substring(3, 8);
@@ -354,7 +354,7 @@ const funcoesGenerate = {
       return false;
     }
   },
-  rr: function (valor) {
+  rr: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -369,7 +369,7 @@ const funcoesGenerate = {
     return base + digito;
   },
 
-  rs: function (valor) {
+  rs: function (valor: any) {
     if (tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -378,11 +378,11 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor, base, true);
   },
 
-  sc: function (valor) {
+  sc: function (valor: any) {
     return calculoTrivialGenerate(valor);
   },
 
-  se: function (valor) {
+  se: function (valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -390,10 +390,10 @@ const funcoesGenerate = {
     return calculoTrivialGenerate(valor);
   },
 
-  sp: function (valor) {
+  sp: function (valor: any) {
     valor = valor.toUpperCase();
 
-    let segundaBase;
+    let segundaBase: string;
 
     if (valor.substr(0, 1) === 'P') {
       if (tamanhoNaoE(valor, 13)) {
@@ -424,12 +424,12 @@ const funcoesGenerate = {
     }
   },
 
-  to: function (valor) {
+  to: function (valor: any) {
     if (tamanhoNaoE(valor) && tamanhoNaoE(valor, 11)) {
       return false;
     }
 
-    let base;
+    let base: any;
 
     if (tamanhoE(valor, 11)) {
       if (['01', '02', '03', '99'].indexOf(valor.substring(2, 4)) === -1) {
@@ -451,100 +451,100 @@ const funcoesGenerate = {
 
 
 const funcoes = {
-  ac: function (valor) {
+  ac: function (valor: any) {
     return valor === funcoesGenerate.ac(valor);
   },
 
-  am: function (valor) {
+  am: function (valor: any) {
     return valor === funcoesGenerate.am(valor);
   },
 
-  al: function (valor) {
+  al: function (valor: any) {
     return valor === funcoesGenerate.al(valor);
   },
 
-  ap: function (valor) {
+  ap: function (valor: any) {
     return valor === funcoesGenerate.ap(valor);
   },
 
-  ba: function (valor) {
+  ba: function (valor: any) {
     return valor === funcoesGenerate.ba(valor);
   },
 
-  ce: function (valor) {
+  ce: function (valor: any) {
     return valor === funcoesGenerate.ce(valor);
   },
 
-  es: function (valor) {
+  es: function (valor: any) {
     return valor === funcoesGenerate.es(valor);
   },
-  go: function (valor) {
+  go: function (valor: any) {
     return valor === funcoesGenerate.go(valor);
   },
-  ma: function (valor) {
+  ma: function (valor: any) {
     return valor === funcoesGenerate.ma(valor);
   },
 
-  mg: function (valor) {
+  mg: function (valor: any) {
     return valor === funcoesGenerate.mg(valor);
   },
 
-  ms: function (valor) {
+  ms: function (valor: any) {
     return valor === funcoesGenerate.ms(valor);
   },
-  mt: function (valor) {
+  mt: function (valor: any) {
     return valor === funcoesGenerate.mt(valor);
   },
-  pa: function (valor) {
+  pa: function (valor: any) {
     return valor === funcoesGenerate.pa(valor);
   },
 
-  pb: function (valor) {
+  pb: function (valor: any) {
     return valor === funcoesGenerate.pb(valor);
   },
 
-  pe: function (valor) {
+  pe: function (valor: any) {
     return valor === funcoesGenerate.pe(valor);
   },
 
-  pi: function (valor) {
+  pi: function (valor: any) {
     return valor === funcoesGenerate.pi(valor);
   },
 
-  pr: function (valor) {
+  pr: function (valor: any) {
     return valor === funcoesGenerate.pr(valor);
   },
-  rj: function (valor) {
+  rj: function (valor: any) {
     return valor === funcoesGenerate.rj(valor);
   },
 
-  rn: function (valor) {
+  rn: function (valor: any) {
     return valor === funcoesGenerate.rn(valor);
   },
-  ro: function (valor) {
+  ro: function (valor: any) {
     return valor === funcoesGenerate.ro(valor);
   },
-  rr: function (valor) {
+  rr: function (valor: any) {
     return valor === funcoesGenerate.rr(valor);
   },
 
-  rs: function (valor) {
+  rs: function (valor: any) {
     return valor === funcoesGenerate.rs(valor);
   },
 
-  sc: function (valor) {
+  sc: function (valor: any) {
     return valor === funcoesGenerate.sc(valor);
   },
 
-  se: function (valor) {
+  se: function (valor: any) {
     return valor === funcoesGenerate.se(valor);
   },
 
-  sp: function (valor) {
+  sp: function (valor: string | boolean) {
     return valor === funcoesGenerate.sp(valor);
   },
 
-  to: function (valor) {
+  to: function (valor: any) {
     return valor === funcoesGenerate.to(valor);
   },
 };
@@ -552,7 +552,7 @@ const funcoes = {
 
 
 
-export function validar(ie, estado) {
+export function validar(ie: string, estado: any) {
   if (eIndefinido(estado) || estado === null) {
     estado = '';
   }
@@ -677,8 +677,8 @@ export const IEMASKS = {
   rn: {
     text: '20.040.040-1',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/],
-    textMaskFunction: function mask(userInput) {
-      const numbers = userInput.match(/\d/g);
+    textMaskFunction: function mask(userInput: { match: (arg0: RegExp) => void; }) {
+      const numbers: any = userInput.match(/\d/g);
       let numberLength = 0;
       if (numbers) {
         numberLength = numbers.join('').length;
@@ -722,11 +722,11 @@ export const IEMASKS = {
 };
 
 
-function eIndefinido(objeto) {
+function eIndefinido(objeto: any) {
   return typeof objeto === typeof undefined;
 }
 
-function tamanhoNaoE(string, tamanho = 9) {
+function tamanhoNaoE(string: { length: number; }, tamanho = 9) {
   if (eIndefinido(tamanho)) {
     tamanho = 9;
   }
@@ -734,11 +734,11 @@ function tamanhoNaoE(string, tamanho = 9) {
   return string.length !== tamanho;
 }
 
-function tamanhoE(string, tamanho) {
+function tamanhoE(string: any[], tamanho: number) {
   return !tamanhoNaoE(string, tamanho);
 }
 
-function serie(de, ate) {
+function serie(de: number, ate: number) {
   const resultado = [];
 
   while (de <= ate) {
@@ -748,7 +748,7 @@ function serie(de, ate) {
   return resultado;
 }
 
-function primeiros(string, quantidade = 8) {
+function primeiros(string: any, quantidade = 8) {
   if (eIndefinido(quantidade)) {
     quantidade = 8;
   }
@@ -756,11 +756,11 @@ function primeiros(string, quantidade = 8) {
   return string.substring(0, quantidade);
 }
 
-function substracaoPor11SeMaiorQue2CasoContrario0(valor) {
+function substracaoPor11SeMaiorQue2CasoContrario0(valor: number) {
   return valor < 2 ? 0 : 11 - valor;
 }
 
-function mod(valor, multiplicadores = serie(2, 9), divisor = 11) {
+function mod(valor: string, multiplicadores = serie(2, 9), divisor = 11) {
   if (eIndefinido(divisor)) {
     divisor = 11;
   }
@@ -771,7 +771,7 @@ function mod(valor, multiplicadores = serie(2, 9), divisor = 11) {
 
   let i = 0;
 
-  return valor.split('').reduceRight(function (anterior, atual) {
+  return valor.split('').reduceRight(function (anterior: number, atual: string) {
     if (i > multiplicadores.length - 1) {
       i = 0;
     }
@@ -780,12 +780,12 @@ function mod(valor, multiplicadores = serie(2, 9), divisor = 11) {
   }, 0) % divisor;
 }
 
-function calculoTrivial(valor, base = null, validarTamanho = null) {
+function calculoTrivial(valor: any, base = null, validarTamanho = null) {
   return valor === calculoTrivialGenerate(valor);
 }
 
 
-function calculoTrivialGenerate(valor, base = null, validarTamanho = null) {
+function calculoTrivialGenerate(valor: any, base = null, validarTamanho = null) {
   if (!validarTamanho && tamanhoNaoE(valor)) {
     return false;
   }
@@ -801,11 +801,11 @@ function calculoTrivialGenerate(valor, base = null, validarTamanho = null) {
   return base + digito;
 }
 
-function naoComecaCom(string, valor) {
+function naoComecaCom(string: any, valor: string) {
   return string.substring(0, valor.length) !== valor;
 }
 
-function entre(valor, limiteInferior, limiteSuperior) {
+function entre(valor: string | number, limiteInferior: number, limiteSuperior: number) {
   if (typeof valor === 'string') {
     valor = parseInt(valor, 10);
   }
@@ -814,7 +814,7 @@ function entre(valor, limiteInferior, limiteSuperior) {
 }
 
 
-function lookup(ie) {
+function lookup(ie: any) {
   const resultado = [];
 
   for (const estado in funcoes) {
