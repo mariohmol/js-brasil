@@ -69,7 +69,7 @@ export function getAllDigits(input: string) {
   if(match){
     return match.join("");
   }
-  return;
+  return '';
 }
 
 export function currencyToNumber(input){

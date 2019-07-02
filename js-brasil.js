@@ -1579,7 +1579,7 @@ function getAllDigits(input) {
     if (match) {
         return match.join("");
     }
-    return;
+    return '';
 }
 exports.getAllDigits = getAllDigits;
 function currencyToNumber(input) {
@@ -1739,6 +1739,7 @@ function cep_ranges(cep) {
         if (r) {
             return true;
         }
+        return false;
     });
     if (!found) {
         return false;

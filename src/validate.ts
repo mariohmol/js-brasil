@@ -154,6 +154,7 @@ export function cep_ranges(cep: string | number) {
     if (r) {
       return true;
     }
+    return false;
   })
   if (!found) {
     return false;
