@@ -12,6 +12,7 @@ describe('Validate test', () => {
 
   it('CPF', () => {
     expect(validateBr.cpf('127.529.875-36')).to.be.true;
+    expect(validateBr.cpf('090.988.020-44')).to.be.true;
     expect(validateBr.cpf('127.529.875-46')).to.be.false;
     expect(validateBr.cpf('127.529.875-37')).to.be.false;
     expect(validateBr.cpf('00.000.000/0000-00')).to.be.false;
