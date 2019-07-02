@@ -78,7 +78,7 @@ console.log(cpf) // '123.456.789-00'
 
 # FakerBR
 
-Gerador de dados de teste usando tipos de dados brasileiro, similar o fakejs
+Gerador de dados de teste usando tipos de dados brasileiro, similar o fakerjs
 
 Node:
 ```js
@@ -99,6 +99,49 @@ Browser:
 var cep = jsbrasil.fakerBr.cep();
 </script>  
 ```
+
+
+# UtilsBR
+
+Métodos úteis para todos apps brasileiros, veja alguns exemplos
+
+
+  it('Utils currencyToNumber Currency', () => {
+    const currency = utilsBr.currencyToNumber(' R$ 1.234.456,44 ');
+    expect(currency).to.be.equal(1234456.44);
+  });
+  it('Utils currencyToNumber Percentage', () => {
+    const percent = utilsBr.currencyToNumber(' 1.234.456,44%');
+    expect(percent).to.be.equal(1234456.44);
+
+    const percent2 = utilsBr.currencyToNumber(' 12 % ');
+    expect(percent2).to.be.equal(12);
+  });
+
+
+Node:
+```js
+const { utilsBr } = require('js-brasil');
+const currency = utilsBr.currencyToNumber(' R$ 1.234.456,44 '); // 1234456.44
+const percent2 = utilsBr.currencyToNumber(' 12 % '); // 12
+```
+
+Typescript:
+```ts
+import { utilsBr } from 'js-brasil';
+const currency = utilsBr.currencyToNumber(' R$ 1.234.456,44 ');
+const percent2 = utilsBr.currencyToNumber(' 12 % '); // 12
+```
+
+Browser:
+```html
+<script src="js-brasil.js"></script>
+<script>
+var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
+</script>  
+```
+
+
 
 # Tipos Suportados
 
