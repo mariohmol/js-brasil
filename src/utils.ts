@@ -73,10 +73,14 @@ export function getAllDigits(input: string) {
 }
 
 export function currencyToNumber(input){
-  const vals = input.split(' ');
-  if(vals.length===2){
+  input = input.replace(/ /g,'');
+  if(input.indexOf('$')!==-1){
+    const vals = input.split('$');
     input = vals[1];
   }
+  
+  input = input.replace('%','');
   input = input.replace(/\./g,'').replace(',','.');
+  
   return parseFloat(input);
 }

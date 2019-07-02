@@ -1583,10 +1583,12 @@ function getAllDigits(input) {
 }
 exports.getAllDigits = getAllDigits;
 function currencyToNumber(input) {
-    var vals = input.split(' ');
-    if (vals.length === 2) {
+    input = input.replace(/ /g, '');
+    if (input.indexOf('$') !== -1) {
+        var vals = input.split('$');
         input = vals[1];
     }
+    input = input.replace('%', '');
     input = input.replace(/\./g, '').replace(',', '.');
     return parseFloat(input);
 }
