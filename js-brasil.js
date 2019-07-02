@@ -1,7 +1,18 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("./src/utils");
+var utils = require("./src/utils");
 var validate_1 = require("./src/validate");
 var inscricaoestadual_1 = require("./src/inscricaoestadual");
 var faker = require("./src/faker");
@@ -26,12 +37,9 @@ exports.validateBr = {
     titulo: validate_1.validate_titulo,
     processo: validate_1.validate_processo
 };
-exports.utilsBr = {
-    isPresent: utils_1.isPresent,
-    MASKS: mask_1.MASKS,
+exports.utilsBr = __assign({}, utils, { MASKS: mask_1.MASKS,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
-    ESTADOS: estados_1.ESTADOS
-};
+    ESTADOS: estados_1.ESTADOS });
 exports.maskBr = mask.maskBr;
 exports.fakerBr = faker.fakerBr;
 
@@ -1574,6 +1582,15 @@ function getAllDigits(input) {
     return;
 }
 exports.getAllDigits = getAllDigits;
+function currencyToNumber(input) {
+    var vals = input.split(' ');
+    if (vals.length === 2) {
+        input = vals[1];
+    }
+    input = input.replace(/\./g, '').replace(',', '.');
+    return parseFloat(input);
+}
+exports.currencyToNumber = currencyToNumber;
 
 },{}],8:[function(require,module,exports){
 "use strict";

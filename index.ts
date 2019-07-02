@@ -1,6 +1,4 @@
-import {
-  isPresent
-} from './src/utils';
+import * as utils from './src/utils';
 import {
   valida_cep, validate_cnpj, validate_cpf, validate_telefone,
   validate_currency, validate_percentage, validate_rg, validate_time, validate_titulo, validate_processo, validate_celular, validate_renavam, validate_number
@@ -31,7 +29,7 @@ export const validateBr = {
 };
 
 export const utilsBr = {
-  isPresent,
+  ...utils,
   MASKS,
   PLACAS_RANGE,
   ESTADOS

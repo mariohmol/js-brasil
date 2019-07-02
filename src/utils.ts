@@ -71,3 +71,12 @@ export function getAllDigits(input: string) {
   }
   return;
 }
+
+export function currencyToNumber(input){
+  const vals = input.split(' ');
+  if(vals.length===2){
+    input = vals[1];
+  }
+  input = input.replace(/\./g,'').replace(',','.');
+  return parseFloat(input);
+}
