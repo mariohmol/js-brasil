@@ -108,6 +108,10 @@ export const MASKS = {
       }
     }
   },
+  creditcard: {
+    text: '0000 0000 0000 0000',
+    textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/]
+  },
   utils: {
     numberToString: (n: number) => {
       if (!n || typeof n === 'string') {
@@ -157,14 +161,14 @@ export const maskBr = {
   },
   time: makeGeneric('time'),
   currency: (currencyValueInput: string | number) => {
-  
+
     if (!currencyValueInput) {
       return '';
     }
 
     let currencyValue: string = currencyValueInput.toString();
 
-    if(typeof currencyValueInput === 'number'){
+    if (typeof currencyValueInput === 'number') {
       currencyValue = currencyValue.replace('.', ',');
     }
 
@@ -359,7 +363,7 @@ export function conformToMask(rawValue = emptyString, mask = emptyArray, config:
           if (shift) {
             rawValueChar = shift.char;
             isNew = shift.isNew;
-          } 
+          }
 
           // If the character we got from the user input is a placeholder character (which happens
           // regularly because user input could be something like (540) 90_-____, which includes
