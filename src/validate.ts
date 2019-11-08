@@ -208,8 +208,11 @@ export function validate_time(time: string | number) {
 }
 
 export function validate_currency(currency: string | number) {
-  const regex = /^\d+(?:\.\d{0,2})$/;
-  return regex.test(currency.toString());
+  if(typeof currency === 'number'){
+    return true;
+  }
+  const regex = /^(R\$|R\$ )?((\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;
+  return regex.test(currency);
 }
 
 export function validate_number(number: string) {

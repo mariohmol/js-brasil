@@ -1,6 +1,6 @@
 {
   "name": "js-brasil",
-  "version": "1.4.1",
+  "version": "1.4.3",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
     "test": "mocha -r ts-node/register test/**.ts",
     "browserify": "browserify dist/index.js --standalone jsbrasil -o js-brasil.js",
-    "dist": "npm run build && npm run browserify",
+    "dist": "npm run build && npm run browserify && cp js-brasil.js dist/",
     "publish-npm": "npm run dist && npm publish",
     "demo": "cp js-brasil.js demo/ && cd demo && http-server",
     "demo-full": "npm run dist && cp js-brasil.js demo/ && cd demo && http-server"

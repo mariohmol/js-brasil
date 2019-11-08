@@ -1026,6 +1026,10 @@ exports.MASKS = {
             }
         }
     },
+    creditcard: {
+        text: '0000 0000 0000 0000 00/00 000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+    },
     utils: {
         numberToString: function (n) {
             if (!n || typeof n === 'string') {
@@ -1790,8 +1794,11 @@ function validate_time(time) {
 }
 exports.validate_time = validate_time;
 function validate_currency(currency) {
-    var regex = /^\d+(?:\.\d{0,2})$/;
-    return regex.test(currency.toString());
+    if (typeof currency === 'number') {
+        return true;
+    }
+    var regex = /^(R\$|R\$ )?((\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;
+    return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
 function validate_number(number) {
