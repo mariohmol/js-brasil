@@ -14,36 +14,19 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils = require("./src/utils");
 var validate_1 = require("./src/validate");
-var inscricaoestadual_1 = require("./src/inscricaoestadual");
+exports.validateBr = validate_1.validateBr;
 var faker = require("./src/faker");
 var mask = require("./src/mask");
 var mask_1 = require("./src/mask");
 var placa_1 = require("./src/placa");
 var estados_1 = require("./src/estados");
-exports.validateBr = {
-    cep: validate_1.valida_cep,
-    cnpj: validate_1.validate_cnpj,
-    cpf: validate_1.validate_cpf,
-    currency: validate_1.validate_currency,
-    number: validate_1.validate_number,
-    inscricaoestadual: inscricaoestadual_1.validar,
-    percentage: validate_1.validate_percentage,
-    rg: validate_1.validate_rg,
-    placa: placa_1.validate_placa,
-    renavam: validate_1.validate_renavam,
-    telefone: validate_1.validate_telefone,
-    celular: validate_1.validate_celular,
-    time: validate_1.validate_time,
-    titulo: validate_1.validate_titulo,
-    processo: validate_1.validate_processo
-};
 exports.utilsBr = __assign({}, utils, { MASKS: mask_1.MASKS,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS });
 exports.maskBr = mask.maskBr;
 exports.fakerBr = faker.fakerBr;
 
-},{"./src/estados":2,"./src/faker":3,"./src/inscricaoestadual":4,"./src/mask":5,"./src/placa":6,"./src/utils":7,"./src/validate":8}],2:[function(require,module,exports){
+},{"./src/estados":2,"./src/faker":3,"./src/mask":5,"./src/placa":6,"./src/utils":7,"./src/validate":8}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
@@ -203,6 +186,7 @@ exports.fakerBr = {
         return parseFloat(x.toFixed(2));
     },
     percentage: makeGeneric(mask_1.MASKS['percentage']),
+    pispasep: makeGeneric(mask_1.MASKS['pispasep']),
     placa: function () {
         var placa;
         do {
@@ -927,39 +911,17 @@ exports.MASKS = {
         text: '00.000.000/0000-00',
         textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
     },
-    rg: {
-        text: 'AA-00.000.000',
-        textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
-    },
-    telefone: {
-        text: '(00) 0000-0000',
-        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-        textMaskFunction: function mask(userInput) {
-            var numbers = userInput.match(/\d/g);
-            var numberLength = 0;
-            if (numbers) {
-                numberLength = numbers.join('').length;
-            }
-            if (!userInput || numberLength > 10) {
-                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-            }
-            else {
-                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-            }
-        }
-    },
     celular: {
         text: '(00) 00000-0000',
         textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     },
+    creditcard: {
+        text: '0000 0000 0000 0000 00/00 000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+    },
     cep: {
         text: '00.000-000',
         textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
-    },
-    inscricaoestadual: inscricaoestadual_1.IEMASKS,
-    time: {
-        text: '00:00',
-        textMask: [/\d/, /\d/, ':', /\d/, /\d/]
     },
     currency: {
         text: '0.000,00',
@@ -973,6 +935,7 @@ exports.MASKS = {
             suffix: ''
         })
     },
+    inscricaoestadual: inscricaoestadual_1.IEMASKS,
     number: {
         text: '0.000,00',
         textMask: createNumberMask_1.default({
@@ -984,6 +947,10 @@ exports.MASKS = {
             prefix: '',
             suffix: ''
         })
+    },
+    pispasep: {
+        text: '000.00000.00-0',
+        textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '-', /\d/]
     },
     percentage: {
         text: '00,00%',
@@ -1001,13 +968,13 @@ exports.MASKS = {
         text: 'AAA-0000',
         textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
     },
-    titulo: {
-        text: '0000.0000.0000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
-    },
     processo: {
         text: '0000000-00.0000.AAA.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '.', /\d/, /\d/, /\d/, /\d/]
+    },
+    rg: {
+        text: 'AA-00.000.000',
+        textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
     },
     renavam: {
         text: '0000000000-00',
@@ -1026,9 +993,30 @@ exports.MASKS = {
             }
         }
     },
-    creditcard: {
-        text: '0000 0000 0000 0000 00/00 000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+    telefone: {
+        text: '(00) 0000-0000',
+        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+        textMaskFunction: function mask(userInput) {
+            var numbers = userInput.match(/\d/g);
+            var numberLength = 0;
+            if (numbers) {
+                numberLength = numbers.join('').length;
+            }
+            if (!userInput || numberLength > 10) {
+                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+            }
+            else {
+                return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+            }
+        }
+    },
+    titulo: {
+        text: '0000.0000.0000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
+    },
+    time: {
+        text: '00:00',
+        textMask: [/\d/, /\d/, ':', /\d/, /\d/]
     },
     utils: {
         numberToString: function (n) {
@@ -1052,12 +1040,10 @@ var makeGeneric = function (key) {
     };
 };
 exports.maskBr = {
+    celular: makeGeneric('celular'),
     cep: makeGeneric('cep'),
     cpf: makeGeneric('cpf'),
     cnpj: makeGeneric('cnpj'),
-    rg: makeGeneric('rg'),
-    telefone: makeGeneric('telefone'),
-    celular: makeGeneric('celular'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
         if (!inscricaoestadualValue || !estado || !exports.MASKS.inscricaoestadual[estado] ||
             !exports.MASKS.inscricaoestadual[estado].textMask) {
@@ -1065,7 +1051,6 @@ exports.maskBr = {
         }
         return conformToMask(inscricaoestadualValue, exports.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
     },
-    time: makeGeneric('time'),
     currency: function (currencyValueInput) {
         if (!currencyValueInput) {
             return '';
@@ -1108,9 +1093,14 @@ exports.maskBr = {
         var decimals = vals.length > 1 ? vals[1] : '00';
         return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
+    pispasep: makeGeneric('pispasep'),
     placa: makeGeneric('placa'),
-    titulo: makeGeneric('titulo'),
-    processo: makeGeneric('processo')
+    renavam: makeGeneric('renavam'),
+    processo: makeGeneric('processo'),
+    rg: makeGeneric('rg'),
+    telefone: makeGeneric('telefone'),
+    time: makeGeneric('time'),
+    titulo: makeGeneric('titulo')
 };
 /**
  * FROM TEXT-MASK
@@ -1602,6 +1592,8 @@ exports.currencyToNumber = currencyToNumber;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
+var inscricaoestadual_1 = require("./inscricaoestadual");
+var placa_1 = require("./placa");
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
 /*
 //if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
@@ -1801,6 +1793,11 @@ function validate_currency(currency) {
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
+function validate_pispasep(number) {
+    var regex = /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
+    return regex.test(number);
+}
+exports.validate_pispasep = validate_pispasep;
 function validate_number(number) {
     var regex = /^\d+(?:\.\d{0,2})$/;
     return regex.test(number);
@@ -1926,8 +1923,26 @@ function create_renavam(renavam) {
     }
 }
 exports.create_renavam = create_renavam;
+exports.validateBr = {
+    cep: valida_cep,
+    celular: validate_celular,
+    cnpj: validate_cnpj,
+    cpf: validate_cpf,
+    currency: validate_currency,
+    number: validate_number,
+    inscricaoestadual: inscricaoestadual_1.validar,
+    percentage: validate_percentage,
+    pispasep: validate_pispasep,
+    placa: placa_1.validate_placa,
+    processo: validate_processo,
+    renavam: validate_renavam,
+    rg: validate_rg,
+    telefone: validate_telefone,
+    time: validate_time,
+    titulo: validate_titulo
+};
 
-},{"./utils":7}],9:[function(require,module,exports){
+},{"./inscricaoestadual":4,"./placa":6,"./utils":7}],9:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */
 
 

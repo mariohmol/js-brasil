@@ -1,28 +1,38 @@
-.hidden{
+.hidden {
   display: none;
 }
 
-nav{
+nav {
   background-color: #303F9F !important;
 }
 
-footer{
+footer {
   background-color: #3F51B5 !important;
 }
 
 .card .card-content {
   min-height: 100px;
 }
+.nav-wrapper.container{
+  width: 90%;
+}
+.card-action {
+  height: 77px;
+  text-align: center;
+}
 
-.m4 .card .card-content {
-  min-height: 220px;
+.card-action a {
+  margin: 0 !important;
+}
+
+.m4 .card .card-content p {
+  height: 220px;
 }
 
 .text-lighten-4 {
   font-size: 20px;
 }
 
-.text-lighten-4 img{
+.text-lighten-4 img {
   width: 30px
 }
-

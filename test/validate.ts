@@ -52,12 +52,21 @@ describe('Validate test', () => {
     expect(validateBr.inscricaoestadual('1234', 'mg')).to.be.false;
   });
 
-  it('Percentage', () => {
+  // context('Percentage', () => {
+  //   it('Pass when valid', () => {
+  //     expect(validateBr.percentage('10')).to.be.true;
+  //   });
+  //   it('Error when not valid', () => {
+  //     expect(validateBr.percentage('1234')).to.be.false;
+  //   });
+  // });
+
+  context('PIS/PASEP', () => {
     it('Pass when valid', () => {
-      expect(validateBr.percentage('10')).to.be.true;
+      expect(validateBr.pispasep('103.12345.12-1')).to.be.true;
     });
     it('Error when not valid', () => {
-      expect(validateBr.percentage('1234')).to.be.false;
+      expect(validateBr.pispasep('1234')).to.be.false;
     });
   });
 

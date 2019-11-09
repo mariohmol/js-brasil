@@ -116,6 +116,7 @@ export const fakerBr = {
     return parseFloat(x.toFixed(2));
   },
   percentage: makeGeneric(MASKS['percentage']),
+  pispasep: makeGeneric(MASKS['pispasep']),
   placa: () => {
     let placa: any;
     do {

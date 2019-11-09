@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Gerador e Validador de Celular - Cadastro de Pessoas Físicas</title>
+  <title>Gerador e Validador de PIS/PASEP</title>
   <link rel="stylesheet" href="index.css">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body data-id="celular">
+<body data-id="pispasep">
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Cadastro de Pessoas Físicas (Celular ou Celular-MF) </h1>
+    <h1>Gerador e Validador de PIS/PASEP </h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -27,9 +27,9 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar Celular</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar PIS/PASEP</span>
                   <input id="validated" type="text" class="validate">
-                  <label for="validated">Digite o Celular</label>
+                  <label for="validated">Digite o PIS/PASEP</label>
 
                   <ul id="validatedResult" class=" hidden">
                     <li>
@@ -49,7 +49,7 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar Celular</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar PIS/PASEP</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
@@ -71,24 +71,27 @@
           <div class="col l6 s12">
             <h5 class="white-text">Como Funciona?</h5>
             <p class="grey-text text-lighten-4"> 
-              
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o Celular por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
+                O Programa de Integração Social (PIS) e o Programa de Formação do Patrimônio do Servidor Público (PASEP), 
+                mais conhecidos pela sigla PIS/PASEP,[1] são contribuições sociais de natureza tributária, devidas 
+                pelas pessoas jurídicas, com objetivo de financiar o pagamento do seguro-desemprego, 
+                abono e participação na receita dos órgãos e entidades para os trabalhadores públicos e privados. 
+              
+                O PIS/PASEP é um número cadastrado (de onze dígitos decimais) através de Documento de Cadastro do NIS (DCN) e 
+                Cartão de CNPJ, sendo que este serve para dar segurança ao FGTS e gerir o Programa de Integração.
               </p>
           </div>
           <div class="col l4 offset-l2 s12">
             <h5 class="white-text">Referências</h5>
             <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Carteira_Nacional_de_Habilita%C3%A7%C3%A3o">Wikipedia</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/PIS/PASEP">Wikipedia</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="footer-copyright">
         <div class="container">
-        © 2018 Gerador Brasileiro
+        © 2019 Gerador Brasileiro
         <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
         </div>
       </div>

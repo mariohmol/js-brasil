@@ -16,7 +16,10 @@ describe('Faker test', () => {
     expect(fakerBr.titulo()).to.exist;
   });
 
-
+  it('Faker celular', () => {
+    const celular = fakerBr.celular();
+    expect(validateBr.celular(celular)).to.be.true;
+  });
   it('Faker CEP', () => {
     const cep = fakerBr.cep();
     expect(validateBr.cep(cep)).to.be.true;
@@ -29,9 +32,23 @@ describe('Faker test', () => {
     const cpf = fakerBr.cpf();
     expect(validateBr.cpf(cpf)).to.be.true;
   });
+  it('Faker Currency', () => {
+    // const currency = fakerBr.currency();
+    // expect(validateBr.currency(currency)).to.be.true;
+    const currencyNumber = fakerBr.currencyNumber();
+    expect(validateBr.currency(currencyNumber)).to.be.true;
+  });
   it('Faker RG', () => {
     const rg = fakerBr.rg();
     expect(validateBr.rg(rg)).to.be.true;
+  });
+  it('Faker RENAVAM', () => {
+    const renavam = fakerBr.renavam();
+    expect(validateBr.renavam(renavam)).to.be.true;
+  });
+  it('Faker PIS/PASEP', () => {
+    const pispasep = fakerBr.pispasep();
+    expect(validateBr.pispasep(pispasep)).to.be.true;
   });
   it('Faker PLACA', () => {
     const placa = fakerBr.placa();
@@ -41,33 +58,20 @@ describe('Faker test', () => {
     const telefone = fakerBr.telefone();
     expect(validateBr.telefone(telefone)).to.be.true;
   });
-  it('Faker celular', () => {
-    const celular = fakerBr.celular();
-    expect(validateBr.celular(celular)).to.be.true;
-  });
+
   // it('Faker Time', () => {
   //   const time = fakerBr.time();
   //   expect(validateBr.time(time)).to.be.true;
   // });
+
+  // const inscricaoestadual  = fakerBr.inscricaoestadual();
+  // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;
+
+  // const percentage  = fakerBr.percentage();
+  // expect(validateBr.percentage(percentage)).to.be.true;
   it('Faker Titulo', () => {
     const titulo = fakerBr.titulo();
     expect(validateBr.titulo(titulo)).to.be.true;
-  });
-
-  it('Faker Moeda', () => {
-    const currency = fakerBr.currency();
-    const currencyNumber = fakerBr.currencyNumber();
-    // expect(validateBr.currency(currency)).to.be.true;
-    expect(validateBr.currency(currencyNumber)).to.be.true;
-  });
-
-  it('Faker Others', () => {
-
-    // const inscricaoestadual  = fakerBr.inscricaoestadual();
-    // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;
-
-    // const percentage  = fakerBr.percentage();
-    // expect(validateBr.percentage(percentage)).to.be.true;
   });
 
 });

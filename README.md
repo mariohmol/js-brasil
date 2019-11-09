@@ -148,13 +148,16 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * CEP - http://geradorbrasileiro.com/cep.html
 * CNPJ - http://geradorbrasileiro.com/cnpj.html
 * CPF -  - http://geradorbrasileiro.com/cpf.html
+* CNH -  - http://geradorbrasileiro.com/cnh.html
+* Celular - http://geradorbrasileiro.com/celular.html
 * Inscricao Estadual -  - http://geradorbrasileiro.com/inscricaoestadual.html Todos os estados do Brasil
 * RG  - http://geradorbrasileiro.com/rg.html
 * Placa de carro - http://geradorbrasileiro.com/placa.html
-* Telefone  - http://geradorbrasileiro.com/telefone.html
-* Celular - http://geradorbrasileiro.com/celular.html
-* Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
+* PIS/PASEP - http://geradorbrasileiro.com/pis.html
 * Processo da justiça - http://geradorbrasileiro.com/processo.html
+* Telefone  - http://geradorbrasileiro.com/telefone.html
+* Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
+* RENAVAM  - http://geradorbrasileiro.com/renavam.html
 * Outros: currency, percentage, time (data/hora), number - http://geradorbrasileiro.com/others.html
 
 

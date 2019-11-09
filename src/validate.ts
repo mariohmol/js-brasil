@@ -1,4 +1,6 @@
 import { modulo11 } from "./utils";
+import { validar } from "./inscricaoestadual";
+import { validate_placa } from "./placa";
 
 // http://www.geradorcnpj.com/javascript-validar-cnpj.htm
 /*
@@ -215,6 +217,11 @@ export function validate_currency(currency: string | number) {
   return regex.test(currency);
 }
 
+export function validate_pispasep(number: string) {
+  const regex = /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
+  return regex.test(number);
+}
+
 export function validate_number(number: string) {
   const regex = /^\d+(?:\.\d{0,2})$/;
   return regex.test(number);
@@ -334,3 +341,22 @@ export function create_renavam(renavam: string) {
     return resto;
   }
 }
+
+export const validateBr = {
+  cep: valida_cep,
+  celular: validate_celular,
+  cnpj: validate_cnpj,
+  cpf: validate_cpf,
+  currency: validate_currency,
+  number: validate_number,
+  inscricaoestadual: validar,
+  percentage: validate_percentage,
+  pispasep: validate_pispasep,
+  placa: validate_placa,
+  processo: validate_processo,
+  renavam: validate_renavam,
+  rg: validate_rg,
+  telefone: validate_telefone,
+  time: validate_time,
+  titulo: validate_titulo
+};

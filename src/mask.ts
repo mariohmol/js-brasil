@@ -11,38 +11,17 @@ export const MASKS = {
     text: '00.000.000/0000-00',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
-  rg: {
-    text: 'AA-00.000.000',
-    textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
-  },
-  telefone: {
-    text: '(00) 0000-0000',
-    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-    textMaskFunction: function mask(userInput: any) {
-      const numbers = userInput.match(/\d/g);
-      let numberLength = 0;
-      if (numbers) {
-        numberLength = numbers.join('').length;
-      }
-      if (!userInput || numberLength > 10) {
-        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-      } else {
-        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-      }
-    }
-  },
   celular: {
     text: '(00) 00000-0000',
     textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
   },
+  creditcard: {
+    text: '0000 0000 0000 0000 00/00 000',
+    textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+  },
   cep: {
     text: '00.000-000',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
-  },
-  inscricaoestadual: IEMASKS,
-  time: {
-    text: '00:00',
-    textMask: [/\d/, /\d/, ':', /\d/, /\d/]
   },
   currency: {
     text: '0.000,00',
@@ -56,6 +35,7 @@ export const MASKS = {
       suffix: ''
     })
   },
+  inscricaoestadual: IEMASKS,
   number: {
     text: '0.000,00',
     textMask: createNumberMask({
@@ -67,6 +47,10 @@ export const MASKS = {
       prefix: '',
       suffix: ''
     })
+  },
+  pispasep: {
+    text: '000.00000.00-0',
+    textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '-', /\d/]
   },
   percentage: {
     text: '00,00%',
@@ -84,13 +68,13 @@ export const MASKS = {
     text: 'AAA-0000',
     textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
   },
-  titulo: {
-    text: '0000.0000.0000',
-    textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
-  },
   processo: {
     text: '0000000-00.0000.AAA.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '.', /\d/, /\d/, /\d/, /\d/]
+  },
+  rg: {
+    text: 'AA-00.000.000',
+    textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
   },
   renavam: {
     text: '0000000000-00',
@@ -108,9 +92,29 @@ export const MASKS = {
       }
     }
   },
-  creditcard: {
-    text: '0000 0000 0000 0000 00/00 000',
-    textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+  telefone: {
+    text: '(00) 0000-0000',
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    textMaskFunction: function mask(userInput: any) {
+      const numbers = userInput.match(/\d/g);
+      let numberLength = 0;
+      if (numbers) {
+        numberLength = numbers.join('').length;
+      }
+      if (!userInput || numberLength > 10) {
+        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+      } else {
+        return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+      }
+    }
+  },
+  titulo: {
+    text: '0000.0000.0000',
+    textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
+  },
+  time: {
+    text: '00:00',
+    textMask: [/\d/, /\d/, ':', /\d/, /\d/]
   },
   utils: {
     numberToString: (n: number) => {
@@ -142,12 +146,10 @@ const makeGeneric = (key: string) => {
 }
 
 export const maskBr = {
+  celular: makeGeneric('celular'),
   cep: makeGeneric('cep'),
   cpf: makeGeneric('cpf'),
   cnpj: makeGeneric('cnpj'),
-  rg: makeGeneric('rg'),
-  telefone: makeGeneric('telefone'),
-  celular: makeGeneric('celular'),
   inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {
     if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
       !MASKS.inscricaoestadual[estado].textMask) {
@@ -159,7 +161,6 @@ export const maskBr = {
       { guide: false }
     ).conformedValue;
   },
-  time: makeGeneric('time'),
   currency: (currencyValueInput: string | number) => {
 
     if (!currencyValueInput) {
@@ -223,9 +224,14 @@ export const maskBr = {
       { guide: false }
     ).conformedValue + ',' + decimals;
   },
+  pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),
-  titulo: makeGeneric('titulo'),
-  processo: makeGeneric('processo')
+  renavam: makeGeneric('renavam'),
+  processo: makeGeneric('processo'),
+  rg: makeGeneric('rg'),
+  telefone: makeGeneric('telefone'),
+  time: makeGeneric('time'),
+  titulo: makeGeneric('titulo')
 };
 
 
