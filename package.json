@@ -4,12 +4,16 @@
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc index",
     "watch": "onchange 'src/**/*.ts' '*.ts' -- npm run build",
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
+    "clean": "rm *.js && rm -rf dist/ && mkdir dist",
     "test": "mocha -r ts-node/register test/**.ts",
-    "browserify": "browserify dist/index.js --standalone jsbrasil -o js-brasil.js",
+    "browserify": "browserify index.js --standalone jsbrasil -o js-brasil.js",
+    "manual:compile": "tsc && tsc addons.ts && rm src/*.js && rm src/addons/*.js",
     "dist": "npm run build && npm run browserify && cp js-brasil.js dist/",
+    "a:browserify": "browserify addons.js --standalone jsbrasil-addons -o js-brasil-addons.js",
+    "a:dist": "tsc addons && npm run a:browserify && cp js-brasil-addons.js dist/",
     "publish-npm": "npm run dist && npm publish",
     "demo": "cp js-brasil.js demo/ && cd demo && http-server",
     "demo-full": "npm run dist && cp js-brasil.js demo/ && cd demo && http-server"

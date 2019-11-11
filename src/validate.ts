@@ -151,13 +151,16 @@ export function cep_ranges(cep: string | number) {
   cep = (cep.toString()).replace(/[^\d]+/g, '');
   cep = parseInt(cep, 10);
   const cepString: string = cep.toString();
-  const found = Object.keys(CEPRange).find(estado => {
+  const keys = Object.keys(CEPRange);
+  let found: any;
+  for (let i; i < keys.length; i++) {
+    const estado = keys[i];
     const r = new RegExp(CEPRange[estado]).test(cepString);
     if (r) {
-      return true;
+      found = r;
+      i = keys.length
     }
-    return false;
-  })
+  }
   if (!found) {
     return false;
   }
@@ -210,7 +213,7 @@ export function validate_time(time: string | number) {
 }
 
 export function validate_currency(currency: string | number) {
-  if(typeof currency === 'number'){
+  if (typeof currency === 'number') {
     return true;
   }
   const regex = /^(R\$|R\$ )?((\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;

@@ -17,10 +17,15 @@
       "dom"
     ],
     "paths": {
-      "js-brasil": [ "dist/js-brasil" ]
+      "js-brasil": [
+        "dist/js-brasil"
+      ]
     }
   },
   "exclude": [
     ".ng_build"
+  ],
+  "include": [
+    "src/**/*"
   ]
 }
