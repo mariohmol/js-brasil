@@ -72,6 +72,14 @@ export function getAllDigits(input: string) {
   return '';
 }
 
+export function getAllWords(input: string) {
+  const match = input.match(/\w/g);
+  if (match) {
+    return match.join("");
+  }
+  return '';
+}
+
 export function currencyToNumber(input) {
   input = input.replace(/ /g, '');
   if (input.indexOf('$') !== -1) {
@@ -101,3 +109,17 @@ export function fillString(string, size, fill) {
   }
   return string;
 }
+
+export function rand(begin, end) {
+  return Math.floor(Math.random() * end) + begin;
+}
+
+export function randArray(array) {
+  const index = rand(0, array.length);
+  return array[index];
+}
+
+export const CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
+  "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
+
+

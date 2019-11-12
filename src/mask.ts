@@ -27,6 +27,10 @@ export const MASKS = {
       /\d/, /\d/, /\d/, /\d/, '.', /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.',
       /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
+  chassi: {
+    text: 'AAA AAAAAA AA AA0000', // 9BW ZZZ377 VT 004251
+    textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
+  },
   cnae: {
     text: '0000-0/00', // 6821-8/01
     textMask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, '/', /\d/, /\d/]
@@ -199,6 +203,7 @@ export const maskBr = {
   celular: makeGeneric('celular'),
   cep: makeGeneric('cep'),
   certidao: makeGeneric('certidao'),
+  chassi: makeGeneric('chassi'),
   cnae: makeGeneric('cnae'),
   cnh: makeGeneric('cnh'),
   cnpj: makeGeneric('cnpj'),

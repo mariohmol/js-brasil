@@ -42,6 +42,14 @@ describe('Mask test', () => {
     // testGeneric('certidao');
   });
 
+  it('CHASSI', () => {
+    const chassi = '9BWZZZ377VT004251';
+    expect(maskBr.chassi(chassi)).to.be.equal('9BW ZZZ377 VT 004251');
+    testGeneric('chassi');
+  });
+
+  
+
   it('cnae - TODO', () => {
     const cnae = '12312345121';
     // expect(maskBr.cnae(cnae)).to.be.equal('123.12345.12-1');

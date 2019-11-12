@@ -1,32 +1,14 @@
 import { modulo11, getAllDigits } from "./utils";
 
-export function create_cpf(strCPF: string) {
-    strCPF = strCPF.replace(/[^\d]+/g, '');
-    if (strCPF === '00000000000') {
-        return false;
-    }
-
-    const restos = [
-        modulo11(strCPF, 9, 11),
-        modulo11(strCPF, 10, 12)
-    ];
-
-    return restos;
-}
-
 
 export function create_cnh(cnh) {
-    var char1 = cnh.charAt(0);
-
-    if (cnh.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === cnh) {
-        return false;
-    }
-
-    for (var i = 0, j = 9, v = 0; i < 9; ++i, --j) {
+    
+    let v = 0;
+    for (let i = 0, j = 9; i < 9; ++i, --j) {
         v += +(cnh.charAt(i) * j);
     }
 
-    var dsc = 0,
+    let dsc = 0,
         vl1 = v % 11;
 
     if (vl1 >= 10) {
@@ -34,12 +16,12 @@ export function create_cnh(cnh) {
         dsc = 2;
     }
 
-    for (i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
+    for (let i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
         v += +(cnh.charAt(i) * j);
     }
 
-    var x = v % 11;
-    var vl2 = (x >= 10) ? 0 : x - dsc;
+    let x = v % 11;
+    let vl2 = (x >= 10) ? 0 : x - dsc;
 
     return ('' + vl1 + vl2); // === cnh.substr(-2);
 }
@@ -132,6 +114,20 @@ export function create_cns(number) {
     return number.substr(-2,1) + rest;
 }
 
+export function create_cpf(strCPF: string) {
+    strCPF = strCPF.replace(/[^\d]+/g, '');
+    if (strCPF === '00000000000') {
+        return false;
+    }
+
+    const restos = [
+        modulo11(strCPF, 9, 11),
+        modulo11(strCPF, 10, 12)
+    ];
+
+    return restos;
+}
+
 export function create_creditcard(number) {
 
     // if (number.length > 18) { alert("Erro. A rotina não abrange cartões\ncom mais de 18 dígitos (fora o DV).\nIntroduza 18 dígitos, no máximo."); }
@@ -184,26 +180,6 @@ export function create_creditcard(number) {
     return ccredDig;
 }
 
-export function create_renavam(renavam: string) {
-    let dig1 = 0;
-    while (renavam.length < 11) {
-        renavam = '0' + renavam;
-    }
-
-    dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
-        (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
-        (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;
-    dig1 = dig1 * 10;
-    let resto = (dig1 % 11);
-    if (resto === 10) {
-        return 0;
-    } else {
-        return resto;
-    }
-}
-
-
-
 export function create_ect(number) {
     number = getAllDigits(number);
     number = "0000000" + number;
@@ -224,6 +200,26 @@ export function create_ect(number) {
     if (regEctDig == 10) { regEctDig = 0; }
     return regEctDig;
 }
+
+export function create_renavam(renavam: string) {
+    let dig1 = 0;
+    while (renavam.length < 11) {
+        renavam = '0' + renavam;
+    }
+
+    dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
+        (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
+        (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;
+    dig1 = dig1 * 10;
+    let resto = (dig1 % 11);
+    if (resto === 10) {
+        return 0;
+    } else {
+        return resto;
+    }
+}
+
+
 
 /**
  * 

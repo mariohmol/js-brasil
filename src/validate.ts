@@ -1,4 +1,4 @@
-import { modulo11, getAllDigits, fillString } from "./utils";
+import { modulo11, getAllDigits, fillString, getAllWords } from "./utils";
 import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
@@ -9,11 +9,11 @@ import RG from "./rg";
 import IPTU from "./iptu";
 
 
-function validate_address(number){
+function validate_address(number) {
   return true;
 }
 
-function validate_bankaccount(number){
+function validate_bankaccount(number) {
   return true;
 }
 
@@ -123,14 +123,58 @@ function ponderada_certidao(value) {
   return total;
 }
 
+/**
+ * 
+ * @param chassi 
+ */
+export function validate_chassi(chassi) {
 
-function validate_cnae(number){
+  // 1 - Possuir o número "0" (ZERO) como 1º dígito.
+  const zeroNoPrimeiroDigito = /^0/;
+  if (zeroNoPrimeiroDigito.test(chassi)) {
+    return false;
+  }
+
+  // 2 - Possuir espaço no chassi
+  chassi = getAllWords(chassi); // espacoNoChassi
+ 
+  // 3 - Se, a partir do 4º dígito, houver uma repetição consecutiva, por mais de seis vezes, do mesmo dígito 
+  // (alfabético ou numérico). Exemplos: 9BW11111119452687 e 9BWZZZ5268AAAAAAA.
+  const repeticaoMaisDe6Vezes = /^.{4,}([0-9A-Z])\1{5,}/
+  if (repeticaoMaisDe6Vezes.test(chassi)) {
+    return false;
+  }
+
+  // 4 - Apresente os caracteres "i", "I", "o", "O", "q", "Q".
+  const caracteresiIoOqQ = /[iIoOqQ]/;
+  if (caracteresiIoOqQ.test(chassi)) {
+    return false;
+  }
+
+  // 5 - Os quatro últimos caracteres devem ser obrigatoriamente numéricos
+  const ultimos4Numericos = /[0-9]{4}$/;
+  if (!ultimos4Numericos.test(chassi)) {
+    return false;
+  }
+
+  // 6 - Se possuir número de dígitos diferente de 17 (alfanuméricos). 
+  if (chassi.length > 17) {
+    return false;
+  }
+
+  return true;
+}
+
+function validate_cnae(number) {
   return true;
 }
 
 export function validate_cnh(value) {
   value = getAllDigits(value);
-
+  var char1 = value.charAt(0);
+  if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
+    return false;
+}
   const check = create_cnh(value);
 
   return value.substr(-2) == check;
@@ -171,7 +215,7 @@ export function validate_cpf(strCPF: any) {
 }
 
 
-function validate_cpfcnpj(number){
+function validate_cpfcnpj(number) {
   return true;
 }
 
@@ -205,7 +249,7 @@ export function validate_currency(currency: string | number) {
 }
 
 
-function validate_date(number){
+function validate_date(number) {
   return true;
 }
 
@@ -351,7 +395,7 @@ export function validate_titulo(titulo: any) {
   }
 
   const tam = tituloClean.length;
-  
+
   let dig;
   try {
     dig = create_titulo_atual(tituloClean);
@@ -376,6 +420,7 @@ export const validateBr = {
   celular: validate_celular,
   cep: validate_cep,
   certidao: validate_certidao,
+  chassi: validate_chassi,
   cnae: validate_cnae,
   cnh: validate_cnh,
   cnpj: validate_cnpj,
