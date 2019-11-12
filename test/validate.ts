@@ -16,14 +16,29 @@ describe('Validate test', () => {
     expect(validateBr.cep('1234')).to.be.false;
   });
 
-  it('CNPJ', () => {
-    expect(validateBr.cnpj('56.853.433/0001-44')).to.be.true;
-    expect(validateBr.cnpj('1234')).to.be.false;
+  it('Certidão - TODO', () => {
+    // expect(validateBr.certidao('104539.01.55.2013.1.00012.021.0000123-21')).to.be.true;
+    // expect(validateBr.certidao('10453901552013100012021000012321')).to.be.true;
+    // expect(validateBr.certidao('10453901552013100012021000012322')).to.be.false;
+  });
+
+  it('CNH', () => {
+    expect(validateBr.cnh('997395071-32')).to.be.true;
+    expect(validateBr.cnh('99739507132')).to.be.true;
+    expect(validateBr.cnh('997395071-31')).to.be.false;
+    expect(validateBr.cnh('99739507131')).to.be.false;
   });
 
   it('CNPJ', () => {
     expect(validateBr.cnpj('56.853.433/0001-44')).to.be.true;
     expect(validateBr.cnpj('1234')).to.be.false;
+  });
+
+  it('CNS', () => {
+    expect(validateBr.cns('755845919762262')).to.be.true;
+    expect(validateBr.cns('755 8459 1976 22-62')).to.be.true;
+    expect(validateBr.cns('755845919762263')).to.be.false;
+    expect(validateBr.cns('755 8459 1976 22-63')).to.be.false;
   });
 
   it('CPF', () => {
@@ -33,6 +48,12 @@ describe('Validate test', () => {
     expect(validateBr.cpf('127.529.875-37')).to.be.false;
     expect(validateBr.cpf('00.000.000/0000-00')).to.be.false;
     expect(validateBr.cpf('1234')).to.be.false;
+  });
+
+
+  it('Credit Card - TODO', () => {
+    // expect(validateBr.creditcard('56.853.433/0001-44')).to.be.true;
+    // expect(validateBr.creditcard('1234')).to.be.false;
   });
 
   context('Currency', () => {
@@ -49,12 +70,29 @@ describe('Validate test', () => {
     });
   })
 
+  it('ECT', () => {
+    expect(validateBr.ect('31529649-0')).to.be.true;
+    expect(validateBr.ect('31529649-1')).to.be.false;
+    expect(validateBr.ect('315296490')).to.be.true;
+    expect(validateBr.ect('315296491')).to.be.false;
+  });
+
   it('Inscricao Estadual', () => {
     expect(validateBr.inscricaoestadual('862.445.372/2351', 'mg')).to.be.true;
     expect(validateBr.inscricaoestadual('094.290.083', 'sc')).to.be.true;
     expect(validateBr.inscricaoestadual('094.290.0839', 'sc')).to.be.false;
     expect(validateBr.inscricaoestadual('111111111111', 'mg').message).to.be.equal('ie com todos dígitos iguais');
     expect(validateBr.inscricaoestadual('1234', 'mg')).to.be.false;
+  });
+
+  it('IPTU - TODO', () => {
+    // expect(validateBr.ect('473124829')).to.be.true;
+    // expect(validateBr.ect('473124828')).to.be.false;
+  });
+
+  it('Number - TODO', () => {
+    // expect(validateBr.number('473124829')).to.be.true;
+    // expect(validateBr.number('473124828')).to.be.false;
   });
 
   // context('Percentage', () => {
@@ -86,15 +124,14 @@ describe('Validate test', () => {
     // expect(validateBr.processo('0123456-15.2008.100.0000')).to.be.true;
   });
 
-  it('RG', () => {
-    expect(validateBr.rg('mg 11124567')).to.be.true;
-    expect(validateBr.rg('1234')).to.be.false;
-  });
-
-
   it('RENAVAM', () => {
     expect(validateBr.renavam('72176426415')).to.be.true;
     expect(validateBr.renavam('72176426415')).to.be.true;
+  });
+
+  it('RG', () => {
+    expect(validateBr.rg('mg 11124567')).to.be.true;
+    expect(validateBr.rg('1234')).to.be.false;
   });
 
   it('Telefone', () => {
@@ -102,6 +139,10 @@ describe('Validate test', () => {
     expect(validateBr.telefone('(90) 1057-1600')).to.be.true;
     expect(validateBr.telefone('(90) 0057-1600')).to.be.false;
     expect(validateBr.telefone('1234')).to.be.false;
+  });
+
+  it('Time', () => {
+    expect(validateBr.time('1234')).to.be.false;
   });
 
   context('TITULO', () => {
@@ -121,7 +162,5 @@ describe('Validate test', () => {
     });
   });
 
-  it('Time', () => {
-    expect(validateBr.time('1234')).to.be.false;
-  });
+
 });

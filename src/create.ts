@@ -15,6 +15,54 @@ export function create_cpf(strCPF: string) {
 }
 
 
+export function create_cnh(cnh) {
+    var char1 = cnh.charAt(0);
+
+    if (cnh.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === cnh) {
+        return false;
+    }
+
+    for (var i = 0, j = 9, v = 0; i < 9; ++i, --j) {
+        v += +(cnh.charAt(i) * j);
+    }
+
+    var dsc = 0,
+        vl1 = v % 11;
+
+    if (vl1 >= 10) {
+        vl1 = 0;
+        dsc = 2;
+    }
+
+    for (i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
+        v += +(cnh.charAt(i) * j);
+    }
+
+    var x = v % 11;
+    var vl2 = (x >= 10) ? 0 : x - dsc;
+
+    return ('' + vl1 + vl2); // === cnh.substr(-2);
+}
+
+export function create_cnh_antigo(value) {
+    value = getAllDigits(value);
+    if (value.length != 11 || value === 0) {
+        return false;
+    }
+    let s1, s2;
+    for (let c = s1 = s2 = 0, p = 9; c < 9; c++ , p--) {
+        s1 += value[c] * p;
+        s2 += value[c] * (10 - p);
+    }
+    let dv1 = s1 % 11;
+    if (value[9] != (dv1 > 9) ? 0 : dv1) {
+        return false;
+    }
+    let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
+    let check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
+    return check;
+}
+
 export function create_cnpj(cnpj: string) {
     cnpj = cnpj.replace(/[^\d]+/g, '');
 
@@ -69,6 +117,20 @@ export function create_cnpj(cnpj: string) {
     return resultados;
 }
 
+export function create_cns(number) {
+    number = getAllDigits(number);
+    let somaInicial = 0;
+    for (let i = 0; i < number.length - 1; i++) {
+        somaInicial += number[i] * (15 - i);
+    }
+    let soma = somaInicial;
+    let rest = 0;
+    while(soma % 11!==0){
+        rest++;
+        soma = somaInicial + (rest * 1)
+    }
+    return number.substr(-2,1) + rest;
+}
 
 export function create_creditcard(number) {
 
@@ -143,26 +205,18 @@ export function create_renavam(renavam: string) {
 
 
 export function create_ect(number) {
-
+    number = getAllDigits(number);
     number = "0000000" + number;
     number = number.slice(number.length - 8);
 
-    let regEctDig1 = number.slice(7);
-    let b1 = eval(regEctDig1);
-    let regEctDig2 = number.slice(6, 7);
-    let b2 = eval(regEctDig2);
-    let regEctDig3 = number.slice(5, 6);
-    let b3 = eval(regEctDig3);
-    let regEctDig4 = number.slice(4, 5);
-    let b4 = eval(regEctDig4);
-    let regEctDig5 = number.slice(3, 4);
-    let b5 = eval(regEctDig5);
-    let regEctDig6 = number.slice(2, 3);
-    let b6 = eval(regEctDig6);
-    let regEctDig7 = number.slice(1, 2);
-    let b7 = eval(regEctDig7);
-    let regEctDig8 = number.slice(0, 1);
-    let b8 = eval(regEctDig8);
+    let b1 = parseInt(number.slice(7));
+    let b2 = parseInt(number.slice(6, 7));
+    let b3 = parseInt(number.slice(5, 6));
+    let b4 = parseInt(number.slice(4, 5));
+    let b5 = parseInt(number.slice(3, 4));
+    let b6 = parseInt(number.slice(2, 3));
+    let b7 = parseInt(number.slice(1, 2));
+    let b8 = parseInt(number.slice(0, 1));
 
     let regEctDig = (b1 * 7 + b2 * 9 + b3 * 5 + b4 * 3 + b5 * 2 + b6 * 4 + b7 * 6 + b8 * 8) % 11;
     regEctDig = 11 - regEctDig;
@@ -262,7 +316,7 @@ export function create_titulo_atual(titulo: string) {
             dig2 = 11 - resto;
         }
     }
-    return dig1.toString() +  dig2.toString();
+    return dig1.toString() + dig2.toString();
 }
 
 
@@ -270,27 +324,27 @@ export function create_titulo_atual(titulo: string) {
 export function create_titulo(titNum) {
     titNum = getAllDigits(titNum);
 
-    if (titNum.length > 11) { 
-        titNum = titNum.substr(0,11);
+    if (titNum.length > 11) {
+        titNum = titNum.substr(0, 11);
     }
 
     titNum = "00000000" + titNum;
     titNum = titNum.slice(titNum.length - 11);
 
-    let a1 = parseInt(titNum.slice(10)); 
+    let a1 = parseInt(titNum.slice(10));
     let a2 = parseInt(titNum.slice(9, 10));
-    let a3 = parseInt(titNum.slice(8, 9)); 
-    let a4 = parseInt(titNum.slice(7, 8)); 
-    let a5 = parseInt(titNum.slice(6, 7)); 
-    let a6 = parseInt(titNum.slice(5, 6)); 
-    let a7 = parseInt(titNum.slice(4, 5)); 
-    let a8 = parseInt(titNum.slice(3, 4)); 
-    let a9 = parseInt(titNum.slice(2, 3)); 
-    let a10 = parseInt(titNum.slice(1, 2)); 
-    let a11 = parseInt(titNum.slice(0, 1)); 
+    let a3 = parseInt(titNum.slice(8, 9));
+    let a4 = parseInt(titNum.slice(7, 8));
+    let a5 = parseInt(titNum.slice(6, 7));
+    let a6 = parseInt(titNum.slice(5, 6));
+    let a7 = parseInt(titNum.slice(4, 5));
+    let a8 = parseInt(titNum.slice(3, 4));
+    let a9 = parseInt(titNum.slice(2, 3));
+    let a10 = parseInt(titNum.slice(1, 2));
+    let a11 = parseInt(titNum.slice(0, 1));
 
-    if (a2 * 10 + a1 == 0 || a2 * 10 + a1 > 28) { 
-        throw new Error("Esse nº é suspeito, porque a identificação da \nUF (últimos 2 dígitos) deve estar entre 01 e 28."); 
+    if (a2 * 10 + a1 == 0 || a2 * 10 + a1 > 28) {
+        throw new Error("Esse nº é suspeito, porque a identificação da \nUF (últimos 2 dígitos) deve estar entre 01 e 28.");
     }
 
     let titExcecao1 = 0;

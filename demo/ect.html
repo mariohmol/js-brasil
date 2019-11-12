@@ -1,0 +1,110 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gerador e Validador de Registro de Encomendas Correios (ECT)</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body data-id="ect">
+  <header></header>
+
+  <main class="container">
+    <h1>Gerador e Validador de Registro de Encomendas Correios (ECT) </h1>
+    <section>
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s6">
+
+
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Validar ECT</span>
+                  <input id="validated" type="text" class="validate">
+                  <label for="validated">Digite o ECT</label>
+
+                  <ul id="validatedResult" class=" hidden">
+                    <li>
+                      <div class="collapsible-header">
+                        <i class="material-icons" id="valicon">filter_drama</i>
+                        <span id="valtext"></span>
+                        <!-- <span class="new badge">4</span></div> -->
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="validatedAction"><i class="material-icons right">check</i>validar</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-field col s6">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Gerar ECT</span>
+                  <input id="generated" type="text" class="validate">
+                  <label for="generated"></label>
+                </div>
+                <div class="card-action">
+                  <a class="waves-effect waves-light btn" id="generatedAction"><i class="material-icons right">add</i>gerar
+                    novo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Como Funciona?</h5>
+            <p class="grey-text text-lighten-4"> 
+
+              Saiba como se calcula o DV (Dígito Verificador) do número de Registro de Encomendas da ECT. 
+
+              O Registro é composto de 2 letras + 9 dígitos + 2 letras. Os 9 dígitos formam o número-base (8 dígitos) + o DV (1 dígito). 
+
+              O DV, por sua vez, corresponde a 11 menos o resto da divisão por 11 do somatório da multiplicação de cada algarismo do 
+              número-base respectivamente por 7, 9, 5, 3, 2, 4, 6 e 8, a partir da unidade.
+
+
+              </p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Referências</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Empresa_Brasileira_de_Correios_e_Tel%C3%A9grafos">ECT</a></li>
+              <li><a class="grey-text text-lighten-3" href="http://ghiorzi.org/DVnew.htm#za">Validação</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+        © 2019 Gerador Brasileiro
+        <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">js-brasil</a>
+        </div>
+      </div>
+    </footer>
+        
+
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js-brasil.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

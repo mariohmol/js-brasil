@@ -1,6 +1,6 @@
 window.onload = () => {
   makeHeader();
-
+  makeFooter();
   componentCustom();
 }
 
@@ -74,4 +74,24 @@ function makeHeader() {
   document.querySelector('header').innerHTML = header;
 
 
+}
+
+function makeFooter() {
+  const footer = `
+ 
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo">
+        Quer usar uma API?
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="mailto:mariohmol@gmail.com">Entre em contato conosco</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div style="text-align: center; background-color: white; color: black; font-size: 10px;">
+    Todas as bibliotecas aqui são fornecidas para ajudar o desenvolvedor e o seu uso é de total responsabilidade de quem o está usando.
+  </div>
+ `;
+  document.querySelector('footer').innerHTML = document.querySelector('footer').innerHTML + footer;
 }

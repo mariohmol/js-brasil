@@ -552,7 +552,7 @@ const funcoes = {
 
 
 
-export function validar_inscricaoestadual(ie: string | Array<string>, estado: any) {
+export function validate_inscricaoestadual(ie: string | Array<string>, estado: any) {
   if (eIndefinido(estado) || estado === null) {
     estado = '';
   }
@@ -570,7 +570,7 @@ export function validar_inscricaoestadual(ie: string | Array<string>, estado: an
   if (Array.isArray(ie)) {
     let retorno = true;
     ie.forEach(function (i) { 
-      if(!validar_inscricaoestadual(i, estado)) {
+      if(!validate_inscricaoestadual(i, estado)) {
         retorno = false;
       } 
     });

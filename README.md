@@ -140,37 +140,41 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 
 # Tipos Suportados
 
-* Address - (TODO #13)
+* Address - (TODO #27)
 * Bank Account - (TODO #13)
 * Celular - http://geradorbrasileiro.com/celular.html
 * CEP - http://geradorbrasileiro.com/cep.html
+* Certidão - (TODO #23)
 * CNAE - (TODO #16)
 * CNH - http://geradorbrasileiro.com/cnh.html (TODO #18)
 * CNPJ - http://geradorbrasileiro.com/cnpj.html
-* Company Data - (TODO #13)
+* CNS - http://geradorbrasileiro.com/cns.html (TODO #22)
+* Company Data - (TODO #20)
 * CPF - http://geradorbrasileiro.com/cpf.html
 * CPF/CNPF - (TODO #15)
 * Credit Card - (TODO #12)
 * Currency - http://geradorbrasileiro.com/others.html
 * Date - (TODO #21)
+* ECT - (TODO #25)
 * Inscrição Estadual - Todos os estados do Brasil - http://geradorbrasileiro.com/inscricaoestadual.html 
 * IPTU
 * * São Paulo e Curitiba OK
 * * Outras capitais (TODO)
 * Number - http://geradorbrasileiro.com/others.html
-* NIT - (TODO #14)
 * Percentage - http://geradorbrasileiro.com/others.html
 * Personal Data - (TODO #19)
-* PIS/PASEP - http://geradorbrasileiro.com/pis.html
+* PIS/PASEP - http://geradorbrasileiro.com/pis.html - NIT - (TODO #14)
 * Placa de carro - http://geradorbrasileiro.com/placa.html
 * Processo da justiça - http://geradorbrasileiro.com/processo.html
 * RENAVAM  - http://geradorbrasileiro.com/renavam.html
 * RG  - http://geradorbrasileiro.com/rg.html
 * * SP/RJ - OK
 * * Outros estado (TODO)
+* SPED - (TODO: #24)
 * Telefone  - http://geradorbrasileiro.com/telefone.html
 * Time (data/hora) - http://geradorbrasileiro.com/others.html
 * Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
+* Veículo - (TODO: #28)
 
 
 # Angular 
@@ -184,5 +188,9 @@ Utilize em angular 2 a 7 com:
 Utilize com React: 
 
 * react-brazil - react support for brazil apps -  https://github.com/mariohmol/react-brazil
+
+# API
+
+Quer usar estes métodos através de uma API Web? Entre em contato conosco!
 
 

@@ -1,11 +1,22 @@
 import { modulo11, getAllDigits, fillString } from "./utils";
-import { validar_inscricaoestadual } from "./inscricaoestadual";
+import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual
+  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh
 } from "./create";
-import rg from "./rg";
+import RG from "./rg";
+import IPTU from "./iptu";
+
+
+function validate_address(number){
+  return true;
+}
+
+function validate_bankaccount(number){
+  return true;
+}
+
 
 export function validate_celular(cel: any) {
   let celClean = cel.replace(/[^\d]+/g, '');
@@ -49,7 +60,7 @@ export const CEPRange = {
   'TO': /^[7][7][0-9]{3}[0-9]{3}$/g,
 }
 
-export function valida_cep(cep: string) {
+export function validate_cep(cep: string) {
   const cepClean = cep.replace(/[^\d]+/g, '');
   const exp = /\d{2}\.\d{3}\-\d{3}/;
   if (!exp.test(cep) && cepClean.length !== 8) {
@@ -112,23 +123,17 @@ function ponderada_certidao(value) {
   return total;
 }
 
+
+function validate_cnae(number){
+  return true;
+}
+
 export function validate_cnh(value) {
   value = getAllDigits(value);
-  if (value.length != 11 || value === 0) {
-    return false;
-  }
-  let s1, s2;
-  for (let c = s1 = s2 = 0, p = 9; c < 9; c++ , p--) {
-    s1 += value[c] * p;
-    s2 += value[c] * (10 - p);
-  }
-  let dv1 = s1 % 11;
-  if (value[9] != (dv1 > 9) ? 0 : dv1) {
-    return false;
-  }
-  let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
-  let check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
-  return value[10] == check;
+
+  const check = create_cnh(value);
+
+  return value.substr(-2) == check;
 }
 
 export function validate_cnpj(cnpj: any) {
@@ -166,6 +171,9 @@ export function validate_cpf(strCPF: any) {
 }
 
 
+function validate_cpfcnpj(number){
+  return true;
+}
 
 export function validate_cns(value) {
   const cns = getAllDigits(value);
@@ -196,7 +204,13 @@ export function validate_currency(currency: string | number) {
   return regex.test(currency);
 }
 
+
+function validate_date(number){
+  return true;
+}
+
 export function validate_ect(number) {
+  number = getAllDigits(number);
   if (number.length > 9) {
     return false
   }
@@ -204,10 +218,28 @@ export function validate_ect(number) {
   const nodigit = number.substr(0, number.length - 1);
   const dg = create_ect(nodigit);
 
-  if (number[number.length - 1] === dg) {
+  if (parseInt(number[number.length - 1]) === dg) {
     return true;
   }
   return false;
+}
+
+
+export function validate_iptu(iptu: string) {
+  let iptuClean = iptu.replace(/\./g, '');
+  iptuClean = iptuClean.replace(/-/g, '');
+  const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
+  const expClean = /[a-z]{2}\d{8}/;
+  const state = iptu.substr(0, 2).toUpperCase();
+
+  if (!exp.test(iptu) && !expClean.test(iptuClean) && !(state in CEPRange)) {
+    return false;
+  }
+  if (IPTU[state]) {
+    const validateState = IPTU[state];
+    return validateState(iptu);
+  }
+  return true;
 }
 
 export function validate_number(number: string) {
@@ -281,11 +313,15 @@ export function validate_rg(rg: string) {
   if (!exp.test(rg) && !expClean.test(rgClean) && !(state in CEPRange)) {
     return false;
   }
-  if (rg[state]) {
-    const validateState = rg[state];
+  if (RG[state]) {
+    const validateState = RG[state];
     return validateState(rg);
   }
   return true;
+}
+
+export function validate_sped(sped: string) {
+
 }
 
 export function validate_telefone(tel: any) {
@@ -334,19 +370,24 @@ export function validate_titulo(titulo: any) {
   }
 }
 
-
 export const validateBr = {
+  address: validate_address,
+  bankaccount: validate_bankaccount,
   celular: validate_celular,
-  cep: valida_cep,
+  cep: validate_cep,
   certidao: validate_certidao,
+  cnae: validate_cnae,
   cnh: validate_cnh,
   cnpj: validate_cnpj,
   cns: validate_cns,
   cpf: validate_cpf,
+  cpfcnpj: validate_cpfcnpj,
   creditcard: validate_creditcard,
   currency: validate_currency,
+  date: validate_date,
   ect: validate_ect,
-  inscricaoestadual: validar_inscricaoestadual,
+  inscricaoestadual: validate_inscricaoestadual,
+  iptu: validate_iptu,
   number: validate_number,
   percentage: validate_percentage,
   pispasep: validate_pispasep,
@@ -354,6 +395,7 @@ export const validateBr = {
   processo: validate_processo,
   renavam: validate_renavam,
   rg: validate_rg,
+  sped: validate_sped,
   telefone: validate_telefone,
   time: validate_time,
   titulo: validate_titulo
