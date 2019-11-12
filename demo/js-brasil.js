@@ -1730,13 +1730,16 @@ function cep_ranges(cep) {
     cep = (cep.toString()).replace(/[^\d]+/g, '');
     cep = parseInt(cep, 10);
     var cepString = cep.toString();
-    var found = Object.keys(exports.CEPRange).find(function (estado) {
+    var keys = Object.keys(exports.CEPRange);
+    var found;
+    for (var i = void 0; i < keys.length; i++) {
+        var estado = keys[i];
         var r = new RegExp(exports.CEPRange[estado]).test(cepString);
         if (r) {
-            return true;
+            found = r;
+            i = keys.length;
         }
-        return false;
-    });
+    }
     if (!found) {
         return false;
     }

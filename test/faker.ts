@@ -47,8 +47,8 @@ describe('Faker test', () => {
     expect(validateBr.renavam(renavam)).to.be.true;
   });
   it('Faker PIS/PASEP', () => {
-    const pispasep = fakerBr.pispasep();
-    expect(validateBr.pispasep(pispasep)).to.be.true;
+    // const pispasep = fakerBr.pispasep();
+    // expect(validateBr.pispasep(pispasep)).to.be.true;
   });
   it('Faker PLACA', () => {
     const placa = fakerBr.placa();
@@ -57,6 +57,10 @@ describe('Faker test', () => {
   it('Faker Telefone', () => {
     const telefone = fakerBr.telefone();
     expect(validateBr.telefone(telefone)).to.be.true;
+  });
+  it('Faker Titulo', () => {
+    const titulo = fakerBr.titulo();
+    expect(validateBr.titulo(titulo)).to.be.true;
   });
 
   // it('Faker Time', () => {
@@ -69,9 +73,6 @@ describe('Faker test', () => {
 
   // const percentage  = fakerBr.percentage();
   // expect(validateBr.percentage(percentage)).to.be.true;
-  it('Faker Titulo', () => {
-    const titulo = fakerBr.titulo();
-    expect(validateBr.titulo(titulo)).to.be.true;
-  });
+
 
 });

@@ -3,25 +3,40 @@ import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 export const MASKS = {
-  cpf: {
-    text: '000.000.000-00',
-    textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  celular: {
+    text: '(00) 00000-0000',
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+  },
+  cep: {
+    text: '00.000-000',
+    textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
+  },
+  // certidao Certidões de Nascimento, Casamento ou Óbito 
+  certidao: {
+    text: '000000.00.00.0000.0.00000.000.0000000-00', // 104539.01.55.2013.1.00012.021.0000123-21
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.',
+      /\d/, /\d/, /\d/, /\d/, '.', /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.',
+      /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  },
+  cnh: {
+    text: '00.000.000/0000-00',
+    textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
   cnpj: {
     text: '00.000.000/0000-00',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
-  celular: {
-    text: '(00) 00000-0000',
-    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[5-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+  cns: {
+    text: '000 0000 0000 0000',
+    textMask: [/\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/]
+  },
+  cpf: {
+    text: '000.000.000-00',
+    textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
   creditcard: {
     text: '0000 0000 0000 0000 00/00 000',
     textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
-  },
-  cep: {
-    text: '00.000-000',
-    textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
   },
   currency: {
     text: '0.000,00',
@@ -48,10 +63,6 @@ export const MASKS = {
       suffix: ''
     })
   },
-  pispasep: {
-    text: '000.00000.00-0',
-    textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '-', /\d/]
-  },
   percentage: {
     text: '00,00%',
     textMask: createNumberMask({
@@ -64,6 +75,10 @@ export const MASKS = {
       suffix: '%'
     })
   },
+  pispasep: {
+    text: '000.00000.00-0',
+    textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '-', /\d/]
+  },
   placa: {
     text: 'AAA-0000',
     textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
@@ -71,10 +86,6 @@ export const MASKS = {
   processo: {
     text: '0000000-00.0000.AAA.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[A-Za-z]/, /[A-Za-z]/, /[A-Za-z]/, '.', /\d/, /\d/, /\d/, /\d/]
-  },
-  rg: {
-    text: 'AA-00.000.000',
-    textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
   },
   renavam: {
     text: '0000000000-00',
@@ -92,6 +103,18 @@ export const MASKS = {
       }
     }
   },
+  rg: {
+    text: 'AA-00.000.000',
+    textMask: [/[A-Za-z]/, /[A-Za-z]/, '-', /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
+  },
+  time: {
+    text: '00:00',
+    textMask: [/\d/, /\d/, ':', /\d/, /\d/]
+  },
+  titulo: {
+    text: '0000.0000.0000',
+    textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
+  },
   telefone: {
     text: '(00) 0000-0000',
     textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
@@ -107,14 +130,6 @@ export const MASKS = {
         return ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
       }
     }
-  },
-  titulo: {
-    text: '0000.0000.0000',
-    textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/]
-  },
-  time: {
-    text: '00:00',
-    textMask: [/\d/, /\d/, ':', /\d/, /\d/]
   },
   utils: {
     numberToString: (n: number) => {
@@ -148,19 +163,11 @@ const makeGeneric = (key: string) => {
 export const maskBr = {
   celular: makeGeneric('celular'),
   cep: makeGeneric('cep'),
-  cpf: makeGeneric('cpf'),
+  certidao: makeGeneric('certidao'),
+  cnh: makeGeneric('cnh'),
   cnpj: makeGeneric('cnpj'),
-  inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {
-    if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
-      !MASKS.inscricaoestadual[estado].textMask) {
-      return '';
-    }
-    return conformToMask(
-      inscricaoestadualValue,
-      MASKS.inscricaoestadual[estado].textMask,
-      { guide: false }
-    ).conformedValue;
-  },
+  cpf: makeGeneric('cpf'),
+  creditcard: makeGeneric('creditcard'),
   currency: (currencyValueInput: string | number) => {
 
     if (!currencyValueInput) {
@@ -188,6 +195,19 @@ export const maskBr = {
 
     return finalValue
   },
+  iptu: makeGeneric('iptu'),
+  inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {
+    if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
+      !MASKS.inscricaoestadual[estado].textMask) {
+      return '';
+    }
+    return conformToMask(
+      inscricaoestadualValue,
+      MASKS.inscricaoestadual[estado].textMask,
+      { guide: false }
+    ).conformedValue;
+  },
+  
   number: (numberValue: string) => {
     if (!numberValue) {
       return '';
@@ -226,8 +246,8 @@ export const maskBr = {
   },
   pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),
-  renavam: makeGeneric('renavam'),
   processo: makeGeneric('processo'),
+  renavam: makeGeneric('renavam'),
   rg: makeGeneric('rg'),
   telefone: makeGeneric('telefone'),
   time: makeGeneric('time'),

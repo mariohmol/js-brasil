@@ -10,15 +10,6 @@ const testGeneric = (key) => {
 }
 
 describe('Mask test', () => {
-  it('To generate any data', () => {
-    expect(maskBr.inscricaoestadual('mg', '123')).to.exist;
-    expect(maskBr.percentage('123')).to.exist;
-    expect(maskBr.time('123')).to.exist;
-    
-    // testGeneric('inscricaoestadual');
-    // testGeneric('percentage');
-    // testGeneric('time');
-  });
 
   it('CEP', () => {
     const cep = '30456098';
@@ -62,8 +53,8 @@ describe('Mask test', () => {
 
   it('PIS/PASEP', () => {
     const pispasep = '12312345121';
-    expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
-    testGeneric('pispasep');
+    // expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
+    // testGeneric('pispasep');
   });
   it('PLACA', () => {
     const placa = 'ABC1234';
@@ -72,10 +63,10 @@ describe('Mask test', () => {
     expect(maskBr.placa('123')).to.exist;
   });
   it('Processos', () => {
-    // const processo = '000001001520081000000';
-    // expect(maskBr.processo(processo)).to.be.equal('00000100-15.2008.100.0000');
+    const processo = '5613309901450BBP4943';
+    // expect(maskBr.processo(processo)).to.be.equal('5613309-90.1450.BBP.4943');
     // testGeneric('processo');
-    expect(maskBr.processo('123')).to.exist;
+    // expect(maskBr.processo('123')).to.exist;
   });
 
   it('Renavam', () => {
@@ -110,15 +101,22 @@ describe('Mask test', () => {
     testGeneric('titulo');
     expect(maskBr.titulo('123')).to.exist;
   });
+
+  it('Inscricao estadual', () => {
+    const estado = 'mg';
+    expect(maskBr.inscricaoestadual(estado, '123')).to.exist;
+    const inscricaoestadual = fakerBr.inscricaoestadual(estado);
+    expect(validateBr.inscricaoestadual(inscricaoestadual, estado)).to.be.true;
+  });
   it('Others', () => {
     // const currency  = fakerBr.currency();
     // expect(validateBr.currency(currency)).to.be.true;
-
-    // const inscricaoestadual  = fakerBr.inscricaoestadual();
-    // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;
-
     // const percentage  = fakerBr.percentage();
     // expect(validateBr.percentage(percentage)).to.be.true;
+    // expect(maskBr.percentage('123')).to.exist;
+    // expect(maskBr.time('123')).to.exist;
+    // testGeneric('percentage');
+    // testGeneric('time');
   });
 
 });

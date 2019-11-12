@@ -5,7 +5,7 @@ import { allNumbersAreSame } from "./utils";
  */
 
 
-const funcoesGenerate = {
+export const generateInscricaoEstadual = {
   ac: function (valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
@@ -452,107 +452,107 @@ const funcoesGenerate = {
 
 const funcoes = {
   ac: function (valor: any) {
-    return valor === funcoesGenerate.ac(valor);
+    return valor === generateInscricaoEstadual.ac(valor);
   },
 
   am: function (valor: any) {
-    return valor === funcoesGenerate.am(valor);
+    return valor === generateInscricaoEstadual.am(valor);
   },
 
   al: function (valor: any) {
-    return valor === funcoesGenerate.al(valor);
+    return valor === generateInscricaoEstadual.al(valor);
   },
 
   ap: function (valor: any) {
-    return valor === funcoesGenerate.ap(valor);
+    return valor === generateInscricaoEstadual.ap(valor);
   },
 
   ba: function (valor: any) {
-    return valor === funcoesGenerate.ba(valor);
+    return valor === generateInscricaoEstadual.ba(valor);
   },
 
   ce: function (valor: any) {
-    return valor === funcoesGenerate.ce(valor);
+    return valor === generateInscricaoEstadual.ce(valor);
   },
 
   es: function (valor: any) {
-    return valor === funcoesGenerate.es(valor);
+    return valor === generateInscricaoEstadual.es(valor);
   },
   go: function (valor: any) {
-    return valor === funcoesGenerate.go(valor);
+    return valor === generateInscricaoEstadual.go(valor);
   },
   ma: function (valor: any) {
-    return valor === funcoesGenerate.ma(valor);
+    return valor === generateInscricaoEstadual.ma(valor);
   },
 
   mg: function (valor: any) {
-    return valor === funcoesGenerate.mg(valor);
+    return valor === generateInscricaoEstadual.mg(valor);
   },
 
   ms: function (valor: any) {
-    return valor === funcoesGenerate.ms(valor);
+    return valor === generateInscricaoEstadual.ms(valor);
   },
   mt: function (valor: any) {
-    return valor === funcoesGenerate.mt(valor);
+    return valor === generateInscricaoEstadual.mt(valor);
   },
   pa: function (valor: any) {
-    return valor === funcoesGenerate.pa(valor);
+    return valor === generateInscricaoEstadual.pa(valor);
   },
 
   pb: function (valor: any) {
-    return valor === funcoesGenerate.pb(valor);
+    return valor === generateInscricaoEstadual.pb(valor);
   },
 
   pe: function (valor: any) {
-    return valor === funcoesGenerate.pe(valor);
+    return valor === generateInscricaoEstadual.pe(valor);
   },
 
   pi: function (valor: any) {
-    return valor === funcoesGenerate.pi(valor);
+    return valor === generateInscricaoEstadual.pi(valor);
   },
 
   pr: function (valor: any) {
-    return valor === funcoesGenerate.pr(valor);
+    return valor === generateInscricaoEstadual.pr(valor);
   },
   rj: function (valor: any) {
-    return valor === funcoesGenerate.rj(valor);
+    return valor === generateInscricaoEstadual.rj(valor);
   },
 
   rn: function (valor: any) {
-    return valor === funcoesGenerate.rn(valor);
+    return valor === generateInscricaoEstadual.rn(valor);
   },
   ro: function (valor: any) {
-    return valor === funcoesGenerate.ro(valor);
+    return valor === generateInscricaoEstadual.ro(valor);
   },
   rr: function (valor: any) {
-    return valor === funcoesGenerate.rr(valor);
+    return valor === generateInscricaoEstadual.rr(valor);
   },
 
   rs: function (valor: any) {
-    return valor === funcoesGenerate.rs(valor);
+    return valor === generateInscricaoEstadual.rs(valor);
   },
 
   sc: function (valor: any) {
-    return valor === funcoesGenerate.sc(valor);
+    return valor === generateInscricaoEstadual.sc(valor);
   },
 
   se: function (valor: any) {
-    return valor === funcoesGenerate.se(valor);
+    return valor === generateInscricaoEstadual.se(valor);
   },
 
   sp: function (valor: string | boolean) {
-    return valor === funcoesGenerate.sp(valor);
+    return valor === generateInscricaoEstadual.sp(valor);
   },
 
   to: function (valor: any) {
-    return valor === funcoesGenerate.to(valor);
+    return valor === generateInscricaoEstadual.to(valor);
   },
 };
 
 
 
 
-export function validar(ie: string | Array<string>, estado: any) {
+export function validar_inscricaoestadual(ie: string | Array<string>, estado: any) {
   if (eIndefinido(estado) || estado === null) {
     estado = '';
   }
@@ -570,7 +570,7 @@ export function validar(ie: string | Array<string>, estado: any) {
   if (Array.isArray(ie)) {
     let retorno = true;
     ie.forEach(function (i) { 
-      if(!validar(i, estado)) {
+      if(!validar_inscricaoestadual(i, estado)) {
         retorno = false;
       } 
     });

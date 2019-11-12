@@ -1,8 +1,10 @@
 import { ESTADOS_SIGLA } from './estados';
 import { MASKS } from './mask';
-import { create_cpf, create_cnpj, CEPRange, create_titulo, create_renavam } from './validate';
+import { CEPRange } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
+import { generateInscricaoEstadual } from './inscricaoestadual';
+import { create_cpf, create_cnpj, create_titulo, create_renavam } from './create';
 
 const makeGeneric = (val: any, options = null) => {
   return () => {
@@ -69,17 +71,14 @@ const randomEstadoSigla = () => {
 
 
 export const fakerBr = {
+  celular: makeGeneric(MASKS['celular']),
   cep: makeGeneric(MASKS['cep']),
   cepState: (state: string | number) => {
     return randexp(CEPRange[state]);
   },
-  cpf: () => {
-    let cpf = makeGeneric(MASKS['cpf'])();
-    let restos = create_cpf(cpf);
-    cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-    restos = create_cpf(cpf);
-    return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-  },
+  // certidao: validate_certidao,
+  // cnh
+
   cnpj: () => {
     let cnpj = makeGeneric(MASKS['cnpj'])();
     cnpj = cnpj.replace(/[^\d]+/g, '');
@@ -90,27 +89,36 @@ export const fakerBr = {
     restos = create_cnpj(cnpj);
     return cnpj.substr(0, cnpj.length - 1) + restos[1];
   },
-  rg: () => {
-    let random: any = randomEstadoSigla();
-    random = random.split('');
-    const makeRg = makeGeneric(MASKS['rg'], {
-      0: () => random[0],
-      1: () => random[1]
-    });
-    return makeRg();
+  // cns
+  cpf: () => {
+    let cpf = makeGeneric(MASKS['cpf'])();
+    let restos = create_cpf(cpf);
+    cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+    restos = create_cpf(cpf);
+    return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
   },
-  telefone: makeGeneric(MASKS['telefone']),
-  celular: makeGeneric(MASKS['celular']),
-  inscricaoestadual: makeGeneric(MASKS['inscricaoestadual']),
-  time: makeGeneric(MASKS['time']),
+
   currency: () => {
     const x = Math.random() * 10000;
-    return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
+    return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   },
   currencyNumber: () => {
     const x = Math.random() * 10000;
     return parseFloat(x.toFixed(2));
   },
+
+  //ect
+
+  inscricaoestadual: estado => {
+    let val = makeGeneric(MASKS['inscricaoestadual'][estado])();
+    val = val.match(/\d/g).join('');
+    const newval = generateInscricaoEstadual[estado](val);
+    return newval;
+  },
+
+  //iptu
+
+
   number: () => {
     const x = Math.random() * 10000;
     return parseFloat(x.toFixed(2));
@@ -125,16 +133,29 @@ export const fakerBr = {
     return placa;
   },
   processo: makeGeneric(MASKS['processo']),
-  titulo: () => {
-    const titulo = makeGeneric(MASKS['titulo'])();
-    const { dig1, dig2 } = create_titulo(titulo);
-    return titulo.substr(0, titulo.length - 2) + dig1 + dig2;
-  },
   renavam: () => {
     const renavam = makeGeneric(MASKS['renavam'])();
     const dv = create_renavam(renavam);
     return renavam.substr(0, renavam.length - 1) + dv;
-  }
+  },
+  rg: () => {
+    let random: any = randomEstadoSigla();
+    random = random.split('');
+    const makeRg = makeGeneric(MASKS['rg'], {
+      0: () => random[0],
+      1: () => random[1]
+    });
+    return makeRg();
+  },
+  telefone: makeGeneric(MASKS['telefone']),
+  time: makeGeneric(MASKS['time']),
+  titulo: () => { 
+    const titulo = makeGeneric(MASKS['titulo'])();
+    const number = titulo.substr(0, titulo.length - 2);
+    const dig = create_titulo(number);
+    return number + dig[0] + dig[1];
+  },
+
 };
 
 

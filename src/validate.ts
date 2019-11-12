@@ -1,112 +1,23 @@
-import { modulo11 } from "./utils";
-import { validar } from "./inscricaoestadual";
+import { modulo11, getAllDigits, fillString } from "./utils";
+import { validar_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
+import {
+  create_cnpj, create_cpf,
+  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual
+} from "./create";
+import rg from "./rg";
 
-// http://www.geradorcnpj.com/javascript-validar-cnpj.htm
-/*
-//if (val.match(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/) != null) {
-*/
-export function validate_cnpj(cnpj: any) {
-  cnpj = cnpj.replace(/[^\d]+/g, '');
-  let tamanho = cnpj.length - 2
-  const digitos = cnpj.substring(tamanho);
-  const resultados = create_cnpj(cnpj);
-  if (resultados[0] !== parseInt(digitos.charAt(0), 10)) {
+export function validate_celular(cel: any) {
+  let celClean = cel.replace(/[^\d]+/g, '');
+  celClean = celClean.replace(/_/g, '');
+  if (celClean.length !== 11) {
     return false;
   }
-
-  if (resultados[1] !== parseInt(digitos.charAt(1), 10)) {
-    return false;
-  }
-  return true;
-}
-
-export function create_cnpj(cnpj: string) {
-  cnpj = cnpj.replace(/[^\d]+/g, '');
-
-  if (cnpj === '') {
-    return false;
-  }
-
-  if (cnpj.length !== 14) {
-    return false;
-  }
-
-  // Elimina CNPJs invalidos conhecidos
-  if (cnpj === '00000000000000' ||
-    cnpj === '11111111111111' ||
-    cnpj === '22222222222222' ||
-    cnpj === '33333333333333' ||
-    cnpj === '44444444444444' ||
-    cnpj === '55555555555555' ||
-    cnpj === '66666666666666' ||
-    cnpj === '77777777777777' ||
-    cnpj === '88888888888888' ||
-    cnpj === '99999999999999') {
-    return false;
-  }
-
-  // Valida DVs
-  let tamanho: number = cnpj.length - 2
-  let numeros: any = cnpj.substring(0, tamanho);
-  let soma: any = 0;
-  let pos = tamanho - 7;
-  for (let i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2) {
-      pos = 9;
-    }
-
-  }
-  const resultados = [0, 0];
-  resultados[0] = soma % 11 < 2 ? 0 : 11 - soma % 11;
-
-  tamanho = tamanho + 1;
-  numeros = cnpj.substring(0, tamanho);
-  soma = 0;
-  pos = tamanho - 7;
-  for (let i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
-    if (pos < 2) {
-      pos = 9;
-    }
-  }
-  resultados[1] = soma % 11 < 2 ? 0 : 11 - soma % 11;
-  return resultados;
-}
-
-// http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
-export function validate_cpf(strCPF: any) {
-  strCPF = strCPF.replace(/[^\d]+/g, '');
-  if (strCPF.length !== 11) {
-    return false;
-  }
-  const restos = create_cpf(strCPF);
-
-  if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
-    return false;
-  }
-
-  if (restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+  if (celClean[0] == 0 || celClean[2] < 5) {
     return false;
   }
   return true;
 }
-
-export function create_cpf(strCPF: string) {
-  strCPF = strCPF.replace(/[^\d]+/g, '');
-  if (strCPF === '00000000000') {
-    return false;
-  }
-
-  const restos = [
-    modulo11(strCPF, 9, 11),
-    modulo11(strCPF, 10, 12)
-  ];
-
-  return restos;
-}
-
 
 export const CEPRange = {
   'SP': /^([1][0-9]{3}|[01][0-9]{4})[0-9]{3}$/g,
@@ -168,48 +79,113 @@ export function cep_ranges(cep: string | number) {
 }
 
 
-export function validate_telefone(tel: any) {
-  const telClean = tel.replace(/[^\d]+/g, '');
-  tel = tel.replace(/_/g, '');
-  if (!(telClean.length === 10 || telClean.length === 11)) {
+
+
+export function validate_certidao(value) {
+  let certidao = getAllDigits(value);
+
+  const format = /[0-9]{32}/;
+  if (!format.test(certidao)) {
     return false;
   }
-  if (telClean[0] == 0 || telClean[2] == 0) {
+
+  let num = certidao.substring(0, -2);
+  let dv = certidao.substring(-2);
+  let dv1 = ponderada_certidao(num) % 11;
+  dv1 = dv1 > 9 ? 1 : dv1; // se o resto for 10, o DV será 1
+  let dv2 = ponderada_certidao(num.toString() + dv1.toString()) % 11;
+  dv2 = dv2 > 9 ? 1 : dv2;
+  if (dv === dv1.toString() + dv2.toString()) {
+    return true;
+  }
+  return false;
+}
+
+function ponderada_certidao(value) {
+  let total = 0;
+  let multiplicador = 32 - value.length;
+  for (let i = 0; i < value.length; i++) {
+    total += value[i] * multiplicador;
+    multiplicador += 1;
+    multiplicador = multiplicador > 10 ? 0 : multiplicador;
+  }
+  return total;
+}
+
+export function validate_cnh(value) {
+  value = getAllDigits(value);
+  if (value.length != 11 || value === 0) {
+    return false;
+  }
+  let s1, s2;
+  for (let c = s1 = s2 = 0, p = 9; c < 9; c++ , p--) {
+    s1 += value[c] * p;
+    s2 += value[c] * (10 - p);
+  }
+  let dv1 = s1 % 11;
+  if (value[9] != (dv1 > 9) ? 0 : dv1) {
+    return false;
+  }
+  let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
+  let check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
+  return value[10] == check;
+}
+
+export function validate_cnpj(cnpj: any) {
+  cnpj = cnpj.replace(/[^\d]+/g, '');
+  let tamanho = cnpj.length - 2
+  const digitos = cnpj.substring(tamanho);
+  const resultados = create_cnpj(cnpj);
+  if (resultados[0] !== parseInt(digitos.charAt(0), 10)) {
+    return false;
+  }
+
+  if (resultados[1] !== parseInt(digitos.charAt(1), 10)) {
     return false;
   }
   return true;
 }
 
 
-export function validate_celular(cel: any) {
-  let celClean = cel.replace(/[^\d]+/g, '');
-  celClean = celClean.replace(/_/g, '');
-  if (celClean.length !== 11) {
+// http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
+export function validate_cpf(strCPF: any) {
+  strCPF = strCPF.replace(/[^\d]+/g, '');
+  if (strCPF.length !== 11) {
     return false;
   }
-  if (celClean[0] == 0 || celClean[2] < 5) {
+  const restos = create_cpf(strCPF);
+
+  if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
     return false;
   }
-  return true;
-}
 
-export function validate_rg(rg: string) {
-  let rgClean = rg.replace(/\./g, '');
-  rgClean = rgClean.replace(/-/g, '');
-  const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
-  const expClean = /[a-z]{2}\d{8}/;
-  const state = rg.substr(0, 2).toUpperCase();
-
-  if (!exp.test(rg) && !expClean.test(rgClean) && !(state in CEPRange)) {
+  if (restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
     return false;
   }
   return true;
 }
 
-export function validate_time(time: string | number) {
-  const expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
-  const value = time.toString();
-  return expression.test(value);
+
+
+export function validate_cns(value) {
+  const cns = getAllDigits(value);
+  const definitivo = /[1-2][0-9]{10}00[0-1][0-9]/; // começam com 1 ou 2
+  const provisorio = /[7-9][0-9]{14}/;              // começam com 7,8 ou 9
+  if (!definitivo.test(cns) && !provisorio.test(cns)) {
+    return false;
+  }
+
+  let soma = 0;
+  for (let i = 0; i < cns.length; i++) {
+    soma += parseInt(cns[i]) * (15 - i);
+  }
+
+  return soma % 11 == 0;
+}
+
+
+export function validate_creditcard(value) {
+
 }
 
 export function validate_currency(currency: string | number) {
@@ -220,9 +196,18 @@ export function validate_currency(currency: string | number) {
   return regex.test(currency);
 }
 
-export function validate_pispasep(number: string) {
-  const regex = /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
-  return regex.test(number);
+export function validate_ect(number) {
+  if (number.length > 9) {
+    return false
+  }
+
+  const nodigit = number.substr(0, number.length - 1);
+  const dg = create_ect(nodigit);
+
+  if (number[number.length - 1] === dg) {
+    return true;
+  }
+  return false;
 }
 
 export function validate_number(number: string) {
@@ -230,87 +215,44 @@ export function validate_number(number: string) {
   return regex.test(number);
 }
 
+
 export function validate_percentage(percentage: string) {
   const regex = /^\d+(?:\.\d{0,2})$/;
   return regex.test(percentage);
 }
 
 
-export function validate_titulo(titulo: any) {
-  const tituloClean = titulo.replace(/\./g, '');
-  const exp = /\d{4}\.\d{4}\.\d{4}/;
-  const expClean = /\d{4}\d{4}\d{4}/;
-  if (!exp.test(tituloClean) && !expClean.test(tituloClean)) {
-    return false;
-  }
-  return validaTituloVerificador(titulo);
-}
-
-function validaTituloVerificador(titulo: string) {
-  const { dig1, dig2 } = create_titulo(titulo);
-  const tam = titulo.length;
-  const digitos = titulo.substr(tam - 2, 2);
-  if ((digitos.charCodeAt(0) - 48 === dig1) && (digitos.charCodeAt(1) - 48 === dig2)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-export function create_titulo(titulo: string) {
-  const tit = titulo;
-  let dig1 = 0;
-  let dig2 = 0;
-  const tam = tit.length;
-  const estado = tit.substr(tam - 4, 2);
-  titulo = tit.substr(0, tam - 2);
-  titulo = '000000000000' + titulo;
-  titulo = titulo.substr(titulo.length - 11, titulo.length - 1);
-  const exce = (estado === '01') || (estado === '02');
-  dig1 = (titulo.charCodeAt(0) - 48) * 2 + (titulo.charCodeAt(1) - 48) * 9 + (titulo.charCodeAt(2) - 48) * 8 +
-    (titulo.charCodeAt(3) - 48) * 7 + (titulo.charCodeAt(4) - 48) * 6 + (titulo.charCodeAt(5) - 48) * 5 +
-    (titulo.charCodeAt(6) - 48) * 4 + (titulo.charCodeAt(7) - 48) * 3 + (titulo.charCodeAt(8) - 48) * 2;
-  let resto = (dig1 % 11);
-  if (resto === 0) {
-    if (exce) {
-      dig1 = 1;
-    } else {
-      dig1 = 0;
-    }
-  } else {
-    if (resto === 1) {
-      dig1 = 0;
-    } else {
-      dig1 = 11 - resto;
-    }
-  }
-  dig2 = (titulo.charCodeAt(9) - 48) * 4 + (titulo.charCodeAt(10) - 48) * 3 + dig1 * 2;
-  resto = (dig2 % 11);
-  if (resto === 0) {
-    if (exce) {
-      dig2 = 1;
-    } else {
-      dig2 = 0;
-    }
-  } else {
-    if (resto === 1) {
-      dig2 = 0;
-    } else {
-      dig2 = 11 - resto;
-    }
-  }
-  return { dig1, dig2 };
-}
-
 export function validate_processo(processo: any) {
   let processoClean = processo.replace(/\./g, '');
   processoClean = processoClean.replace(/\-/g, '');
-  const exp = /\d{7}\-\d{2}\.\d{4}\.\d{3}\.\d{4}/;
-  const expClean = /\d{7}\d{4}\d{4}/;
-  if (!exp.test(processoClean) && !expClean.test(processoClean)) {
+  const exp = /\d{7}\-\d{2}\.\d{4}\.\w{3}\.\d{4}/;
+  const expClean = /\d{13}\w{3}\d{4}/;
+  if (!exp.test(processo) && !expClean.test(processoClean)) {
+    return false;
+  }
+  let processoValidado = create_processo(processo);
+  if (processoClean !== getAllDigits(processoValidado)) {
     return false;
   }
   return true;
+}
+
+
+export function validate_pispasep(number: string) {
+
+  number = getAllDigits(number);
+  let nis = fillString(number, 11, '0');
+
+  const regex = /\d{11}/; // /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
+  if (!regex.test(nis)) {
+    return false;
+  }
+  let d;
+  let p = 2, c = 9;
+  for (d = 0; c >= 0; c-- , (p < 9) ? p++ : p = 2) {
+    d += nis[c] * p;
+  }
+  return (nis[10] == (((10 * d) % 11) % 10));
 }
 
 
@@ -327,32 +269,85 @@ export function validate_renavam(renavam: any) {
   }
 }
 
-export function create_renavam(renavam: string) {
-  let dig1 = 0;
-  while (renavam.length < 11) {
-    renavam = '0' + renavam;
+
+
+export function validate_rg(rg: string) {
+  let rgClean = rg.replace(/\./g, '');
+  rgClean = rgClean.replace(/-/g, '');
+  const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
+  const expClean = /[a-z]{2}\d{8}/;
+  const state = rg.substr(0, 2).toUpperCase();
+
+  if (!exp.test(rg) && !expClean.test(rgClean) && !(state in CEPRange)) {
+    return false;
+  }
+  if (rg[state]) {
+    const validateState = rg[state];
+    return validateState(rg);
+  }
+  return true;
+}
+
+export function validate_telefone(tel: any) {
+  const telClean = tel.replace(/[^\d]+/g, '');
+  tel = tel.replace(/_/g, '');
+  if (!(telClean.length === 10 || telClean.length === 11)) {
+    return false;
+  }
+  if (telClean[0] == 0 || telClean[2] == 0) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_time(time: string | number) {
+  const expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+  const value = time.toString();
+  return expression.test(value);
+}
+
+export function validate_titulo(titulo: any) {
+  const tituloClean = titulo.replace(/\./g, '');
+  const exp = /\d{4}\.\d{4}\.\d{4}/;
+  const expClean = /\d{4}\d{4}\d{4}/;
+  if (!exp.test(tituloClean) && !expClean.test(tituloClean)) {
+    return false;
   }
 
-  dig1 = (renavam.charCodeAt(0) - 48) * 3 + (renavam.charCodeAt(1) - 48) * 2 + (renavam.charCodeAt(2) - 48) * 9 + (renavam.charCodeAt(3) - 48) * 8 +
-    (renavam.charCodeAt(4) - 48) * 7 + (renavam.charCodeAt(5) - 48) * 6 + (renavam.charCodeAt(6) - 48) * 5 +
-    (renavam.charCodeAt(7) - 48) * 4 + (renavam.charCodeAt(8) - 48) * 3 + (renavam.charCodeAt(9) - 48) * 2;
-  dig1 = dig1 * 10;
-  let resto = (dig1 % 11);
-  if (resto === 10) {
-    return 0;
+  const tam = tituloClean.length;
+  
+  let dig;
+  try {
+    dig = create_titulo_atual(tituloClean);
+    // const noDv = tituloClean.substr(0, tam - 2);
+    // dig = create_titulo(noDv);
+  } catch (e) {
+    console.error(e)
+    return false;
+  }
+
+  const digitos = tituloClean.substr(tam - 2, 2);
+  if (digitos === dig) {
+    return true;
   } else {
-    return resto;
+    return false;
   }
 }
 
+
 export const validateBr = {
-  cep: valida_cep,
   celular: validate_celular,
+  cep: valida_cep,
+  certidao: validate_certidao,
+  cnh: validate_cnh,
   cnpj: validate_cnpj,
+  cns: validate_cns,
   cpf: validate_cpf,
+  creditcard: validate_creditcard,
   currency: validate_currency,
+  ect: validate_ect,
+  inscricaoestadual: validar_inscricaoestadual,
   number: validate_number,
-  inscricaoestadual: validar,
   percentage: validate_percentage,
   pispasep: validate_pispasep,
   placa: validate_placa,

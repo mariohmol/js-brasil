@@ -66,21 +66,38 @@ export function allNumbersAreSame(inputValue: string) {
 
 export function getAllDigits(input: string) {
   const match = input.match(/\d/g);
-  if(match){
+  if (match) {
     return match.join("");
   }
   return '';
 }
 
-export function currencyToNumber(input){
-  input = input.replace(/ /g,'');
-  if(input.indexOf('$')!==-1){
+export function currencyToNumber(input) {
+  input = input.replace(/ /g, '');
+  if (input.indexOf('$') !== -1) {
     const vals = input.split('$');
     input = vals[1];
   }
-  
-  input = input.replace('%','');
-  input = input.replace(/\./g,'').replace(',','.');
-  
+
+  input = input.replace('%', '');
+  input = input.replace(/\./g, '').replace(',', '.');
+
   return parseFloat(input);
+}
+/**
+ * 
+ * @param string  ex. 12345
+ * @param size   11
+ * @param fill   0
+ * 
+ * Returns: 00000012345
+ */
+export function fillString(string, size, fill) {
+  if (string.size < size) {
+    const dif = size - string.size;
+    for (let i = 0; i < dif; i++) {
+      string = fill + string
+    }
+  }
+  return string;
 }
