@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Gerador e Validador de Carteira Nacional de Habilitação (CNH)</title>
+  <title>Gerador e Validador de Certidão de Nascimento, Casamento e Óbito</title>
   <link rel="stylesheet" href="index.css">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body data-id="cnh">
+<body data-id="certidao">
   <header></header>
 
   <main class="container">
-    <h1>Gerador e Validador de Carteira Nacional de Habilitação (CNH) </h1>
+    <h1>Gerador e Validador de Certidão de Nascimento, Casamento e Óbito </h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -27,9 +27,9 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar CNH</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar CERTIDÃO</span>
                   <input id="validated" type="text" class="validate">
-                  <label for="validated">Digite o CNH</label>
+                  <label for="validated">Digite o CERTIDÃO</label>
 
                   <ul id="validatedResult" class=" hidden">
                     <li>
@@ -49,7 +49,7 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar CNH</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar CERTIDÃO</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
@@ -72,16 +72,20 @@
             <h5 class="white-text">Como Funciona?</h5>
             <p class="grey-text text-lighten-4"> 
               
-                Os dígitos verificadores são calculados através de um algoritmo que soma o produto de cada dígito que compõe o Celular por um peso e calcula o resto da divisão dessa soma por 11. Pela característica, esse algoritmo é conhecido como "módulo 11".
+                o DV (Dígito Verificador) das novas Certidões de Nascimento, Casamento ou Óbito instituídas pelo Ministério da Justiça a partir de 2010. 
+                Adicionalmente, veja o DV de qualquer Número de Matrícula nos novos critérios, utilizando a rotina abaixo. 
+                Introduza o Número de Matrícula sempre COM 30 DÍGITOS (exemplo: 104539015520131000120210000123):
 
-                Porém, como resultado, o dígito verificador calculado pode eventualmente ser igual a 10 (dez),
-                estabeleceu-se que o número 10 fosse substituído pelo dígito 0 (zero),
+
               </p>
           </div>
           <div class="col l4 offset-l2 s12">
             <h5 class="white-text">Referências</h5>
             <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Carteira_Nacional_de_Habilita%C3%A7%C3%A3o">Wikipedia</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Certid%C3%A3o_de_%C3%B3bito">Óbito</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Certid%C3%A3o_de_casamento">Casamento</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Certid%C3%A3o_de_nascimento">Nascimento</a></li>
+              <li><a class="grey-text text-lighten-3" href="http://ghiorzi.org/DVnew.htm#zc">Validação</a></li>
             </ul>
           </div>
         </div>

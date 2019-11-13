@@ -140,41 +140,42 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 
 # Tipos Suportados
 
-* Cartão de Crédito - http://geradorbrasileiro.com/cartao.html (TODO #12)
+* Cartão de Crédito - http://geradorbrasileiro.com/cartao.html **(TODO #12)**
 * Celular - http://geradorbrasileiro.com/celular.html
 * CEP - http://geradorbrasileiro.com/cep.html
-* Certidão - http://geradorbrasileiro.com/certidao.html (TODO #23)
-* CNAE - http://geradorbrasileiro.com/cnae.html (TODO #16)
-* CNH - http://geradorbrasileiro.com/cnh.html (TODO #18)
+* Certidão - http://geradorbrasileiro.com/certidao.html
+* CNAE - http://geradorbrasileiro.com/cnae.html **(TODO #16)**
+* CNH - http://geradorbrasileiro.com/cnh.html
 * CNPJ - http://geradorbrasileiro.com/cnpj.html
-* CNS - http://geradorbrasileiro.com/cns.html (TODO #22)
-* Conta de Banco - http://geradorbrasileiro.com/contato.html (TODO #13)
+* CNS - http://geradorbrasileiro.com/cns.html
+* Conta de Banco - http://geradorbrasileiro.com/contato.html **(TODO #13)**
 * CPF - http://geradorbrasileiro.com/cpf.html
-* CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html (TODO #15)
+* CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html **(TODO #15)**
 * Currency - http://geradorbrasileiro.com/others.html
 * Date - (TODO #21)
-* ECT - http://geradorbrasileiro.com/ect.html (TODO #25)
-* Empresa - http://geradorbrasileiro.com/empresa.html (TODO #20)
-* Endereço - http://geradorbrasileiro.com/endereco.html (TODO #27)
+* ECT - http://geradorbrasileiro.com/ect.html
+* Empresa - http://geradorbrasileiro.com/empresa.html **(TODO #20)**
+* Endereço - http://geradorbrasileiro.com/endereco.html
 * Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
-* IPTU - http://geradorbrasileiro.com/iptu.html
+* IPTU - http://geradorbrasileiro.com/iptu.html **(TODO #26)**
 * * São Paulo e Curitiba OK
 * * Outras capitais (TODO)
+* NIT - **(TODO #14)**
 * Number - http://geradorbrasileiro.com/others.html
 * Percentage - http://geradorbrasileiro.com/others.html
-* Pessoa - http://geradorbrasileiro.com/pessoa.html (TODO #19)
-* PIS/PASEP - http://geradorbrasileiro.com/pis.html - NIT - (TODO #14)
+* Pessoa - http://geradorbrasileiro.com/pessoa.html **(TODO #19)**
+* PIS/PASEP - http://geradorbrasileiro.com/pis.html
 * Placa de carro - http://geradorbrasileiro.com/placa.html
 * Processo da justiça - http://geradorbrasileiro.com/processo.html
 * RENAVAM  - http://geradorbrasileiro.com/renavam.html
 * RG  - http://geradorbrasileiro.com/rg.html
 * * SP/RJ - OK
 * * Outros estado (TODO)
-* SPED - http://geradorbrasileiro.com/titulo.html (TODO: #24)
+* SPED - http://geradorbrasileiro.com/sped.html **(TODO: #24)**
 * Telefone  - http://geradorbrasileiro.com/telefone.html
 * Time (data/hora) - http://geradorbrasileiro.com/others.html
 * Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
-* Veículo - http://geradorbrasileiro.com/veiculo.html (TODO: #28)
+* Veículo - http://geradorbrasileiro.com/veiculo.html
 
 
 # Angular 

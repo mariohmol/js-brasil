@@ -8,21 +8,20 @@ describe('Faker test', () => {
     // expect(validateBr.cartaocredito(cartaocredito)).to.be.true;
   });
 
-
-
   it('CELULAR', () => {
     const celular = fakerBr.celular();
     expect(validateBr.celular(celular)).to.be.true;
   });
+
   it('CEP', () => {
     expect(fakerBr.cep()).to.exist;
     const cep = fakerBr.cep();
     expect(validateBr.cep(cep)).to.be.true;
   });
 
-  it('CERTIDAO - TODO', () => {
-    // const certidao = fakerBr.certidao();
-    // expect(validateBr.certidao(certidao)).to.be.true;
+  it('Certidão', () => {
+    const certidao = fakerBr.certidao();
+    expect(validateBr.certidao(certidao)).to.be.true;
   });
 
   it('CHASSI', () => {
@@ -55,7 +54,38 @@ describe('Faker test', () => {
     const contabanco = fakerBr.contabanco();
     expect(validateBr.contabanco(contabanco)).to.be.true;
   });
+
   
+  it('CPF', () => {
+    const cpf = fakerBr.cpf();
+    expect(fakerBr.cpf()).to.exist;
+    expect(validateBr.cpf(cpf)).to.be.true;
+  });
+
+  it('CPFCNPJ', () => {
+    const cpfcnpj = fakerBr.cpfcnpj();
+    expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
+  });
+
+
+  it('Currency', () => {
+        // expect(fakerBr.currency()).to.exist;
+    // const currency = fakerBr.currency();
+    // expect(validateBr.currency(currency)).to.be.true;
+    const currencyNumber = fakerBr.currencyNumber();
+    expect(validateBr.currency(currencyNumber)).to.be.true;
+  });
+
+  it('date', () => {
+    const date = fakerBr.date();
+    expect(validateBr.date(date)).to.be.true;
+  });
+
+    
+  it('ECT', () => {
+    const ect = fakerBr.ect();
+    expect(validateBr.ect(ect)).to.be.true;
+  });
 
   it('Empresa', () => {
     const empresa = fakerBr.empresa();
@@ -80,36 +110,6 @@ describe('Faker test', () => {
     expect(endereco.estadoSigla).to.exist;
   });
   
-  it('CPF', () => {
-    const cpf = fakerBr.cpf();
-    expect(fakerBr.cpf()).to.exist;
-    expect(validateBr.cpf(cpf)).to.be.true;
-  });
-
-  it('CPFCNPJ', () => {
-    const cpfcnpj = fakerBr.cpfcnpj();
-    expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
-  });
-
-
-
-  it('Currency', () => {
-        // expect(fakerBr.currency()).to.exist;
-    // const currency = fakerBr.currency();
-    // expect(validateBr.currency(currency)).to.be.true;
-    const currencyNumber = fakerBr.currencyNumber();
-    expect(validateBr.currency(currencyNumber)).to.be.true;
-  });
-
-  it('date', () => {
-    const date = fakerBr.date();
-    expect(validateBr.date(date)).to.be.true;
-  });
-
-  it('ECT', () => {
-    const ect = fakerBr.ect();
-    expect(validateBr.ect(ect)).to.be.true;
-  });
 
   it('inscricaoestadual - TODO', () => {
     // expect(fakerBr.inscricaoestadual()).to.exist;

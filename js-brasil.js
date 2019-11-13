@@ -663,6 +663,58 @@ exports.fakerBr = faker.fakerBr;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
+function create_certidao(value) {
+    if (value.length > 30) {
+        value = value.substring(0, value.length - 2);
+    }
+    var b1 = parseInt(value.slice(29));
+    var b2 = parseInt(value.slice(28, 29));
+    var b3 = parseInt(value.slice(27, 28));
+    var b4 = parseInt(value.slice(26, 27));
+    var b5 = parseInt(value.slice(25, 26));
+    var b6 = parseInt(value.slice(24, 25));
+    var b7 = parseInt(value.slice(23, 24));
+    var b8 = parseInt(value.slice(22, 23));
+    var b9 = parseInt(value.slice(21, 22));
+    var b10 = parseInt(value.slice(20, 21));
+    var b11 = parseInt(value.slice(19, 20));
+    var b12 = parseInt(value.slice(18, 19));
+    var b13 = parseInt(value.slice(17, 18));
+    var b14 = parseInt(value.slice(16, 17));
+    var b15 = parseInt(value.slice(15, 16));
+    var b16 = parseInt(value.slice(14, 15));
+    var b17 = parseInt(value.slice(13, 14));
+    var b18 = parseInt(value.slice(12, 13));
+    var b19 = parseInt(value.slice(11, 12));
+    var b20 = parseInt(value.slice(10, 11));
+    var b21 = parseInt(value.slice(9, 10));
+    var b22 = parseInt(value.slice(8, 9));
+    var b23 = parseInt(value.slice(7, 8));
+    var b24 = parseInt(value.slice(6, 7));
+    var b25 = parseInt(value.slice(5, 6));
+    var b26 = parseInt(value.slice(4, 5));
+    var b27 = parseInt(value.slice(3, 4));
+    var b28 = parseInt(value.slice(2, 3));
+    var b29 = parseInt(value.slice(1, 2));
+    var b30 = parseInt(value.slice(0, 1));
+    var certPriDig = (b1 * 9 + b2 * 8 + b3 * 7 + b4 * 6 + b5 * 5 + b6 * 4 + b7 * 3 + b8 * 2 + b9 * 1 + b10 * 0 + b11 * 10 + b12 * 9 + b13 * 8 + b14 * 7 + b15 * 6 + b16 * 5 + b17 * 4 + b18 * 3 + b19 * 2 + b20 * 1 + b21 * 0 + b22 * 10 + b23 * 9 + b24 * 8 + b25 * 7 + b26 * 6 + b27 * 5 + b28 * 4 + b29 * 3 + b30 * 2) % 11;
+    if (certPriDig == 10) {
+        certPriDig = 1;
+    }
+    var certSegDig = (certPriDig * 9 + b1 * 8 + b2 * 7 + b3 * 6 + b4 * 5 + b5 * 4 + b6 * 3 + b7 * 2 + b8 * 1 + b9 * 0 + b10 * 10 + b11 * 9 + b12 * 8 + b13 * 7 + b14 * 6 + b15 * 5 + b16 * 4 + b17 * 3 + b18 * 2 + b19 * 1 + b20 * 0 + b21 * 10 + b22 * 9 + b23 * 8 + b24 * 7 + b25 * 6 + b26 * 5 + b27 * 4 + b28 * 3 + b29 * 2 + b30 * 1) % 11;
+    if (certSegDig == 10) {
+        certSegDig = 1;
+    }
+    var certDV = certPriDig * 10 + certSegDig;
+    if (certDV == 0) {
+        certDV = "00";
+    }
+    if (certDV > 0 && certDV < 10) {
+        certDV = "0" + certDV;
+    }
+    return certDV.toString();
+}
+exports.create_certidao = create_certidao;
 function create_cnh(cnh) {
     var v = 0;
     for (var i = 0, j = 9; i < 9; ++i, --j) {
@@ -1258,7 +1310,12 @@ exports.fakerBr = {
     cepState: function (state) {
         return randexp_1.randexp(validate_1.CEPRange[state]);
     },
-    certidao: makeGeneric(mask_1.MASKS['certidao']),
+    certidao: function () {
+        var value = makeGeneric(mask_1.MASKS['certidao'])();
+        var certidao = utils_1.getAllDigits(value);
+        var check = create_1.create_certidao(certidao);
+        return certidao.substr(0, certidao.length - 2) + check;
+    },
     chassi: function () {
         var chassi = makeGeneric(mask_1.MASKS['chassi'])();
         chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
@@ -3549,28 +3606,11 @@ function validate_certidao(value) {
     if (!format.test(certidao)) {
         return false;
     }
-    var num = certidao.substring(0, -2);
-    var dv = certidao.substring(-2);
-    var dv1 = ponderada_certidao(num) % 11;
-    dv1 = dv1 > 9 ? 1 : dv1; // se o resto for 10, o DV será 1
-    var dv2 = ponderada_certidao(num.toString() + dv1.toString()) % 11;
-    dv2 = dv2 > 9 ? 1 : dv2;
-    if (dv === dv1.toString() + dv2.toString()) {
-        return true;
-    }
-    return false;
+    var dvOriginal = certidao.substr(-2);
+    var dv = create_1.create_certidao(certidao);
+    return dv === dvOriginal;
 }
 exports.validate_certidao = validate_certidao;
-function ponderada_certidao(value) {
-    var total = 0;
-    var multiplicador = 32 - value.length;
-    for (var i = 0; i < value.length; i++) {
-        total += value[i] * multiplicador;
-        multiplicador += 1;
-        multiplicador = multiplicador > 10 ? 0 : multiplicador;
-    }
-    return total;
-}
 /**
  *
  * @param chassi

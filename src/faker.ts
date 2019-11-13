@@ -4,7 +4,7 @@ import { CEPRange } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
-import { create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh, create_cns, create_ect } from './create';
+import { create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh, create_cns, create_ect, create_certidao } from './create';
 import { getAllDigits, randArray, CORES } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
@@ -124,7 +124,12 @@ export const fakerBr = {
   cepState: (state: string | number) => {
     return randexp(CEPRange[state]);
   },
-  certidao: makeGeneric(MASKS['certidao']),
+  certidao: () => {
+    let value = makeGeneric(MASKS['certidao'])();
+    let certidao = getAllDigits(value);
+    let check = create_certidao(certidao);
+    return certidao.substr(0, certidao.length - 2) + check;
+  },
   chassi: () => {
     let chassi = makeGeneric(MASKS['chassi'])();
     chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');

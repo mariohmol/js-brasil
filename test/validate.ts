@@ -16,34 +16,28 @@ describe('Validate test', () => {
     expect(validateBr.cep('1234')).to.be.false;
   });
 
-  it('Certidão - TODO', () => {
-    // expect(validateBr.certidao('104539.01.55.2013.1.00012.021.0000123-21')).to.be.true;
-    // expect(validateBr.certidao('10453901552013100012021000012321')).to.be.true;
-    // expect(validateBr.certidao('10453901552013100012021000012322')).to.be.false;
+  it('Certidão', () => {
+    expect(validateBr.certidao('104539.01.55.2013.1.00012.021.0000123-21')).to.be.true;
+    expect(validateBr.certidao('10453901552013100012021000012321')).to.be.true;
+    expect(validateBr.certidao('10453901552013100012021000012322')).to.be.false;
   });
 
 
   it('Chassi', () => {
     // 1 - Possuir o número "0" (ZERO) como 1º dígito.
     expect(validateBr.chassi('0BWZZZ377VT004251')).to.be.false;
-
     // 2 - Possuir espaço no chassi -- ele deve limpar o espaço
     expect(validateBr.chassi('9BWZZZ377 T004251')).to.be.true;
-
     // 3 - Se, a partir do 4º dígito, houver uma repetição consecutiva, por mais de seis vezes, do mesmo dígito (alfabético ou numérico).
     // Exemplos: 9BW11111119452687 e 9BWZZZ5268AAAAAAA.
     expect(validateBr.chassi('9BW11111119452687')).to.be.false;
     expect(validateBr.chassi('9BWZZZ5268AAAAAAA')).to.be.false;
-
     // 4 - Apresente os caracteres "i", "I", "o", "O", "q", "Q".
     expect(validateBr.chassi('9BWZZZ377IT004251')).to.be.false;
-
     // 5 - Os quatro últimos caracteres devem ser obrigatoriamente numéricos
     expect(validateBr.chassi('9BWZZZ377VT00A251')).to.be.false;
-    
     // 6 - Se possuir número de dígitos diferente de 17 (alfanuméricos). 
     expect(validateBr.chassi('9BWZZZ377VT0042512')).to.be.false;
-
     expect(validateBr.chassi('9BWZZZ377VT004251')).to.be.true;
   });
 

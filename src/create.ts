@@ -1,8 +1,55 @@
 import { modulo11, getAllDigits } from "./utils";
 
+export function create_certidao(value) {
+
+    if (value.length > 30) {
+        value = value.substring(0, value.length - 2);
+    }
+    let b1 = parseInt(value.slice(29));
+    let b2 = parseInt(value.slice(28, 29));
+    let b3 = parseInt(value.slice(27, 28));
+    let b4 = parseInt(value.slice(26, 27));
+    let b5 = parseInt(value.slice(25, 26));
+    let b6 = parseInt(value.slice(24, 25));
+    let b7 = parseInt(value.slice(23, 24));
+    let b8 = parseInt(value.slice(22, 23));
+    let b9 = parseInt(value.slice(21, 22));
+    let b10 = parseInt(value.slice(20, 21));
+    let b11 = parseInt(value.slice(19, 20));
+    let b12 = parseInt(value.slice(18, 19));
+    let b13 = parseInt(value.slice(17, 18));
+    let b14 = parseInt(value.slice(16, 17));
+    let b15 = parseInt(value.slice(15, 16));
+    let b16 = parseInt(value.slice(14, 15));
+    let b17 = parseInt(value.slice(13, 14));
+    let b18 = parseInt(value.slice(12, 13));
+    let b19 = parseInt(value.slice(11, 12));
+    let b20 = parseInt(value.slice(10, 11));
+    let b21 = parseInt(value.slice(9, 10));
+    let b22 = parseInt(value.slice(8, 9));
+    let b23 = parseInt(value.slice(7, 8));
+    let b24 = parseInt(value.slice(6, 7));
+    let b25 = parseInt(value.slice(5, 6));
+    let b26 = parseInt(value.slice(4, 5));
+    let b27 = parseInt(value.slice(3, 4));
+    let b28 = parseInt(value.slice(2, 3));
+    let b29 = parseInt(value.slice(1, 2));
+    let b30 = parseInt(value.slice(0, 1));
+
+    let certPriDig = (b1 * 9 + b2 * 8 + b3 * 7 + b4 * 6 + b5 * 5 + b6 * 4 + b7 * 3 + b8 * 2 + b9 * 1 + b10 * 0 + b11 * 10 + b12 * 9 + b13 * 8 + b14 * 7 + b15 * 6 + b16 * 5 + b17 * 4 + b18 * 3 + b19 * 2 + b20 * 1 + b21 * 0 + b22 * 10 + b23 * 9 + b24 * 8 + b25 * 7 + b26 * 6 + b27 * 5 + b28 * 4 + b29 * 3 + b30 * 2) % 11;
+    if (certPriDig == 10) { certPriDig = 1; }
+    let certSegDig = (certPriDig * 9 + b1 * 8 + b2 * 7 + b3 * 6 + b4 * 5 + b5 * 4 + b6 * 3 + b7 * 2 + b8 * 1 + b9 * 0 + b10 * 10 + b11 * 9 + b12 * 8 + b13 * 7 + b14 * 6 + b15 * 5 + b16 * 4 + b17 * 3 + b18 * 2 + b19 * 1 + b20 * 0 + b21 * 10 + b22 * 9 + b23 * 8 + b24 * 7 + b25 * 6 + b26 * 5 + b27 * 4 + b28 * 3 + b29 * 2 + b30 * 1) % 11;
+    if (certSegDig == 10) { certSegDig = 1; }
+    let certDV: any = certPriDig * 10 + certSegDig;
+    if (certDV == 0) { certDV = "00"; }
+    if (certDV > 0 && certDV < 10) { certDV = "0" + certDV; }
+
+    return certDV.toString();
+}
+
 
 export function create_cnh(cnh) {
-    
+
     let v = 0;
     for (let i = 0, j = 9; i < 9; ++i, --j) {
         v += +(cnh.charAt(i) * j);
@@ -107,11 +154,11 @@ export function create_cns(number) {
     }
     let soma = somaInicial;
     let rest = 0;
-    while(soma % 11!==0){
+    while (soma % 11 !== 0) {
         rest++;
         soma = somaInicial + (rest * 1)
     }
-    return number.substr(-2,1) + rest;
+    return number.substr(-2, 1) + rest;
 }
 
 export function create_cpf(strCPF: string) {

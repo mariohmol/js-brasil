@@ -3,7 +3,7 @@ import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh
+  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao
 } from "./create";
 import RG from "./rg";
 import IPTU from "./iptu";
@@ -100,28 +100,12 @@ export function validate_certidao(value) {
     return false;
   }
 
-  let num = certidao.substring(0, -2);
-  let dv = certidao.substring(-2);
-  let dv1 = ponderada_certidao(num) % 11;
-  dv1 = dv1 > 9 ? 1 : dv1; // se o resto for 10, o DV será 1
-  let dv2 = ponderada_certidao(num.toString() + dv1.toString()) % 11;
-  dv2 = dv2 > 9 ? 1 : dv2;
-  if (dv === dv1.toString() + dv2.toString()) {
-    return true;
-  }
-  return false;
+  let dvOriginal = certidao.substr(-2);
+  const dv = create_certidao(certidao);
+
+  return dv === dvOriginal;
 }
 
-function ponderada_certidao(value) {
-  let total = 0;
-  let multiplicador = 32 - value.length;
-  for (let i = 0; i < value.length; i++) {
-    total += value[i] * multiplicador;
-    multiplicador += 1;
-    multiplicador = multiplicador > 10 ? 0 : multiplicador;
-  }
-  return total;
-}
 
 /**
  * 
@@ -137,7 +121,7 @@ export function validate_chassi(chassi) {
 
   // 2 - Possuir espaço no chassi
   chassi = getAllWords(chassi); // espacoNoChassi
- 
+
   // 3 - Se, a partir do 4º dígito, houver uma repetição consecutiva, por mais de seis vezes, do mesmo dígito 
   // (alfabético ou numérico). Exemplos: 9BW11111119452687 e 9BWZZZ5268AAAAAAA.
   const repeticaoMaisDe6Vezes = /^.{4,}([0-9A-Z])\1{5,}/
@@ -174,7 +158,7 @@ export function validate_cnh(value) {
   var char1 = value.charAt(0);
   if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
     return false;
-}
+  }
   const check = create_cnh(value);
 
   return value.substr(-2) == check;

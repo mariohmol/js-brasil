@@ -36,10 +36,10 @@ describe('Mask test', () => {
     expect(maskBr.cep('123')).to.exist;
   });
 
-  it('certidao - TODO', () => {
-    const certidao = '12312345121';
-    // expect(maskBr.certidao(certidao)).to.be.equal('123.12345.12-1');
-    // testGeneric('certidao');
+  it('Certidão', () => {
+    const certidao = '10453901552013100012021000012321';
+    const mask = maskBr.certidao(certidao);
+    expect(mask).to.be.equal('104539.01.55.2013.1.00012.021.0000123-21');
   });
 
   it('CHASSI', () => {
@@ -47,8 +47,6 @@ describe('Mask test', () => {
     expect(maskBr.chassi(chassi)).to.be.equal('9BW ZZZ377 VT 004251');
     testGeneric('chassi');
   });
-
-  
 
   it('cnae - TODO', () => {
     const cnae = '12312345121';
