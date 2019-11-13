@@ -1,5 +1,638 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
+exports.NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
+exports.SOBRENOMES_MASCULINOS = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
+    'COSTA', 'DIAS', 'DUARTE', 'FREITAS', 'FERNANDES', 'FERREIRA', 'GARCIA', 'GOMES', 'GONÇALVES', 'LIMA', 'LOPES', 'MACHADO', 'MARQUES', 'MARTINS', 'MEDEIROS',
+    'MELO', 'MENDES', 'MIRANDA', 'MONTEIRO', 'MORAES', 'MOREIRA', 'MOURA', 'NASCIMENTO', 'NUNES', 'OLIVEIRA', 'PEREIRA', 'RAMOS', 'REIS', 'RIBEIRO', 'ROCHA',
+    'SANTANA', 'SANTOS', 'SILVA', 'SOARES', 'SOUZA', 'TEIXEIRA', 'VIEIRA'];
+exports.EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
+exports.EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
+exports.NAMES = [
+    'Aaron',
+    'Abel',
+    'Abelardo',
+    'Abelino',
+    'Abiel',
+    'Abiezer',
+    'Abílio',
+    'Abner',
+    'Abraão',
+    'Acácio',
+    'Adailton',
+    'Adair',
+    'Adalberto',
+    'Adalgiso',
+    'Adalício',
+    'Adalmir',
+    'Adalto',
+    'Adam',
+    'Adamastor',
+    'Adamor',
+    'Adão',
+    'Adeci',
+    'Adeildo',
+    'Adelair',
+    'Adélcio',
+    'Adelino',
+    'Adélio',
+    'Adelson',
+    'Ademar',
+    'Ademilson',
+    'Ademir',
+    'Aderbal',
+    'Adérito',
+    'Adilson',
+    'Admilson',
+    'Adolfo',
+    'Adonai',
+    'Adonis',
+    'Adónis',
+    'Adrian',
+    'Adriano',
+    'Adriel',
+    'Aécio',
+    'Afonso',
+    'Afrânio',
+    'Agenor',
+    'Ageo',
+    'Agipino',
+    'Agnaldo',
+    'Agnelo',
+    'Agostinho',
+    'Aguinaldo',
+    'Ailton',
+    'Aires',
+    'Airton',
+    'Aitor',
+    'Alair',
+    'Alaôr',
+    'Alarico',
+    'Albano',
+    'Albertino',
+    'Albino',
+    'Alcides',
+    'Alcindo',
+    'Aldair',
+    'Aldemir',
+    'Aldenor',
+    'Aldo',
+    'Alejandro',
+    'Alessandro',
+    'Alex',
+    'Alexandrino',
+    'Alexandro',
+    'Aléxio',
+    'Alfredo',
+    'Alípio',
+    'Alírio',
+    'Alison',
+    'Allan',
+    'Almerindo',
+    'Almir',
+    'Aloísio',
+    'Alonzo',
+    'Altino',
+    'Aluísio',
+    'Alvantino',
+    'Alvino',
+    'Amadeo',
+    'Amândio',
+    'Amarildo',
+    'Amauri',
+    'Amaury',
+    'Ambrósio',
+    'Américo',
+    'Amílcar',
+    'Amilton',
+    'Amir',
+    'Ananias',
+    'Andersen',
+    'Anderson',
+    'Ândreo',
+    'Andrés',
+    'Anésio',
+    'Angélico',
+    'Ângelo',
+    'Aníbal',
+    'Anísio',
+    'Anselmo',
+    'Antenor',
+    'Antero',
+    'Anthony',
+    'Apollo',
+    'Apolo',
+    'Aprígio',
+    'Aquiles',
+    'Arcanjo',
+    'Aristeu',
+    'Aristides',
+    'Armando',
+    'Armindo',
+    'Arnaldo',
+    'Arthur',
+    'Arturo',
+    'Ary',
+    'Asher',
+    'Assis',
+    'Ataíde',
+    'Athos',
+    'Átila',
+    'Atlas',
+    'Aureliano',
+    'Aurelino',
+    'Aurélio',
+    'Aurino',
+    'Ayrton',
+    'Balbino',
+    'Balduíno',
+    'Baltasar',
+    'Baltazar',
+    'Barnabé',
+    'Bartolomeu',
+    'Basileu',
+    'Basílio',
+    'Batista',
+    'Belarmino',
+    'Belchior',
+    'Belisário',
+    'Belmiro',
+    'Bendito',
+    'Benedito',
+    'Benito',
+    'Benjamin',
+    'Beto',
+    'Bill',
+    'Boanerges',
+    'Bob',
+    'Bonifácio',
+    'Bóris',
+    'Bosco',
+    'Brandon',
+    'Bruce',
+    'Bryan',
+    'Byron',
+    'Cacildo',
+    'Cadú',
+    'Cael',
+    'Caíco',
+    'Caíque',
+    'Calazan',
+    'Calisto',
+    'Calixto',
+    'Calvin',
+    'Camilo',
+    'Cândido',
+    'Canuto',
+    'Casimiro',
+    'Cassiano',
+    'Cássio',
+    'Castiel',
+    'Cauã',
+    'Cauê',
+    'Celestino',
+    'Celso',
+    'César',
+    'Charles',
+    'Christian',
+    'Christian',
+    'Christopher',
+    'Cirilo',
+    'Ciro',
+    'Cláudio',
+    'Claus',
+    'Clayton',
+    'Clementino',
+    'Clodomiro',
+    'Clovis',
+    'Clóvis',
+    'Conrad',
+    'Constantin',
+    'Constantino',
+    'Cosme',
+    'Cristiano',
+    'Cristóvão',
+    'Cursino',
+    'Custódio',
+    'Dácio',
+    'Dagoberto',
+    'Dalmo',
+    'Dalton',
+    'Danilo',
+    'Dante',
+    'Dárcio',
+    'Darius',
+    'Deivid',
+    'Delfino',
+    'Delmar',
+    'Demétrio',
+    'Denis',
+    'Denzel',
+    'Derik',
+    'Didier',
+    'Dimas',
+    'Dinis',
+    'Diniz',
+    'Dino',
+    'Diógenes',
+    'Dionísio',
+    'Djalma',
+    'Dom',
+    'Domênico',
+    'Dominic',
+    'Donatello',
+    'Donatílio',
+    'Donato',
+    'Donizete',
+    'Douglas',
+    'Douglas',
+    'Durval',
+    'Dylan',
+    'Ed',
+    'Éder',
+    'Ederson',
+    'Edivaldo',
+    'Edmilson',
+    'Edmir',
+    'Edson',
+    'Eliezer',
+    'Élio',
+    'Eliseo',
+    'Eliseu',
+    'Elísio',
+    'Élton',
+    'Emanuel',
+    'Emaús',
+    'Emerson',
+    'Emílio',
+    'Ênio',
+    'Enrico',
+    'Enrique',
+    'Erasmo',
+    'Erasmus',
+    'Eriberto',
+    'Erik',
+    'Ernesto',
+    'Esdras',
+    'Eugénio',
+    'Eurico',
+    'Evaldo',
+    'Evandro',
+    'Evelásio',
+    'Expedito',
+    'Ezekiel',
+    'Fabiano',
+    'Faustino',
+    'Fausto',
+    'Felipe',
+    'Felisberto',
+    'Felismino',
+    'Félix',
+    'Ferdinand',
+    'Ferdinando',
+    'Fernando',
+    'Fernão',
+    'Firmino',
+    'Flávio',
+    'Florêncio',
+    'Florentino',
+    'Floriano',
+    'Fortunato',
+    'Francesco',
+    'Francis',
+    'Franco',
+    'Frank',
+    'Franklin',
+    'Gael',
+    'Galdino',
+    'Galeno',
+    'Galileu',
+    'Gastão',
+    'Gaudêncio',
+    'Genaro',
+    'Genésio',
+    'Geovani',
+    'Geraldo',
+    'Germano',
+    'Gerson',
+    'Giancarlos',
+    'Giani',
+    'Gianluca',
+    'Gilberto',
+    'Gilmar',
+    'Gilmar',
+    'Gilson',
+    'Giuseppe',
+    'Glauco',
+    'Golias',
+    'Graciano',
+    'Gregório',
+    'Gualter',
+    'Guarani',
+    'Gumersindo',
+    'Guy',
+    'Haroldo',
+    'Hélder',
+    'Hélio',
+    'Henry',
+    'Herbert',
+    'Hermano',
+    'Hernâni',
+    'Horácio',
+    'Humberto',
+    'Ike',
+    'Irineu',
+    'Isaías',
+    'Isidoro',
+    'Israel',
+    'Ítalo',
+    'Itamar',
+    'Ivaldo',
+    'Ivandro',
+    'Ivanildo',
+    'Jacinto',
+    'Jack',
+    'Jackson',
+    'Jader',
+    'Jadiel',
+    'Jadir',
+    'Jair',
+    'Jairo',
+    'Jamal',
+    'Jamil',
+    'Jandir',
+    'Janilson',
+    'Januário',
+    'Jarbas',
+    'Jason',
+    'Jason',
+    'Javier',
+    'Jean',
+    'Jefferson',
+    'Jeremias',
+    'Jessé',
+    'Jessie',
+    'Jessiel',
+    'Jesualdo',
+    'Jesus',
+    'Joab',
+    'Joelson',
+    'Jofre',
+    'Johnny',
+    'Johnson',
+    'Jonas',
+    'Jonatã',
+    'Josélio',
+    'Joshua',
+    'Josias',
+    'Josué',
+    'Juan',
+    'Juliano',
+    'Julião',
+    'Júlio',
+    'Júnior',
+    'Jurandir',
+    'Juvenal',
+    'Kaique',
+    'Kauã',
+    'Kauan',
+    'Kawan',
+    'Kelvin',
+    'Kennedy',
+    'Klaus',
+    'Kleber',
+    'Lael',
+    'Laerte',
+    'Laertes',
+    'Lauro',
+    'Leon',
+    'Leôncio',
+    'Leonel',
+    'Leónidas',
+    'Leopoldo',
+    'Lineu',
+    'Lionel',
+    'Lisandro',
+    'Lívio',
+    'Logan',
+    'Luã',
+    'Luan',
+    'Luca',
+    'Luciano',
+    'Lúcio',
+    'Luigi',
+    'Luiz',
+    'Lukas',
+    'Luzio',
+    'Macário',
+    'Magnus',
+    'Malvino',
+    'Manassés',
+    'Manoel',
+    'Maomé',
+    'Márcio',
+    'Marcos',
+    'Marcus',
+    'Marley',
+    'Marlon',
+    'Martin',
+    'Martinho',
+    'Marvin',
+    'Matheo',
+    'Matheus',
+    'Mathias',
+    'Mathieu',
+    'Maurílio',
+    'Max',
+    'Maximiliano',
+    'Maxwell',
+    'Mélvin',
+    'Messias',
+    'Micael',
+    'Michael',
+    'Michel',
+    'Milo',
+    'Milton',
+    'Mizael',
+    'Moacir',
+    'Mohamed',
+    'Nataniel',
+    'Nazário',
+    'Neil',
+    'Nereu',
+    'Nestor',
+    'Newton',
+    'Ney',
+    'Nicola',
+    'Nicolas',
+    'Nildemar',
+    'Nilo',
+    'Nilson',
+    'Nilton',
+    'Nivaldo',
+    'Nonato',
+    'Norberto',
+    'Norildo',
+    'Norimar',
+    'Odemar',
+    'Odilson',
+    'Odin',
+    'Odorico',
+    'Olin',
+    'Omar',
+    'Omer',
+    'Onofre',
+    'Orestes',
+    'Orlandino',
+    'Orlando',
+    'Osias',
+    'Osman',
+    'Osmar',
+    'Osório',
+    'Osvaldo',
+    'Otacílio',
+    'Otávio',
+    'Otto',
+    'Ozael',
+    'Pablo',
+    'Paco',
+    'Paolo',
+    'Pascoal',
+    'Patrício',
+    'Patrick',
+    'Paulino',
+    'Pepe',
+    'Percival',
+    'Péricles',
+    'Pierre',
+    'Porfírio',
+    'Querubim',
+    'Quintino',
+    'Radamés',
+    'Rafaelo',
+    'Raí',
+    'Raimundo',
+    'Ralf',
+    'Ralph',
+    'Ramiro',
+    'Ramon',
+    'Ramón',
+    'Raoni',
+    'Raphael',
+    'Reginaldo',
+    'Régis',
+    'Reimão',
+    'Reinaldo',
+    'Renan',
+    'Renato',
+    'Renê',
+    'Rivaldo',
+    'Roberto',
+    'Robson',
+    'Rodney',
+    'Rodolfo',
+    'Roger',
+    'Rogério',
+    'Roland',
+    'Rolando',
+    'Romão',
+    'Romário',
+    'Romeo',
+    'Rômulo',
+    'Ronald',
+    'Ronaldo',
+    'Roni',
+    'Rosendo',
+    'Rúbens',
+    'Rudesindo',
+    'Rudolfo',
+    'Ruy',
+    'Ryan',
+    'Sansão',
+    'Saúl',
+    'Saulo',
+    'Sávio',
+    'Selton',
+    'Sertório',
+    'Severino',
+    'Sidney',
+    'Silas',
+    'Sílvio',
+    'Simplício',
+    'Sinésio',
+    'Stefan',
+    'Stefano',
+    'Stenio',
+    'Steve',
+    'Steven',
+    'Sydney',
+    'Taciano',
+    'Tadeu',
+    'Tales',
+    'Tamires',
+    'Tâmiris',
+    'Tarcísio',
+    'Tarik',
+    'Tarsício',
+    'Telmo',
+    'Tenório',
+    'Teo',
+    'Teobaldo',
+    'Teodemiro',
+    'Thales',
+    'Theo',
+    'Thiago',
+    'Thomas',
+    'Thomaz',
+    'Tibúrcio',
+    'Ticiano',
+    'Tierry',
+    'Timóteo',
+    'Tito',
+    'Tom',
+    'Tomaz',
+    'Tristão',
+    'Troy',
+    'Túlio',
+    'Ubirajara',
+    'Ubiratã',
+    'Urbano',
+    'Uriel',
+    'Valdemar',
+    'Valentino',
+    'Vanderlei',
+    'Vasco',
+    'Venâncio',
+    'Veríssimo',
+    'Vicenzo',
+    'Victor',
+    'Vílmar',
+    'Vilson',
+    'Vinícius',
+    'Virgílio',
+    'Vital',
+    'Vítor',
+    'Vladimir',
+    'Wagner',
+    'Waldir',
+    'Waldo',
+    'Wallace',
+    'Walter',
+    'Washington',
+    'Watson',
+    'Webster',
+    'Weller',
+    'Wellington',
+    'Wendel',
+    'Wesley',
+    'Will',
+    'William',
+    'Wilson',
+];
+
+},{}],2:[function(require,module,exports){
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -26,16 +659,13 @@ exports.utilsBr = __assign({}, utils, { MASKS: mask_1.MASKS,
 exports.maskBr = mask.maskBr;
 exports.fakerBr = faker.fakerBr;
 
-},{"./src/estados":3,"./src/faker":4,"./src/mask":7,"./src/placa":9,"./src/utils":11,"./src/validate":12}],2:[function(require,module,exports){
+},{"./src/estados":4,"./src/faker":5,"./src/mask":8,"./src/placa":10,"./src/utils":12,"./src/validate":13}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
 function create_cnh(cnh) {
-    var char1 = cnh.charAt(0);
-    if (cnh.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === cnh) {
-        return false;
-    }
-    for (var i = 0, j = 9, v = 0; i < 9; ++i, --j) {
+    var v = 0;
+    for (var i = 0, j = 9; i < 9; ++i, --j) {
         v += +(cnh.charAt(i) * j);
     }
     var dsc = 0, vl1 = v % 11;
@@ -43,8 +673,8 @@ function create_cnh(cnh) {
         vl1 = 0;
         dsc = 2;
     }
-    for (i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
-        v += +(cnh.charAt(i) * j);
+    for (var i = 0, j = 1, v_1 = 0; i < 9; ++i, ++j) {
+        v_1 += +(cnh.charAt(i) * j);
     }
     var x = v % 11;
     var vl2 = (x >= 10) ? 0 : x - dsc;
@@ -145,7 +775,7 @@ function create_cpf(strCPF) {
     return restos;
 }
 exports.create_cpf = create_cpf;
-function create_creditcard(number) {
+function create_cartaocredito(number) {
     // if (number.length > 18) { alert("Erro. A rotina não abrange cartões\ncom mais de 18 dígitos (fora o DV).\nIntroduza 18 dígitos, no máximo."); }
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
@@ -237,7 +867,7 @@ function create_creditcard(number) {
     }
     return ccredDig;
 }
-exports.create_creditcard = create_creditcard;
+exports.create_cartaocredito = create_cartaocredito;
 function create_ect(number) {
     number = utils_1.getAllDigits(number);
     number = "0000000" + number;
@@ -457,7 +1087,7 @@ function create_titulo(titNum) {
 }
 exports.create_titulo = create_titulo;
 
-},{"./utils":11}],3:[function(require,module,exports){
+},{"./utils":12}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
@@ -494,7 +1124,7 @@ exports.ESTADOS = [
     { name: 'Tocantins', shortname: 'TO', slug: 'tocantins' }
 ];
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -508,6 +1138,7 @@ var create_1 = require("./create");
 var utils_1 = require("./utils");
 var veiculos_1 = require("./veiculos");
 var name_1 = require("./name");
+var pessoas_1 = require("../addons/pessoas");
 var makeGeneric = function (val, options) {
     if (options === void 0) { options = null; }
     return function () {
@@ -604,7 +1235,7 @@ var randomEstadoSigla = function () {
     return estados_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
 };
 exports.fakerBr = {
-    address: function () {
+    endereco: function () {
         var fakerBr = _this.fakerBr;
         var cep = fakerBr.cep();
         var cidade = utils_1.randArray(name_1.LOCALIZACAO_CIDADES);
@@ -621,7 +1252,7 @@ exports.fakerBr = {
             estadoSigla: estado.uf
         };
     },
-    bankaccount: makeGeneric(mask_1.MASKS['bankaccount']),
+    contabanco: makeGeneric(mask_1.MASKS['contabanco']),
     celular: makeGeneric(mask_1.MASKS['celular']),
     cep: makeGeneric(mask_1.MASKS['cep']),
     cepState: function (state) {
@@ -662,18 +1293,18 @@ exports.fakerBr = {
         var digito = create_1.create_cns(cns);
         return cns.substr(0, cns.length - 2) + digito;
     },
-    company: function () {
+    empresa: function () {
         var faker = _this.fakerBr;
         var cnpj = faker.cnpj();
         var telefone = faker.telefone();
         var celular = faker.celular();
-        var endereco = faker.address();
+        var endereco = faker.endereco();
         var inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
         // const dataAbertura = faker.celular();
         // const site = faker.site();
         // const email = faker.email();
         return {
-            name: 'TEST',
+            name: utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES),
             inscricaoestadual: inscricaoestadual,
             cnpj: cnpj, telefone: telefone, celular: celular,
             endereco: endereco
@@ -687,7 +1318,7 @@ exports.fakerBr = {
         return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
     },
     cpfcnpj: makeGeneric(mask_1.MASKS['cpfcnpj']),
-    creditcard: makeGeneric(mask_1.MASKS['creditcard']),
+    cartaocredito: makeGeneric(mask_1.MASKS['cartaocredito']),
     currency: function () {
         var x = Math.random() * 10000;
         return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -698,6 +1329,17 @@ exports.fakerBr = {
     },
     date: makeGeneric(mask_1.MASKS['date']),
     ect: function () {
+        var ect = makeGeneric(mask_1.MASKS['ect'])();
+        var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
+        return ect.substr(0, ect.length - 1) + dv;
+    },
+    email: function (options) {
+        if (options === void 0) { options = {}; }
+        var name = utils_1.randArray(pessoas_1.NOMES_MASCULINOS);
+        if (options.name) {
+            name = options.name.match(/\w/g).join('');
+        }
+        name = name.toLowerCase();
         var ect = makeGeneric(mask_1.MASKS['ect'])();
         var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
         return ect.substr(0, ect.length - 1) + dv;
@@ -728,7 +1370,7 @@ exports.fakerBr = {
         return parseFloat(x.toFixed(options.decimals));
     },
     percentage: makeGeneric(mask_1.MASKS['percentage']),
-    personal: function () {
+    pessoa: function () {
         var faker = _this.fakerBr;
         var cpf = faker.cpf();
         var rg = faker.rg();
@@ -805,7 +1447,7 @@ exports.fakerBr = {
     }
 };
 
-},{"./create":2,"./estados":3,"./inscricaoestadual":5,"./mask":7,"./name":8,"./placa":9,"./utils":11,"./validate":12,"./veiculos":13,"randexp":15}],5:[function(require,module,exports){
+},{"../addons/pessoas":1,"./create":3,"./estados":4,"./inscricaoestadual":6,"./mask":8,"./name":9,"./placa":10,"./utils":12,"./validate":13,"./veiculos":14,"randexp":16}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -1494,7 +2136,7 @@ function lookup(ie) {
     }
 }
 
-},{"./utils":11}],6:[function(require,module,exports){
+},{"./utils":12}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function iptu_ctba(number) {
@@ -1566,18 +2208,18 @@ exports.default = {
     }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 exports.MASKS = {
-    address: {
+    endereco: {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
-    bankaccount: {
+    contabanco: {
         text: '000 00000-0 00000-0',
         textMask: [/\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-',
             /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
@@ -1625,7 +2267,7 @@ exports.MASKS = {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
-    creditcard: {
+    cartaocredito: {
         text: '0000 0000 0000 0000 00/00 000',
         textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
     },
@@ -1762,8 +2404,8 @@ var makeGeneric = function (key) {
     };
 };
 exports.maskBr = {
-    address: makeGeneric('address'),
-    bankaccount: makeGeneric('bankaccount'),
+    endereco: makeGeneric('endereco'),
+    contabanco: makeGeneric('contabanco'),
     celular: makeGeneric('celular'),
     cep: makeGeneric('cep'),
     certidao: makeGeneric('certidao'),
@@ -1774,7 +2416,7 @@ exports.maskBr = {
     cns: makeGeneric('cns'),
     cpf: makeGeneric('cpf'),
     cpfcnpj: makeGeneric('cpfcnpj'),
-    creditcard: makeGeneric('creditcard'),
+    cartaocredito: makeGeneric('cartaocredito'),
     currency: function (currencyValueInput) {
         if (!currencyValueInput) {
             return '';
@@ -2079,7 +2721,7 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
 }
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
 
-},{"./inscricaoestadual":5,"./utils":11,"text-mask-addons/dist/createNumberMask":21}],8:[function(require,module,exports){
+},{"./inscricaoestadual":6,"./utils":12,"text-mask-addons/dist/createNumberMask":22}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'São Paulo', 'Doze', 'Treze',
@@ -2451,629 +3093,8 @@ exports.LOCALIZACAO_CIDADES = [
     ['Fazenda Rio Grande', 'Paraná'],
     ['Mairiporã', 'São Paulo']
 ];
-exports.NAMES = [
-    'Aaron',
-    'Abel',
-    'Abelardo',
-    'Abelino',
-    'Abiel',
-    'Abiezer',
-    'Abílio',
-    'Abner',
-    'Abraão',
-    'Acácio',
-    'Adailton',
-    'Adair',
-    'Adalberto',
-    'Adalgiso',
-    'Adalício',
-    'Adalmir',
-    'Adalto',
-    'Adam',
-    'Adamastor',
-    'Adamor',
-    'Adão',
-    'Adeci',
-    'Adeildo',
-    'Adelair',
-    'Adélcio',
-    'Adelino',
-    'Adélio',
-    'Adelson',
-    'Ademar',
-    'Ademilson',
-    'Ademir',
-    'Aderbal',
-    'Adérito',
-    'Adilson',
-    'Admilson',
-    'Adolfo',
-    'Adonai',
-    'Adonis',
-    'Adónis',
-    'Adrian',
-    'Adriano',
-    'Adriel',
-    'Aécio',
-    'Afonso',
-    'Afrânio',
-    'Agenor',
-    'Ageo',
-    'Agipino',
-    'Agnaldo',
-    'Agnelo',
-    'Agostinho',
-    'Aguinaldo',
-    'Ailton',
-    'Aires',
-    'Airton',
-    'Aitor',
-    'Alair',
-    'Alaôr',
-    'Alarico',
-    'Albano',
-    'Albertino',
-    'Albino',
-    'Alcides',
-    'Alcindo',
-    'Aldair',
-    'Aldemir',
-    'Aldenor',
-    'Aldo',
-    'Alejandro',
-    'Alessandro',
-    'Alex',
-    'Alexandrino',
-    'Alexandro',
-    'Aléxio',
-    'Alfredo',
-    'Alípio',
-    'Alírio',
-    'Alison',
-    'Allan',
-    'Almerindo',
-    'Almir',
-    'Aloísio',
-    'Alonzo',
-    'Altino',
-    'Aluísio',
-    'Alvantino',
-    'Alvino',
-    'Amadeo',
-    'Amândio',
-    'Amarildo',
-    'Amauri',
-    'Amaury',
-    'Ambrósio',
-    'Américo',
-    'Amílcar',
-    'Amilton',
-    'Amir',
-    'Ananias',
-    'Andersen',
-    'Anderson',
-    'Ândreo',
-    'Andrés',
-    'Anésio',
-    'Angélico',
-    'Ângelo',
-    'Aníbal',
-    'Anísio',
-    'Anselmo',
-    'Antenor',
-    'Antero',
-    'Anthony',
-    'Apollo',
-    'Apolo',
-    'Aprígio',
-    'Aquiles',
-    'Arcanjo',
-    'Aristeu',
-    'Aristides',
-    'Armando',
-    'Armindo',
-    'Arnaldo',
-    'Arthur',
-    'Arturo',
-    'Ary',
-    'Asher',
-    'Assis',
-    'Ataíde',
-    'Athos',
-    'Átila',
-    'Atlas',
-    'Aureliano',
-    'Aurelino',
-    'Aurélio',
-    'Aurino',
-    'Ayrton',
-    'Balbino',
-    'Balduíno',
-    'Baltasar',
-    'Baltazar',
-    'Barnabé',
-    'Bartolomeu',
-    'Basileu',
-    'Basílio',
-    'Batista',
-    'Belarmino',
-    'Belchior',
-    'Belisário',
-    'Belmiro',
-    'Bendito',
-    'Benedito',
-    'Benito',
-    'Benjamin',
-    'Beto',
-    'Bill',
-    'Boanerges',
-    'Bob',
-    'Bonifácio',
-    'Bóris',
-    'Bosco',
-    'Brandon',
-    'Bruce',
-    'Bryan',
-    'Byron',
-    'Cacildo',
-    'Cadú',
-    'Cael',
-    'Caíco',
-    'Caíque',
-    'Calazan',
-    'Calisto',
-    'Calixto',
-    'Calvin',
-    'Camilo',
-    'Cândido',
-    'Canuto',
-    'Casimiro',
-    'Cassiano',
-    'Cássio',
-    'Castiel',
-    'Cauã',
-    'Cauê',
-    'Celestino',
-    'Celso',
-    'César',
-    'Charles',
-    'Christian',
-    'Christian',
-    'Christopher',
-    'Cirilo',
-    'Ciro',
-    'Cláudio',
-    'Claus',
-    'Clayton',
-    'Clementino',
-    'Clodomiro',
-    'Clovis',
-    'Clóvis',
-    'Conrad',
-    'Constantin',
-    'Constantino',
-    'Cosme',
-    'Cristiano',
-    'Cristóvão',
-    'Cursino',
-    'Custódio',
-    'Dácio',
-    'Dagoberto',
-    'Dalmo',
-    'Dalton',
-    'Danilo',
-    'Dante',
-    'Dárcio',
-    'Darius',
-    'Deivid',
-    'Delfino',
-    'Delmar',
-    'Demétrio',
-    'Denis',
-    'Denzel',
-    'Derik',
-    'Didier',
-    'Dimas',
-    'Dinis',
-    'Diniz',
-    'Dino',
-    'Diógenes',
-    'Dionísio',
-    'Djalma',
-    'Dom',
-    'Domênico',
-    'Dominic',
-    'Donatello',
-    'Donatílio',
-    'Donato',
-    'Donizete',
-    'Douglas',
-    'Douglas',
-    'Durval',
-    'Dylan',
-    'Ed',
-    'Éder',
-    'Ederson',
-    'Edivaldo',
-    'Edmilson',
-    'Edmir',
-    'Edson',
-    'Eliezer',
-    'Élio',
-    'Eliseo',
-    'Eliseu',
-    'Elísio',
-    'Élton',
-    'Emanuel',
-    'Emaús',
-    'Emerson',
-    'Emílio',
-    'Ênio',
-    'Enrico',
-    'Enrique',
-    'Erasmo',
-    'Erasmus',
-    'Eriberto',
-    'Erik',
-    'Ernesto',
-    'Esdras',
-    'Eugénio',
-    'Eurico',
-    'Evaldo',
-    'Evandro',
-    'Evelásio',
-    'Expedito',
-    'Ezekiel',
-    'Fabiano',
-    'Faustino',
-    'Fausto',
-    'Felipe',
-    'Felisberto',
-    'Felismino',
-    'Félix',
-    'Ferdinand',
-    'Ferdinando',
-    'Fernando',
-    'Fernão',
-    'Firmino',
-    'Flávio',
-    'Florêncio',
-    'Florentino',
-    'Floriano',
-    'Fortunato',
-    'Francesco',
-    'Francis',
-    'Franco',
-    'Frank',
-    'Franklin',
-    'Gael',
-    'Galdino',
-    'Galeno',
-    'Galileu',
-    'Gastão',
-    'Gaudêncio',
-    'Genaro',
-    'Genésio',
-    'Geovani',
-    'Geraldo',
-    'Germano',
-    'Gerson',
-    'Giancarlos',
-    'Giani',
-    'Gianluca',
-    'Gilberto',
-    'Gilmar',
-    'Gilmar',
-    'Gilson',
-    'Giuseppe',
-    'Glauco',
-    'Golias',
-    'Graciano',
-    'Gregório',
-    'Gualter',
-    'Guarani',
-    'Gumersindo',
-    'Guy',
-    'Haroldo',
-    'Hélder',
-    'Hélio',
-    'Henry',
-    'Herbert',
-    'Hermano',
-    'Hernâni',
-    'Horácio',
-    'Humberto',
-    'Ike',
-    'Irineu',
-    'Isaías',
-    'Isidoro',
-    'Israel',
-    'Ítalo',
-    'Itamar',
-    'Ivaldo',
-    'Ivandro',
-    'Ivanildo',
-    'Jacinto',
-    'Jack',
-    'Jackson',
-    'Jader',
-    'Jadiel',
-    'Jadir',
-    'Jair',
-    'Jairo',
-    'Jamal',
-    'Jamil',
-    'Jandir',
-    'Janilson',
-    'Januário',
-    'Jarbas',
-    'Jason',
-    'Jason',
-    'Javier',
-    'Jean',
-    'Jefferson',
-    'Jeremias',
-    'Jessé',
-    'Jessie',
-    'Jessiel',
-    'Jesualdo',
-    'Jesus',
-    'Joab',
-    'Joelson',
-    'Jofre',
-    'Johnny',
-    'Johnson',
-    'Jonas',
-    'Jonatã',
-    'Josélio',
-    'Joshua',
-    'Josias',
-    'Josué',
-    'Juan',
-    'Juliano',
-    'Julião',
-    'Júlio',
-    'Júnior',
-    'Jurandir',
-    'Juvenal',
-    'Kaique',
-    'Kauã',
-    'Kauan',
-    'Kawan',
-    'Kelvin',
-    'Kennedy',
-    'Klaus',
-    'Kleber',
-    'Lael',
-    'Laerte',
-    'Laertes',
-    'Lauro',
-    'Leon',
-    'Leôncio',
-    'Leonel',
-    'Leónidas',
-    'Leopoldo',
-    'Lineu',
-    'Lionel',
-    'Lisandro',
-    'Lívio',
-    'Logan',
-    'Luã',
-    'Luan',
-    'Luca',
-    'Luciano',
-    'Lúcio',
-    'Luigi',
-    'Luiz',
-    'Lukas',
-    'Luzio',
-    'Macário',
-    'Magnus',
-    'Malvino',
-    'Manassés',
-    'Manoel',
-    'Maomé',
-    'Márcio',
-    'Marcos',
-    'Marcus',
-    'Marley',
-    'Marlon',
-    'Martin',
-    'Martinho',
-    'Marvin',
-    'Matheo',
-    'Matheus',
-    'Mathias',
-    'Mathieu',
-    'Maurílio',
-    'Max',
-    'Maximiliano',
-    'Maxwell',
-    'Mélvin',
-    'Messias',
-    'Micael',
-    'Michael',
-    'Michel',
-    'Milo',
-    'Milton',
-    'Mizael',
-    'Moacir',
-    'Mohamed',
-    'Nataniel',
-    'Nazário',
-    'Neil',
-    'Nereu',
-    'Nestor',
-    'Newton',
-    'Ney',
-    'Nicola',
-    'Nicolas',
-    'Nildemar',
-    'Nilo',
-    'Nilson',
-    'Nilton',
-    'Nivaldo',
-    'Nonato',
-    'Norberto',
-    'Norildo',
-    'Norimar',
-    'Odemar',
-    'Odilson',
-    'Odin',
-    'Odorico',
-    'Olin',
-    'Omar',
-    'Omer',
-    'Onofre',
-    'Orestes',
-    'Orlandino',
-    'Orlando',
-    'Osias',
-    'Osman',
-    'Osmar',
-    'Osório',
-    'Osvaldo',
-    'Otacílio',
-    'Otávio',
-    'Otto',
-    'Ozael',
-    'Pablo',
-    'Paco',
-    'Paolo',
-    'Pascoal',
-    'Patrício',
-    'Patrick',
-    'Paulino',
-    'Pepe',
-    'Percival',
-    'Péricles',
-    'Pierre',
-    'Porfírio',
-    'Querubim',
-    'Quintino',
-    'Radamés',
-    'Rafaelo',
-    'Raí',
-    'Raimundo',
-    'Ralf',
-    'Ralph',
-    'Ramiro',
-    'Ramon',
-    'Ramón',
-    'Raoni',
-    'Raphael',
-    'Reginaldo',
-    'Régis',
-    'Reimão',
-    'Reinaldo',
-    'Renan',
-    'Renato',
-    'Renê',
-    'Rivaldo',
-    'Roberto',
-    'Robson',
-    'Rodney',
-    'Rodolfo',
-    'Roger',
-    'Rogério',
-    'Roland',
-    'Rolando',
-    'Romão',
-    'Romário',
-    'Romeo',
-    'Rômulo',
-    'Ronald',
-    'Ronaldo',
-    'Roni',
-    'Rosendo',
-    'Rúbens',
-    'Rudesindo',
-    'Rudolfo',
-    'Ruy',
-    'Ryan',
-    'Sansão',
-    'Saúl',
-    'Saulo',
-    'Sávio',
-    'Selton',
-    'Sertório',
-    'Severino',
-    'Sidney',
-    'Silas',
-    'Sílvio',
-    'Simplício',
-    'Sinésio',
-    'Stefan',
-    'Stefano',
-    'Stenio',
-    'Steve',
-    'Steven',
-    'Sydney',
-    'Taciano',
-    'Tadeu',
-    'Tales',
-    'Tamires',
-    'Tâmiris',
-    'Tarcísio',
-    'Tarik',
-    'Tarsício',
-    'Telmo',
-    'Tenório',
-    'Teo',
-    'Teobaldo',
-    'Teodemiro',
-    'Thales',
-    'Theo',
-    'Thiago',
-    'Thomas',
-    'Thomaz',
-    'Tibúrcio',
-    'Ticiano',
-    'Tierry',
-    'Timóteo',
-    'Tito',
-    'Tom',
-    'Tomaz',
-    'Tristão',
-    'Troy',
-    'Túlio',
-    'Ubirajara',
-    'Ubiratã',
-    'Urbano',
-    'Uriel',
-    'Valdemar',
-    'Valentino',
-    'Vanderlei',
-    'Vasco',
-    'Venâncio',
-    'Veríssimo',
-    'Vicenzo',
-    'Victor',
-    'Vílmar',
-    'Vilson',
-    'Vinícius',
-    'Virgílio',
-    'Vital',
-    'Vítor',
-    'Vladimir',
-    'Wagner',
-    'Waldir',
-    'Waldo',
-    'Wallace',
-    'Walter',
-    'Washington',
-    'Watson',
-    'Webster',
-    'Weller',
-    'Wellington',
-    'Wendel',
-    'Wesley',
-    'Will',
-    'William',
-    'Wilson',
-];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PLACAS_RANGE = [
@@ -3233,7 +3254,7 @@ function validate_placa(placa) {
 }
 exports.validate_placa = validate_placa;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function rg_sp(number) {
@@ -3316,7 +3337,7 @@ exports.default = {
     'rj': rg_rj
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isPresent(obj) {
@@ -3437,7 +3458,7 @@ exports.randArray = randArray;
 exports.CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
     "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -3446,10 +3467,10 @@ var placa_1 = require("./placa");
 var create_1 = require("./create");
 var rg_1 = require("./rg");
 var iptu_1 = require("./iptu");
-function validate_address(number) {
+function validate_endereco(number) {
     return true;
 }
-function validate_bankaccount(number) {
+function validate_contabanco(number) {
     return true;
 }
 function validate_celular(cel) {
@@ -3590,6 +3611,10 @@ function validate_cnae(number) {
 }
 function validate_cnh(value) {
     value = utils_1.getAllDigits(value);
+    var char1 = value.charAt(0);
+    if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
+        return false;
+    }
     var check = create_1.create_cnh(value);
     return value.substr(-2) == check;
 }
@@ -3641,9 +3666,9 @@ function validate_cns(value) {
     return soma % 11 == 0;
 }
 exports.validate_cns = validate_cns;
-function validate_creditcard(value) {
+function validate_cartaocredito(value) {
 }
-exports.validate_creditcard = validate_creditcard;
+exports.validate_cartaocredito = validate_cartaocredito;
 function validate_currency(currency) {
     if (typeof currency === 'number') {
         return true;
@@ -3803,8 +3828,8 @@ function validate_titulo(titulo) {
 }
 exports.validate_titulo = validate_titulo;
 exports.validateBr = {
-    address: validate_address,
-    bankaccount: validate_bankaccount,
+    endereco: validate_endereco,
+    contabanco: validate_contabanco,
     celular: validate_celular,
     cep: validate_cep,
     certidao: validate_certidao,
@@ -3815,7 +3840,7 @@ exports.validateBr = {
     cns: validate_cns,
     cpf: validate_cpf,
     cpfcnpj: validate_cpfcnpj,
-    creditcard: validate_creditcard,
+    cartaocredito: validate_cartaocredito,
     currency: validate_currency,
     date: validate_date,
     ect: validate_ect,
@@ -3834,7 +3859,7 @@ exports.validateBr = {
     titulo: validate_titulo
 };
 
-},{"./create":2,"./inscricaoestadual":5,"./iptu":6,"./placa":9,"./rg":10,"./utils":11}],13:[function(require,module,exports){
+},{"./create":3,"./inscricaoestadual":6,"./iptu":7,"./placa":10,"./rg":11,"./utils":12}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CNH_CATEGORIAS = ["A", "AB", "B", "C", "D", "E", "ACC", "MOTOR-CASA"];
@@ -4172,7 +4197,7 @@ exports.VEICULOS = [
     { "modelo": "T-4 DESERT STORM 4x4 3.0 TB Int Diesel", "marca": "Troller" }
 ];
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */
 
 
@@ -4350,7 +4375,7 @@ class DRange {
 
 module.exports = DRange;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 const ret    = require('ret');
 const DRange = require('drange');
 const types  = ret.types;
@@ -4613,7 +4638,7 @@ module.exports = class RandExp {
   }
 };
 
-},{"drange":14,"ret":16}],16:[function(require,module,exports){
+},{"drange":15,"ret":17}],17:[function(require,module,exports){
 const util      = require('./util');
 const types     = require('./types');
 const sets      = require('./sets');
@@ -4897,14 +4922,14 @@ module.exports = (regexpStr) => {
 
 module.exports.types = types;
 
-},{"./positions":17,"./sets":18,"./types":19,"./util":20}],17:[function(require,module,exports){
+},{"./positions":18,"./sets":19,"./types":20,"./util":21}],18:[function(require,module,exports){
 const types = require('./types');
 exports.wordBoundary = () => ({ type: types.POSITION, value: 'b' });
 exports.nonWordBoundary = () => ({ type: types.POSITION, value: 'B' });
 exports.begin = () => ({ type: types.POSITION, value: '^' });
 exports.end = () => ({ type: types.POSITION, value: '$' });
 
-},{"./types":19}],18:[function(require,module,exports){
+},{"./types":20}],19:[function(require,module,exports){
 const types = require('./types');
 
 const INTS = () => [{ type: types.RANGE , from: 48, to: 57 }];
@@ -4955,7 +4980,7 @@ exports.whitespace = () => ({ type: types.SET, set: WHITESPACE(), not: false });
 exports.notWhitespace = () => ({ type: types.SET, set: WHITESPACE(), not: true });
 exports.anyChar = () => ({ type: types.SET, set: NOTANYCHAR(), not: true });
 
-},{"./types":19}],19:[function(require,module,exports){
+},{"./types":20}],20:[function(require,module,exports){
 module.exports = {
   ROOT       : 0,
   GROUP      : 1,
@@ -4967,7 +4992,7 @@ module.exports = {
   CHAR       : 7,
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 const types = require('./types');
 const sets  = require('./sets');
 
@@ -5077,7 +5102,7 @@ exports.error = (regexp, msg) => {
   throw new SyntaxError('Invalid regular expression: /' + regexp + '/: ' + msg);
 };
 
-},{"./sets":18,"./types":19}],21:[function(require,module,exports){
+},{"./sets":19,"./types":20}],22:[function(require,module,exports){
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.createNumberMask=t():e.createNumberMask=t()}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var i=o[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(2)},,function(e,t){"use strict";function o(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,t=e.length;if(e===l||e[0]===y[0]&&1===t)return y.split(l).concat([v]).concat(g.split(l));if(e===k&&M)return y.split(l).concat(["0",k,v]).concat(g.split(l));var o=e[0]===s&&q;o&&(e=e.toString().substr(1));var c=e.lastIndexOf(k),u=c!==-1,a=void 0,b=void 0,h=void 0;if(e.slice(T*-1)===g&&(e=e.slice(0,T*-1)),u&&(M||$)?(a=e.slice(e.slice(0,R)===y?R:0,c),b=e.slice(c+1,t),b=n(b.replace(f,l))):a=e.slice(0,R)===y?e.slice(R):e,P&&("undefined"==typeof P?"undefined":r(P))===p){var S="."===j?"[.]":""+j,w=(a.match(new RegExp(S,"g"))||[]).length;a=a.slice(0,P+w*Z)}return a=a.replace(f,l),E||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?i(a,j):a,h=n(a),(u&&M||$===!0)&&(e[c-1]!==k&&h.push(m),h.push(k,m),b&&(("undefined"==typeof L?"undefined":r(L))===p&&(b=b.slice(0,L)),h=h.concat(b)),$===!0&&e[c-1]===k&&h.push(v)),R>0&&(h=y.split(l).concat(h)),o&&(h.length===R&&h.push(v),h=[d].concat(h)),g.length>0&&(h=h.concat(g.split(l))),h}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},o=t.prefix,y=void 0===o?c:o,b=t.suffix,g=void 0===b?l:b,h=t.includeThousandsSeparator,x=void 0===h||h,S=t.thousandsSeparatorSymbol,j=void 0===S?u:S,w=t.allowDecimal,M=void 0!==w&&w,N=t.decimalSymbol,k=void 0===N?a:N,D=t.decimalLimit,L=void 0===D?2:D,O=t.requireDecimal,$=void 0!==O&&O,_=t.allowNegative,q=void 0!==_&&_,B=t.allowLeadingZeroes,E=void 0!==B&&B,I=t.integerLimit,P=void 0===I?null:I,R=y&&y.length||0,T=g&&g.length||0,Z=j&&j.length||0;return e.instanceOf="createNumberMask",e}function n(e){return e.split(l).map(function(e){return v.test(e)?v:e})}function i(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=o;var c="$",l="",u=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,m="[]"}])});
-},{}]},{},[1])(1)
+},{}]},{},[2])(2)
 });

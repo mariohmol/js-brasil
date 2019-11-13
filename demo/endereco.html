@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Gerador Completo de Dados de Veículo</title>
+  <title>Gerador Completo de Dados de Endereço</title>
   <link rel="stylesheet" href="index.css">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body data-id="veiculo">
+<body data-id="endereco">
   <header></header>
 
   <main class="container">
-    <h1>Gerador de Dados de Veículo</h1>
+    <h1>Gerador de Dados de Endereço</h1>
     <section>
       <div class="row">
         <form class="col s12">
@@ -27,8 +27,7 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar Veiculo</span>
-                  <input id="generated" type="text" class="validate">
+                  <span class="card-title activator grey-text text-darken-4">Gerar Endereço</span>
                   <label for="generated"></label>
                 </div>
                 <div class="card-action">
@@ -44,39 +43,29 @@
                 <div class="card-content">
 
                   <fieldset>
-                    <label class="card-title activator grey-text text-darken-4">Placa</label>
-                    <input id="placa" type="text" class="validate">
+                    <label class="card-title activator grey-text text-darken-4">CEP</label>
+                    <input id="cep" type="text" class="validate">
 
-                    <label class="card-title activator grey-text text-darken-4">Chassi</label>
-                    <input id="chassi" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Logradouro</label>
+                    <input id="logradouro" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Marca</label>
-                    <input id="marca" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Número</label>
+                    <input id="numero" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Modelo</label>
-                    <input id="modelo" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Complemento</label>
+                    <input id="complemento" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Categoria</label>
-                    <input id="categoria" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Bairro</label>
+                    <input id="bairro" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Espécie</label>
-                    <input id="especie" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Cidade</label>
+                    <input id="cidade" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Restrição</label>
-                    <input id="restricao" type="text" class="" />
+                    <label class="card-title activator grey-text text-darken-4">Estado</label>
+                    <input id="estado" type="text" class="" />
 
-                    <label class="card-title activator grey-text text-darken-4">Tipo</label>
-                    <input id="tipo" type="text" class="" />
-
-                    <label class="card-title activator grey-text text-darken-4">Carroceria</label>
-                    <input id="carroceria" type="text" class="" />
-
-                    <label class="card-title activator grey-text text-darken-4">Combustível</label>
-                    <input id="combustivel" type="text" class="" />
-
-                    <label class="card-title activator grey-text text-darken-4">Cor</label>
-                    <input id="cor" type="text" class="" />
-
+                    <label class="card-title activator grey-text text-darken-4">Sigla Estado</label>
+                    <input id="estadoSigla" type="text" class="" />
 
                   </fieldset>
 

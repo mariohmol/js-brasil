@@ -140,29 +140,29 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 
 # Tipos Suportados
 
-* Address - (TODO #27)
-* Bank Account - (TODO #13)
+* Cartão de Crédito - http://geradorbrasileiro.com/cartao.html (TODO #12)
 * Celular - http://geradorbrasileiro.com/celular.html
 * CEP - http://geradorbrasileiro.com/cep.html
-* Certidão - (TODO #23)
-* CNAE - (TODO #16)
+* Certidão - http://geradorbrasileiro.com/certidao.html (TODO #23)
+* CNAE - http://geradorbrasileiro.com/cnae.html (TODO #16)
 * CNH - http://geradorbrasileiro.com/cnh.html (TODO #18)
 * CNPJ - http://geradorbrasileiro.com/cnpj.html
 * CNS - http://geradorbrasileiro.com/cns.html (TODO #22)
-* Company Data - (TODO #20)
+* Conta de Banco - http://geradorbrasileiro.com/contato.html (TODO #13)
 * CPF - http://geradorbrasileiro.com/cpf.html
-* CPF/CNPF - (TODO #15)
-* Credit Card - (TODO #12)
+* CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html (TODO #15)
 * Currency - http://geradorbrasileiro.com/others.html
 * Date - (TODO #21)
-* ECT - (TODO #25)
-* Inscrição Estadual - Todos os estados do Brasil - http://geradorbrasileiro.com/inscricaoestadual.html 
-* IPTU
+* ECT - http://geradorbrasileiro.com/ect.html (TODO #25)
+* Empresa - http://geradorbrasileiro.com/empresa.html (TODO #20)
+* Endereço - http://geradorbrasileiro.com/endereco.html (TODO #27)
+* Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
+* IPTU - http://geradorbrasileiro.com/iptu.html
 * * São Paulo e Curitiba OK
 * * Outras capitais (TODO)
 * Number - http://geradorbrasileiro.com/others.html
 * Percentage - http://geradorbrasileiro.com/others.html
-* Personal Data - (TODO #19)
+* Pessoa - http://geradorbrasileiro.com/pessoa.html (TODO #19)
 * PIS/PASEP - http://geradorbrasileiro.com/pis.html - NIT - (TODO #14)
 * Placa de carro - http://geradorbrasileiro.com/placa.html
 * Processo da justiça - http://geradorbrasileiro.com/processo.html
@@ -170,11 +170,11 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * RG  - http://geradorbrasileiro.com/rg.html
 * * SP/RJ - OK
 * * Outros estado (TODO)
-* SPED - (TODO: #24)
+* SPED - http://geradorbrasileiro.com/titulo.html (TODO: #24)
 * Telefone  - http://geradorbrasileiro.com/telefone.html
 * Time (data/hora) - http://geradorbrasileiro.com/others.html
 * Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
-* Veículo - (TODO: #28)
+* Veículo - http://geradorbrasileiro.com/veiculo.html (TODO: #28)
 
 
 # Angular 
