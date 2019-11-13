@@ -17,6 +17,7 @@ function componentCustom() {
 function generalAction(dataId, type) {
   const validatedAction = document.querySelector('#validatedAction' + type);
   const generatedAction = document.querySelector('#generatedAction' + type);
+  const generatedObjectAction = document.querySelector('#generatedObjectAction' + type);
 
   if (generatedAction) {
     generatedAction.onclick = () => {
@@ -25,6 +26,20 @@ function generalAction(dataId, type) {
       generatedInput.value = jsbrasil.fakerBr[dataId]();
     }
   }
+
+
+  if(generatedObjectAction){
+    generatedObjectAction.onclick = () => {
+      console.log(`generatedAction.onclick`)
+      const generatedInput = document.querySelector('#generated' + type);
+      const data = jsbrasil.fakerBr[dataId]();
+      console.log(data);
+      for(key in data){
+        document.querySelector('#' + key).value = data[key];
+      }
+    }
+  }
+
 
 
   if (validatedAction) {

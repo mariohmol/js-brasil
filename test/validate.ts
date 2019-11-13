@@ -78,8 +78,8 @@ describe('Validate test', () => {
 
 
   it('Credit Card - TODO', () => {
-    // expect(validateBr.creditcard('56.853.433/0001-44')).to.be.true;
-    // expect(validateBr.creditcard('1234')).to.be.false;
+    // expect(validateBr.cartaocredito('56.853.433/0001-44')).to.be.true;
+    // expect(validateBr.cartaocredito('1234')).to.be.false;
   });
 
   context('Currency', () => {

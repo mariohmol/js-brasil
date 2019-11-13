@@ -3,21 +3,12 @@ import { expect } from 'chai';
 
 describe('Faker test', () => {
 
-  it('ADDRESS', () => {
-    const address = fakerBr.address();
-    expect(address.cep).to.exist;
-    expect(address.logradouro).to.exist;
-    expect(address.complemento).to.exist;
-    expect(address.numero).to.exist;
-    expect(address.bairro).to.exist;
-    expect(address.cidade).to.exist;
-    expect(address.estado).to.exist;
+  it('cartaocredito - TODO', () => {
+    // const cartaocredito = fakerBr.cartaocredito();
+    // expect(validateBr.cartaocredito(cartaocredito)).to.be.true;
   });
 
-  it('BANKACCOUNT', () => {
-    const bankaccount = fakerBr.bankaccount();
-    expect(validateBr.bankaccount(bankaccount)).to.be.true;
-  });
+
 
   it('CELULAR', () => {
     const celular = fakerBr.celular();
@@ -60,14 +51,32 @@ describe('Faker test', () => {
     expect(validateBr.cns(cns)).to.be.true;
   });
 
-  it('COMPANY', () => {
-    const company = fakerBr.company();
-    expect(company.name).to.exist;
-    expect(validateBr.cnpj(company.cnpj)).to.be.true;
-    expect(validateBr.telefone(company.telefone)).to.be.true;
-    expect(validateBr.celular(company.celular)).to.be.true;
+  it('ContaBancária', () => {
+    const contabanco = fakerBr.contabanco();
+    expect(validateBr.contabanco(contabanco)).to.be.true;
+  });
+  
+
+  it.only('Empresa', () => {
+    const empresa = fakerBr.empresa();
+    console.log(empresa)
+    expect(empresa.name).to.exist;
+    expect(validateBr.cnpj(empresa.cnpj)).to.be.true;
+    expect(validateBr.telefone(empresa.telefone)).to.be.true;
+    expect(validateBr.celular(empresa.celular)).to.be.true;
   });
 
+  it('Endereço', () => {
+    const endereco = fakerBr.endereco();
+    expect(endereco.cep).to.exist;
+    expect(endereco.logradouro).to.exist;
+    expect(endereco.complemento).to.exist;
+    expect(endereco.numero).to.exist;
+    expect(endereco.bairro).to.exist;
+    expect(endereco.cidade).to.exist;
+    expect(endereco.estado).to.exist;
+  });
+  
   it('CPF', () => {
     const cpf = fakerBr.cpf();
     expect(fakerBr.cpf()).to.exist;
@@ -79,10 +88,7 @@ describe('Faker test', () => {
     expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
   });
 
-  it('CREDITCARD - TODO', () => {
-    // const creditcard = fakerBr.creditcard();
-    // expect(validateBr.creditcard(creditcard)).to.be.true;
-  });
+
 
   it('Currency', () => {
         // expect(fakerBr.currency()).to.exist;
@@ -103,9 +109,7 @@ describe('Faker test', () => {
   });
 
   it('inscricaoestadual - TODO', () => {
-
     // expect(fakerBr.inscricaoestadual()).to.exist;
-    
     // const inscricaoestadual = fakerBr.inscricaoestadual();
     // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;
   });

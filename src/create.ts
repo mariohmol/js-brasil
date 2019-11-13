@@ -128,7 +128,7 @@ export function create_cpf(strCPF: string) {
     return restos;
 }
 
-export function create_creditcard(number) {
+export function create_cartaocredito(number) {
 
     // if (number.length > 18) { alert("Erro. A rotina não abrange cartões\ncom mais de 18 dígitos (fora o DV).\nIntroduza 18 dígitos, no máximo."); }
 

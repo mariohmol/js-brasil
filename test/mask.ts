@@ -11,16 +11,16 @@ const testGeneric = (key) => {
 
 describe('Mask test', () => {
 
-  it('address - TODO', () => {
-    const address = '12312345121';
-    // expect(maskBr.address(address)).to.be.equal('123.12345.12-1');
-    // testGeneric('address');
+  it('endereco - TODO', () => {
+    const endereco = '12312345121';
+    // expect(maskBr.endereco(endereco)).to.be.equal('123.12345.12-1');
+    // testGeneric('endereco');
   });
 
-  it('bankaccount - TODO', () => {
-    const bankaccount = '12312345121';
-    // expect(maskBr.bankaccount(bankaccount)).to.be.equal('123.12345.12-1');
-    // testGeneric('bankaccount');
+  it('contabanco - TODO', () => {
+    const contabanco = '12312345121';
+    // expect(maskBr.contabanco(contabanco)).to.be.equal('123.12345.12-1');
+    // testGeneric('contabanco');
   });
 
   it('celular - TODO', () => {
@@ -87,10 +87,10 @@ describe('Mask test', () => {
     // testGeneric('cpfcnpj');
   });
 
-  it('creditcard - TODO', () => {
-    const creditcard = '12312345121';
-    // expect(maskBr.creditcard(creditcard)).to.be.equal('123.12345.12-1');
-    // testGeneric('creditcard');
+  it('cartaocredito - TODO', () => {
+    const cartaocredito = '12312345121';
+    // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
+    // testGeneric('cartaocredito');
   });
   it('Currency', () => {
     const currency = 'R$ 5.103,94';

@@ -9,11 +9,11 @@ import RG from "./rg";
 import IPTU from "./iptu";
 
 
-function validate_address(number) {
+function validate_endereco(number) {
   return true;
 }
 
-function validate_bankaccount(number) {
+function validate_contabanco(number) {
   return true;
 }
 
@@ -236,7 +236,7 @@ export function validate_cns(value) {
 }
 
 
-export function validate_creditcard(value) {
+export function validate_cartaocredito(value) {
 
 }
 
@@ -415,8 +415,8 @@ export function validate_titulo(titulo: any) {
 }
 
 export const validateBr = {
-  address: validate_address,
-  bankaccount: validate_bankaccount,
+  endereco: validate_endereco,
+  contabanco: validate_contabanco,
   celular: validate_celular,
   cep: validate_cep,
   certidao: validate_certidao,
@@ -427,7 +427,7 @@ export const validateBr = {
   cns: validate_cns,
   cpf: validate_cpf,
   cpfcnpj: validate_cpfcnpj,
-  creditcard: validate_creditcard,
+  cartaocredito: validate_cartaocredito,
   currency: validate_currency,
   date: validate_date,
   ect: validate_ect,

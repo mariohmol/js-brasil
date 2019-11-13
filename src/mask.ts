@@ -3,11 +3,11 @@ import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 export const MASKS = {
-  address: {
+  endereco: {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
-  bankaccount: {
+  contabanco: {
     text: '000 00000-0 00000-0',
     textMask: [/\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-',
       /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
@@ -55,7 +55,7 @@ export const MASKS = {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
-  creditcard: {
+  cartaocredito: {
     text: '0000 0000 0000 0000 00/00 000',
     textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
   },
@@ -198,8 +198,8 @@ const makeGeneric = (key: string) => {
 }
 
 export const maskBr = {
-  address: makeGeneric('address'),
-  bankaccount: makeGeneric('bankaccount'),
+  endereco: makeGeneric('endereco'),
+  contabanco: makeGeneric('contabanco'),
   celular: makeGeneric('celular'),
   cep: makeGeneric('cep'),
   certidao: makeGeneric('certidao'),
@@ -210,7 +210,7 @@ export const maskBr = {
   cns: makeGeneric('cns'),
   cpf: makeGeneric('cpf'),
   cpfcnpj: makeGeneric('cpfcnpj'),
-  creditcard: makeGeneric('creditcard'),
+  cartaocredito: makeGeneric('cartaocredito'),
   currency: (currencyValueInput: string | number) => {
 
     if (!currencyValueInput) {
