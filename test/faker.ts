@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('Faker test', () => {
 
-  it('cartaocredito - TODO', () => {
+  it('Cartão Crédito - TODO', () => {
     // const cartaocredito = fakerBr.cartaocredito();
     // expect(validateBr.cartaocredito(cartaocredito)).to.be.true;
   });
@@ -57,13 +57,15 @@ describe('Faker test', () => {
   });
   
 
-  it.only('Empresa', () => {
+  it('Empresa', () => {
     const empresa = fakerBr.empresa();
-    console.log(empresa)
     expect(empresa.name).to.exist;
     expect(validateBr.cnpj(empresa.cnpj)).to.be.true;
     expect(validateBr.telefone(empresa.telefone)).to.be.true;
     expect(validateBr.celular(empresa.celular)).to.be.true;
+    // expect(validateBr.inscricaoestadual(empresa.inscricaoestadual)).to.be.true;
+    expect(empresa.endereco).to.exist;
+    expect(empresa.inscricaoestadual).to.exist;
   });
 
   it('Endereço', () => {
@@ -75,6 +77,7 @@ describe('Faker test', () => {
     expect(endereco.bairro).to.exist;
     expect(endereco.cidade).to.exist;
     expect(endereco.estado).to.exist;
+    expect(endereco.estadoSigla).to.exist;
   });
   
   it('CPF', () => {
