@@ -55,7 +55,7 @@ const makeGeneric = (val: any, options = null) => {
 }
 
 export const fakerBr = {
-  aih: (uf = 35, ano = 2019, tipo = 1, seq = null) => {
+  aih: (uf = 35, ano = 19, tipo = 1, seq = null) => {
     if (!seq) {
       seq = randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
     }

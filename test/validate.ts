@@ -6,7 +6,10 @@ describe('Validate test', () => {
   it('AIH', () => {
     expect(validateBr.aih('351923414312-8')).to.be.true;
     expect(validateBr.aih('212019114312-5')).to.be.true;
+    expect(validateBr.aih('3519234143128')).to.be.true;
+    expect(validateBr.aih('2120191143125')).to.be.true;
     expect(validateBr.aih('351923414312-9')).to.be.false;
+    expect(validateBr.aih('3519234143129')).to.be.false;
   });
 
   it('Celular', () => {

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('Faker test', () => {
 
-  it.only('AIH', () => {
+  it('AIH', () => {
     const aih = fakerBr.aih();
     expect(validateBr.aih(aih)).to.be.true;
   });
