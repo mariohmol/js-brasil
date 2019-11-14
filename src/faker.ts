@@ -114,43 +114,6 @@ export const fakerBr = {
     return cns.substr(0, cns.length - 2) + digito;
   },
   contabanco: makeGeneric(MASKS['contabanco']),
-  empresa: () => {
-    const faker = this.fakerBr;
-    const cnpj = faker.cnpj();
-    const telefone = faker.telefone();
-    const celular = faker.celular();
-    const endereco = faker.endereco();
-    const inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
-
-
-    // const dataAbertura = faker.celular();
-    // const site = faker.site();
-    // const email = faker.email();
-
-    return {
-      name: randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES), // TODO
-      inscricaoestadual,
-      cnpj, telefone, celular,
-      endereco
-    }
-  },
-  endereco: () => {
-    const fakerBr = this.fakerBr;
-    const cep = fakerBr.cep();
-    const cidade = randArray(LOCALIZACAO_CIDADES);
-    let estado = cidade[1].toLowerCase();
-    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado)
-    return {
-      cep,
-      logradouro: randArray(LOCALIZACAO_RUAS),
-      complemento: randArray(LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
-      numero: fakerBr.number({ min: 1, decimals: 0 }),
-      bairro: randArray(LOCALIZACAO_BAIRROS),
-      cidade: cidade[0],
-      estado: cidade[1],
-      estadoSigla: estado.uf
-    }
-  },
   cpf: () => {
     let cpf = makeGeneric(MASKS['cpf'])();
     let restos = create_cpf(cpf);
@@ -169,8 +132,22 @@ export const fakerBr = {
     const x = Math.random() * 10000;
     return parseFloat(x.toFixed(2));
   },
-
-  date: makeGeneric(MASKS['date']),
+  date: (config: any = {}) => {
+    let date = new Date();
+    if (config.dias) {
+      date.setDate(date.getDate() + config.dias);
+    }
+    if (config.meses) {
+      date.setMonth(date.getMonth() + config.meses);
+    }
+    if (config.idadeMin && config.idadeMax) {
+      config.anos = -randomNumber(config.idadeMin, config.idadeMax);
+    }
+    if (config.anos) {
+      date.setFullYear(date.getFullYear() + config.anos);
+    }
+    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+  },
   ect: () => {
     const ect = makeGeneric(MASKS['ect'])();
     const dv = create_ect(ect.substr(0, ect.length - 1));
@@ -185,6 +162,45 @@ export const fakerBr = {
     const ect = makeGeneric(MASKS['ect'])();
     const dv = create_ect(ect.substr(0, ect.length - 1));
     return ect.substr(0, ect.length - 1) + dv;
+  },
+  empresa: () => {
+    const faker = this.fakerBr;
+    const cnpj = faker.cnpj();
+    const telefone = faker.telefone();
+    const celular = faker.celular();
+    const endereco = faker.endereco();
+    const inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
+    const dataAbertura = fakerBr.date({
+      idadeMin: 4,
+      idadeMax: 20
+    });
+
+    // const site = faker.site();
+    // const email = faker.email();
+
+    return {
+      name: randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES), // TODO
+      inscricaoestadual,
+      cnpj, telefone, celular,
+      endereco, dataAbertura
+    }
+  },
+  endereco: () => {
+    const fakerBr = this.fakerBr;
+    const cep = fakerBr.cep();
+    const cidade = randArray(LOCALIZACAO_CIDADES);
+    let estado = cidade[1].toLowerCase();
+    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado)
+    return {
+      cep,
+      logradouro: randArray(LOCALIZACAO_RUAS),
+      complemento: randArray(LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
+      numero: fakerBr.number({ min: 1, decimals: 0 }),
+      bairro: randArray(LOCALIZACAO_BAIRROS),
+      cidade: cidade[0],
+      estado: cidade[1],
+      estadoSigla: estado.uf
+    }
   },
   inscricaoestadual: estado => {
     estado = estado.toLowerCase();
@@ -220,7 +236,10 @@ export const fakerBr = {
     const telefone = faker.telefone();
     const celular = faker.celular();
 
-    // const dataNascimento = faker.celular();
+    const dataNascimento = fakerBr.date({
+      idadeMin: 18,
+      idadeMax: 40
+    });
     // const site = faker.site();
     // const email = faker.email();
     // const senha = faker.password();
@@ -232,7 +251,8 @@ export const fakerBr = {
       mae: 'TEST', // TODO
       pai: 'TEST', // TODO
       rg,
-      cpf, telefone, celular
+      cpf, telefone, celular,
+      dataNascimento
     }
 
   },
