@@ -11,6 +11,12 @@ const testGeneric = (key) => {
 
 describe('Mask test', () => {
 
+  it('AIH', () => {
+    const aih = '3519234143128';
+    expect(maskBr.aih(aih)).to.be.equal('351923414312-8');
+  });
+
+
   it('endereco - TODO', () => {
     const endereco = '12312345121';
     // expect(maskBr.endereco(endereco)).to.be.equal('123.12345.12-1');

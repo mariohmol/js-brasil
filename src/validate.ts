@@ -3,20 +3,18 @@ import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao
+  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih
 } from "./create";
 import RG from "./rg";
 import IPTU from "./iptu";
 
 
-function validate_endereco(number) {
-  return true;
+export function validate_aih(aih: string) {
+  const aihClean = aih.replace(/[^\d]+/g, '');
+  const dvOriginal = aihClean.substr(-1);
+  const dv = create_aih(aihClean);
+  return dvOriginal === dv;
 }
-
-function validate_contabanco(number) {
-  return true;
-}
-
 
 export function validate_celular(cel: any) {
   let celClean = cel.replace(/[^\d]+/g, '');
@@ -179,6 +177,9 @@ export function validate_cnpj(cnpj: any) {
   return true;
 }
 
+function validate_contabanco(number) {
+  return true;
+}
 
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
 export function validate_cpf(strCPF: any) {
@@ -252,6 +253,9 @@ export function validate_ect(number) {
   return false;
 }
 
+function validate_endereco(number) {
+  return true;
+}
 
 export function validate_iptu(iptu: string) {
   let iptuClean = iptu.replace(/\./g, '');
@@ -399,6 +403,7 @@ export function validate_titulo(titulo: any) {
 }
 
 export const validateBr = {
+  aih: validate_aih,
   endereco: validate_endereco,
   contabanco: validate_contabanco,
   celular: validate_celular,

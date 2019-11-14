@@ -3,6 +3,10 @@ import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 export const MASKS = {
+  aih: {
+    text: '000000000000-0', // 351923414312-8
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+  },
   endereco: {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
@@ -198,6 +202,7 @@ const makeGeneric = (key: string) => {
 }
 
 export const maskBr = {
+  aih: makeGeneric('aih'),
   endereco: makeGeneric('endereco'),
   contabanco: makeGeneric('contabanco'),
   celular: makeGeneric('celular'),

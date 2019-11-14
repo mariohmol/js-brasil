@@ -1,4 +1,21 @@
-import { modulo11, getAllDigits } from "./utils";
+import { modulo11, getAllDigits, rand } from "./utils";
+
+/**
+ * 
+ * @param uf - UF do número da guia. Ex: 35(SP), 81(PE)
+ * @param ano - ANO do número da guia. Ex: 2018, 2019
+ * @param tipo - TIPO da guia. Aih = 1, APAC = 2
+ */
+export function create_aih(value){
+    value = getAllDigits(value.toString());
+    if(value.length > 12){
+        value = value.toString().substr(0, value.length-1);
+    }
+    const cod = parseInt(value);
+    const calc = Math.ceil(cod - (cod / 11));
+    const digito = calc.toString().substr(-1);
+    return digito;
+}
 
 export function create_certidao(value) {
 

@@ -3,6 +3,11 @@ import { expect } from 'chai';
 
 describe('Faker test', () => {
 
+  it.only('AIH', () => {
+    const aih = fakerBr.aih();
+    expect(validateBr.aih(aih)).to.be.true;
+  });
+
   it('Cartão Crédito - TODO', () => {
     // const cartaocredito = fakerBr.cartaocredito();
     // expect(validateBr.cartaocredito(cartaocredito)).to.be.true;

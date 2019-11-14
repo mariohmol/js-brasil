@@ -1,11 +1,13 @@
-import { ESTADOS_SIGLA } from './estados';
 import { MASKS } from './mask';
 import { CEPRange } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
-import { create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh, create_cns, create_ect, create_certidao } from './create';
-import { getAllDigits, randArray, CORES } from './utils';
+import {
+  create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
+  create_cns, create_ect, create_certidao, create_aih
+} from './create';
+import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
 import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES } from '../addons/pessoas';
@@ -52,73 +54,16 @@ const makeGeneric = (val: any, options = null) => {
   };
 }
 
-function rand(length: number, ...ranges: any[]) {
-  var str = "";                                                       // the string (initialized to "")
-  while (length--) {                                                  // repeat this length of times
-    var ind = Math.floor(Math.random() * ranges.length);              // get a random range from the ranges object
-    var min = ranges[ind][0].charCodeAt(0),                           // get the minimum char code allowed for this range
-      max = ranges[ind][1].charCodeAt(0);                             // get the maximum char code allowed for this range
-    var c = Math.floor(Math.random() * (max - min + 1)) + min;        // get a random char code between min and max
-    str += String.fromCharCode(c);                                    // convert it back into a character and append it to the string str
-  }
-  return str;                                                         // return str
-}
-
-function randomLetter(size = 1, onlyCapitals = false) {
-  var text = "";
-  let possible: any = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  if (onlyCapitals == false) {
-    possible += "abcdefghijklmnopqrstuvwxyz";
-  }
-  possible = possible.split('');
-  for (let i = 0; i < size; i++) {
-    const pos = Math.floor(Math.random() * possible.length);
-    text += possible[pos];
-  }
-  return text;
-}
-
-
-function randomLetterOrNumber(size = 1, onlyCapitals = false) {
-  var text = "";
-  let possible: any = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  if (onlyCapitals == false) {
-    possible += "abcdefghijklmnopqrstuvwxyz0123456789";
-  }
-  possible = possible.split('');
-  for (let i = 0; i < size; i++) {
-    const pos = Math.floor(Math.random() * possible.length);
-    text += possible[pos];
-  }
-  return text;
-}
-
-const randomEstadoSigla = () => {
-  const total = ESTADOS_SIGLA.length;
-  return ESTADOS_SIGLA[Math.floor(Math.random() * total)];
-}
-
-
-
 export const fakerBr = {
-  endereco: () => {
-    const fakerBr = this.fakerBr;
-    const cep = fakerBr.cep();
-    const cidade = randArray(LOCALIZACAO_CIDADES);
-    let estado = cidade[1].toLowerCase();
-    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado)
-    return {
-      cep,
-      logradouro: randArray(LOCALIZACAO_RUAS),
-      complemento: randArray(LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
-      numero: fakerBr.number({ min: 1, decimals: 0 }),
-      bairro: randArray(LOCALIZACAO_BAIRROS),
-      cidade: cidade[0],
-      estado: cidade[1],
-      estadoSigla: estado.uf
+  aih: (uf = 35, ano = 2019, tipo = 1, seq = null) => {
+    if (!seq) {
+      seq = randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
     }
+    const cod = parseInt(`${uf}${ano}${tipo}${seq}`);
+    const digito = create_aih(cod);
+    const result = `${cod}${digito}`;
+    return result;
   },
-  contabanco: makeGeneric(MASKS['contabanco']),
   celular: makeGeneric(MASKS['celular']),
   cep: makeGeneric(MASKS['cep']),
   cepState: (state: string | number) => {
@@ -168,6 +113,7 @@ export const fakerBr = {
     let digito = create_cns(cns);
     return cns.substr(0, cns.length - 2) + digito;
   },
+  contabanco: makeGeneric(MASKS['contabanco']),
   empresa: () => {
     const faker = this.fakerBr;
     const cnpj = faker.cnpj();
@@ -182,10 +128,27 @@ export const fakerBr = {
     // const email = faker.email();
 
     return {
-      name: randArray(EMPRESAS_TIPOS) + ' ' +  randArray(EMPRESAS_NOMES), // TODO
+      name: randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES), // TODO
       inscricaoestadual,
       cnpj, telefone, celular,
       endereco
+    }
+  },
+  endereco: () => {
+    const fakerBr = this.fakerBr;
+    const cep = fakerBr.cep();
+    const cidade = randArray(LOCALIZACAO_CIDADES);
+    let estado = cidade[1].toLowerCase();
+    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado)
+    return {
+      cep,
+      logradouro: randArray(LOCALIZACAO_RUAS),
+      complemento: randArray(LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
+      numero: fakerBr.number({ min: 1, decimals: 0 }),
+      bairro: randArray(LOCALIZACAO_BAIRROS),
+      cidade: cidade[0],
+      estado: cidade[1],
+      estadoSigla: estado.uf
     }
   },
   cpf: () => {
@@ -215,7 +178,7 @@ export const fakerBr = {
   },
   email: (options: any = {}) => {
     let name = randArray(NOMES_MASCULINOS)
-    if(options.name){
+    if (options.name) {
       name = options.name.match(/\w/g).join('');
     }
     name = name.toLowerCase();

@@ -1,3 +1,5 @@
+import { ESTADOS_SIGLA } from "./estados";
+
 export function isPresent(obj: any): boolean {
   return obj !== undefined && obj !== null;
 }
@@ -110,13 +112,63 @@ export function fillString(string, size, fill) {
   return string;
 }
 
-export function rand(begin, end) {
-  return Math.floor(Math.random() * end) + begin;
-}
 
 export function randArray(array) {
-  const index = rand(0, array.length);
+  const index = randomNumber(0, array.length);
   return array[index];
+}
+
+
+export function rand(length: number, ...ranges: any[]) {
+  var str = "";                                                       // the string (initialized to "")
+  while (length--) {                                                  // repeat this length of times
+    var ind = Math.floor(Math.random() * ranges.length);              // get a random range from the ranges object
+    var min = ranges[ind][0].charCodeAt(0),                           // get the minimum char code allowed for this range
+      max = ranges[ind][1].charCodeAt(0);                             // get the maximum char code allowed for this range
+    var c = Math.floor(Math.random() * (max - min + 1)) + min;        // get a random char code between min and max
+    str += String.fromCharCode(c);                                    // convert it back into a character and append it to the string str
+  }
+  return str;                                                         // return str
+}
+
+export function randomNumber(begin, end) {
+  const number =  Math.floor(Math.random() * end) + begin;
+  return number;
+}
+
+
+export function randomLetter(size = 1, onlyCapitals = false) {
+  var text = "";
+  let possible: any = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (onlyCapitals == false) {
+    possible += "abcdefghijklmnopqrstuvwxyz";
+  }
+  possible = possible.split('');
+  for (let i = 0; i < size; i++) {
+    const pos = Math.floor(Math.random() * possible.length);
+    text += possible[pos];
+  }
+  return text;
+}
+
+
+export function randomLetterOrNumber(size = 1, onlyCapitals = false) {
+  var text = "";
+  let possible: any = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  if (onlyCapitals == false) {
+    possible += "abcdefghijklmnopqrstuvwxyz0123456789";
+  }
+  possible = possible.split('');
+  for (let i = 0; i < size; i++) {
+    const pos = Math.floor(Math.random() * possible.length);
+    text += possible[pos];
+  }
+  return text;
+}
+
+export const randomEstadoSigla = () => {
+  const total = ESTADOS_SIGLA.length;
+  return ESTADOS_SIGLA[Math.floor(Math.random() * total)];
 }
 
 export const CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
