@@ -106,6 +106,13 @@ describe('Validate test', () => {
     expect(validateBr.ect('315296491')).to.be.false;
   });
 
+  it('EMAIL', () => {
+    expect(validateBr.email('mario@js-brasil.com')).to.be.true;
+    expect(validateBr.email('mario@js brasil.com')).to.be.false;
+    expect(validateBr.email('mario@js-brasilcom')).to.be.false;
+    expect(validateBr.email('mariojs-brasil.com')).to.be.false;
+  });
+
   it('Inscricao Estadual', () => {
     expect(validateBr.inscricaoestadual('862.445.372/2351', 'mg')).to.be.true;
     expect(validateBr.inscricaoestadual('094.290.083', 'sc')).to.be.true;

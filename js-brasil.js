@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
 exports.NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
-exports.SOBRENOMES_MASCULINOS = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
+exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
     'COSTA', 'DIAS', 'DUARTE', 'FREITAS', 'FERNANDES', 'FERREIRA', 'GARCIA', 'GOMES', 'GONÇALVES', 'LIMA', 'LOPES', 'MACHADO', 'MARQUES', 'MARTINS', 'MEDEIROS',
     'MELO', 'MENDES', 'MIRANDA', 'MONTEIRO', 'MORAES', 'MOREIRA', 'MOURA', 'NASCIMENTO', 'NUNES', 'OLIVEIRA', 'PEREIRA', 'RAMOS', 'REIS', 'RIBEIRO', 'ROCHA',
     'SANTANA', 'SANTOS', 'SILVA', 'SOARES', 'SOUZA', 'TEIXEIRA', 'VIEIRA'];
@@ -663,6 +663,23 @@ exports.fakerBr = faker.fakerBr;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
+/**
+ *
+ * @param uf - UF do número da guia. Ex: 35(SP), 81(PE)
+ * @param ano - ANO do número da guia. Ex: 2018, 2019
+ * @param tipo - TIPO da guia. Aih = 1, APAC = 2
+ */
+function create_aih(value) {
+    value = utils_1.getAllDigits(value.toString());
+    if (value.length > 12) {
+        value = value.toString().substr(0, value.length - 1);
+    }
+    var cod = parseInt(value);
+    var calc = Math.ceil(cod - (cod / 11));
+    var digito = calc.toString().substr(-1);
+    return digito;
+}
+exports.create_aih = create_aih;
 function create_certidao(value) {
     if (value.length > 30) {
         value = value.substring(0, value.length - 2);
@@ -1178,9 +1195,19 @@ exports.ESTADOS = [
 
 },{}],5:[function(require,module,exports){
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var estados_1 = require("./estados");
 var mask_1 = require("./mask");
 var validate_1 = require("./validate");
 var randexp_1 = require("randexp");
@@ -1206,10 +1233,10 @@ var makeGeneric = function (val, options) {
                 return Math.floor(Math.random() * 10).toString();
             }
             else if (c === /[A-Za-z]/.toString()) {
-                return randomLetter(1).toString();
+                return utils_1.randomLetter(1).toString();
             }
             else if (c === /\w/.toString()) {
-                return randomLetterOrNumber(1).toString();
+                return utils_1.randomLetterOrNumber(1).toString();
             }
             else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
                 c = c.replace('/[', '').replace(']/', '');
@@ -1221,7 +1248,7 @@ var makeGeneric = function (val, options) {
                         return (Math.floor(Math.random() * mult) + plus).toString();
                     }
                     else {
-                        return rand(1, [c[0], c[1]]);
+                        return utils_1.rand(1, [c[0], c[1]]);
                     }
                 }
                 else if (c.indexOf('|') > 0) {
@@ -1237,74 +1264,20 @@ var makeGeneric = function (val, options) {
         return newData.join('');
     };
 };
-function rand(length) {
-    var ranges = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        ranges[_i - 1] = arguments[_i];
-    }
-    var str = ""; // the string (initialized to "")
-    while (length--) { // repeat this length of times
-        var ind = Math.floor(Math.random() * ranges.length); // get a random range from the ranges object
-        var min = ranges[ind][0].charCodeAt(0), // get the minimum char code allowed for this range
-        max = ranges[ind][1].charCodeAt(0); // get the maximum char code allowed for this range
-        var c = Math.floor(Math.random() * (max - min + 1)) + min; // get a random char code between min and max
-        str += String.fromCharCode(c); // convert it back into a character and append it to the string str
-    }
-    return str; // return str
-}
-function randomLetter(size, onlyCapitals) {
-    if (size === void 0) { size = 1; }
-    if (onlyCapitals === void 0) { onlyCapitals = false; }
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if (onlyCapitals == false) {
-        possible += "abcdefghijklmnopqrstuvwxyz";
-    }
-    possible = possible.split('');
-    for (var i = 0; i < size; i++) {
-        var pos = Math.floor(Math.random() * possible.length);
-        text += possible[pos];
-    }
-    return text;
-}
-function randomLetterOrNumber(size, onlyCapitals) {
-    if (size === void 0) { size = 1; }
-    if (onlyCapitals === void 0) { onlyCapitals = false; }
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    if (onlyCapitals == false) {
-        possible += "abcdefghijklmnopqrstuvwxyz0123456789";
-    }
-    possible = possible.split('');
-    for (var i = 0; i < size; i++) {
-        var pos = Math.floor(Math.random() * possible.length);
-        text += possible[pos];
-    }
-    return text;
-}
-var randomEstadoSigla = function () {
-    var total = estados_1.ESTADOS_SIGLA.length;
-    return estados_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
-};
 exports.fakerBr = {
-    endereco: function () {
-        var fakerBr = _this.fakerBr;
-        var cep = fakerBr.cep();
-        var cidade = utils_1.randArray(name_1.LOCALIZACAO_CIDADES);
-        var estado = cidade[1].toLowerCase();
-        estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado; });
-        return {
-            cep: cep,
-            logradouro: utils_1.randArray(name_1.LOCALIZACAO_RUAS),
-            complemento: utils_1.randArray(name_1.LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
-            numero: fakerBr.number({ min: 1, decimals: 0 }),
-            bairro: utils_1.randArray(name_1.LOCALIZACAO_BAIRROS),
-            cidade: cidade[0],
-            estado: cidade[1],
-            estadoSigla: estado.uf
-        };
+    aih: function (uf, ano, tipo, seq) {
+        if (uf === void 0) { uf = 35; }
+        if (ano === void 0) { ano = 19; }
+        if (tipo === void 0) { tipo = 1; }
+        if (seq === void 0) { seq = null; }
+        if (!seq) {
+            seq = utils_1.randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
+        }
+        var cod = parseInt("" + uf + ano + tipo + seq);
+        var digito = create_1.create_aih(cod);
+        var result = "" + cod + digito;
+        return result;
     },
-    contabanco: makeGeneric(mask_1.MASKS['contabanco']),
     celular: makeGeneric(mask_1.MASKS['celular']),
     cep: makeGeneric(mask_1.MASKS['cep']),
     cepState: function (state) {
@@ -1320,6 +1293,11 @@ exports.fakerBr = {
         var chassi = makeGeneric(mask_1.MASKS['chassi'])();
         chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
         return chassi;
+    },
+    cid: function () {
+        // let chassi = makeGeneric(MASKS['chassi'])();
+        // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
+        // return chassi;
     },
     cnae: makeGeneric(mask_1.MASKS['cnae']),
     cnh: function () {
@@ -1337,36 +1315,24 @@ exports.fakerBr = {
         return cnpj.substr(0, cnpj.length - 1) + restos[1];
     },
     cns: function () {
-        var cns = makeGeneric(mask_1.MASKS['cns'])();
-        cns = utils_1.getAllDigits(cns);
-        var primeiroDigito = parseInt(cns[0]);
-        if (primeiroDigito < 3) {
-            var cnsDigits = cns.split();
-            cnsDigits[cnsDigits.length - 2] = 0;
-            cnsDigits[cnsDigits.length - 3] = 0;
-            cnsDigits[cnsDigits.length - 4] = 0;
-            cns = cnsDigits.join();
-        }
-        var digito = create_1.create_cns(cns);
-        return cns.substr(0, cns.length - 2) + digito;
+        var cns;
+        do {
+            cns = makeGeneric(mask_1.MASKS['cns'])();
+            cns = utils_1.getAllDigits(cns);
+            var primeiroDigito = parseInt(cns[0]);
+            if (primeiroDigito < 3) {
+                var cnsDigits = cns.split();
+                cnsDigits[cnsDigits.length - 2] = 0;
+                cnsDigits[cnsDigits.length - 3] = 0;
+                cnsDigits[cnsDigits.length - 4] = 0;
+                cns = cnsDigits.join();
+            }
+            var digito = create_1.create_cns(cns);
+            cns = cns.substr(0, cns.length - 2) + digito;
+        } while (!validate_1.validate_cns(cns));
+        return cns;
     },
-    empresa: function () {
-        var faker = _this.fakerBr;
-        var cnpj = faker.cnpj();
-        var telefone = faker.telefone();
-        var celular = faker.celular();
-        var endereco = faker.endereco();
-        var inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
-        // const dataAbertura = faker.celular();
-        // const site = faker.site();
-        // const email = faker.email();
-        return {
-            name: utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES),
-            inscricaoestadual: inscricaoestadual,
-            cnpj: cnpj, telefone: telefone, celular: celular,
-            endereco: endereco
-        };
-    },
+    contabanco: makeGeneric(mask_1.MASKS['contabanco']),
     cpf: function () {
         var cpf = makeGeneric(mask_1.MASKS['cpf'])();
         var restos = create_1.create_cpf(cpf);
@@ -1384,7 +1350,23 @@ exports.fakerBr = {
         var x = Math.random() * 10000;
         return parseFloat(x.toFixed(2));
     },
-    date: makeGeneric(mask_1.MASKS['date']),
+    data: function (config) {
+        if (config === void 0) { config = {}; }
+        var date = new Date();
+        if (config.dias) {
+            date.setDate(date.getDate() + config.dias);
+        }
+        if (config.meses) {
+            date.setMonth(date.getMonth() + config.meses);
+        }
+        if (config.idadeMin && config.idadeMax) {
+            config.anos = -utils_1.randomNumber(config.idadeMin, config.idadeMax);
+        }
+        if (config.anos) {
+            date.setFullYear(date.getFullYear() + config.anos);
+        }
+        return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+    },
     ect: function () {
         var ect = makeGeneric(mask_1.MASKS['ect'])();
         var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
@@ -1392,14 +1374,61 @@ exports.fakerBr = {
     },
     email: function (options) {
         if (options === void 0) { options = {}; }
-        var name = utils_1.randArray(pessoas_1.NOMES_MASCULINOS);
-        if (options.name) {
-            name = options.name.match(/\w/g).join('');
+        var faker = _this.fakerBr;
+        var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS);
+        if (options.nome) {
+            nome = options.nome;
         }
-        name = name.toLowerCase();
-        var ect = makeGeneric(mask_1.MASKS['ect'])();
-        var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
-        return ect.substr(0, ect.length - 1) + dv;
+        nome = utils_1.slugify(nome);
+        var site = faker.site(__assign({}, options, { url: '' }));
+        return nome + '@' + site;
+    },
+    empresa: function () {
+        var faker = _this.fakerBr;
+        var cnpj = faker.cnpj();
+        var telefone = faker.telefone();
+        var celular = faker.celular();
+        var endereco = faker.endereco();
+        var inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
+        var dataAbertura = exports.fakerBr.data({
+            idadeMin: 4,
+            idadeMax: 20
+        });
+        var fundador1 = faker.pessoa();
+        var fundador2 = faker.pessoa();
+        var fundadores = [
+            fundador1,
+            fundador2
+        ];
+        var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
+        // const site = faker.site();
+        var email = faker.email({
+            nome: 'contato',
+            empresa: nome
+        });
+        return {
+            nome: nome, email: email,
+            inscricaoestadual: inscricaoestadual, fundadores: fundadores,
+            cnpj: cnpj, telefone: telefone, celular: celular,
+            endereco: endereco, dataAbertura: dataAbertura
+        };
+    },
+    endereco: function () {
+        var fakerBr = _this.fakerBr;
+        var cep = fakerBr.cep();
+        var cidade = utils_1.randArray(name_1.LOCALIZACAO_CIDADES);
+        var estado = cidade[1].toLowerCase();
+        estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado; });
+        return {
+            cep: cep,
+            logradouro: utils_1.randArray(name_1.LOCALIZACAO_RUAS),
+            complemento: utils_1.randArray(name_1.LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
+            numero: fakerBr.number({ min: 1, decimals: 0 }),
+            bairro: utils_1.randArray(name_1.LOCALIZACAO_BAIRROS),
+            cidade: cidade[0],
+            estado: cidade[1],
+            estadoSigla: estado.uf
+        };
     },
     inscricaoestadual: function (estado) {
         estado = estado.toLowerCase();
@@ -1433,18 +1462,31 @@ exports.fakerBr = {
         var rg = faker.rg();
         var telefone = faker.telefone();
         var celular = faker.celular();
-        // const dataNascimento = faker.celular();
-        // const site = faker.site();
-        // const email = faker.email();
-        // const senha = faker.password();
-        // TODO - CEP , Endereço , Número , Bairro , Cidade, Estado:
-        // Signo, Altura, Peso, TipoSanguineo
+        var dataNascimento = exports.fakerBr.data({
+            idadeMin: 18,
+            idadeMax: 40
+        });
+        var site = faker.site();
+        var email = faker.email();
+        var senha = faker.senha();
+        var endereco = faker.endereco();
+        // TODO - Signo, Altura, Peso, TipoSanguineo
+        var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
+        var sobrenomeMae = utils_1.randArray(pessoas_1.SOBRENOMES);
+        var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+        var mae = utils_1.randArray(pessoas_1.NOMES_FEMININOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+        var pai = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + utils_1.randArray(pessoas_1.SOBRENOMES) + ' ' + sobrenomePai;
+        var usuario = faker.usuario(nome);
         return {
-            name: 'TEST',
-            mae: 'TEST',
-            pai: 'TEST',
-            rg: rg,
-            cpf: cpf, telefone: telefone, celular: celular
+            nome: nome,
+            mae: mae,
+            pai: pai,
+            site: site,
+            rg: rg, email: email,
+            cpf: cpf, telefone: telefone, celular: celular,
+            dataNascimento: dataNascimento,
+            endereco: endereco,
+            senha: senha, usuario: usuario
         };
     },
     pispasep: makeGeneric(mask_1.MASKS['pispasep']),
@@ -1462,13 +1504,35 @@ exports.fakerBr = {
         return renavam.substr(0, renavam.length - 1) + dv;
     },
     rg: function () {
-        var random = randomEstadoSigla();
+        var random = utils_1.randomEstadoSigla();
         random = random.split('');
         var makeRg = makeGeneric(mask_1.MASKS['rg'], {
             0: function () { return random[0]; },
             1: function () { return random[1]; }
         });
         return makeRg();
+    },
+    senha: function (config) {
+        if (config === void 0) { config = {}; }
+        // if()
+        return 'ABC'; // todo
+    },
+    site: function (options) {
+        if (options === void 0) { options = {}; }
+        var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
+        var dominio = '.com.br';
+        var url = utils_1.randArray(['http://', 'https://']);
+        if (options.nome) {
+            nome = options.nome;
+        }
+        if (options.dominio) {
+            dominio = options.dominio;
+        }
+        if (options.url !== undefined) {
+            url = options.url;
+        }
+        nome = utils_1.slugify(nome);
+        return url + nome + dominio;
     },
     sped: makeGeneric(mask_1.MASKS['sped']),
     telefone: makeGeneric(mask_1.MASKS['telefone']),
@@ -1501,10 +1565,17 @@ exports.fakerBr = {
             combustivel: utils_1.randArray(veiculos_1.VEICULOS_COMBUSTIVEIS),
             cor: utils_1.randArray(utils_1.CORES)
         };
+    },
+    usuario: function (nome) {
+        if (!nome) {
+            var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
+            nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomePai;
+        }
+        return utils_1.slugify(nome);
     }
 };
 
-},{"../addons/pessoas":1,"./create":3,"./estados":4,"./inscricaoestadual":6,"./mask":8,"./name":9,"./placa":10,"./utils":12,"./validate":13,"./veiculos":14,"randexp":16}],6:[function(require,module,exports){
+},{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./mask":8,"./name":9,"./placa":10,"./utils":12,"./validate":13,"./veiculos":14,"randexp":16}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -2272,14 +2343,13 @@ var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 exports.MASKS = {
-    endereco: {
-        text: '0000.0000.0000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
+    aih: {
+        text: '000000000000-0',
+        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     },
-    contabanco: {
-        text: '000 00000-0 00000-0',
-        textMask: [/\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-',
-            /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    cartaocredito: {
+        text: '0000 0000 0000 0000 00/00 000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
     },
     celular: {
         text: '(00) 00000-0000',
@@ -2300,6 +2370,7 @@ exports.MASKS = {
         text: 'AAA AAAAAA AA AA0000',
         textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
     },
+    cid: {},
     cnae: {
         text: '0000-0/00',
         textMask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, '/', /\d/, /\d/]
@@ -2316,6 +2387,11 @@ exports.MASKS = {
         text: '000 0000 0000 00-00',
         textMask: [/[1|2|7|8|9]/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '-', /\d/, /\d/]
     },
+    contabanco: {
+        text: '000 00000-0 00000-0',
+        textMask: [/\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-',
+            /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    },
     cpf: {
         text: '000.000.000-00',
         textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
@@ -2323,10 +2399,6 @@ exports.MASKS = {
     cpfcnpj: {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
-    },
-    cartaocredito: {
-        text: '0000 0000 0000 0000 00/00 000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
     },
     currency: {
         text: '0.000,00',
@@ -2340,13 +2412,17 @@ exports.MASKS = {
             suffix: ''
         })
     },
-    date: {
+    data: {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
     ect: {
         text: '00000000-0',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    },
+    endereco: {
+        text: '0000.0000.0000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
     inscricaoestadual: inscricaoestadual_1.IEMASKS,
     iptu: {
@@ -2461,8 +2537,7 @@ var makeGeneric = function (key) {
     };
 };
 exports.maskBr = {
-    endereco: makeGeneric('endereco'),
-    contabanco: makeGeneric('contabanco'),
+    aih: makeGeneric('aih'),
     celular: makeGeneric('celular'),
     cep: makeGeneric('cep'),
     certidao: makeGeneric('certidao'),
@@ -2471,6 +2546,7 @@ exports.maskBr = {
     cnh: makeGeneric('cnh'),
     cnpj: makeGeneric('cnpj'),
     cns: makeGeneric('cns'),
+    contabanco: makeGeneric('contabanco'),
     cpf: makeGeneric('cpf'),
     cpfcnpj: makeGeneric('cpfcnpj'),
     cartaocredito: makeGeneric('cartaocredito'),
@@ -2491,8 +2567,9 @@ exports.maskBr = {
         var finalValue = conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
         return finalValue;
     },
-    date: makeGeneric('date'),
+    data: makeGeneric('date'),
     ect: makeGeneric('ect'),
+    endereco: makeGeneric('endereco'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
         if (!inscricaoestadualValue || !estado || !exports.MASKS.inscricaoestadual[estado] ||
             !exports.MASKS.inscricaoestadual[estado].textMask) {
@@ -3397,6 +3474,7 @@ exports.default = {
 },{}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
 }
@@ -3485,6 +3563,28 @@ function currencyToNumber(input) {
     return parseFloat(input);
 }
 exports.currencyToNumber = currencyToNumber;
+function slugify(value) {
+    return value.toString().toLowerCase()
+        .replace(/[àÀáÁâÂãäÄÅåª]+/g, 'a') // Special Characters #1
+        .replace(/[èÈéÉêÊëË]+/g, 'e') // Special Characters #2
+        .replace(/[ìÌíÍîÎïÏ]+/g, 'i') // Special Characters #3
+        .replace(/[òÒóÓôÔõÕöÖº]+/g, 'o') // Special Characters #4
+        .replace(/[ùÙúÚûÛüÜ]+/g, 'u') // Special Characters #5
+        .replace(/[ýÝÿŸ]+/g, 'y') // Special Characters #6
+        .replace(/[ñÑ]+/g, 'n') // Special Characters #7
+        .replace(/[çÇ]+/g, 'c') // Special Characters #8
+        .replace(/[ß]+/g, 'ss') // Special Characters #9
+        .replace(/[Ææ]+/g, 'ae') // Special Characters #10
+        .replace(/[Øøœ]+/g, 'oe') // Special Characters #11
+        .replace(/[%]+/g, 'pct') // Special Characters #12
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, ''); // Trim - from end of text
+}
+exports.slugify = slugify;
+;
 /**
  *
  * @param string  ex. 12345
@@ -3503,19 +3603,72 @@ function fillString(string, size, fill) {
     return string;
 }
 exports.fillString = fillString;
-function rand(begin, end) {
-    return Math.floor(Math.random() * end) + begin;
-}
-exports.rand = rand;
 function randArray(array) {
-    var index = rand(0, array.length);
+    var index = randomNumber(0, array.length);
     return array[index];
 }
 exports.randArray = randArray;
+function rand(length) {
+    var ranges = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        ranges[_i - 1] = arguments[_i];
+    }
+    var str = ""; // the string (initialized to "")
+    while (length--) { // repeat this length of times
+        var ind = Math.floor(Math.random() * ranges.length); // get a random range from the ranges object
+        var min = ranges[ind][0].charCodeAt(0), // get the minimum char code allowed for this range
+        max = ranges[ind][1].charCodeAt(0); // get the maximum char code allowed for this range
+        var c = Math.floor(Math.random() * (max - min + 1)) + min; // get a random char code between min and max
+        str += String.fromCharCode(c); // convert it back into a character and append it to the string str
+    }
+    return str; // return str
+}
+exports.rand = rand;
+function randomNumber(begin, end) {
+    var number = Math.floor(Math.random() * end) + begin;
+    return number;
+}
+exports.randomNumber = randomNumber;
+function randomLetter(size, onlyCapitals) {
+    if (size === void 0) { size = 1; }
+    if (onlyCapitals === void 0) { onlyCapitals = false; }
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (onlyCapitals == false) {
+        possible += "abcdefghijklmnopqrstuvwxyz";
+    }
+    possible = possible.split('');
+    for (var i = 0; i < size; i++) {
+        var pos = Math.floor(Math.random() * possible.length);
+        text += possible[pos];
+    }
+    return text;
+}
+exports.randomLetter = randomLetter;
+function randomLetterOrNumber(size, onlyCapitals) {
+    if (size === void 0) { size = 1; }
+    if (onlyCapitals === void 0) { onlyCapitals = false; }
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    if (onlyCapitals == false) {
+        possible += "abcdefghijklmnopqrstuvwxyz0123456789";
+    }
+    possible = possible.split('');
+    for (var i = 0; i < size; i++) {
+        var pos = Math.floor(Math.random() * possible.length);
+        text += possible[pos];
+    }
+    return text;
+}
+exports.randomLetterOrNumber = randomLetterOrNumber;
+exports.randomEstadoSigla = function () {
+    var total = estados_1.ESTADOS_SIGLA.length;
+    return estados_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
+};
 exports.CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
     "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
 
-},{}],13:[function(require,module,exports){
+},{"./estados":4}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -3524,12 +3677,13 @@ var placa_1 = require("./placa");
 var create_1 = require("./create");
 var rg_1 = require("./rg");
 var iptu_1 = require("./iptu");
-function validate_endereco(number) {
-    return true;
+function validate_aih(aih) {
+    var aihClean = aih.replace(/[^\d]+/g, '');
+    var dvOriginal = aihClean.substr(-1);
+    var dv = create_1.create_aih(aihClean);
+    return dvOriginal === dv;
 }
-function validate_contabanco(number) {
-    return true;
-}
+exports.validate_aih = validate_aih;
 function validate_celular(cel) {
     var celClean = cel.replace(/[^\d]+/g, '');
     celClean = celClean.replace(/_/g, '');
@@ -3673,6 +3827,9 @@ function validate_cnpj(cnpj) {
     return true;
 }
 exports.validate_cnpj = validate_cnpj;
+function validate_contabanco(number) {
+    return true;
+}
 // http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
 function validate_cpf(strCPF) {
     strCPF = strCPF.replace(/[^\d]+/g, '');
@@ -3733,6 +3890,13 @@ function validate_ect(number) {
     return false;
 }
 exports.validate_ect = validate_ect;
+function validate_email(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+function validate_endereco(number) {
+    return true;
+}
 function validate_iptu(iptu) {
     var iptuClean = iptu.replace(/\./g, '');
     iptuClean = iptuClean.replace(/-/g, '');
@@ -3867,9 +4031,13 @@ function validate_titulo(titulo) {
     }
 }
 exports.validate_titulo = validate_titulo;
+function validate_username(value) {
+    var re = /^[a-z0-9_-]{3,16}$/igm;
+    return re.test(String(value).toLowerCase());
+}
 exports.validateBr = {
-    endereco: validate_endereco,
-    contabanco: validate_contabanco,
+    aih: validate_aih,
+    cartaocredito: validate_cartaocredito,
     celular: validate_celular,
     cep: validate_cep,
     certidao: validate_certidao,
@@ -3878,12 +4046,14 @@ exports.validateBr = {
     cnh: validate_cnh,
     cnpj: validate_cnpj,
     cns: validate_cns,
+    contabanco: validate_contabanco,
     cpf: validate_cpf,
     cpfcnpj: validate_cpfcnpj,
-    cartaocredito: validate_cartaocredito,
     currency: validate_currency,
-    date: validate_date,
+    data: validate_date,
     ect: validate_ect,
+    email: validate_email,
+    endereco: validate_endereco,
     inscricaoestadual: inscricaoestadual_1.validate_inscricaoestadual,
     iptu: validate_iptu,
     number: validate_number,
@@ -3896,7 +4066,8 @@ exports.validateBr = {
     sped: validate_sped,
     telefone: validate_telefone,
     time: validate_time,
-    titulo: validate_titulo
+    titulo: validate_titulo,
+    username: validate_username
 };
 
 },{"./create":3,"./inscricaoestadual":6,"./iptu":7,"./placa":10,"./rg":11,"./utils":12}],14:[function(require,module,exports){

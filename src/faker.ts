@@ -1,5 +1,5 @@
 import { MASKS } from './mask';
-import { CEPRange } from './validate';
+import { CEPRange, validate_cns } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
@@ -7,10 +7,11 @@ import {
   create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
   create_cns, create_ect, create_certidao, create_aih
 } from './create';
-import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla } from './utils';
+import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
-import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES } from '../addons/pessoas';
+import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES } from '../addons/pessoas';
+import cnaes from '../addons/cnaes';
 
 const makeGeneric = (val: any, options = null) => {
   return () => {
@@ -80,6 +81,11 @@ export const fakerBr = {
     chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
     return chassi;
   },
+  cid: () => {
+    // let chassi = makeGeneric(MASKS['chassi'])();
+    // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
+    // return chassi;
+  },
   cnae: makeGeneric(MASKS['cnae']),
   cnh: () => {
     let cnh = makeGeneric(MASKS['cnh'])();
@@ -98,20 +104,25 @@ export const fakerBr = {
     return cnpj.substr(0, cnpj.length - 1) + restos[1];
   },
   cns: () => {
-    let cns = makeGeneric(MASKS['cns'])();
+    let cns;
+    do {
+      cns = makeGeneric(MASKS['cns'])();
 
-    cns = getAllDigits(cns);
-    const primeiroDigito = parseInt(cns[0]);
-    if (primeiroDigito < 3) {
-      const cnsDigits = cns.split();
-      cnsDigits[cnsDigits.length - 2] = 0;
-      cnsDigits[cnsDigits.length - 3] = 0;
-      cnsDigits[cnsDigits.length - 4] = 0;
-      cns = cnsDigits.join();
-    }
+      cns = getAllDigits(cns);
+      const primeiroDigito = parseInt(cns[0]);
+      if (primeiroDigito < 3) {
+        const cnsDigits = cns.split();
+        cnsDigits[cnsDigits.length - 2] = 0;
+        cnsDigits[cnsDigits.length - 3] = 0;
+        cnsDigits[cnsDigits.length - 4] = 0;
+        cns = cnsDigits.join();
+      }
 
-    let digito = create_cns(cns);
-    return cns.substr(0, cns.length - 2) + digito;
+      let digito = create_cns(cns);
+      cns = cns.substr(0, cns.length - 2) + digito;
+    } while (!validate_cns(cns));
+    return cns;
+
   },
   contabanco: makeGeneric(MASKS['contabanco']),
   cpf: () => {
@@ -132,7 +143,7 @@ export const fakerBr = {
     const x = Math.random() * 10000;
     return parseFloat(x.toFixed(2));
   },
-  date: (config: any = {}) => {
+  data: (config: any = {}) => {
     let date = new Date();
     if (config.dias) {
       date.setDate(date.getDate() + config.dias);
@@ -154,14 +165,18 @@ export const fakerBr = {
     return ect.substr(0, ect.length - 1) + dv;
   },
   email: (options: any = {}) => {
-    let name = randArray(NOMES_MASCULINOS)
-    if (options.name) {
-      name = options.name.match(/\w/g).join('');
+    const faker = this.fakerBr;
+    let nome = randArray(NOMES_MASCULINOS);
+
+    if (options.nome) {
+      nome = options.nome;
     }
-    name = name.toLowerCase();
-    const ect = makeGeneric(MASKS['ect'])();
-    const dv = create_ect(ect.substr(0, ect.length - 1));
-    return ect.substr(0, ect.length - 1) + dv;
+
+    nome = slugify(nome);
+
+    const site = faker.site({ ...options, url: '' });
+
+    return nome + '@' + site;
   },
   empresa: () => {
     const faker = this.fakerBr;
@@ -170,17 +185,26 @@ export const fakerBr = {
     const celular = faker.celular();
     const endereco = faker.endereco();
     const inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
-    const dataAbertura = fakerBr.date({
+    const dataAbertura = fakerBr.data({
       idadeMin: 4,
       idadeMax: 20
     });
-
+    const fundador1 = faker.pessoa();
+    const fundador2 = faker.pessoa();
+    const fundadores = [
+      fundador1,
+      fundador2
+    ];
+    const nome = randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES);
     // const site = faker.site();
-    // const email = faker.email();
+    const email = faker.email({
+      nome: 'contato',
+      empresa: nome
+    });
 
     return {
-      name: randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES), // TODO
-      inscricaoestadual,
+      nome, email,
+      inscricaoestadual, fundadores,
       cnpj, telefone, celular,
       endereco, dataAbertura
     }
@@ -236,23 +260,36 @@ export const fakerBr = {
     const telefone = faker.telefone();
     const celular = faker.celular();
 
-    const dataNascimento = fakerBr.date({
+    const dataNascimento = fakerBr.data({
       idadeMin: 18,
       idadeMax: 40
     });
-    // const site = faker.site();
-    // const email = faker.email();
-    // const senha = faker.password();
-    // TODO - CEP , Endereço , Número , Bairro , Cidade, Estado:
-    // Signo, Altura, Peso, TipoSanguineo
+    const site = faker.site();
+    const email = faker.email();
+    const senha = faker.senha();
 
+
+    const endereco = faker.endereco();
+
+    // TODO - Signo, Altura, Peso, TipoSanguineo
+
+    const sobrenomePai = randArray(SOBRENOMES);
+    const sobrenomeMae = randArray(SOBRENOMES);
+    let nome = randArray(NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+    let mae = randArray(NOMES_FEMININOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+    let pai = randArray(NOMES_MASCULINOS) + ' ' + randArray(SOBRENOMES) + ' ' + sobrenomePai;
+
+    const usuario = faker.usuario(nome);
     return {
-      name: 'TEST', // TODO
-      mae: 'TEST', // TODO
-      pai: 'TEST', // TODO
-      rg,
+      nome,
+      mae,
+      pai,
+      site,
+      rg, email,
       cpf, telefone, celular,
-      dataNascimento
+      dataNascimento,
+      endereco,
+      senha, usuario
     }
 
   },
@@ -278,6 +315,27 @@ export const fakerBr = {
       1: () => random[1]
     });
     return makeRg();
+  },
+  senha: (config: any = {}) => {
+    // if()
+    return 'ABC'; // todo
+  },
+  site: (options: any = {}) => {
+    let nome = randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES);
+    let dominio = '.com.br';
+    let url = randArray(['http://', 'https://']);
+    if (options.nome) {
+      nome = options.nome;
+    }
+    if (options.dominio) {
+      dominio = options.dominio;
+    }
+    if (options.url !== undefined) {
+      url = options.url;
+    }
+    nome = slugify(nome);
+    return url + nome + dominio;
+
   },
   sped: makeGeneric(MASKS['sped']),
   telefone: makeGeneric(MASKS['telefone']),
@@ -312,6 +370,13 @@ export const fakerBr = {
       combustivel: randArray(VEICULOS_COMBUSTIVEIS),
       cor: randArray(CORES)
     }
+  },
+  usuario: (nome) => {
+    if (!nome) {
+      const sobrenomePai = randArray(SOBRENOMES);
+      nome = randArray(NOMES_MASCULINOS) + ' ' + sobrenomePai;
+    }
+    return slugify(nome);
   }
 
 };

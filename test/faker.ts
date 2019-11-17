@@ -79,14 +79,14 @@ describe('Faker test', () => {
     expect(validateBr.currency(currencyNumber)).to.be.true;
   });
 
-  it('date', () => {
-    let date = fakerBr.date();
-    expect(validateBr.date(date)).to.be.true;
-    date = fakerBr.date({
+  it('data', () => {
+    let data = fakerBr.data();
+    expect(validateBr.data(data)).to.be.true;
+    data = fakerBr.data({
       idadeMin: 18,
       idadeMax: 40
     });
-    expect(validateBr.date(date)).to.be.true;
+    expect(validateBr.data(data)).to.be.true;
   });
 
 
@@ -95,15 +95,29 @@ describe('Faker test', () => {
     expect(validateBr.ect(ect)).to.be.true;
   });
 
+  it('Email', () => {
+    let email = fakerBr.email();
+    console.log(email)
+    expect(validateBr.email(email)).to.be.true;
+
+    email = fakerBr.email({
+      nome: 'mario mol',
+      empresa: 'JS Brasil',
+    });
+    expect(validateBr.email(email)).to.be.true;
+  });
+
   it('Empresa', () => {
     const empresa = fakerBr.empresa();
-    expect(empresa.name).to.exist;
+    expect(empresa.nome).to.exist;
     expect(validateBr.cnpj(empresa.cnpj)).to.be.true;
     expect(validateBr.telefone(empresa.telefone)).to.be.true;
-    expect(validateBr.celular(empresa.celular)).to.be.true;
+    expect(validateBr.telefone(empresa.celular)).to.be.true;
+    expect(validateBr.email(empresa.email)).to.be.true;
     // expect(validateBr.inscricaoestadual(empresa.inscricaoestadual)).to.be.true;
     expect(empresa.endereco).to.exist;
     expect(empresa.inscricaoestadual).to.exist;
+    console.log(empresa);
   });
 
   it('Endereço', () => {
@@ -141,6 +155,26 @@ describe('Faker test', () => {
     // expect(fakerBr.percentage()).to.exist;
     // const percentage = fakerBr.percentage();
     // expect(validateBr.percentage(percentage)).to.be.true;
+  });
+
+  it('Pessoa', () => {
+    const pessoa = fakerBr.pessoa();
+    expect(pessoa.nome).to.exist;
+    expect(pessoa.mae).to.exist;
+    expect(pessoa.pai).to.exist;
+    expect(pessoa.pai).to.exist;
+    expect(pessoa.endereco).to.exist;
+
+    expect(pessoa.usuario).to.exist;
+    expect(pessoa.senha).to.exist;
+    expect(pessoa.site).to.exist;
+
+    expect(validateBr.rg(pessoa.rg)).to.be.true;
+    expect(validateBr.email(pessoa.email)).to.be.true;
+    expect(validateBr.cpf(pessoa.cpf)).to.be.true;
+    expect(validateBr.telefone(pessoa.telefone)).to.be.true;
+    expect(validateBr.celular(pessoa.celular)).to.be.true;
+    expect(validateBr.data(pessoa.dataNascimento)).to.be.true;
   });
 
   it('PIS/PASEP', () => {

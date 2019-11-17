@@ -1,9 +1,9 @@
-import { modulo11, getAllDigits, fillString, getAllWords } from "./utils";
+import { getAllDigits, fillString, getAllWords } from "./utils";
 import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_titulo, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih
+  create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih
 } from "./create";
 import RG from "./rg";
 import IPTU from "./iptu";
@@ -253,6 +253,11 @@ export function validate_ect(number) {
   return false;
 }
 
+function validate_email(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 function validate_endereco(number) {
   return true;
 }
@@ -402,10 +407,14 @@ export function validate_titulo(titulo: any) {
   }
 }
 
+function validate_username(value) {
+  var re = /^[a-z0-9_-]{3,16}$/igm;
+  return re.test(String(value).toLowerCase());
+}
+
 export const validateBr = {
   aih: validate_aih,
-  endereco: validate_endereco,
-  contabanco: validate_contabanco,
+  cartaocredito: validate_cartaocredito,
   celular: validate_celular,
   cep: validate_cep,
   certidao: validate_certidao,
@@ -414,12 +423,14 @@ export const validateBr = {
   cnh: validate_cnh,
   cnpj: validate_cnpj,
   cns: validate_cns,
+  contabanco: validate_contabanco,
   cpf: validate_cpf,
   cpfcnpj: validate_cpfcnpj,
-  cartaocredito: validate_cartaocredito,
   currency: validate_currency,
-  date: validate_date,
+  data: validate_date,
   ect: validate_ect,
+  email: validate_email,
+  endereco: validate_endereco,
   inscricaoestadual: validate_inscricaoestadual,
   iptu: validate_iptu,
   number: validate_number,
@@ -432,5 +443,6 @@ export const validateBr = {
   sped: validate_sped,
   telefone: validate_telefone,
   time: validate_time,
-  titulo: validate_titulo
+  titulo: validate_titulo,
+  username: validate_username
 };
