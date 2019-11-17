@@ -97,7 +97,6 @@ describe('Faker test', () => {
 
   it('Email', () => {
     let email = fakerBr.email();
-    console.log(email)
     expect(validateBr.email(email)).to.be.true;
 
     email = fakerBr.email({
@@ -117,7 +116,6 @@ describe('Faker test', () => {
     // expect(validateBr.inscricaoestadual(empresa.inscricaoestadual)).to.be.true;
     expect(empresa.endereco).to.exist;
     expect(empresa.inscricaoestadual).to.exist;
-    console.log(empresa);
   });
 
   it('Endereço', () => {
@@ -168,6 +166,11 @@ describe('Faker test', () => {
     expect(pessoa.usuario).to.exist;
     expect(pessoa.senha).to.exist;
     expect(pessoa.site).to.exist;
+
+    expect(pessoa.altura).to.exist;
+    expect(pessoa.peso).to.exist;
+    expect(pessoa.signo).to.exist;
+    expect(pessoa.tipoSanguineo).to.exist;
 
     expect(validateBr.rg(pessoa.rg)).to.be.true;
     expect(validateBr.email(pessoa.email)).to.be.true;

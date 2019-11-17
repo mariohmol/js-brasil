@@ -7,7 +7,47 @@ export const SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', '
 
 
 export const EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
-export const EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica',  'Lux'];
+export const EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
+
+export const TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
+
+export function getAstro(data) {
+    let month, day;
+    if (typeof data === 'string') {
+        day = parseInt(data.split('/')[0]);
+        month = parseInt(data.split('/')[1]);
+    } else {
+        day = data.getDate() + 1;
+        month = data.getMonth() + 1;
+    }
+    if (month < 1 || month > 12) { throw new Error("Mes inválido : " + month); }
+    if (day < 1 || day > 32) { throw new Error("Dia inválido : " + day); }
+
+    if ((month == 1 && day < 20) || (month == 12 && day >= 22)) {
+        return 'Capricórnio';
+    } else if ((month == 2 && day < 19) || (month == 1 && day >= 22)) {
+        return 'Aquários';
+    } else if ((month == 3 && day < 21) || (month == 2 && day >= 24)) {
+        return 'Peixes';
+    } else if ((month == 4 && day < 20) || (month == 3 && day >= 23)) {
+        return 'Aries';
+    } else if ((month == 5 && day < 21) || (month == 4 && day >= 23)) {
+        return 'Touro';
+    } else if ((month == 6 && day < 22) || (month == 5 && day >= 23)) {
+        return 'Gêmeos';
+    } else if ((month == 7 && day < 23) || (month == 6 && day >= 22)) {
+        return 'Cancer';
+    } else if ((month == 8 && day < 23) || (month == 7 && day >= 21)) {
+        return 'Leao';
+    } else if ((month == 9 && day < 23) || (month == 8 && day >= 20)) {
+        return 'Virgo';
+    } else if ((month == 10 && day < 24) || (month == 9 && day >= 21)) {
+        return 'Libra';
+    } else if ((month == 11 && day < 22) || (month == 10 && day >= 19)) {
+        return 'Escorpião';
+    } else if ((month == 12 && day < 22) || (month == 11 && day >= 20)) { return 'Sagitário' }
+}
+
 
 export const NAMES = [
     'Aaron',

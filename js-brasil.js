@@ -9,6 +9,61 @@ exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATIS
     'SANTANA', 'SANTOS', 'SILVA', 'SOARES', 'SOUZA', 'TEIXEIRA', 'VIEIRA'];
 exports.EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
 exports.EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
+exports.TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
+function getAstro(data) {
+    var month, day;
+    if (typeof data === 'string') {
+        day = parseInt(data.split('/')[0]);
+        month = parseInt(data.split('/')[1]);
+    }
+    else {
+        day = data.getDate() + 1;
+        month = data.getMonth() + 1;
+    }
+    if (month < 1 || month > 12) {
+        throw new Error("Mes inválido : " + month);
+    }
+    if (day < 1 || day > 32) {
+        throw new Error("Dia inválido : " + day);
+    }
+    if ((month == 1 && day < 20) || (month == 12 && day >= 22)) {
+        return 'Capricórnio';
+    }
+    else if ((month == 2 && day < 19) || (month == 1 && day >= 22)) {
+        return 'Aquários';
+    }
+    else if ((month == 3 && day < 21) || (month == 2 && day >= 24)) {
+        return 'Peixes';
+    }
+    else if ((month == 4 && day < 20) || (month == 3 && day >= 23)) {
+        return 'Aries';
+    }
+    else if ((month == 5 && day < 21) || (month == 4 && day >= 23)) {
+        return 'Touro';
+    }
+    else if ((month == 6 && day < 22) || (month == 5 && day >= 23)) {
+        return 'Gêmeos';
+    }
+    else if ((month == 7 && day < 23) || (month == 6 && day >= 22)) {
+        return 'Cancer';
+    }
+    else if ((month == 8 && day < 23) || (month == 7 && day >= 21)) {
+        return 'Leao';
+    }
+    else if ((month == 9 && day < 23) || (month == 8 && day >= 20)) {
+        return 'Virgo';
+    }
+    else if ((month == 10 && day < 24) || (month == 9 && day >= 21)) {
+        return 'Libra';
+    }
+    else if ((month == 11 && day < 22) || (month == 10 && day >= 19)) {
+        return 'Escorpião';
+    }
+    else if ((month == 12 && day < 22) || (month == 11 && day >= 20)) {
+        return 'Sagitário';
+    }
+}
+exports.getAstro = getAstro;
 exports.NAMES = [
     'Aaron',
     'Abel',
@@ -1470,7 +1525,10 @@ exports.fakerBr = {
         var email = faker.email();
         var senha = faker.senha();
         var endereco = faker.endereco();
-        // TODO - Signo, Altura, Peso, TipoSanguineo
+        var altura = '1.' + utils_1.randomNumber(35, 90);
+        var peso = utils_1.randomNumber(50, 120);
+        var signo = pessoas_1.getAstro(dataNascimento);
+        var tipoSanguineo = utils_1.randArray(pessoas_1.TIPOS_SANGUINEOS);
         var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
         var sobrenomeMae = utils_1.randArray(pessoas_1.SOBRENOMES);
         var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
@@ -1486,7 +1544,8 @@ exports.fakerBr = {
             cpf: cpf, telefone: telefone, celular: celular,
             dataNascimento: dataNascimento,
             endereco: endereco,
-            senha: senha, usuario: usuario
+            senha: senha, usuario: usuario,
+            signo: signo, tipoSanguineo: tipoSanguineo, altura: altura, peso: peso
         };
     },
     pispasep: makeGeneric(mask_1.MASKS['pispasep']),

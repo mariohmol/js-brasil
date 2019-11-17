@@ -10,7 +10,7 @@ import {
 import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
-import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES } from '../addons/pessoas';
+import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro } from '../addons/pessoas';
 import cnaes from '../addons/cnaes';
 
 const makeGeneric = (val: any, options = null) => {
@@ -271,8 +271,10 @@ export const fakerBr = {
 
     const endereco = faker.endereco();
 
-    // TODO - Signo, Altura, Peso, TipoSanguineo
-
+    const altura = '1.' + randomNumber(35, 90);
+    const peso = randomNumber(50, 120);
+    const signo = getAstro(dataNascimento);
+    const tipoSanguineo = randArray(TIPOS_SANGUINEOS);
     const sobrenomePai = randArray(SOBRENOMES);
     const sobrenomeMae = randArray(SOBRENOMES);
     let nome = randArray(NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
@@ -289,7 +291,8 @@ export const fakerBr = {
       cpf, telefone, celular,
       dataNascimento,
       endereco,
-      senha, usuario
+      senha, usuario,
+      signo, tipoSanguineo, altura, peso
     }
 
   },

@@ -46,7 +46,7 @@ function generalAction(dataId, type) {
     validatedAction.onclick = () => {
       console.log(`validatedAction.onclick`)
       const validatedInput = document.querySelector('#validated' + type);
-      const masked = jsbrasil.maskBr[dataId](validatedInput.value);
+      const masked = jsbrasil.maskBr[dataId] ? jsbrasil.maskBr[dataId](validatedInput.value) : validatedInput.value;
       const validated = jsbrasil.validateBr[dataId](validatedInput.value);
 
       document.querySelector('#validatedResult' + type).classList.remove('hidden');
