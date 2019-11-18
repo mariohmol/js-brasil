@@ -29,10 +29,10 @@ describe('Mask test', () => {
     // testGeneric('contabanco');
   });
 
-  it('celular - TODO', () => {
-    const celular = '12312345121';
-    // expect(maskBr.celular(celular)).to.be.equal('123.12345.12-1');
-    // testGeneric('celular');
+  it('celular', () => {
+    const celular = '31999915454';
+    expect(maskBr.celular(celular)).to.be.equal('(31) 99991-5454');
+    testGeneric('celular');
   });
 
   it('CEP', () => {
@@ -73,7 +73,7 @@ describe('Mask test', () => {
     testGeneric('cnpj');
   });
 
-  it('cns', () => {
+  it('CNS', () => {
     const cns = '755845919762262';
     expect(maskBr.cns(cns)).to.be.equal('755 8459 1976 22-62');
   });
@@ -96,7 +96,7 @@ describe('Mask test', () => {
     // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
     // testGeneric('cartaocredito');
   });
-  it('Currency', () => {
+  it('Moeda', () => {
     const currency = 'R$ 5.103,94';
     const currencyText = '5.103,94';
     const currencyNumber = 5103.94;
@@ -150,10 +150,10 @@ describe('Mask test', () => {
   });
 
 
-  it('Percentage - TODO', () => {
-    const pispasep = '12312345121';
-    // expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
-    // testGeneric('pispasep');
+  it.only('Porcentagemm', () => {
+    const porcentagem = '80';
+    expect(maskBr.porcentagem(porcentagem)).to.be.equal('80%,00');
+    // testGeneric('porcentagem');
   });
 
   it('PIS/PASEP - TODO', () => {
@@ -161,12 +161,14 @@ describe('Mask test', () => {
     // expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
     // testGeneric('pispasep');
   });
+
   it('PLACA', () => {
     const placa = 'ABC1234';
     expect(maskBr.placa(placa)).to.be.equal('ABC-1234');
     testGeneric('placa');
     expect(maskBr.placa('123')).to.exist;
   });
+
   it('Processos - TODO', () => {
     const processo = '5613309901450BBP4943';
     // expect(maskBr.processo(processo)).to.be.equal('5613309-90.1450.BBP.4943');
@@ -184,21 +186,25 @@ describe('Mask test', () => {
     testGeneric('rg');
     expect(maskBr.rg('123')).to.exist;
   });
+
   it('SPED', () => {
     const sped = '313500350012';
     expect(maskBr.sped(sped)).to.be.equal('3135.0035.0012');
     // testGeneric('sped');
     expect(maskBr.sped('123')).to.exist;
   });
-  it('Telefone', () => {
-    const telefone = '3135003500';
-    expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');
-    // testGeneric('telefone');
-    expect(maskBr.telefone('123')).to.exist;
-  });
-  it('Telefone 9 Digito', () => {
-    const telefone = '31988886565';
-    expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
+
+  context('Telefone', ()=>{
+    it('Fixo', () => {
+      const telefone = '3135003500';
+      expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');
+      expect(maskBr.telefone('123')).to.exist;
+    });
+  
+    it(' 9 Digito', () => {
+      const telefone = '31988886565';
+      expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
+    });
   });
 
   // it('Time', () => {
@@ -216,11 +222,11 @@ describe('Mask test', () => {
   it('Others', () => {
     // const currency  = fakerBr.currency();
     // expect(validateBr.currency(currency)).to.be.true;
-    // const percentage  = fakerBr.percentage();
-    // expect(validateBr.percentage(percentage)).to.be.true;
-    // expect(maskBr.percentage('123')).to.exist;
+    // const porcentagem  = fakerBr.porcentagem();
+    // expect(validateBr.porcentagem(porcentagem)).to.be.true;
+    // expect(maskBr.porcentagem('123')).to.exist;
     // expect(maskBr.time('123')).to.exist;
-    // testGeneric('percentage');
+    // testGeneric('porcentagem');
     // testGeneric('time');
   });
 

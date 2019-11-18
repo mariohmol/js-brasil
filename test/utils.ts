@@ -7,7 +7,7 @@ describe('Utils test', () => {
     const currency = utilsBr.currencyToNumber(' R$ 1.234.456,44 ');
     expect(currency).to.be.equal(1234456.44);
   });
-  it('Utils currencyToNumber Percentage', () => {
+  it('Utils currencyToNumber Porcentagem', () => {
     const percent = utilsBr.currencyToNumber(' 1.234.456,44%');
     expect(percent).to.be.equal(1234456.44);
 

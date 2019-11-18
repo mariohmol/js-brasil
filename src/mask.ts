@@ -103,7 +103,7 @@ export const MASKS = {
       suffix: ''
     })
   },
-  percentage: {
+  porcentagem: {
     text: '00,00%',
     textMask: createNumberMask({
       decimalLimit: 2,
@@ -152,8 +152,8 @@ export const MASKS = {
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
   telefone: {
-    text: '(00) 0000-0000',
-    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    text: '(00) 00000-0000',
+    textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     textMaskFunction: function mask(userInput: any) {
       const numbers = userInput.match(/\d/g);
       let numberLength = 0;
@@ -281,16 +281,16 @@ export const maskBr = {
       { guide: false }
     ).conformedValue + ',' + decimals;
   },
-  percentage: (percentageValue: string) => {
-    if (!percentageValue) {
+  porcentagem: (porcentagemValue: string) => {
+    if (!porcentagemValue) {
       return '';
     }
-    const vals = percentageValue.split(',');
-    const mask = MASKS.percentage.textMask(vals[0]);
+    const vals = porcentagemValue.split(',');
+    const mask = MASKS.porcentagem.textMask(vals[0]);
     const decimals = vals.length > 1 ? vals[1] : '00';
 
     return conformToMask(
-      percentageValue,
+      porcentagemValue,
       mask,
       { guide: false }
     ).conformedValue + ',' + decimals;

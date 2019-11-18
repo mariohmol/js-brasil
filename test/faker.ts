@@ -106,7 +106,7 @@ describe('Faker test', () => {
     expect(validateBr.email(email)).to.be.true;
   });
 
-  it.only('Empresa', () => {
+  it('Empresa', () => {
     const empresa = fakerBr.empresa();
     expect(empresa.nome).to.exist;
     expect(validateBr.cnpj(empresa.cnpj)).to.be.true;
@@ -150,10 +150,10 @@ describe('Faker test', () => {
   });
 
 
-  it('Percentage - TODO', () => {
-    // expect(fakerBr.percentage()).to.exist;
-    // const percentage = fakerBr.percentage();
-    // expect(validateBr.percentage(percentage)).to.be.true;
+  it('Porcentagem - TODO', () => {
+    // expect(fakerBr.porcentagem()).to.exist;
+    // const porcentagem = fakerBr.porcentagem();
+    // expect(validateBr.porcentagem(porcentagem)).to.be.true;
   });
 
   it('Pessoa', () => {

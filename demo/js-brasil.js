@@ -1533,7 +1533,7 @@ exports.fakerBr = {
         }
         return parseFloat(x.toFixed(options.decimals));
     },
-    percentage: makeGeneric(mask_1.MASKS['percentage']),
+    porcentagem: makeGeneric(mask_1.MASKS['porcentagem']),
     pessoa: function (options) {
         if (options === void 0) { options = {}; }
         var faker = _this.fakerBr;
@@ -2568,7 +2568,7 @@ exports.MASKS = {
             suffix: ''
         })
     },
-    percentage: {
+    porcentagem: {
         text: '00,00%',
         textMask: createNumberMask_1.default({
             decimalLimit: 2,
@@ -2721,14 +2721,14 @@ exports.maskBr = {
         }
         return conformToMask(numberValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
-    percentage: function (percentageValue) {
-        if (!percentageValue) {
+    porcentagem: function (porcentagemValue) {
+        if (!porcentagemValue) {
             return '';
         }
-        var vals = percentageValue.split(',');
-        var mask = exports.MASKS.percentage.textMask(vals[0]);
+        var vals = porcentagemValue.split(',');
+        var mask = exports.MASKS.porcentagem.textMask(vals[0]);
         var decimals = vals.length > 1 ? vals[1] : '00';
-        return conformToMask(percentageValue, mask, { guide: false }).conformedValue + ',' + decimals;
+        return conformToMask(porcentagemValue, mask, { guide: false }).conformedValue + ',' + decimals;
     },
     pispasep: makeGeneric('pispasep'),
     placa: makeGeneric('placa'),
@@ -4046,11 +4046,11 @@ function validate_number(number) {
     return regex.test(number);
 }
 exports.validate_number = validate_number;
-function validate_percentage(percentage) {
+function validate_porcentagem(porcentagem) {
     var regex = /^\d+(?:\.\d{0,2})$/;
-    return regex.test(percentage);
+    return regex.test(porcentagem);
 }
-exports.validate_percentage = validate_percentage;
+exports.validate_porcentagem = validate_porcentagem;
 function validate_processo(processo) {
     var processoClean = processo.replace(/\./g, '');
     processoClean = processoClean.replace(/\-/g, '');
@@ -4217,7 +4217,7 @@ exports.validateBr = {
     inscricaoestadual: inscricaoestadual_1.validate_inscricaoestadual,
     iptu: validate_iptu,
     number: validate_number,
-    percentage: validate_percentage,
+    porcentagem: validate_porcentagem,
     pispasep: validate_pispasep,
     placa: placa_1.validate_placa,
     processo: validate_processo,

@@ -155,7 +155,8 @@ export function rand(length: number, ...ranges: any[]) {
 }
 
 export function randomNumber(begin, end) {
-  const number = Math.floor(Math.random() * end) + begin;
+  const dif = end - begin;
+  const number = Math.floor(Math.random() * dif) + begin;
   return number;
 }
 

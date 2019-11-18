@@ -70,19 +70,19 @@ export const fakerBr = {
     return faker.telefone({ ...options, celular: true });
   },
   cep: (options: any = {}) => {
-    if(!options.estado){
+    if (!options.estado) {
       options.estado = randomEstadoSigla();
     }
 
     const range = CEP_ESTADO[options.estado];
     let cep = randomNumber(range[0][0], range[0][1]);
-    if(cep<10000000){
+    if (cep < 10000000) {
       cep = '0' + cep.toString();
-    }else{
+    } else {
       cep = cep.toString();
     }
-    
-    const mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length-3, cep.length);
+
+    const mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
     return mask;
   },
   cepState: (state: string | number) => {
@@ -195,7 +195,7 @@ export const fakerBr = {
   empresa: (options: any = {}) => {
     const faker = this.fakerBr;
     const cnpj = faker.cnpj();
-    if(!options.estado){
+    if (!options.estado) {
       options.estado = randomEstadoSigla();
     }
     const endereco = faker.endereco(options);
@@ -236,11 +236,11 @@ export const fakerBr = {
     const fakerBr = this.fakerBr;
     const cep = fakerBr.cep();
 
-    if(!options.estado){
+    if (!options.estado) {
       options.estado = randomEstadoSigla();
     }
-    const estadoFound = LOCALIZACAO_ESTADOS.find(e=>e.uf.toLowerCase() === options.estado);
-    const cidades = LOCALIZACAO_CIDADES.filter(c=>c[1] === estadoFound.nome);
+    const estadoFound = LOCALIZACAO_ESTADOS.find(e => e.uf.toLowerCase() === options.estado);
+    const cidades = LOCALIZACAO_CIDADES.filter(c => c[1] === estadoFound.nome);
     const cidade = randArray(cidades);
     let estado = cidade[1].toLowerCase();
     estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado.toLowerCase())
@@ -281,10 +281,10 @@ export const fakerBr = {
     }
     return parseFloat(x.toFixed(options.decimals));
   },
-  percentage: makeGeneric(MASKS['percentage']),
+  porcentagem: makeGeneric(MASKS['porcentagem']),
   pessoa: (options: any = {}) => {
     const faker = this.fakerBr;
-    if(!options.estado){
+    if (!options.estado) {
       options.estado = randomEstadoSigla();
     }
     const cpf = faker.cpf();
@@ -343,7 +343,7 @@ export const fakerBr = {
     return renavam.substr(0, renavam.length - 1) + dv;
   },
   rg: (options: any = {}) => {
-    if(!options.estado){
+    if (!options.estado) {
       options.estado = randomEstadoSigla();
     }
     const estado = options.estado.split('');
@@ -421,8 +421,12 @@ export const fakerBr = {
         numbers[numbers.length - 1] = '8';
         number = numbers.join();
       }
-      const dig = create_titulo(number);
-      titulo = number + dig[0] + dig[1];
+      try {
+        const dig = create_titulo(number);
+        titulo = number + dig[0] + dig[1];
+      } catch (e) {
+
+      }
     } while (!validate_titulo(titulo));
     return titulo;
   },

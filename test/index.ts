@@ -11,7 +11,7 @@ describe('Initial test', () => {
     expect(validateBr.cpf).to.exist;
     expect(validateBr.currency).to.exist;
     expect(validateBr.inscricaoestadual).to.exist;
-    expect(validateBr.percentage).to.exist;
+    expect(validateBr.porcentagem).to.exist;
     expect(validateBr.rg).to.exist;
     expect(validateBr.placa).to.exist;
     expect(validateBr.telefone).to.exist;
@@ -22,7 +22,7 @@ describe('Initial test', () => {
     expect(fakerBr.cpf).to.exist;
     // expect(fakerBr.currency).to.exist;
     expect(fakerBr.inscricaoestadual).to.exist;
-    expect(fakerBr.percentage).to.exist;
+    expect(fakerBr.porcentagem).to.exist;
     expect(fakerBr.rg).to.exist;
     expect(fakerBr.placa).to.exist;
     expect(fakerBr.telefone).to.exist;

@@ -285,9 +285,9 @@ export function validate_number(number: string) {
 }
 
 
-export function validate_percentage(percentage: string) {
+export function validate_porcentagem(porcentagem: string) {
   const regex = /^\d+(?:\.\d{0,2})$/;
-  return regex.test(percentage);
+  return regex.test(porcentagem);
 }
 
 
@@ -470,7 +470,7 @@ export const validateBr = {
   inscricaoestadual: validate_inscricaoestadual,
   iptu: validate_iptu,
   number: validate_number,
-  percentage: validate_percentage,
+  porcentagem: validate_porcentagem,
   pispasep: validate_pispasep,
   placa: validate_placa,
   processo: validate_processo,

@@ -131,12 +131,12 @@ describe('Validate test', () => {
     // expect(validateBr.number('473124828')).to.be.false;
   });
 
-  // context('Percentage', () => {
+  // context('Porcentagem', () => {
   //   it('Pass when valid', () => {
-  //     expect(validateBr.percentage('10')).to.be.true;
+  //     expect(validateBr.porcentagem('10')).to.be.true;
   //   });
   //   it('Error when not valid', () => {
-  //     expect(validateBr.percentage('1234')).to.be.false;
+  //     expect(validateBr.porcentagem('1234')).to.be.false;
   //   });
   // });
 
