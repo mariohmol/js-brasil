@@ -1,5 +1,5 @@
 import { MASKS } from './mask';
-import { CEPRange, validate_cns } from './validate';
+import { CEPRange, validate_cns, validate_titulo } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
@@ -319,9 +319,27 @@ export const fakerBr = {
     });
     return makeRg();
   },
-  senha: (config: any = {}) => {
-    // if()
-    return 'ABC'; // todo
+  senha: (options: any = {}) => {
+    if (!options.size) {
+      options.size = 8;
+    }
+    const pass = [
+      randomLetter().toLowerCase(),
+      randomLetter().toUpperCase(),
+      randomNumber(0, 9),
+      randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
+    ];
+    let i = 4;
+    for (i = 4; i <= options.size; i++) {
+      const newchar = randArray([
+        randomLetter().toLowerCase(),
+        randomLetter().toUpperCase(),
+        randomNumber(0, 9),
+        randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
+      ]);
+      pass.push(newchar);
+    }
+    return pass.join('');
   },
   site: (options: any = {}) => {
     let nome = randArray(EMPRESAS_TIPOS) + ' ' + randArray(EMPRESAS_NOMES);
@@ -344,16 +362,20 @@ export const fakerBr = {
   telefone: makeGeneric(MASKS['telefone']),
   time: makeGeneric(MASKS['time']),
   titulo: () => {
-    const titulo = makeGeneric(MASKS['titulo'])();
-    let number = titulo.substr(0, titulo.length - 2);
+    let titulo;
+    do {
+      titulo = makeGeneric(MASKS['titulo'])();
+      let number = titulo.substr(0, titulo.length - 2);
 
-    if (number.substr(-2) === '29') {
-      const numbers = number.split();
-      numbers[numbers.length - 1] = '8';
-      number = numbers.join();
-    }
-    const dig = create_titulo(number);
-    return number + dig[0] + dig[1];
+      if (number.substr(-2) === '29') {
+        const numbers = number.split();
+        numbers[numbers.length - 1] = '8';
+        number = numbers.join();
+      }
+      const dig = create_titulo(number);
+      titulo = number + dig[0] + dig[1];
+    } while (!validate_titulo(titulo));
+    return titulo;
   },
   veiculo: () => {
     const faker = this.fakerBr;

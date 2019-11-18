@@ -193,11 +193,26 @@ describe('Faker test', () => {
     const renavam = fakerBr.renavam();
     expect(validateBr.renavam(renavam)).to.be.true;
   });
+
   it('RG', () => {
     expect(fakerBr.rg()).to.exist;
     const rg = fakerBr.rg();
     expect(validateBr.rg(rg)).to.be.true;
   });
+
+  it('Senha', () => {
+    let senha = fakerBr.senha();
+    expect(validateBr.senha(senha)).to.be.true;
+
+    senha = fakerBr.senha({ size: 20});
+    expect(validateBr.senha(senha)).to.be.true;
+  });
+
+  it('Site', () => {
+    const site = fakerBr.site();
+    expect(validateBr.site(site)).to.be.true;
+  });
+
   it('SPED - TODO', () => {
     // const sped = fakerBr.sped();
     // expect(validateBr.sped(sped)).to.be.true;

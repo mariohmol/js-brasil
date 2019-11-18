@@ -170,6 +170,28 @@ describe('Validate test', () => {
     expect(validateBr.rg('1234')).to.be.false;
   });
 
+  it('Senha', () => {
+    expect(validateBr.senha('asdsadasd')).to.be.false;
+    expect(validateBr.senha('ASDADASD')).to.be.false;
+    expect(validateBr.senha('315296490')).to.be.false;
+    expect(validateBr.senha('$$$$$$')).to.be.false;
+    expect(validateBr.senha('$Aa1234567')).to.be.true;
+  });
+
+  it('Site', () => {
+    expect(validateBr.site('www.teste.com')).to.be.true;
+    expect(validateBr.site('testecom')).to.be.false;
+    expect(validateBr.site('teste.comasdadas')).to.be.false;
+    // expect(validateBr.site('315296491')).to.be.false;
+  });
+
+  it('SPED', () => {
+    // expect(validateBr.sped('31529649-0')).to.be.true;
+    // expect(validateBr.sped('31529649-1')).to.be.false;
+    // expect(validateBr.sped('315296490')).to.be.true;
+    // expect(validateBr.sped('315296491')).to.be.false;
+  });
+
   it('Telefone', () => {
     expect(validateBr.telefone('31 99876767')).to.be.true;
     expect(validateBr.telefone('(90) 1057-1600')).to.be.true;

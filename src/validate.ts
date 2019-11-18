@@ -357,6 +357,36 @@ export function validate_rg(rg: string) {
   return true;
 }
 
+function validate_senha(value, options: any = {}) {
+  let finalregex = '^';
+  //   ^	The password string will start this way
+  // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
+  if (options.lowercase !== false) {
+    finalregex = finalregex + '(?=.*[a-z])';
+  }
+  // (?=.*[A-Z])	The string must contain at least 1 uppercase alphabetical character
+  if (options.uppercase !== false) {
+    finalregex = finalregex + '(?=.*[A-Z])';
+  }
+  // (?=.*[0-9])	The string must contain at least 1 numeric character
+  if (options.numeric !== false) {
+    finalregex = finalregex + '(?=.*[0-9])';
+  }
+  // (?=.*[!@#\$%\^&\*])	The string must contain at least one special character, but we are escaping reserved RegEx characters to avoid conflict
+  if (options.numeric !== false) {
+    finalregex = finalregex + '(?=.*[!@#\\$%\\^&\\*])';
+  }
+  // (?=.{8,})	The string must be eight characters or longer
+  if(!options.size){
+    options.size = 8;
+  }
+  
+  finalregex = finalregex + `(?=.{${options.size},})`;
+
+  const regex = new RegExp(finalregex);
+  return regex.test(value);
+}
+
 
 function validate_site(value) {
   var re = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/g;
@@ -446,6 +476,7 @@ export const validateBr = {
   processo: validate_processo,
   renavam: validate_renavam,
   rg: validate_rg,
+  senha: validate_senha,
   site: validate_site,
   sped: validate_sped,
   telefone: validate_telefone,

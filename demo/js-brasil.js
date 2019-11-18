@@ -1571,10 +1571,28 @@ exports.fakerBr = {
         });
         return makeRg();
     },
-    senha: function (config) {
-        if (config === void 0) { config = {}; }
-        // if()
-        return 'ABC'; // todo
+    senha: function (options) {
+        if (options === void 0) { options = {}; }
+        if (!options.size) {
+            options.size = 8;
+        }
+        var pass = [
+            utils_1.randomLetter().toLowerCase(),
+            utils_1.randomLetter().toUpperCase(),
+            utils_1.randomNumber(0, 9),
+            utils_1.randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
+        ];
+        var i = 4;
+        for (i = 4; i <= options.size; i++) {
+            var newchar = utils_1.randArray([
+                utils_1.randomLetter().toLowerCase(),
+                utils_1.randomLetter().toUpperCase(),
+                utils_1.randomNumber(0, 9),
+                utils_1.randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
+            ]);
+            pass.push(newchar);
+        }
+        return pass.join('');
     },
     site: function (options) {
         if (options === void 0) { options = {}; }
@@ -1597,15 +1615,19 @@ exports.fakerBr = {
     telefone: makeGeneric(mask_1.MASKS['telefone']),
     time: makeGeneric(mask_1.MASKS['time']),
     titulo: function () {
-        var titulo = makeGeneric(mask_1.MASKS['titulo'])();
-        var number = titulo.substr(0, titulo.length - 2);
-        if (number.substr(-2) === '29') {
-            var numbers = number.split();
-            numbers[numbers.length - 1] = '8';
-            number = numbers.join();
-        }
-        var dig = create_1.create_titulo(number);
-        return number + dig[0] + dig[1];
+        var titulo;
+        do {
+            titulo = makeGeneric(mask_1.MASKS['titulo'])();
+            var number = titulo.substr(0, titulo.length - 2);
+            if (number.substr(-2) === '29') {
+                var numbers = number.split();
+                numbers[numbers.length - 1] = '8';
+                number = numbers.join();
+            }
+            var dig = create_1.create_titulo(number);
+            titulo = number + dig[0] + dig[1];
+        } while (!validate_1.validate_titulo(titulo));
+        return titulo;
     },
     veiculo: function () {
         var faker = _this.fakerBr;
@@ -4042,6 +4064,38 @@ function validate_rg(rg) {
     return true;
 }
 exports.validate_rg = validate_rg;
+function validate_senha(value, options) {
+    if (options === void 0) { options = {}; }
+    var finalregex = '^';
+    //   ^	The password string will start this way
+    // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
+    if (options.lowercase !== false) {
+        finalregex = finalregex + '(?=.*[a-z])';
+    }
+    // (?=.*[A-Z])	The string must contain at least 1 uppercase alphabetical character
+    if (options.uppercase !== false) {
+        finalregex = finalregex + '(?=.*[A-Z])';
+    }
+    // (?=.*[0-9])	The string must contain at least 1 numeric character
+    if (options.numeric !== false) {
+        finalregex = finalregex + '(?=.*[0-9])';
+    }
+    // (?=.*[!@#\$%\^&\*])	The string must contain at least one special character, but we are escaping reserved RegEx characters to avoid conflict
+    if (options.numeric !== false) {
+        finalregex = finalregex + '(?=.*[!@#\\$%\\^&\\*])';
+    }
+    // (?=.{8,})	The string must be eight characters or longer
+    if (!options.size) {
+        options.size = 8;
+    }
+    finalregex = finalregex + ("(?=.{" + options.size + ",})");
+    var regex = new RegExp(finalregex);
+    return regex.test(value);
+}
+function validate_site(value) {
+    var re = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/g;
+    return re.test(String(value).toLowerCase());
+}
 function validate_sped(sped) {
 }
 exports.validate_sped = validate_sped;
@@ -4122,6 +4176,8 @@ exports.validateBr = {
     processo: validate_processo,
     renavam: validate_renavam,
     rg: validate_rg,
+    senha: validate_senha,
+    site: validate_site,
     sped: validate_sped,
     telefone: validate_telefone,
     time: validate_time,
