@@ -3,7 +3,7 @@ import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih
+  create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep
 } from "./create";
 import RG from "./rg";
 import IPTU from "./iptu";
@@ -234,7 +234,11 @@ export function validate_currency(currency: string | number) {
 }
 
 
-function validate_date(number) {
+function validate_date(value) {
+  const values = value.split('/');
+  if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
+    return false;
+  }
   return true;
 }
 
@@ -280,27 +284,32 @@ export function validate_iptu(iptu: string) {
 }
 
 export function validate_number(number: string) {
-  const regex = /^\d+(?:\.\d{0,2})$/;
-  return regex.test(number);
+  if (number.split(',').length > 2) {
+    return false;
+  }
+  const regexDecimal = /^\d+(?:\.\d{0,2})$/;
+  const regex = /^[0-9]{0,10}[,]{1,1}[0-9]{0,4}/;
+  const regexNumero = /^[0-9]{0,10}/;
+  return regexDecimal.test(number) || regex.test(number) || regexNumero.test(number);
 }
 
 
 export function validate_porcentagem(porcentagem: string) {
-  const regex = /^\d+(?:\.\d{0,2})$/;
-  return regex.test(porcentagem);
+  porcentagem = porcentagem.split('%')[0];
+  return validate_number(porcentagem);
 }
 
 
 export function validate_processo(processo: any) {
   let processoClean = processo.replace(/\./g, '');
   processoClean = processoClean.replace(/\-/g, '');
-  const exp = /\d{7}\-\d{2}\.\d{4}\.\w{3}\.\d{4}/;
-  const expClean = /\d{13}\w{3}\d{4}/;
-  if (!exp.test(processo) && !expClean.test(processoClean)) {
-    return false;
-  }
+  // const exp = /\d{7}\-\d{2}\.\d{4}\.\w{3}\.\d{4}/;
+  // const expClean = /\d{13}\w{3}\d{4}/;
+  // if (!exp.test(processo) && !expClean.test(processoClean)) {
+  //   return false;
+  // }
   let processoValidado = create_processo(processo);
-  if (processoClean !== getAllDigits(processoValidado)) {
+  if (parseInt(processoClean) !== parseInt(getAllDigits(processoValidado))) {
     return false;
   }
   return true;
@@ -308,20 +317,15 @@ export function validate_processo(processo: any) {
 
 
 export function validate_pispasep(number: string) {
-
   number = getAllDigits(number);
   let nis = fillString(number, 11, '0');
-
   const regex = /\d{11}/; // /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
   if (!regex.test(nis)) {
     return false;
   }
-  let d;
-  let p = 2, c = 9;
-  for (d = 0; c >= 0; c-- , (p < 9) ? p++ : p = 2) {
-    d += nis[c] * p;
-  }
-  return (nis[10] == (((10 * d) % 11) % 10));
+
+  const digit = create_pispasep(number);
+  return nis[10].toString() == digit.toString();
 }
 
 
@@ -377,10 +381,10 @@ function validate_senha(value, options: any = {}) {
     finalregex = finalregex + '(?=.*[!@#\\$%\\^&\\*])';
   }
   // (?=.{8,})	The string must be eight characters or longer
-  if(!options.size){
+  if (!options.size) {
     options.size = 8;
   }
-  
+
   finalregex = finalregex + `(?=.{${options.size},})`;
 
   const regex = new RegExp(finalregex);
@@ -431,7 +435,6 @@ export function validate_titulo(titulo: any) {
     // const noDv = tituloClean.substr(0, tam - 2);
     // dig = create_titulo(noDv);
   } catch (e) {
-    console.error(e)
     return false;
   }
 

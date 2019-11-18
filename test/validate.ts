@@ -13,16 +13,17 @@ describe('Validate test', () => {
   });
 
   it('Celular', () => {
-    // expect(validateBr.celular('31 999876767')).to.be.true;
+    expect(validateBr.celular('31 999876767')).to.be.true;
     expect(validateBr.celular('31 99876767')).to.be.false;
-    // expect(validateBr.celular('(90) 1057-1600')).to.be.true;
-    // expect(validateBr.celular('(90) 00057-1600')).to.be.false;
+    expect(validateBr.celular('(90) 00057-1600')).to.be.false;
     expect(validateBr.celular('1234')).to.be.false;
   });
 
   it('CEP', () => {
     expect(validateBr.cep('30.380-123')).to.be.true;
+    expect(validateBr.cep('30380123')).to.be.true;
     expect(validateBr.cep('1234')).to.be.false;
+    expect(validateBr.cep('999999999')).to.be.false;
   });
 
   it('Certidão', () => {
@@ -30,7 +31,6 @@ describe('Validate test', () => {
     expect(validateBr.certidao('10453901552013100012021000012321')).to.be.true;
     expect(validateBr.certidao('10453901552013100012021000012322')).to.be.false;
   });
-
 
   it('Chassi', () => {
     // 1 - Possuir o número "0" (ZERO) como 1º dígito.
@@ -50,6 +50,11 @@ describe('Validate test', () => {
     expect(validateBr.chassi('9BWZZZ377VT004251')).to.be.true;
   });
 
+  it('CANE - TODO', () => {
+    // expect(validateBr.cnae('9973')).to.be.false;
+    // expect(validateBr.cnae('997395071-33')).to.be.true;
+  });
+
   it('CNH', () => {
     expect(validateBr.cnh('9973')).to.be.false;
     expect(validateBr.cnh('997395071-33')).to.be.true;
@@ -60,6 +65,7 @@ describe('Validate test', () => {
 
   it('CNPJ', () => {
     expect(validateBr.cnpj('56.853.433/0001-44')).to.be.true;
+    expect(validateBr.cnpj('56.853.433/0001-55')).to.be.false;
     expect(validateBr.cnpj('1234')).to.be.false;
   });
 
@@ -79,13 +85,18 @@ describe('Validate test', () => {
     expect(validateBr.cpf('1234')).to.be.false;
   });
 
-
   it('Credit Card - TODO', () => {
     // expect(validateBr.cartaocredito('56.853.433/0001-44')).to.be.true;
     // expect(validateBr.cartaocredito('1234')).to.be.false;
   });
 
-  context('Currency', () => {
+  it('Data', () => {
+    expect(validateBr.data('01/12/1980')).to.be.true;
+    expect(validateBr.data('01/13/1980')).to.be.false;
+    expect(validateBr.data('32/12/1980')).to.be.false;
+  });
+
+  context('Moeda', () => {
     it('Pass when valid', () => {
       // expect(validateBr.currency('R$ 1234')).to.be.true;
       expect(validateBr.currency('R$ 1234,10')).to.be.true;
@@ -126,25 +137,29 @@ describe('Validate test', () => {
     // expect(validateBr.ect('473124828')).to.be.false;
   });
 
-  it('Number - TODO', () => {
-    // expect(validateBr.number('473124829')).to.be.true;
-    // expect(validateBr.number('473124828')).to.be.false;
+  it('Número', () => {
+    expect(validateBr.number('473124829')).to.be.true;
+    expect(validateBr.number('473.12,48,28,1231231312')).to.be.false;
   });
 
-  // context('Porcentagem', () => {
-  //   it('Pass when valid', () => {
-  //     expect(validateBr.porcentagem('10')).to.be.true;
-  //   });
-  //   it('Error when not valid', () => {
-  //     expect(validateBr.porcentagem('1234')).to.be.false;
-  //   });
-  // });
+  context('Porcentagem', () => {
+    it('Pass when valid', () => {
+      expect(validateBr.porcentagem('10')).to.be.true;
+      expect(validateBr.porcentagem('10%')).to.be.true;
+      expect(validateBr.porcentagem('1.000%')).to.be.true;
+      expect(validateBr.porcentagem('1.000,10%')).to.be.true;
+    });
+    it('Error when not valid', () => {
+      expect(validateBr.porcentagem('1234,23,23')).to.be.false;
+    });
+  });
 
   context('PIS/PASEP', () => {
     it('Pass when valid', () => {
-      // expect(validateBr.pispasep('103.12345.12-1')).to.be.true;
+      expect(validateBr.pispasep('648.60185.98-9')).to.be.true;
     });
     it('Error when not valid', () => {
+      expect(validateBr.pispasep('648.60185.98-2')).to.be.false;
       expect(validateBr.pispasep('1234')).to.be.false;
     });
   });
@@ -155,14 +170,14 @@ describe('Validate test', () => {
     expect(validateBr.placa('1234')).to.be.false;
   });
 
-
-  it('PROCESSO', () => {
-    // expect(validateBr.processo('0123456-15.2008.100.0000')).to.be.true;
-  });
+  // it.only('PROCESSO', () => {
+  //   // expect(validateBr.processo('0123456-15.2008.100.0000')).to.be.true;
+  //   expect(validateBr.processo('000208-36.0201.2.51.50049')).to.be.true;
+  // });
 
   it('RENAVAM', () => {
     expect(validateBr.renavam('72176426415')).to.be.true;
-    expect(validateBr.renavam('72176426415')).to.be.true;
+    expect(validateBr.renavam('72176426414')).to.be.false;
   });
 
   it('RG', () => {
@@ -200,6 +215,7 @@ describe('Validate test', () => {
   });
 
   it('Time', () => {
+    expect(validateBr.time('12:34')).to.be.true;
     expect(validateBr.time('1234')).to.be.false;
   });
 

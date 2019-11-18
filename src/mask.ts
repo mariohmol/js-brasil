@@ -112,7 +112,7 @@ export const MASKS = {
       allowDecimal: true,
       integerLimit: 15,
       prefix: '',
-      suffix: '%'
+      // suffix: '%'
     })
   },
   pispasep: {
@@ -205,7 +205,7 @@ const makeGeneric = (key: string) => {
 }
 
 export const maskBr = {
-  aih: makeGeneric('aih'),  
+  aih: makeGeneric('aih'),
   celular: makeGeneric('celular'),
   cep: makeGeneric('cep'),
   certidao: makeGeneric('certidao'),
@@ -287,13 +287,13 @@ export const maskBr = {
     }
     const vals = porcentagemValue.split(',');
     const mask = MASKS.porcentagem.textMask(vals[0]);
-    const decimals = vals.length > 1 ? vals[1] : '00';
+    const decimals = vals.length > 1 ? ',' + vals[1] : '';
 
     return conformToMask(
       porcentagemValue,
       mask,
       { guide: false }
-    ).conformedValue + ',' + decimals;
+    ).conformedValue + decimals + '%';
   },
   pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),

@@ -150,10 +150,10 @@ describe('Mask test', () => {
   });
 
 
-  it.only('Porcentagemm', () => {
+  it('Porcentagem', () => {
     const porcentagem = '80';
-    expect(maskBr.porcentagem(porcentagem)).to.be.equal('80%,00');
-    // testGeneric('porcentagem');
+    expect(maskBr.porcentagem(porcentagem)).to.be.equal('80%');
+    expect(maskBr.porcentagem('65,10')).to.be.equal('65,10%');
   });
 
   it('PIS/PASEP - TODO', () => {

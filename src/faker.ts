@@ -5,7 +5,7 @@ import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
 import {
   create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
-  create_cns, create_ect, create_certidao, create_aih
+  create_cns, create_ect, create_certidao, create_aih, create_pispasep
 } from './create';
 import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
@@ -328,7 +328,13 @@ export const fakerBr = {
     }
 
   },
-  pispasep: makeGeneric(MASKS['pispasep']),
+  pispasep: () => {
+    let pis = makeGeneric(MASKS['pispasep'])();
+    const digit = create_pispasep(pis);
+    const values = pis.split('');
+    values[values.length - 1] = digit;
+    return values;
+  },
   placa: () => {
     let placa: any;
     do {

@@ -14,7 +14,7 @@ export const TELEFONE_ESTADO = {
     ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
     rr: 95, sc: 48, se: 79, sp: 11, to: 63
 }
-// 154871-843
+
 export const CEP_ESTADO = {
     ac: [[69900000, 69999999]],
     al: [[57000000, 57999999]],

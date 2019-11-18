@@ -6,14 +6,14 @@ export function rg_sp(number) {
     number = "0000000" + number;
     number = number.slice(number.length - 8);
 
-    let cispDig1 = number.slice(7); let b1 = eval(cispDig1);
-    let cispDig2 = number.slice(6, 7); let b2 = eval(cispDig2);
-    let cispDig3 = number.slice(5, 6); let b3 = eval(cispDig3);
-    let cispDig4 = number.slice(4, 5); let b4 = eval(cispDig4);
-    let cispDig5 = number.slice(3, 4); let b5 = eval(cispDig5);
-    let cispDig6 = number.slice(2, 3); let b6 = eval(cispDig6);
-    let cispDig7 = number.slice(1, 2); let b7 = eval(cispDig7);
-    let cispDig8 = number.slice(0, 1); let b8 = eval(cispDig8);
+    let b1 = parseInt(number.slice(7));
+    let b2 = parseInt(number.slice(6, 7));
+    let b3 = parseInt(number.slice(5, 6));
+    let b4 = parseInt(number.slice(4, 5));
+    let b5 = parseInt(number.slice(3, 4));
+    let b6 = parseInt(number.slice(2, 3));
+    let b7 = parseInt(number.slice(1, 2));
+    let b8 = parseInt(number.slice(0, 1));
 
     let cispDig: any = (b1 * 2 + b2 * 3 + b3 * 4 + b4 * 5 + b5 * 6 + b6 * 7 + b7 * 8 + b8 * 9) % 11;
     if (cispDig == 10) {
@@ -31,14 +31,14 @@ export function rg_rj(number) {
     number = "0000000" + number;
     number = number.slice(number.length - 8);
 
-    let cirjDig1 = number.slice(7); let b1 = eval(cirjDig1);
-    let cirjDig2 = number.slice(6, 7); let b2 = eval(cirjDig2);
-    let cirjDig3 = number.slice(5, 6); let b3 = eval(cirjDig3);
-    let cirjDig4 = number.slice(4, 5); let b4 = eval(cirjDig4);
-    let cirjDig5 = number.slice(3, 4); let b5 = eval(cirjDig5);
-    let cirjDig6 = number.slice(2, 3); let b6 = eval(cirjDig6);
-    let cirjDig7 = number.slice(1, 2); let b7 = eval(cirjDig7);
-    let cirjDig8 = number.slice(0, 1); let b8 = eval(cirjDig8);
+    let b1 = parseInt(number.slice(7));
+    let b2 = parseInt(number.slice(6, 7));
+    let b3 = parseInt(number.slice(5, 6));
+    let b4 = parseInt(number.slice(4, 5));
+    let b5 = parseInt(number.slice(3, 4));
+    let b6 = parseInt(number.slice(2, 3));
+    let b7 = parseInt(number.slice(1, 2));
+    let b8 = parseInt(number.slice(0, 1));
 
     let ci7 = b1 * 2; if (ci7 > 9) { ci7 = ci7 - 9; }
     let ci56 = b3 * 2; if (ci56 > 9) { ci56 = ci56 - 9; }

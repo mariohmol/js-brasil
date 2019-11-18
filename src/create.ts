@@ -1,4 +1,4 @@
-import { modulo11, getAllDigits, rand } from "./utils";
+import { modulo11, getAllDigits, rand, fillString } from "./utils";
 
 /**
  * 
@@ -6,10 +6,10 @@ import { modulo11, getAllDigits, rand } from "./utils";
  * @param ano - ANO do número da guia. Ex: 2018, 2019
  * @param tipo - TIPO da guia. Aih = 1, APAC = 2
  */
-export function create_aih(value){
+export function create_aih(value) {
     value = getAllDigits(value.toString());
-    if(value.length > 12){
-        value = value.toString().substr(0, value.length-1);
+    if (value.length > 12) {
+        value = value.toString().substr(0, value.length - 1);
     }
     const cod = parseInt(value);
     const calc = Math.ceil(cod - (cod / 11));
@@ -199,24 +199,24 @@ export function create_cartaocredito(number) {
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
 
-    let ccredDig1 = number.slice(17); let b1 = eval(ccredDig1);
-    let ccredDig2 = number.slice(16, 17); let b2 = eval(ccredDig2);
-    let ccredDig3 = number.slice(15, 16); let b3 = eval(ccredDig3);
-    let ccredDig4 = number.slice(14, 15); let b4 = eval(ccredDig4);
-    let ccredDig5 = number.slice(13, 14); let b5 = eval(ccredDig5);
-    let ccredDig6 = number.slice(12, 13); let b6 = eval(ccredDig6);
-    let ccredDig7 = number.slice(11, 12); let b7 = eval(ccredDig7);
-    let ccredDig8 = number.slice(10, 11); let b8 = eval(ccredDig8);
-    let ccredDig9 = number.slice(9, 10); let b9 = eval(ccredDig9);
-    let ccredDig10 = number.slice(8, 9); let b10 = eval(ccredDig10);
-    let ccredDig11 = number.slice(7, 8); let b11 = eval(ccredDig11);
-    let ccredDig12 = number.slice(6, 7); let b12 = eval(ccredDig12);
-    let ccredDig13 = number.slice(5, 6); let b13 = eval(ccredDig13);
-    let ccredDig14 = number.slice(4, 5); let b14 = eval(ccredDig14);
-    let ccredDig15 = number.slice(3, 4); let b15 = eval(ccredDig15);
-    let ccredDig16 = number.slice(2, 3); let b16 = eval(ccredDig16);
-    let ccredDig17 = number.slice(1, 2); let b17 = eval(ccredDig17);
-    let ccredDig18 = number.slice(0, 1); let b18 = eval(ccredDig18);
+    let b1 = parseInt(number.slice(17));
+    let b2 = parseInt(number.slice(16, 17));
+    let b3 = parseInt(number.slice(15, 16));
+    let b4 = parseInt(number.slice(14, 15));
+    let b5 = parseInt(number.slice(13, 14));
+    let b6 = parseInt(number.slice(12, 13));
+    let b7 = parseInt(number.slice(11, 12));
+    let b8 = parseInt(number.slice(10, 11));
+    let b9 = parseInt(number.slice(9, 10));
+    let b10 = parseInt(number.slice(8, 9));
+    let b11 = parseInt(number.slice(7, 8));
+    let b12 = parseInt(number.slice(6, 7));
+    let b13 = parseInt(number.slice(5, 6));
+    let b14 = parseInt(number.slice(4, 5));
+    let b15 = parseInt(number.slice(3, 4));
+    let b16 = parseInt(number.slice(2, 3));
+    let b17 = parseInt(number.slice(1, 2));
+    let b18 = parseInt(number.slice(0, 1));
 
 
     let ci17 = b1 * 2; if (ci17 > 9) { ci17 = ci17 - 9; }
@@ -265,6 +265,21 @@ export function create_ect(number) {
     return regEctDig;
 }
 
+export function create_pispasep(number: string) {
+
+    number = getAllDigits(number);
+    let nis = fillString(number, 11, '0');
+
+    let d;
+    let p = 2, c = 9;
+    for (d = 0; c >= 0; c-- , (p < 9) ? p++ : p = 2) {
+        d += nis[c] * p;
+    }
+
+    const digit = (((10 * d) % 11) % 10);
+    return digit;
+}
+
 export function create_renavam(renavam: string) {
     let dig1 = 0;
     while (renavam.length < 11) {
@@ -291,32 +306,32 @@ export function create_renavam(renavam: string) {
  * @param number 
  */
 export function create_processo(number) {
-
+    number = getAllDigits(number);
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
 
-    let procDig1 = number.slice(0, 1); let b1 = eval(procDig1); b1 = b1 * 10000000000;
-    let procDig2 = number.slice(1, 2); let b2 = eval(procDig2); b2 = b2 * 1000000000;
-    let procDig3 = number.slice(2, 3); let b3 = eval(procDig3); b3 = b3 * 100000000;
-    let procDig4 = number.slice(3, 4); let b4 = eval(procDig4); b4 = b4 * 10000000;
-    let procDig5 = number.slice(4, 5); let b5 = eval(procDig5); b5 = b5 * 1000000;
-    let procDig6 = number.slice(5, 6); let b6 = eval(procDig6); b6 = b6 * 100000;
-    let procDig7 = number.slice(6, 7); let b7 = eval(procDig7); b7 = b7 * 10000;
-    let procDig8 = number.slice(7, 8); let b8 = eval(procDig8); b8 = b8 * 1000;
-    let procDig9 = number.slice(8, 9); let b9 = eval(procDig9); b9 = b9 * 100;
-    let procDig10 = number.slice(9, 10); let b10 = eval(procDig10); b10 = b10 * 10;
-    let procDig11 = number.slice(10, 11); let b11 = eval(procDig11);
+    let b1 = parseInt(number.slice(0, 1)) * 10000000000;
+    let b2 = parseInt(number.slice(1, 2)) * 1000000000;
+    let b3 = parseInt(number.slice(2, 3)) * 100000000;
+    let b4 = parseInt(number.slice(3, 4)) * 10000000;
+    let b5 = parseInt(number.slice(4, 5)) * 1000000;
+    let b6 = parseInt(number.slice(5, 6)) * 100000;
+    let b7 = parseInt(number.slice(6, 7)) * 10000;
+    let b8 = parseInt(number.slice(7, 8)) * 1000;
+    let b9 = parseInt(number.slice(8, 9)) * 100;
+    let b10 = parseInt(number.slice(9, 10)) * 10;
+    let b11 = parseInt(number.slice(10, 11));
 
     const proc1a11 = b1 + b2 + b3 + b4 + b5 + b6 + b7 + b8 + b9 + b10 + b11;
     const resto1 = proc1a11 % 97;
 
-    let procDig12 = number.slice(11, 12); let b12 = eval(procDig12); b12 = b12 * 1000000;
-    let procDig13 = number.slice(12, 13); let b13 = eval(procDig13); b13 = b13 * 100000;
-    let procDig14 = number.slice(13, 14); let b14 = eval(procDig14); b14 = b14 * 10000;
-    let procDig15 = number.slice(14, 15); let b15 = eval(procDig15); b15 = b15 * 1000;
-    let procDig16 = number.slice(15, 16); let b16 = eval(procDig16); b16 = b16 * 100;
-    let procDig17 = number.slice(16, 17); let b17 = eval(procDig17); b17 = b17 * 10;
-    let procDig18 = number.slice(17); let b18 = eval(procDig18);
+    let b12 = parseInt(number.slice(11, 12)) * 1000000;
+    let b13 = parseInt(number.slice(12, 13)) * 100000;
+    let b14 = parseInt(number.slice(13, 14)) * 10000;
+    let b15 = parseInt(number.slice(14, 15)) * 1000;
+    let b16 = parseInt(number.slice(15, 16)) * 100;
+    let b17 = parseInt(number.slice(16, 17)) * 10;
+    let b18 = parseInt(number.slice(17));
 
     const proc12a18 = b12 + b13 + b14 + b15 + b16 + b17 + b18;
     const resto2 = (resto1 * 10000000 * 100 + proc12a18 * 100) % 97;
@@ -330,7 +345,8 @@ export function create_processo(number) {
     let procJudCompl = b1 / 10000 + b2 / 10000 + b3 / 10000 + b4 / 10000 + b5 / 10000 + b6 / 10000 + b7 / 10000 + "-" + procJudDV + "." + b8 / 1000 + b9 / 100 + b10 / 10 + b11 + "." + b12 / 1000000 + "." + b13 / 100000 + b14 / 10000 + "." + b15 / 1000 + b16 / 100 + b17 / 10 + b18;
 
     procJudCompl = "000000" + procJudCompl;
-    return procJudCompl.slice(procJudCompl.length - 25);
+    const result =  procJudCompl.slice(procJudCompl.length - 25);
+    return result;
 }
 
 
@@ -378,8 +394,6 @@ export function create_titulo_atual(titulo: string) {
     }
     return dig1.toString() + dig2.toString();
 }
-
-
 
 export function create_titulo(titNum) {
     titNum = getAllDigits(titNum);
