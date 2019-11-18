@@ -357,6 +357,12 @@ export function validate_rg(rg: string) {
   return true;
 }
 
+
+function validate_site(value) {
+  var re = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/g;
+  return re.test(String(value).toLowerCase());
+}
+
 export function validate_sped(sped: string) {
 
 }
@@ -440,6 +446,7 @@ export const validateBr = {
   processo: validate_processo,
   renavam: validate_renavam,
   rg: validate_rg,
+  site: validate_site,
   sped: validate_sped,
   telefone: validate_telefone,
   time: validate_time,

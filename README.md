@@ -154,6 +154,7 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * Currency - http://geradorbrasileiro.com/others.html
 * Date - (TODO #21)
 * ECT - http://geradorbrasileiro.com/ect.html
+* EMAIL - http://geradorbrasileiro.com/email.html
 * Empresa - http://geradorbrasileiro.com/empresa.html **(TODO #20)**
 * Endereço - http://geradorbrasileiro.com/endereco.html
 * Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
@@ -163,7 +164,7 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * NIT - **(TODO #14)**
 * Number - http://geradorbrasileiro.com/others.html
 * Percentage - http://geradorbrasileiro.com/others.html
-* Pessoa - http://geradorbrasileiro.com/pessoa.html **(TODO #19)**
+* Pessoa - http://geradorbrasileiro.com/pessoa.html
 * PIS/PASEP - http://geradorbrasileiro.com/pis.html
 * Placa de carro - http://geradorbrasileiro.com/placa.html
 * Processo da justiça - http://geradorbrasileiro.com/processo.html
@@ -171,6 +172,7 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * RG  - http://geradorbrasileiro.com/rg.html
 * * SP/RJ - OK
 * * Outros estado (TODO)
+* Site - http://geradorbrasileiro.com/site.html
 * SPED - http://geradorbrasileiro.com/sped.html **(TODO: #24)**
 * Telefone  - http://geradorbrasileiro.com/telefone.html
 * Time (data/hora) - http://geradorbrasileiro.com/others.html
@@ -180,7 +182,7 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 
 # Angular 
 
-Utilize em angular 2 a 7 com: 
+Utilize em angular 2 a 8 com: 
 
 * ng-brazil - angular support for brazil apps -  https://github.com/mariohmol/ng-brazil
 
