@@ -64,6 +64,7 @@ export const LOCALIZACAO_CIDADES = [
   ['São Gonçalo', 'Rio de Janeiro'],
   ['Maceió', 'Alagoas'],
   ['Duque de Caxias', 'Rio de Janeiro'],
+  ['Cuiabá', 'Mato Grosso'],
   ['Campo Grande', 'Mato Grosso do Sul'],
   ['Natal', 'Rio Grande do Norte'],
   ['Teresina', 'Piauí'],

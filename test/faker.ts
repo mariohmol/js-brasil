@@ -106,14 +106,16 @@ describe('Faker test', () => {
     expect(validateBr.email(email)).to.be.true;
   });
 
-  it('Empresa', () => {
+  it.only('Empresa', () => {
     const empresa = fakerBr.empresa();
     expect(empresa.nome).to.exist;
+    console.log(empresa)
     expect(validateBr.cnpj(empresa.cnpj)).to.be.true;
     expect(validateBr.telefone(empresa.telefone)).to.be.true;
     expect(validateBr.telefone(empresa.celular)).to.be.true;
     expect(validateBr.email(empresa.email)).to.be.true;
-    // expect(validateBr.inscricaoestadual(empresa.inscricaoestadual)).to.be.true;
+    expect(validateBr.data(empresa.dataAbertura)).to.be.true;
+    expect(validateBr.inscricaoestadual(empresa.inscricaoestadual, empresa.endereco.estadoSigla)).to.be.true;
     expect(empresa.endereco).to.exist;
     expect(empresa.inscricaoestadual).to.exist;
   });

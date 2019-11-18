@@ -9,6 +9,11 @@ exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATIS
     'SANTANA', 'SANTOS', 'SILVA', 'SOARES', 'SOUZA', 'TEIXEIRA', 'VIEIRA'];
 exports.EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
 exports.EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
+exports.TELEFONE_ESTADO = {
+    ac: 68, al: 82, ap: 96, am: 92, ba: 71, ce: 88, df: 61, es: 27, go: 62,
+    ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
+    rr: 95, sc: 48, se: 79, sp: 11, to: 63
+};
 exports.TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
 function getAstro(data) {
     var month, day;
@@ -1333,7 +1338,11 @@ exports.fakerBr = {
         var result = "" + cod + digito;
         return result;
     },
-    celular: makeGeneric(mask_1.MASKS['celular']),
+    celular: function (options) {
+        if (options === void 0) { options = {}; }
+        var faker = _this.fakerBr;
+        return faker.telefone(__assign({}, options, { celular: true }));
+    },
     cep: makeGeneric(mask_1.MASKS['cep']),
     cepState: function (state) {
         return randexp_1.randexp(validate_1.CEPRange[state]);
@@ -1438,19 +1447,27 @@ exports.fakerBr = {
         var site = faker.site(__assign({}, options, { url: '' }));
         return nome + '@' + site;
     },
-    empresa: function () {
+    empresa: function (options) {
+        if (options === void 0) { options = {}; }
         var faker = _this.fakerBr;
         var cnpj = faker.cnpj();
-        var telefone = faker.telefone();
-        var celular = faker.celular();
-        var endereco = faker.endereco();
+        if (!options.estado) {
+            options.estado = utils_1.randomEstadoSigla();
+        }
+        var endereco = faker.endereco(options);
+        var telefone = faker.telefone({
+            estado: endereco.estadoSigla
+        });
+        var celular = faker.celular({
+            estado: endereco.estadoSigla
+        });
         var inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
         var dataAbertura = exports.fakerBr.data({
             idadeMin: 4,
             idadeMax: 20
         });
-        var fundador1 = faker.pessoa();
-        var fundador2 = faker.pessoa();
+        var fundador1 = faker.pessoa(options);
+        var fundador2 = faker.pessoa(options);
         var fundadores = [
             fundador1,
             fundador2
@@ -1468,12 +1485,18 @@ exports.fakerBr = {
             endereco: endereco, dataAbertura: dataAbertura
         };
     },
-    endereco: function () {
+    endereco: function (options) {
+        if (options === void 0) { options = {}; }
         var fakerBr = _this.fakerBr;
         var cep = fakerBr.cep();
-        var cidade = utils_1.randArray(name_1.LOCALIZACAO_CIDADES);
+        if (!options.estado) {
+            options.estado = utils_1.randomEstadoSigla();
+        }
+        var estadoFound = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.uf.toLowerCase() === options.estado; });
+        var cidades = name_1.LOCALIZACAO_CIDADES.filter(function (c) { return c[1] === estadoFound.nome; });
+        var cidade = utils_1.randArray(cidades);
         var estado = cidade[1].toLowerCase();
-        estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado; });
+        estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado.toLowerCase(); });
         return {
             cep: cep,
             logradouro: utils_1.randArray(name_1.LOCALIZACAO_RUAS),
@@ -1511,12 +1534,16 @@ exports.fakerBr = {
         return parseFloat(x.toFixed(options.decimals));
     },
     percentage: makeGeneric(mask_1.MASKS['percentage']),
-    pessoa: function () {
+    pessoa: function (options) {
+        if (options === void 0) { options = {}; }
         var faker = _this.fakerBr;
+        if (!options.estado) {
+            options.estado = utils_1.randomEstadoSigla();
+        }
         var cpf = faker.cpf();
-        var rg = faker.rg();
-        var telefone = faker.telefone();
-        var celular = faker.celular();
+        var rg = faker.rg(options);
+        var telefone = faker.telefone(options);
+        var celular = faker.celular(options);
         var dataNascimento = exports.fakerBr.data({
             idadeMin: 18,
             idadeMax: 40
@@ -1524,7 +1551,7 @@ exports.fakerBr = {
         var site = faker.site();
         var email = faker.email();
         var senha = faker.senha();
-        var endereco = faker.endereco();
+        var endereco = faker.endereco(options);
         var altura = '1.' + utils_1.randomNumber(35, 90);
         var peso = utils_1.randomNumber(50, 120);
         var signo = pessoas_1.getAstro(dataNascimento);
@@ -1562,12 +1589,15 @@ exports.fakerBr = {
         var dv = create_1.create_renavam(renavam);
         return renavam.substr(0, renavam.length - 1) + dv;
     },
-    rg: function () {
-        var random = utils_1.randomEstadoSigla();
-        random = random.split('');
+    rg: function (options) {
+        if (options === void 0) { options = {}; }
+        if (!options.estado) {
+            options.estado = utils_1.randomEstadoSigla();
+        }
+        var estado = options.estado.split('');
         var makeRg = makeGeneric(mask_1.MASKS['rg'], {
-            0: function () { return random[0]; },
-            1: function () { return random[1]; }
+            0: function () { return estado[0]; },
+            1: function () { return estado[1]; }
         });
         return makeRg();
     },
@@ -1612,7 +1642,23 @@ exports.fakerBr = {
         return url + nome + dominio;
     },
     sped: makeGeneric(mask_1.MASKS['sped']),
-    telefone: makeGeneric(mask_1.MASKS['telefone']),
+    telefone: function (options) {
+        if (options === void 0) { options = {}; }
+        var telefone = makeGeneric(mask_1.MASKS['telefone'])();
+        if (options.estado) {
+            var telefones = telefone.toString().split('');
+            var ddd = pessoas_1.TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
+            telefones[1] = ddd[0];
+            telefones[2] = ddd[1];
+            telefone = telefones.join('');
+        }
+        if (options.celular) {
+            var telefones = telefone.toString().split('');
+            telefones[5] = '9';
+            telefone = telefones.join('');
+        }
+        return telefone;
+    },
     time: makeGeneric(mask_1.MASKS['time']),
     titulo: function () {
         var titulo;
@@ -3001,6 +3047,7 @@ exports.LOCALIZACAO_CIDADES = [
     ['São Gonçalo', 'Rio de Janeiro'],
     ['Maceió', 'Alagoas'],
     ['Duque de Caxias', 'Rio de Janeiro'],
+    ['Cuiabá', 'Mato Grosso'],
     ['Campo Grande', 'Mato Grosso do Sul'],
     ['Natal', 'Rio Grande do Norte'],
     ['Teresina', 'Piauí'],

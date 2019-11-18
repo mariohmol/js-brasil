@@ -9,6 +9,12 @@ export const SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', '
 export const EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
 export const EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
 
+export const TELEFONE_ESTADO = {
+    ac: 68, al: 82, ap: 96, am: 92, ba: 71, ce: 88, df: 61, es: 27, go: 62,
+    ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
+    rr: 95, sc: 48, se: 79, sp: 11, to: 63
+}
+
 export const TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
 
 export function getAstro(data) {

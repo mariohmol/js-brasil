@@ -10,7 +10,7 @@ import {
 import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
-import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro } from '../addons/pessoas';
+import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro, TELEFONE_ESTADO } from '../addons/pessoas';
 import cnaes from '../addons/cnaes';
 
 const makeGeneric = (val: any, options = null) => {
@@ -65,7 +65,10 @@ export const fakerBr = {
     const result = `${cod}${digito}`;
     return result;
   },
-  celular: makeGeneric(MASKS['celular']),
+  celular: (options: any = {}) => {
+    const faker = this.fakerBr;
+    return faker.telefone({ ...options, celular: true });
+  },
   cep: makeGeneric(MASKS['cep']),
   cepState: (state: string | number) => {
     return randexp(CEPRange[state]);
@@ -134,7 +137,6 @@ export const fakerBr = {
   },
   cpfcnpj: makeGeneric(MASKS['cpfcnpj']),
   cartaocredito: makeGeneric(MASKS['cartaocredito']),
-
   currency: () => {
     const x = Math.random() * 10000;
     return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -171,26 +173,32 @@ export const fakerBr = {
     if (options.nome) {
       nome = options.nome;
     }
-
     nome = slugify(nome);
-
     const site = faker.site({ ...options, url: '' });
-
     return nome + '@' + site;
   },
-  empresa: () => {
+  empresa: (options: any = {}) => {
     const faker = this.fakerBr;
     const cnpj = faker.cnpj();
-    const telefone = faker.telefone();
-    const celular = faker.celular();
-    const endereco = faker.endereco();
+    if(!options.estado){
+      options.estado = randomEstadoSigla();
+    }
+    const endereco = faker.endereco(options);
+
+    const telefone = faker.telefone({
+      estado: endereco.estadoSigla
+    });
+    const celular = faker.celular({
+      estado: endereco.estadoSigla
+    });
+
     const inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
     const dataAbertura = fakerBr.data({
       idadeMin: 4,
       idadeMax: 20
     });
-    const fundador1 = faker.pessoa();
-    const fundador2 = faker.pessoa();
+    const fundador1 = faker.pessoa(options);
+    const fundador2 = faker.pessoa(options);
     const fundadores = [
       fundador1,
       fundador2
@@ -209,12 +217,18 @@ export const fakerBr = {
       endereco, dataAbertura
     }
   },
-  endereco: () => {
+  endereco: (options: any = {}) => {
     const fakerBr = this.fakerBr;
     const cep = fakerBr.cep();
-    const cidade = randArray(LOCALIZACAO_CIDADES);
+
+    if(!options.estado){
+      options.estado = randomEstadoSigla();
+    }
+    const estadoFound = LOCALIZACAO_ESTADOS.find(e=>e.uf.toLowerCase() === options.estado);
+    const cidades = LOCALIZACAO_CIDADES.filter(c=>c[1] === estadoFound.nome);
+    const cidade = randArray(cidades);
     let estado = cidade[1].toLowerCase();
-    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado)
+    estado = LOCALIZACAO_ESTADOS.find(e => e.nome.toLowerCase() === estado.toLowerCase())
     return {
       cep,
       logradouro: randArray(LOCALIZACAO_RUAS),
@@ -253,12 +267,15 @@ export const fakerBr = {
     return parseFloat(x.toFixed(options.decimals));
   },
   percentage: makeGeneric(MASKS['percentage']),
-  pessoa: () => {
+  pessoa: (options: any = {}) => {
     const faker = this.fakerBr;
+    if(!options.estado){
+      options.estado = randomEstadoSigla();
+    }
     const cpf = faker.cpf();
-    const rg = faker.rg();
-    const telefone = faker.telefone();
-    const celular = faker.celular();
+    const rg = faker.rg(options);
+    const telefone = faker.telefone(options);
+    const celular = faker.celular(options);
 
     const dataNascimento = fakerBr.data({
       idadeMin: 18,
@@ -269,7 +286,7 @@ export const fakerBr = {
     const senha = faker.senha();
 
 
-    const endereco = faker.endereco();
+    const endereco = faker.endereco(options);
 
     const altura = '1.' + randomNumber(35, 90);
     const peso = randomNumber(50, 120);
@@ -310,12 +327,14 @@ export const fakerBr = {
     const dv = create_renavam(renavam);
     return renavam.substr(0, renavam.length - 1) + dv;
   },
-  rg: () => {
-    let random: any = randomEstadoSigla();
-    random = random.split('');
+  rg: (options: any = {}) => {
+    if(!options.estado){
+      options.estado = randomEstadoSigla();
+    }
+    const estado = options.estado.split('');
     const makeRg = makeGeneric(MASKS['rg'], {
-      0: () => random[0],
-      1: () => random[1]
+      0: () => estado[0],
+      1: () => estado[1]
     });
     return makeRg();
   },
@@ -359,7 +378,22 @@ export const fakerBr = {
 
   },
   sped: makeGeneric(MASKS['sped']),
-  telefone: makeGeneric(MASKS['telefone']),
+  telefone: (options: any = {}) => {
+    let telefone: any = makeGeneric(MASKS['telefone'])();
+    if (options.estado) {
+      const telefones = telefone.toString().split('');
+      const ddd = TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
+      telefones[1] = ddd[0];
+      telefones[2] = ddd[1];
+      telefone = telefones.join('');
+    }
+    if (options.celular) {
+      const telefones = telefone.toString().split('');
+      telefones[5] = '9';
+      telefone = telefones.join('');
+    }
+    return telefone;
+  },
   time: makeGeneric(MASKS['time']),
   titulo: () => {
     let titulo;

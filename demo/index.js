@@ -31,11 +31,23 @@ function generalAction(dataId, type) {
   if(generatedObjectAction){
     generatedObjectAction.onclick = () => {
       console.log(`generatedAction.onclick`)
-      const generatedInput = document.querySelector('#generated' + type);
+      // const generatedInput = document.querySelector('#generated' + type);
       const data = jsbrasil.fakerBr[dataId]();
       console.log(data);
       for(key in data){
-        document.querySelector('#' + key).value = data[key];
+        if(data[key] instanceof Object && !Array.isArray(data[key])){
+          for(kk in data[key]){
+            if(document.querySelector('#' + kk)){
+              document.querySelector('#' + kk).value = data[key][kk];
+            }
+            
+          }
+        }else if (!(data[key] instanceof Object)){
+          if(document.querySelector('#' + key)){
+            document.querySelector('#' + key).value = data[key];
+          }
+        }
+        
       }
     }
   }
