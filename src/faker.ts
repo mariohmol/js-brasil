@@ -10,7 +10,7 @@ import {
 import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
-import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro, TELEFONE_ESTADO } from '../addons/pessoas';
+import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro, TELEFONE_ESTADO, CEP_ESTADO } from '../addons/pessoas';
 import cnaes from '../addons/cnaes';
 
 const makeGeneric = (val: any, options = null) => {
@@ -69,7 +69,22 @@ export const fakerBr = {
     const faker = this.fakerBr;
     return faker.telefone({ ...options, celular: true });
   },
-  cep: makeGeneric(MASKS['cep']),
+  cep: (options: any = {}) => {
+    if(!options.estado){
+      options.estado = randomEstadoSigla();
+    }
+
+    const range = CEP_ESTADO[options.estado];
+    let cep = randomNumber(range[0][0], range[0][1]);
+    if(cep<10000000){
+      cep = '0' + cep.toString();
+    }else{
+      cep = cep.toString();
+    }
+    
+    const mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length-3, cep.length);
+    return mask;
+  },
   cepState: (state: string | number) => {
     return randexp(CEPRange[state]);
   },

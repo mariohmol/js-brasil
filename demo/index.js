@@ -21,7 +21,6 @@ function generalAction(dataId, type) {
 
   if (generatedAction) {
     generatedAction.onclick = () => {
-      console.log(`generatedAction.onclick`)
       const generatedInput = document.querySelector('#generated' + type);
       generatedInput.value = jsbrasil.fakerBr[dataId]();
     }
@@ -30,10 +29,8 @@ function generalAction(dataId, type) {
 
   if(generatedObjectAction){
     generatedObjectAction.onclick = () => {
-      console.log(`generatedAction.onclick`)
       // const generatedInput = document.querySelector('#generated' + type);
       const data = jsbrasil.fakerBr[dataId]();
-      console.log(data);
       for(key in data){
         if(data[key] instanceof Object && !Array.isArray(data[key])){
           for(kk in data[key]){
@@ -56,7 +53,6 @@ function generalAction(dataId, type) {
 
   if (validatedAction) {
     validatedAction.onclick = () => {
-      console.log(`validatedAction.onclick`)
       const validatedInput = document.querySelector('#validated' + type);
       const masked = jsbrasil.maskBr[dataId] ? jsbrasil.maskBr[dataId](validatedInput.value) : validatedInput.value;
       const validated = jsbrasil.validateBr[dataId](validatedInput.value);
