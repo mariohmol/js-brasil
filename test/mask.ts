@@ -143,10 +143,10 @@ describe('Mask test', () => {
     // testGeneric('iptu');
   });
 
-  it('number - TODO', () => {
-    const number = '12312345121';
-    // expect(maskBr.number(number)).to.be.equal('123.12345.12-1');
-    // testGeneric('number');
+  it('Número', () => {
+    const number = '1234,10';
+    expect(maskBr.number(number)).to.be.equal('1.234,10');
+    expect(maskBr.number(1234.10)).to.be.equal('1.234,10');
   });
 
 
@@ -156,10 +156,9 @@ describe('Mask test', () => {
     expect(maskBr.porcentagem('65,10')).to.be.equal('65,10%');
   });
 
-  it('PIS/PASEP - TODO', () => {
+  it('PIS/PASEP', () => {
     const pispasep = '12312345121';
-    // expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
-    // testGeneric('pispasep');
+    expect(maskBr.pispasep(pispasep)).to.be.equal('123.12345.12-1');
   });
 
   it('PLACA', () => {
@@ -169,11 +168,10 @@ describe('Mask test', () => {
     expect(maskBr.placa('123')).to.exist;
   });
 
-  it('Processos - TODO', () => {
+  it('Processos', () => {
     const processo = '5613309901450BBP4943';
-    // expect(maskBr.processo(processo)).to.be.equal('5613309-90.1450.BBP.4943');
-    // testGeneric('processo');
-    // expect(maskBr.processo('123')).to.exist;
+    expect(maskBr.processo(processo)).to.be.equal('5613309-90.1450.BBP.4943');
+    expect(maskBr.processo('123')).to.exist;
   });
 
   it('Renavam', () => {
@@ -194,30 +192,32 @@ describe('Mask test', () => {
     expect(maskBr.sped('123')).to.exist;
   });
 
-  context('Telefone', ()=>{
+  context('Telefone', () => {
     it('Fixo', () => {
       const telefone = '3135003500';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');
       expect(maskBr.telefone('123')).to.exist;
     });
-  
-    it(' 9 Digito', () => {
+
+    it('9 Digito', () => {
       const telefone = '31988886565';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
     });
   });
 
-  // it('Time', () => {
-  //   const time = fakerBr.time();
-  //   expect(validateBr.time(time)).to.be.true;
-  // });
+  it.only('Time', () => {
+    const time = fakerBr.time();
+    expect(validateBr.time(time)).to.be.true;
+    expect(validateBr.time('23:61')).to.be.false;
+    expect(validateBr.time('33:58', { diario: true })).to.be.false;
+  });
+
   it('Titulo', () => {
     const titulo = fakerBr.titulo();
     expect(validateBr.titulo(titulo)).to.be.true;
     testGeneric('titulo');
     expect(maskBr.titulo('123')).to.exist;
   });
-
 
   it('Others', () => {
     // const currency  = fakerBr.currency();

@@ -169,7 +169,7 @@ export const MASKS = {
   },
   time: {
     text: '00:00',
-    textMask: [/\d/, /\d/, ':', /\d/, /\d/]
+    textMask: [/\d/, /\d/, ':', /[0-5]/, /\d/]
   },
   titulo: {
     text: '0000.0000.0000',
@@ -259,10 +259,11 @@ export const maskBr = {
     ).conformedValue;
   },
   iptu: makeGeneric('iptu'),
-  number: (numberValue: string) => {
+  number: (numberValue: any) => {
     if (!numberValue) {
       return '';
     }
+    
     if (!numberValue.split) {
       numberValue += '';
       numberValue = numberValue.replace('.', ',');
@@ -270,7 +271,7 @@ export const maskBr = {
 
     const vals = numberValue.split(',');
     const mask = MASKS.number.textMask(vals[0]);
-    let decimals = vals.length > 1 ? vals[1].toString() : '00';
+    let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString() ) : '00';
     if (decimals.length > 2) {
       decimals = decimals.substring(0, 2);
     }

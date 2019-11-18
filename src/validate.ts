@@ -413,10 +413,16 @@ export function validate_telefone(tel: any) {
   return true;
 }
 
-export function validate_time(time: string | number) {
-  const expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+export function validate_time(time: string | number, options: any = {}) {
   const value = time.toString();
-  return expression.test(value);
+  if (options.diario) {
+    const expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+    return expression.test(value);
+  } else {
+    const expression = /^([0-9]?[0-9]):([0-5][0-9])(:[0-5][0-9])?$/;
+    return expression.test(value);
+  }
+
 }
 
 export function validate_titulo(titulo: any) {
