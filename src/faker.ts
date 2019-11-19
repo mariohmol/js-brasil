@@ -154,7 +154,13 @@ export const fakerBr = {
   cartaocredito: makeGeneric(MASKS['cartaocredito']),
   currency: () => {
     const x = Math.random() * 10000;
-    return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    let final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (final[final.length - 3] === '.') {
+      final = final.replace(/\./g, '#');
+      final = final.replace(/\,/g, '.');
+      final = final.replace(/\#/g, ',');
+    }
+    return final;
   },
   currencyNumber: () => {
     const x = Math.random() * 10000;

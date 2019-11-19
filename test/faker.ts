@@ -71,15 +71,15 @@ describe('Faker test', () => {
     expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
   });
 
-  it('Currency', () => {
-    // expect(fakerBr.currency()).to.exist;
+  it('Moeda', () => {
+    expect(fakerBr.currency()).to.exist;
     // const currency = fakerBr.currency();
     // expect(validateBr.currency(currency)).to.be.true;
     const currencyNumber = fakerBr.currencyNumber();
     expect(validateBr.currency(currencyNumber)).to.be.true;
   });
 
-  it('data', () => {
+  it('DATA', () => {
     let data = fakerBr.data();
     expect(validateBr.data(data)).to.be.true;
     data = fakerBr.data({
@@ -132,7 +132,7 @@ describe('Faker test', () => {
   });
 
 
-  it('inscricaoestadual - TODO', () => {
+  it('Inscrição Estadual - TODO', () => {
     // expect(fakerBr.inscricaoestadual()).to.exist;
     // const inscricaoestadual = fakerBr.inscricaoestadual();
     // expect(validateBr.inscricaoestadual(inscricaoestadual)).to.be.true;

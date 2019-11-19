@@ -205,7 +205,7 @@ describe('Mask test', () => {
     });
   });
 
-  it.only('Time', () => {
+  it('Time', () => {
     const time = fakerBr.time();
     expect(validateBr.time(time)).to.be.true;
     expect(validateBr.time('23:61')).to.be.false;
