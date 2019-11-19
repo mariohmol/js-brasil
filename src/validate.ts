@@ -234,7 +234,7 @@ export function validate_currency(currency: string | number) {
 }
 
 
-function validate_date(value) {
+function validate_data(value) {
   const values = value.split('/');
   if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
     return false;
@@ -472,7 +472,7 @@ export const validateBr = {
   cpf: validate_cpf,
   cpfcnpj: validate_cpfcnpj,
   currency: validate_currency,
-  data: validate_date,
+  data: validate_data,
   ect: validate_ect,
   email: validate_email,
   endereco: validate_endereco,

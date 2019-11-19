@@ -14,6 +14,35 @@ exports.TELEFONE_ESTADO = {
     ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
     rr: 95, sc: 48, se: 79, sp: 11, to: 63
 };
+exports.CEP_ESTADO = {
+    ac: [[69900000, 69999999]],
+    al: [[57000000, 57999999]],
+    am: [[69000000, 69299999], [69400000, 69899999]],
+    ap: [[68900000, 68999999]],
+    ba: [[40000000, 48999999]],
+    ce: [[60000000, 63999999]],
+    df: [[70000000, 72799999], [73000000, 73699999]],
+    es: [[29000000, 29999999]],
+    go: [[72800000, 72999999], [73700000, 76799999]],
+    ma: [[65000000, 65999999]],
+    mg: [[30000000, 39999999]],
+    ms: [[79000000, 79999999]],
+    mt: [[78000000, 78899999]],
+    pa: [[66000000, 68899999]],
+    pb: [[58000000, 58999999]],
+    pe: [[50000000, 56999999]],
+    pi: [[64000000, 64999999]],
+    pr: [[80000000, 87999999]],
+    rj: [[20000000, 28999999]],
+    rn: [[59000000, 59999999]],
+    ro: [[76800000, 76999999]],
+    rr: [[69300000, 69399999]],
+    rs: [[90000000, 99999999]],
+    sc: [[88000000, 89999999]],
+    se: [[49000000, 49999999]],
+    sp: [[1000000, 19999999]],
+    to: [[77000000, 77999999]]
+};
 exports.TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
 function getAstro(data) {
     var month, day;
@@ -908,42 +937,24 @@ function create_cartaocredito(number) {
     // if (number.length > 18) { alert("Erro. A rotina não abrange cartões\ncom mais de 18 dígitos (fora o DV).\nIntroduza 18 dígitos, no máximo."); }
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
-    var ccredDig1 = number.slice(17);
-    var b1 = eval(ccredDig1);
-    var ccredDig2 = number.slice(16, 17);
-    var b2 = eval(ccredDig2);
-    var ccredDig3 = number.slice(15, 16);
-    var b3 = eval(ccredDig3);
-    var ccredDig4 = number.slice(14, 15);
-    var b4 = eval(ccredDig4);
-    var ccredDig5 = number.slice(13, 14);
-    var b5 = eval(ccredDig5);
-    var ccredDig6 = number.slice(12, 13);
-    var b6 = eval(ccredDig6);
-    var ccredDig7 = number.slice(11, 12);
-    var b7 = eval(ccredDig7);
-    var ccredDig8 = number.slice(10, 11);
-    var b8 = eval(ccredDig8);
-    var ccredDig9 = number.slice(9, 10);
-    var b9 = eval(ccredDig9);
-    var ccredDig10 = number.slice(8, 9);
-    var b10 = eval(ccredDig10);
-    var ccredDig11 = number.slice(7, 8);
-    var b11 = eval(ccredDig11);
-    var ccredDig12 = number.slice(6, 7);
-    var b12 = eval(ccredDig12);
-    var ccredDig13 = number.slice(5, 6);
-    var b13 = eval(ccredDig13);
-    var ccredDig14 = number.slice(4, 5);
-    var b14 = eval(ccredDig14);
-    var ccredDig15 = number.slice(3, 4);
-    var b15 = eval(ccredDig15);
-    var ccredDig16 = number.slice(2, 3);
-    var b16 = eval(ccredDig16);
-    var ccredDig17 = number.slice(1, 2);
-    var b17 = eval(ccredDig17);
-    var ccredDig18 = number.slice(0, 1);
-    var b18 = eval(ccredDig18);
+    var b1 = parseInt(number.slice(17));
+    var b2 = parseInt(number.slice(16, 17));
+    var b3 = parseInt(number.slice(15, 16));
+    var b4 = parseInt(number.slice(14, 15));
+    var b5 = parseInt(number.slice(13, 14));
+    var b6 = parseInt(number.slice(12, 13));
+    var b7 = parseInt(number.slice(11, 12));
+    var b8 = parseInt(number.slice(10, 11));
+    var b9 = parseInt(number.slice(9, 10));
+    var b10 = parseInt(number.slice(8, 9));
+    var b11 = parseInt(number.slice(7, 8));
+    var b12 = parseInt(number.slice(6, 7));
+    var b13 = parseInt(number.slice(5, 6));
+    var b14 = parseInt(number.slice(4, 5));
+    var b15 = parseInt(number.slice(3, 4));
+    var b16 = parseInt(number.slice(2, 3));
+    var b17 = parseInt(number.slice(1, 2));
+    var b18 = parseInt(number.slice(0, 1));
     var ci17 = b1 * 2;
     if (ci17 > 9) {
         ci17 = ci17 - 9;
@@ -1020,6 +1031,18 @@ function create_ect(number) {
     return regEctDig;
 }
 exports.create_ect = create_ect;
+function create_pispasep(number) {
+    number = utils_1.getAllDigits(number);
+    var nis = utils_1.fillString(number, 11, '0');
+    var d;
+    var p = 2, c = 9;
+    for (d = 0; c >= 0; c--, (p < 9) ? p++ : p = 2) {
+        d += nis[c] * p;
+    }
+    var digit = (((10 * d) % 11) % 10);
+    return digit;
+}
+exports.create_pispasep = create_pispasep;
 function create_renavam(renavam) {
     var dig1 = 0;
     while (renavam.length < 11) {
@@ -1044,62 +1067,29 @@ exports.create_renavam = create_renavam;
  * @param number
  */
 function create_processo(number) {
+    number = utils_1.getAllDigits(number);
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
-    var procDig1 = number.slice(0, 1);
-    var b1 = eval(procDig1);
-    b1 = b1 * 10000000000;
-    var procDig2 = number.slice(1, 2);
-    var b2 = eval(procDig2);
-    b2 = b2 * 1000000000;
-    var procDig3 = number.slice(2, 3);
-    var b3 = eval(procDig3);
-    b3 = b3 * 100000000;
-    var procDig4 = number.slice(3, 4);
-    var b4 = eval(procDig4);
-    b4 = b4 * 10000000;
-    var procDig5 = number.slice(4, 5);
-    var b5 = eval(procDig5);
-    b5 = b5 * 1000000;
-    var procDig6 = number.slice(5, 6);
-    var b6 = eval(procDig6);
-    b6 = b6 * 100000;
-    var procDig7 = number.slice(6, 7);
-    var b7 = eval(procDig7);
-    b7 = b7 * 10000;
-    var procDig8 = number.slice(7, 8);
-    var b8 = eval(procDig8);
-    b8 = b8 * 1000;
-    var procDig9 = number.slice(8, 9);
-    var b9 = eval(procDig9);
-    b9 = b9 * 100;
-    var procDig10 = number.slice(9, 10);
-    var b10 = eval(procDig10);
-    b10 = b10 * 10;
-    var procDig11 = number.slice(10, 11);
-    var b11 = eval(procDig11);
+    var b1 = parseInt(number.slice(0, 1)) * 10000000000;
+    var b2 = parseInt(number.slice(1, 2)) * 1000000000;
+    var b3 = parseInt(number.slice(2, 3)) * 100000000;
+    var b4 = parseInt(number.slice(3, 4)) * 10000000;
+    var b5 = parseInt(number.slice(4, 5)) * 1000000;
+    var b6 = parseInt(number.slice(5, 6)) * 100000;
+    var b7 = parseInt(number.slice(6, 7)) * 10000;
+    var b8 = parseInt(number.slice(7, 8)) * 1000;
+    var b9 = parseInt(number.slice(8, 9)) * 100;
+    var b10 = parseInt(number.slice(9, 10)) * 10;
+    var b11 = parseInt(number.slice(10, 11));
     var proc1a11 = b1 + b2 + b3 + b4 + b5 + b6 + b7 + b8 + b9 + b10 + b11;
     var resto1 = proc1a11 % 97;
-    var procDig12 = number.slice(11, 12);
-    var b12 = eval(procDig12);
-    b12 = b12 * 1000000;
-    var procDig13 = number.slice(12, 13);
-    var b13 = eval(procDig13);
-    b13 = b13 * 100000;
-    var procDig14 = number.slice(13, 14);
-    var b14 = eval(procDig14);
-    b14 = b14 * 10000;
-    var procDig15 = number.slice(14, 15);
-    var b15 = eval(procDig15);
-    b15 = b15 * 1000;
-    var procDig16 = number.slice(15, 16);
-    var b16 = eval(procDig16);
-    b16 = b16 * 100;
-    var procDig17 = number.slice(16, 17);
-    var b17 = eval(procDig17);
-    b17 = b17 * 10;
-    var procDig18 = number.slice(17);
-    var b18 = eval(procDig18);
+    var b12 = parseInt(number.slice(11, 12)) * 1000000;
+    var b13 = parseInt(number.slice(12, 13)) * 100000;
+    var b14 = parseInt(number.slice(13, 14)) * 10000;
+    var b15 = parseInt(number.slice(14, 15)) * 1000;
+    var b16 = parseInt(number.slice(15, 16)) * 100;
+    var b17 = parseInt(number.slice(16, 17)) * 10;
+    var b18 = parseInt(number.slice(17));
     var proc12a18 = b12 + b13 + b14 + b15 + b16 + b17 + b18;
     var resto2 = (resto1 * 10000000 * 100 + proc12a18 * 100) % 97;
     var procJudDV = 98 - resto2;
@@ -1108,7 +1098,8 @@ function create_processo(number) {
     }
     var procJudCompl = b1 / 10000 + b2 / 10000 + b3 / 10000 + b4 / 10000 + b5 / 10000 + b6 / 10000 + b7 / 10000 + "-" + procJudDV + "." + b8 / 1000 + b9 / 100 + b10 / 10 + b11 + "." + b12 / 1000000 + "." + b13 / 100000 + b14 / 10000 + "." + b15 / 1000 + b16 / 100 + b17 / 10 + b18;
     procJudCompl = "000000" + procJudCompl;
-    return procJudCompl.slice(procJudCompl.length - 25);
+    var result = procJudCompl.slice(procJudCompl.length - 25);
+    return result;
 }
 exports.create_processo = create_processo;
 function create_titulo_atual(titulo) {
@@ -1343,7 +1334,22 @@ exports.fakerBr = {
         var faker = _this.fakerBr;
         return faker.telefone(__assign({}, options, { celular: true }));
     },
-    cep: makeGeneric(mask_1.MASKS['cep']),
+    cep: function (options) {
+        if (options === void 0) { options = {}; }
+        if (!options.estado) {
+            options.estado = utils_1.randomEstadoSigla();
+        }
+        var range = pessoas_1.CEP_ESTADO[options.estado];
+        var cep = utils_1.randomNumber(range[0][0], range[0][1]);
+        if (cep < 10000000) {
+            cep = '0' + cep.toString();
+        }
+        else {
+            cep = cep.toString();
+        }
+        var mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
+        return mask;
+    },
     cepState: function (state) {
         return randexp_1.randexp(validate_1.CEPRange[state]);
     },
@@ -1408,7 +1414,13 @@ exports.fakerBr = {
     cartaocredito: makeGeneric(mask_1.MASKS['cartaocredito']),
     currency: function () {
         var x = Math.random() * 10000;
-        return x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        var final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if (final[final.length - 3] === '.') {
+            final = final.replace(/\./g, '#');
+            final = final.replace(/\,/g, '.');
+            final = final.replace(/\#/g, ',');
+        }
+        return final;
     },
     currencyNumber: function () {
         var x = Math.random() * 10000;
@@ -1575,7 +1587,13 @@ exports.fakerBr = {
             signo: signo, tipoSanguineo: tipoSanguineo, altura: altura, peso: peso
         };
     },
-    pispasep: makeGeneric(mask_1.MASKS['pispasep']),
+    pispasep: function () {
+        var pis = makeGeneric(mask_1.MASKS['pispasep'])();
+        var digit = create_1.create_pispasep(pis);
+        var values = pis.split('');
+        values[values.length - 1] = digit;
+        return values;
+    },
     placa: function () {
         var placa;
         do {
@@ -1670,8 +1688,12 @@ exports.fakerBr = {
                 numbers[numbers.length - 1] = '8';
                 number = numbers.join();
             }
-            var dig = create_1.create_titulo(number);
-            titulo = number + dig[0] + dig[1];
+            try {
+                var dig = create_1.create_titulo(number);
+                titulo = number + dig[0] + dig[1];
+            }
+            catch (e) {
+            }
         } while (!validate_1.validate_titulo(titulo));
         return titulo;
     },
@@ -2396,28 +2418,17 @@ function lookup(ie) {
 Object.defineProperty(exports, "__esModule", { value: true });
 function iptu_ctba(number) {
     // if (number.length != 11) { alert("Você deve introduzir os ONZE dígitos-base \ndo IPTU, inclusive zeros à esquerda."); }
-    var iptuctbaDig1 = number.slice(10);
-    var a1 = eval(iptuctbaDig1);
-    var iptuctbaDig2 = number.slice(9, 10);
-    var a2 = eval(iptuctbaDig2);
-    var iptuctbaDig3 = number.slice(8, 9);
-    var a3 = eval(iptuctbaDig3);
-    var iptuctbaDig4 = number.slice(7, 8);
-    var a4 = eval(iptuctbaDig4);
-    var iptuctbaDig5 = number.slice(6, 7);
-    var a5 = eval(iptuctbaDig5);
-    var iptuctbaDig6 = number.slice(5, 6);
-    var a6 = eval(iptuctbaDig6);
-    var iptuctbaDig7 = number.slice(4, 5);
-    var a7 = eval(iptuctbaDig7);
-    var iptuctbaDig8 = number.slice(3, 4);
-    var a8 = eval(iptuctbaDig8);
-    var iptuctbaDig9 = number.slice(2, 3);
-    var a9 = eval(iptuctbaDig9);
-    var iptuctbaDig10 = number.slice(1, 2);
-    var a10 = eval(iptuctbaDig10);
-    var iptuctbaDig11 = number.slice(0, 1);
-    var a11 = eval(iptuctbaDig11);
+    var a1 = parseInt(number.slice(10));
+    var a2 = parseInt(number.slice(9, 10));
+    var a3 = parseInt(number.slice(8, 9));
+    var a4 = parseInt(number.slice(7, 8));
+    var a5 = parseInt(number.slice(6, 7));
+    var a6 = parseInt(number.slice(5, 6));
+    var a7 = parseInt(number.slice(4, 5));
+    var a8 = parseInt(number.slice(3, 4));
+    var a9 = parseInt(number.slice(2, 3));
+    var a10 = parseInt(number.slice(1, 2));
+    var a11 = parseInt(number.slice(0, 1));
     var iptuctbaDV = 10 - ((a1 * 2 + a2 * 3 + a3 * 4 + a4 * 7 + a5 * 8 + a6 * 9 + a7 * 2 + a8 * 3 + a9 * 4 + a10 * 7 + a11 * 8) % 10);
     if (iptuctbaDV == 10) {
         iptuctbaDV = 0;
@@ -2427,26 +2438,16 @@ function iptu_ctba(number) {
 exports.iptu_ctba = iptu_ctba;
 function iptu_sp(number) {
     // if (number.length != 10) { alert("Você deve introduzir os DEZ dígitos \ndo IPTU, inclusive zeros à esquerda."); }
-    var iptuspDig1 = number.slice(9);
-    var a1 = eval(iptuspDig1);
-    var iptuspDig2 = number.slice(8, 9);
-    var a2 = eval(iptuspDig2);
-    var iptuspDig3 = number.slice(7, 8);
-    var a3 = eval(iptuspDig3);
-    var iptuspDig4 = number.slice(6, 7);
-    var a4 = eval(iptuspDig4);
-    var iptuspDig5 = number.slice(5, 6);
-    var a5 = eval(iptuspDig5);
-    var iptuspDig6 = number.slice(4, 5);
-    var a6 = eval(iptuspDig6);
-    var iptuspDig7 = number.slice(3, 4);
-    var a7 = eval(iptuspDig7);
-    var iptuspDig8 = number.slice(2, 3);
-    var a8 = eval(iptuspDig8);
-    var iptuspDig9 = number.slice(1, 2);
-    var a9 = eval(iptuspDig9);
-    var iptuspDig10 = number.slice(0, 1);
-    var a10 = eval(iptuspDig10);
+    var a1 = parseInt(number.slice(9));
+    var a2 = parseInt(number.slice(8, 9));
+    var a3 = parseInt(number.slice(7, 8));
+    var a4 = parseInt(number.slice(6, 7));
+    var a5 = parseInt(number.slice(5, 6));
+    var a6 = parseInt(number.slice(4, 5));
+    var a7 = parseInt(number.slice(3, 4));
+    var a8 = parseInt(number.slice(2, 3));
+    var a9 = parseInt(number.slice(1, 2));
+    var a10 = parseInt(number.slice(0, 1));
     var iptuspDV = (a1 * 9 + a2 * 8 + a3 * 7 + a4 * 6 + a5 * 5 + a6 * 4 + a7 * 3 + a8 * 2 + a9 + a10 * 10) % 11;
     if (iptuspDV == 10) {
         iptuspDV = 1;
@@ -2540,8 +2541,8 @@ exports.MASKS = {
         })
     },
     data: {
-        text: '0000.0000.0000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
+        text: '00/00/0000',
+        textMask: [/[0-3]/, /[0-9]/, '/', /[0-1]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
     ect: {
         text: '00000000-0',
@@ -2577,7 +2578,6 @@ exports.MASKS = {
             allowDecimal: true,
             integerLimit: 15,
             prefix: '',
-            suffix: '%'
         })
     },
     pispasep: {
@@ -2618,8 +2618,8 @@ exports.MASKS = {
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
     telefone: {
-        text: '(00) 0000-0000',
-        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+        text: '(00) 00000-0000',
+        textMask: ['(', /[1-9]/, /\d/, ')', ' ', /[1-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
         textMaskFunction: function mask(userInput) {
             var numbers = userInput.match(/\d/g);
             var numberLength = 0;
@@ -2636,7 +2636,7 @@ exports.MASKS = {
     },
     time: {
         text: '00:00',
-        textMask: [/\d/, /\d/, ':', /\d/, /\d/]
+        textMask: [/\d/, /\d/, ':', /[0-5]/, /\d/]
     },
     titulo: {
         text: '0000.0000.0000',
@@ -2694,7 +2694,7 @@ exports.maskBr = {
         var finalValue = conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
         return finalValue;
     },
-    data: makeGeneric('date'),
+    data: makeGeneric('data'),
     ect: makeGeneric('ect'),
     endereco: makeGeneric('endereco'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
@@ -2715,7 +2715,7 @@ exports.maskBr = {
         }
         var vals = numberValue.split(',');
         var mask = exports.MASKS.number.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1].toString() : '00';
+        var decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
         if (decimals.length > 2) {
             decimals = decimals.substring(0, 2);
         }
@@ -2727,8 +2727,8 @@ exports.maskBr = {
         }
         var vals = porcentagemValue.split(',');
         var mask = exports.MASKS.porcentagem.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1] : '00';
-        return conformToMask(porcentagemValue, mask, { guide: false }).conformedValue + ',' + decimals;
+        var decimals = vals.length > 1 ? ',' + vals[1] : '';
+        return conformToMask(porcentagemValue, mask, { guide: false }).conformedValue + decimals + '%';
     },
     pispasep: makeGeneric('pispasep'),
     placa: makeGeneric('placa'),
@@ -3523,22 +3523,14 @@ function rg_sp(number) {
     // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}
     number = "0000000" + number;
     number = number.slice(number.length - 8);
-    var cispDig1 = number.slice(7);
-    var b1 = eval(cispDig1);
-    var cispDig2 = number.slice(6, 7);
-    var b2 = eval(cispDig2);
-    var cispDig3 = number.slice(5, 6);
-    var b3 = eval(cispDig3);
-    var cispDig4 = number.slice(4, 5);
-    var b4 = eval(cispDig4);
-    var cispDig5 = number.slice(3, 4);
-    var b5 = eval(cispDig5);
-    var cispDig6 = number.slice(2, 3);
-    var b6 = eval(cispDig6);
-    var cispDig7 = number.slice(1, 2);
-    var b7 = eval(cispDig7);
-    var cispDig8 = number.slice(0, 1);
-    var b8 = eval(cispDig8);
+    var b1 = parseInt(number.slice(7));
+    var b2 = parseInt(number.slice(6, 7));
+    var b3 = parseInt(number.slice(5, 6));
+    var b4 = parseInt(number.slice(4, 5));
+    var b5 = parseInt(number.slice(3, 4));
+    var b6 = parseInt(number.slice(2, 3));
+    var b7 = parseInt(number.slice(1, 2));
+    var b8 = parseInt(number.slice(0, 1));
     var cispDig = (b1 * 2 + b2 * 3 + b3 * 4 + b4 * 5 + b5 * 6 + b6 * 7 + b7 * 8 + b8 * 9) % 11;
     if (cispDig == 10) {
         cispDig = "X";
@@ -3550,22 +3542,14 @@ function rg_rj(number) {
     // if(number.length>8){alert("Erro. Não existe RG-RJ/MaSP-MG\ncom mais de 8 dígitos.");}
     number = "0000000" + number;
     number = number.slice(number.length - 8);
-    var cirjDig1 = number.slice(7);
-    var b1 = eval(cirjDig1);
-    var cirjDig2 = number.slice(6, 7);
-    var b2 = eval(cirjDig2);
-    var cirjDig3 = number.slice(5, 6);
-    var b3 = eval(cirjDig3);
-    var cirjDig4 = number.slice(4, 5);
-    var b4 = eval(cirjDig4);
-    var cirjDig5 = number.slice(3, 4);
-    var b5 = eval(cirjDig5);
-    var cirjDig6 = number.slice(2, 3);
-    var b6 = eval(cirjDig6);
-    var cirjDig7 = number.slice(1, 2);
-    var b7 = eval(cirjDig7);
-    var cirjDig8 = number.slice(0, 1);
-    var b8 = eval(cirjDig8);
+    var b1 = parseInt(number.slice(7));
+    var b2 = parseInt(number.slice(6, 7));
+    var b3 = parseInt(number.slice(5, 6));
+    var b4 = parseInt(number.slice(4, 5));
+    var b5 = parseInt(number.slice(3, 4));
+    var b6 = parseInt(number.slice(2, 3));
+    var b7 = parseInt(number.slice(1, 2));
+    var b8 = parseInt(number.slice(0, 1));
     var ci7 = b1 * 2;
     if (ci7 > 9) {
         ci7 = ci7 - 9;
@@ -3753,7 +3737,8 @@ function rand(length) {
 }
 exports.rand = rand;
 function randomNumber(begin, end) {
-    var number = Math.floor(Math.random() * end) + begin;
+    var dif = end - begin;
+    var number = Math.floor(Math.random() * dif) + begin;
     return number;
 }
 exports.randomNumber = randomNumber;
@@ -4002,7 +3987,11 @@ function validate_currency(currency) {
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
-function validate_date(number) {
+function validate_data(value) {
+    var values = value.split('/');
+    if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
+        return false;
+    }
     return true;
 }
 function validate_ect(number) {
@@ -4042,25 +4031,30 @@ function validate_iptu(iptu) {
 }
 exports.validate_iptu = validate_iptu;
 function validate_number(number) {
-    var regex = /^\d+(?:\.\d{0,2})$/;
-    return regex.test(number);
+    if (number.split(',').length > 2) {
+        return false;
+    }
+    var regexDecimal = /^\d+(?:\.\d{0,2})$/;
+    var regex = /^[0-9]{0,10}[,]{1,1}[0-9]{0,4}/;
+    var regexNumero = /^[0-9]{0,10}/;
+    return regexDecimal.test(number) || regex.test(number) || regexNumero.test(number);
 }
 exports.validate_number = validate_number;
 function validate_porcentagem(porcentagem) {
-    var regex = /^\d+(?:\.\d{0,2})$/;
-    return regex.test(porcentagem);
+    porcentagem = porcentagem.split('%')[0];
+    return validate_number(porcentagem);
 }
 exports.validate_porcentagem = validate_porcentagem;
 function validate_processo(processo) {
     var processoClean = processo.replace(/\./g, '');
     processoClean = processoClean.replace(/\-/g, '');
-    var exp = /\d{7}\-\d{2}\.\d{4}\.\w{3}\.\d{4}/;
-    var expClean = /\d{13}\w{3}\d{4}/;
-    if (!exp.test(processo) && !expClean.test(processoClean)) {
-        return false;
-    }
+    // const exp = /\d{7}\-\d{2}\.\d{4}\.\w{3}\.\d{4}/;
+    // const expClean = /\d{13}\w{3}\d{4}/;
+    // if (!exp.test(processo) && !expClean.test(processoClean)) {
+    //   return false;
+    // }
     var processoValidado = create_1.create_processo(processo);
-    if (processoClean !== utils_1.getAllDigits(processoValidado)) {
+    if (parseInt(processoClean) !== parseInt(utils_1.getAllDigits(processoValidado))) {
         return false;
     }
     return true;
@@ -4073,12 +4067,8 @@ function validate_pispasep(number) {
     if (!regex.test(nis)) {
         return false;
     }
-    var d;
-    var p = 2, c = 9;
-    for (d = 0; c >= 0; c--, (p < 9) ? p++ : p = 2) {
-        d += nis[c] * p;
-    }
-    return (nis[10] == (((10 * d) % 11) % 10));
+    var digit = create_1.create_pispasep(number);
+    return nis[10].toString() == digit.toString();
 }
 exports.validate_pispasep = validate_pispasep;
 function validate_renavam(renavam) {
@@ -4158,10 +4148,17 @@ function validate_telefone(tel) {
     return true;
 }
 exports.validate_telefone = validate_telefone;
-function validate_time(time) {
-    var expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+function validate_time(time, options) {
+    if (options === void 0) { options = {}; }
     var value = time.toString();
-    return expression.test(value);
+    if (options.diario) {
+        var expression = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+        return expression.test(value);
+    }
+    else {
+        var expression = /^([0-9]?[0-9]):([0-5][0-9])(:[0-5][0-9])?$/;
+        return expression.test(value);
+    }
 }
 exports.validate_time = validate_time;
 function validate_titulo(titulo) {
@@ -4179,7 +4176,6 @@ function validate_titulo(titulo) {
         // dig = create_titulo(noDv);
     }
     catch (e) {
-        console.error(e);
         return false;
     }
     var digitos = tituloClean.substr(tam - 2, 2);
@@ -4210,7 +4206,7 @@ exports.validateBr = {
     cpf: validate_cpf,
     cpfcnpj: validate_cpfcnpj,
     currency: validate_currency,
-    data: validate_date,
+    data: validate_data,
     ect: validate_ect,
     email: validate_email,
     endereco: validate_endereco,

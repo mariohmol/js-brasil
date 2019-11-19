@@ -75,8 +75,8 @@ export const MASKS = {
     })
   },
   data: {
-    text: '0000.0000.0000',
-    textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
+    text: '00/00/0000',
+    textMask: [/[0-3]/, /[0-9]/, '/', /[0-1]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
   ect: {
     text: '00000000-0',
@@ -244,7 +244,7 @@ export const maskBr = {
 
     return finalValue
   },
-  data: makeGeneric('date'),
+  data: makeGeneric('data'),
   ect: makeGeneric('ect'),
   endereco: makeGeneric('endereco'),
   inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {

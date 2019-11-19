@@ -144,6 +144,7 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * Celular - http://geradorbrasileiro.com/celular.html
 * CEP - http://geradorbrasileiro.com/cep.html
 * Certidão - http://geradorbrasileiro.com/certidao.html
+* CID - http://geradorbrasileiro.com/cid.html **(TODO #34)**
 * CNAE - http://geradorbrasileiro.com/cnae.html **(TODO #16)**
 * CNH - http://geradorbrasileiro.com/cnh.html
 * CNPJ - http://geradorbrasileiro.com/cnpj.html
@@ -152,10 +153,10 @@ var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 * CPF - http://geradorbrasileiro.com/cpf.html
 * CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html **(TODO #15)**
 * Currency - http://geradorbrasileiro.com/others.html
-* Date - (TODO #21)
+* Date - http://geradorbrasileiro.com/data.html
 * ECT - http://geradorbrasileiro.com/ect.html
 * EMAIL - http://geradorbrasileiro.com/email.html
-* Empresa - http://geradorbrasileiro.com/empresa.html **(TODO #20)**
+* Empresa - http://geradorbrasileiro.com/empresa.html
 * Endereço - http://geradorbrasileiro.com/endereco.html
 * Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
 * IPTU - http://geradorbrasileiro.com/iptu.html **(TODO #26)**

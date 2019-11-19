@@ -118,10 +118,10 @@ describe('Mask test', () => {
     // expect(maskBr.currency(123)).to.exist;
   });
 
-  it('date - TODO', () => {
-    const date = '12312345121';
-    // expect(maskBr.date(date)).to.be.equal('123.12345.12-1');
-    // testGeneric('date');
+  it('DATA', () => {
+    const data = '01/12/1980';
+    expect(maskBr.data(data)).to.be.equal('01/12/1980');
+    testGeneric('data');
   });
 
   it('ECT', () => {

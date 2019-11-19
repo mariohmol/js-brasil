@@ -71,14 +71,6 @@ describe('Faker test', () => {
     expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
   });
 
-  it('Moeda', () => {
-    expect(fakerBr.currency()).to.exist;
-    // const currency = fakerBr.currency();
-    // expect(validateBr.currency(currency)).to.be.true;
-    const currencyNumber = fakerBr.currencyNumber();
-    expect(validateBr.currency(currencyNumber)).to.be.true;
-  });
-
   it('DATA', () => {
     let data = fakerBr.data();
     expect(validateBr.data(data)).to.be.true;
@@ -88,7 +80,6 @@ describe('Faker test', () => {
     });
     expect(validateBr.data(data)).to.be.true;
   });
-
 
   it('ECT', () => {
     const ect = fakerBr.ect();
@@ -139,12 +130,21 @@ describe('Faker test', () => {
   });
 
 
-  it('iptu - TODO', () => {
+  it('IPTU - TODO', () => {
     // const iptu = fakerBr.iptu();
     // expect(validateBr.iptu(iptu)).to.be.true;
   });
 
-  it('number', () => {
+
+  it('Moeda', () => {
+    expect(fakerBr.currency()).to.exist;
+    // const currency = fakerBr.currency();
+    // expect(validateBr.currency(currency)).to.be.true;
+    const currencyNumber = fakerBr.currencyNumber();
+    expect(validateBr.currency(currencyNumber)).to.be.true;
+  });
+
+  it('Número', () => {
     const number = fakerBr.number().toString();
     expect(validateBr.number(number)).to.be.true;
   });

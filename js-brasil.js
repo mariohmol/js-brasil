@@ -2541,8 +2541,8 @@ exports.MASKS = {
         })
     },
     data: {
-        text: '0000.0000.0000',
-        textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
+        text: '00/00/0000',
+        textMask: [/[0-3]/, /[0-9]/, '/', /[0-1]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
     ect: {
         text: '00000000-0',
@@ -2694,7 +2694,7 @@ exports.maskBr = {
         var finalValue = conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
         return finalValue;
     },
-    data: makeGeneric('date'),
+    data: makeGeneric('data'),
     ect: makeGeneric('ect'),
     endereco: makeGeneric('endereco'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
@@ -3987,7 +3987,7 @@ function validate_currency(currency) {
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
-function validate_date(value) {
+function validate_data(value) {
     var values = value.split('/');
     if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
         return false;
@@ -4206,7 +4206,7 @@ exports.validateBr = {
     cpf: validate_cpf,
     cpfcnpj: validate_cpfcnpj,
     currency: validate_currency,
-    data: validate_date,
+    data: validate_data,
     ect: validate_ect,
     email: validate_email,
     endereco: validate_endereco,
