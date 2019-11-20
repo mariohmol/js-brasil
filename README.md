@@ -1,6 +1,9 @@
 # js-brasil
 
-Javascript Utils para Brasil (cpf, cnpj, inscrição estadual,  ...)
+Javascript Validate, Mask, Faker e Utils para Tipos do Brasil: 
+Celular, CEP, Certidão, CNH, CNPJ, CNS, CPF, Currency, Date, ECT, EMAIL, Empresa, Endereço, Inscrição Estadual, 
+Number, Percentage, Pessoa, PIS/PASEP, Placa de carro, Processo da justiça, RENAVAM , RG , 
+Site, Telefone , Time (data/hora), Título de Eleitor , Veículo
 
 
 [![Build Status](https://travis-ci.org/mariohmol/js-brasil.svg?branch=master)](https://travis-ci.org/mariohmol/js-brasil)
@@ -19,6 +22,50 @@ Plugins para [Angular](https://github.com/mariohmol/ng-brazil) e
 
 Veja tudo em ação no Gerador Brasileiro - http://geradorbrasileiro.com/
 
+
+
+
+# Tipos Suportados
+
+* Cartão de Crédito - http://geradorbrasileiro.com/cartao.html **(TODO #12)**
+* Celular - http://geradorbrasileiro.com/celular.html
+* CEP - http://geradorbrasileiro.com/cep.html
+* Certidão - http://geradorbrasileiro.com/certidao.html
+* CID - http://geradorbrasileiro.com/cid.html **(TODO #34)**
+* CNAE - http://geradorbrasileiro.com/cnae.html **(TODO #16)**
+* CNH - http://geradorbrasileiro.com/cnh.html
+* CNPJ - http://geradorbrasileiro.com/cnpj.html
+* CNS - http://geradorbrasileiro.com/cns.html
+* Conta de Banco - http://geradorbrasileiro.com/contato.html **(TODO #13)**
+* CPF - http://geradorbrasileiro.com/cpf.html
+* CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html **(TODO #15)**
+* Currency - http://geradorbrasileiro.com/others.html
+* Date - http://geradorbrasileiro.com/data.html
+* ECT - http://geradorbrasileiro.com/ect.html
+* EMAIL - http://geradorbrasileiro.com/email.html
+* Empresa - http://geradorbrasileiro.com/empresa.html
+* Endereço - http://geradorbrasileiro.com/endereco.html
+* Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
+* IPTU - http://geradorbrasileiro.com/iptu.html **(TODO #26)**
+* * São Paulo e Curitiba OK
+* * Outras capitais (TODO)
+* NIT - **(TODO #14)**
+* Number - http://geradorbrasileiro.com/others.html
+* Percentage - http://geradorbrasileiro.com/others.html
+* Pessoa - http://geradorbrasileiro.com/pessoa.html
+* PIS/PASEP - http://geradorbrasileiro.com/pis.html
+* Placa de carro - http://geradorbrasileiro.com/placa.html
+* Processo da justiça - http://geradorbrasileiro.com/processo.html
+* RENAVAM  - http://geradorbrasileiro.com/renavam.html
+* RG  - http://geradorbrasileiro.com/rg.html
+* * SP/RJ - OK
+* * Outros estado (TODO)
+* Site - http://geradorbrasileiro.com/site.html
+* SPED - http://geradorbrasileiro.com/sped.html **(TODO: #24)**
+* Telefone  - http://geradorbrasileiro.com/telefone.html
+* Time (data/hora) - http://geradorbrasileiro.com/others.html
+* Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
+* Veículo - http://geradorbrasileiro.com/veiculo.html
 
 
 # ValidateBR
@@ -135,51 +182,6 @@ Browser:
 var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 </script>  
 ```
-
-
-
-# Tipos Suportados
-
-* Cartão de Crédito - http://geradorbrasileiro.com/cartao.html **(TODO #12)**
-* Celular - http://geradorbrasileiro.com/celular.html
-* CEP - http://geradorbrasileiro.com/cep.html
-* Certidão - http://geradorbrasileiro.com/certidao.html
-* CID - http://geradorbrasileiro.com/cid.html **(TODO #34)**
-* CNAE - http://geradorbrasileiro.com/cnae.html **(TODO #16)**
-* CNH - http://geradorbrasileiro.com/cnh.html
-* CNPJ - http://geradorbrasileiro.com/cnpj.html
-* CNS - http://geradorbrasileiro.com/cns.html
-* Conta de Banco - http://geradorbrasileiro.com/contato.html **(TODO #13)**
-* CPF - http://geradorbrasileiro.com/cpf.html
-* CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html **(TODO #15)**
-* Currency - http://geradorbrasileiro.com/others.html
-* Date - http://geradorbrasileiro.com/data.html
-* ECT - http://geradorbrasileiro.com/ect.html
-* EMAIL - http://geradorbrasileiro.com/email.html
-* Empresa - http://geradorbrasileiro.com/empresa.html
-* Endereço - http://geradorbrasileiro.com/endereco.html
-* Inscrição Estadual - http://geradorbrasileiro.com/inscricaoestadual.html - Todos os estados do Brasil 
-* IPTU - http://geradorbrasileiro.com/iptu.html **(TODO #26)**
-* * São Paulo e Curitiba OK
-* * Outras capitais (TODO)
-* NIT - **(TODO #14)**
-* Number - http://geradorbrasileiro.com/others.html
-* Percentage - http://geradorbrasileiro.com/others.html
-* Pessoa - http://geradorbrasileiro.com/pessoa.html
-* PIS/PASEP - http://geradorbrasileiro.com/pis.html
-* Placa de carro - http://geradorbrasileiro.com/placa.html
-* Processo da justiça - http://geradorbrasileiro.com/processo.html
-* RENAVAM  - http://geradorbrasileiro.com/renavam.html
-* RG  - http://geradorbrasileiro.com/rg.html
-* * SP/RJ - OK
-* * Outros estado (TODO)
-* Site - http://geradorbrasileiro.com/site.html
-* SPED - http://geradorbrasileiro.com/sped.html **(TODO: #24)**
-* Telefone  - http://geradorbrasileiro.com/telefone.html
-* Time (data/hora) - http://geradorbrasileiro.com/others.html
-* Título de Eleitor  - http://geradorbrasileiro.com/titulo.html
-* Veículo - http://geradorbrasileiro.com/veiculo.html
-
 
 # Angular 
 

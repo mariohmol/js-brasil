@@ -195,7 +195,12 @@ export const fakerBr = {
       nome = options.nome;
     }
     nome = slugify(nome);
-    const site = faker.site({ ...options, url: '' });
+
+    let empresa = nome;
+    if(options.empresa){
+      empresa = options.empresa;
+    }
+    const site = faker.site({ nome: empresa, url: '' });
     return nome + '@' + site;
   },
   empresa: (options: any = {}) => {
