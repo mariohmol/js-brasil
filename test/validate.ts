@@ -132,9 +132,10 @@ describe('Validate test', () => {
     expect(validateBr.inscricaoestadual('1234', 'mg')).to.be.false;
   });
 
-  it('IPTU - TODO', () => {
-    // expect(validateBr.ect('473124829')).to.be.true;
-    // expect(validateBr.ect('473124828')).to.be.false;
+  it('IPTU', () => {
+    expect(validateBr.iptu('668.686.179.694.6','minas-gerais','belo-horizonte')).to.be.true;
+    expect(validateBr.iptu('68152735387-9','sao-paulo','sao-paulo')).to.be.true;
+    // expect(validateBr.iptu('12891948261-2','parana','curitiba')).to.be.true;
   });
 
   it('Número', () => {

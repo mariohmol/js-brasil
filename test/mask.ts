@@ -9,13 +9,19 @@ const testGeneric = (key) => {
   expect(validateBr[key](valMask)).to.be.true;
 }
 
+const testGenericIPTU = (estado, cidade) => {
+  let val = fakerBr['iptu'](estado, cidade);
+  val = val.replace(/[^\d\w]+/g, '');
+  const valMask = maskBr['iptu'](val,estado, cidade);
+  expect(validateBr['iptu'](valMask,estado, cidade)).to.be.true;
+}
+
 describe('Mask test', () => {
 
   it('AIH', () => {
     const aih = '3519234143128';
     expect(maskBr.aih(aih)).to.be.equal('351923414312-8');
   });
-
 
   it('endereco - TODO', () => {
     const endereco = '12312345121';
@@ -96,6 +102,7 @@ describe('Mask test', () => {
     // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
     // testGeneric('cartaocredito');
   });
+
   it('Moeda', () => {
     const currency = 'R$ 5.103,94';
     const currencyText = '5.103,94';
@@ -137,10 +144,15 @@ describe('Mask test', () => {
     expect(validateBr.inscricaoestadual(inscricaoestadual, estado)).to.be.true;
   });
 
-  it('iptu - TODO', () => {
-    const iptu = '12312345121';
-    // expect(maskBr.iptu(iptu)).to.be.equal('123.12345.12-1');
-    // testGeneric('iptu');
+  it('IPTU', () => {
+    expect(maskBr.iptu('1231234512132','minas-gerais','belo-horizonte')).to.be.equal('123.123.451.213.2');
+    testGenericIPTU('minas-gerais','belo-horizonte');
+
+    expect(maskBr.iptu('123456789012','sao-paulo','sao-paulo')).to.be.equal('12345678901-2');
+    testGenericIPTU('sao-paulo','sao-paulo');
+
+    expect(maskBr.iptu('123456789012','parana','curitiba')).to.be.equal('12345678901-2');
+    // testGenericIPTU('parana','curitiba');
   });
 
   it('Número', () => {

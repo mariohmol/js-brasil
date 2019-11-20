@@ -6,7 +6,7 @@ import {
   create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep
 } from "./create";
 import RG from "./rg";
-import IPTU from "./iptu";
+import { validate_iptu } from "./iptu/iptu";
 
 
 export function validate_aih(aih: string) {
@@ -263,23 +263,6 @@ function validate_email(email) {
 }
 
 function validate_endereco(number) {
-  return true;
-}
-
-export function validate_iptu(iptu: string) {
-  let iptuClean = iptu.replace(/\./g, '');
-  iptuClean = iptuClean.replace(/-/g, '');
-  const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
-  const expClean = /[a-z]{2}\d{8}/;
-  const state = iptu.substr(0, 2).toUpperCase();
-
-  if (!exp.test(iptu) && !expClean.test(iptuClean) && !(state in CEPRange)) {
-    return false;
-  }
-  if (IPTU[state]) {
-    const validateState = IPTU[state];
-    return validateState(iptu);
-  }
   return true;
 }
 

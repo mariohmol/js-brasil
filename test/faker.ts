@@ -130,9 +130,14 @@ describe('Faker test', () => {
   });
 
 
-  it('IPTU - TODO', () => {
-    // const iptu = fakerBr.iptu();
-    // expect(validateBr.iptu(iptu)).to.be.true;
+  it('IPTU', () => {
+    let iptu;
+    iptu = fakerBr.iptu('minas-gerais','belo-horizonte');
+    expect(validateBr.iptu(iptu, 'minas-gerais','belo-horizonte')).to.be.true;
+    iptu = fakerBr.iptu('sao-paulo','sao-paulo');
+    expect(validateBr.iptu(iptu, 'sao-paulo','sao-paulo')).to.be.true;
+    iptu = fakerBr.iptu('parana','curitiba');
+    // expect(validateBr.iptu(iptu, 'parana','curitiba')).to.be.true;
   });
 
 

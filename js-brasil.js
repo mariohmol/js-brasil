@@ -748,7 +748,7 @@ exports.utilsBr = __assign({}, utils, { MASKS: mask_1.MASKS,
 exports.maskBr = mask.maskBr;
 exports.fakerBr = faker.fakerBr;
 
-},{"./src/estados":4,"./src/faker":5,"./src/mask":8,"./src/placa":10,"./src/utils":12,"./src/validate":13}],3:[function(require,module,exports){
+},{"./src/estados":4,"./src/faker":5,"./src/mask":11,"./src/placa":13,"./src/utils":15,"./src/validate":16}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -1207,7 +1207,7 @@ function create_titulo(titNum) {
 }
 exports.create_titulo = create_titulo;
 
-},{"./utils":12}],4:[function(require,module,exports){
+},{"./utils":15}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
@@ -1269,52 +1269,8 @@ var utils_1 = require("./utils");
 var veiculos_1 = require("./veiculos");
 var name_1 = require("./name");
 var pessoas_1 = require("../addons/pessoas");
-var makeGeneric = function (val, options) {
-    if (options === void 0) { options = null; }
-    return function () {
-        if (!val.textMask || !val.textMask.map) {
-            return '';
-        }
-        var newData = val.textMask.map(function (c, index) {
-            if (options && options[index]) {
-                return options[index]();
-            }
-            c = c.toString();
-            if (c === /\d/.toString()) {
-                return Math.floor(Math.random() * 10).toString();
-            }
-            else if (c === /[A-Za-z]/.toString()) {
-                return utils_1.randomLetter(1).toString();
-            }
-            else if (c === /\w/.toString()) {
-                return utils_1.randomLetterOrNumber(1).toString();
-            }
-            else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
-                c = c.replace('/[', '').replace(']/', '');
-                if (c.indexOf('-') > 0) {
-                    c = c.split('-');
-                    if (parseInt(c[1])) {
-                        var mult = c[1] - c[0];
-                        var plus = parseInt(c[0]);
-                        return (Math.floor(Math.random() * mult) + plus).toString();
-                    }
-                    else {
-                        return utils_1.rand(1, [c[0], c[1]]);
-                    }
-                }
-                else if (c.indexOf('|') > 0) {
-                    c = c.split('|');
-                    var index_1 = Math.floor(Math.random() * c.length);
-                    return c[index_1];
-                }
-            }
-            else {
-                return c;
-            }
-        });
-        return newData.join('');
-    };
-};
+var create_2 = require("./iptu/create");
+// import cnaes from '../addons/cnaes';
 exports.fakerBr = {
     aih: function (uf, ano, tipo, seq) {
         if (uf === void 0) { uf = 35; }
@@ -1354,30 +1310,30 @@ exports.fakerBr = {
         return randexp_1.randexp(validate_1.CEPRange[state]);
     },
     certidao: function () {
-        var value = makeGeneric(mask_1.MASKS['certidao'])();
+        var value = utils_1.makeGenericFaker(mask_1.MASKS['certidao'])();
         var certidao = utils_1.getAllDigits(value);
         var check = create_1.create_certidao(certidao);
         return certidao.substr(0, certidao.length - 2) + check;
     },
     chassi: function () {
-        var chassi = makeGeneric(mask_1.MASKS['chassi'])();
+        var chassi = utils_1.makeGenericFaker(mask_1.MASKS['chassi'])();
         chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
         return chassi;
     },
     cid: function () {
-        // let chassi = makeGeneric(MASKS['chassi'])();
+        // let chassi = makeGenericFaker(MASKS['chassi'])();
         // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
         // return chassi;
     },
-    cnae: makeGeneric(mask_1.MASKS['cnae']),
+    cnae: utils_1.makeGenericFaker(mask_1.MASKS['cnae']),
     cnh: function () {
-        var cnh = makeGeneric(mask_1.MASKS['cnh'])();
+        var cnh = utils_1.makeGenericFaker(mask_1.MASKS['cnh'])();
         var nodigits = cnh;
         var check = create_1.create_cnh(nodigits);
         return cnh.substr(0, cnh.length - 2) + check;
     },
     cnpj: function () {
-        var cnpj = makeGeneric(mask_1.MASKS['cnpj'])();
+        var cnpj = utils_1.makeGenericFaker(mask_1.MASKS['cnpj'])();
         cnpj = cnpj.replace(/[^\d]+/g, '');
         var restos = create_1.create_cnpj(cnpj);
         cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0];
@@ -1387,7 +1343,7 @@ exports.fakerBr = {
     cns: function () {
         var cns;
         do {
-            cns = makeGeneric(mask_1.MASKS['cns'])();
+            cns = utils_1.makeGenericFaker(mask_1.MASKS['cns'])();
             cns = utils_1.getAllDigits(cns);
             var primeiroDigito = parseInt(cns[0]);
             if (primeiroDigito < 3) {
@@ -1402,16 +1358,16 @@ exports.fakerBr = {
         } while (!validate_1.validate_cns(cns));
         return cns;
     },
-    contabanco: makeGeneric(mask_1.MASKS['contabanco']),
+    contabanco: utils_1.makeGenericFaker(mask_1.MASKS['contabanco']),
     cpf: function () {
-        var cpf = makeGeneric(mask_1.MASKS['cpf'])();
+        var cpf = utils_1.makeGenericFaker(mask_1.MASKS['cpf'])();
         var restos = create_1.create_cpf(cpf);
         cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
         restos = create_1.create_cpf(cpf);
         return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
     },
-    cpfcnpj: makeGeneric(mask_1.MASKS['cpfcnpj']),
-    cartaocredito: makeGeneric(mask_1.MASKS['cartaocredito']),
+    cpfcnpj: utils_1.makeGenericFaker(mask_1.MASKS['cpfcnpj']),
+    cartaocredito: utils_1.makeGenericFaker(mask_1.MASKS['cartaocredito']),
     currency: function () {
         var x = Math.random() * 10000;
         var final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -1444,7 +1400,7 @@ exports.fakerBr = {
         return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
     },
     ect: function () {
-        var ect = makeGeneric(mask_1.MASKS['ect'])();
+        var ect = utils_1.makeGenericFaker(mask_1.MASKS['ect'])();
         var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
         return ect.substr(0, ect.length - 1) + dv;
     },
@@ -1456,7 +1412,11 @@ exports.fakerBr = {
             nome = options.nome;
         }
         nome = utils_1.slugify(nome);
-        var site = faker.site(__assign({}, options, { url: '' }));
+        var empresa = nome;
+        if (options.empresa) {
+            empresa = options.empresa;
+        }
+        var site = faker.site({ nome: empresa, url: '' });
         return nome + '@' + site;
     },
     empresa: function (options) {
@@ -1522,12 +1482,14 @@ exports.fakerBr = {
     },
     inscricaoestadual: function (estado) {
         estado = estado.toLowerCase();
-        var val = makeGeneric(mask_1.MASKS['inscricaoestadual'][estado])();
+        var val = utils_1.makeGenericFaker(mask_1.MASKS['inscricaoestadual'][estado])();
         val = val.match(/\d/g).join('');
         var newval = inscricaoestadual_1.generateInscricaoEstadual[estado](val);
         return newval;
     },
-    iptu: makeGeneric(mask_1.MASKS['iptu']),
+    iptu: function (estado, cidade) {
+        return create_2.faker_iptu(estado, cidade);
+    },
     number: function (options) {
         if (options === void 0) { options = {}; }
         if (!options.max) {
@@ -1545,7 +1507,7 @@ exports.fakerBr = {
         }
         return parseFloat(x.toFixed(options.decimals));
     },
-    porcentagem: makeGeneric(mask_1.MASKS['porcentagem']),
+    porcentagem: utils_1.makeGenericFaker(mask_1.MASKS['porcentagem']),
     pessoa: function (options) {
         if (options === void 0) { options = {}; }
         var faker = _this.fakerBr;
@@ -1588,7 +1550,7 @@ exports.fakerBr = {
         };
     },
     pispasep: function () {
-        var pis = makeGeneric(mask_1.MASKS['pispasep'])();
+        var pis = utils_1.makeGenericFaker(mask_1.MASKS['pispasep'])();
         var digit = create_1.create_pispasep(pis);
         var values = pis.split('');
         values[values.length - 1] = digit;
@@ -1597,13 +1559,13 @@ exports.fakerBr = {
     placa: function () {
         var placa;
         do {
-            placa = makeGeneric(mask_1.MASKS['placa'])();
+            placa = utils_1.makeGenericFaker(mask_1.MASKS['placa'])();
         } while (!placa_1.validate_placa(placa));
         return placa;
     },
-    processo: makeGeneric(mask_1.MASKS['processo']),
+    processo: utils_1.makeGenericFaker(mask_1.MASKS['processo']),
     renavam: function () {
-        var renavam = makeGeneric(mask_1.MASKS['renavam'])();
+        var renavam = utils_1.makeGenericFaker(mask_1.MASKS['renavam'])();
         var dv = create_1.create_renavam(renavam);
         return renavam.substr(0, renavam.length - 1) + dv;
     },
@@ -1613,7 +1575,7 @@ exports.fakerBr = {
             options.estado = utils_1.randomEstadoSigla();
         }
         var estado = options.estado.split('');
-        var makeRg = makeGeneric(mask_1.MASKS['rg'], {
+        var makeRg = utils_1.makeGenericFaker(mask_1.MASKS['rg'], {
             0: function () { return estado[0]; },
             1: function () { return estado[1]; }
         });
@@ -1659,10 +1621,10 @@ exports.fakerBr = {
         nome = utils_1.slugify(nome);
         return url + nome + dominio;
     },
-    sped: makeGeneric(mask_1.MASKS['sped']),
+    sped: utils_1.makeGenericFaker(mask_1.MASKS['sped']),
     telefone: function (options) {
         if (options === void 0) { options = {}; }
-        var telefone = makeGeneric(mask_1.MASKS['telefone'])();
+        var telefone = utils_1.makeGenericFaker(mask_1.MASKS['telefone'])();
         if (options.estado) {
             var telefones = telefone.toString().split('');
             var ddd = pessoas_1.TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
@@ -1677,11 +1639,11 @@ exports.fakerBr = {
         }
         return telefone;
     },
-    time: makeGeneric(mask_1.MASKS['time']),
+    time: utils_1.makeGenericFaker(mask_1.MASKS['time']),
     titulo: function () {
         var titulo;
         do {
-            titulo = makeGeneric(mask_1.MASKS['titulo'])();
+            titulo = utils_1.makeGenericFaker(mask_1.MASKS['titulo'])();
             var number = titulo.substr(0, titulo.length - 2);
             if (number.substr(-2) === '29') {
                 var numbers = number.split();
@@ -1724,7 +1686,7 @@ exports.fakerBr = {
     }
 };
 
-},{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./mask":8,"./name":9,"./placa":10,"./utils":12,"./validate":13,"./veiculos":14,"randexp":16}],6:[function(require,module,exports){
+},{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./iptu/create":7,"./mask":11,"./name":12,"./placa":13,"./utils":15,"./validate":16,"./veiculos":17,"randexp":19}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -2413,11 +2375,13 @@ function lookup(ie) {
     }
 }
 
-},{"./utils":12}],7:[function(require,module,exports){
+},{"./utils":15}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function iptu_ctba(number) {
-    // if (number.length != 11) { alert("Você deve introduzir os ONZE dígitos-base \ndo IPTU, inclusive zeros à esquerda."); }
+var utils_1 = require("../utils");
+var mask_1 = require("./mask");
+function create_iptu_ctba(number) {
+    number = utils_1.getAllDigits(number);
     var a1 = parseInt(number.slice(10));
     var a2 = parseInt(number.slice(9, 10));
     var a3 = parseInt(number.slice(8, 9));
@@ -2435,9 +2399,8 @@ function iptu_ctba(number) {
     }
     return iptuctbaDV;
 }
-exports.iptu_ctba = iptu_ctba;
-function iptu_sp(number) {
-    // if (number.length != 10) { alert("Você deve introduzir os DEZ dígitos \ndo IPTU, inclusive zeros à esquerda."); }
+exports.create_iptu_ctba = create_iptu_ctba;
+function create_iptu_sp(number) {
     var a1 = parseInt(number.slice(9));
     var a2 = parseInt(number.slice(8, 9));
     var a3 = parseInt(number.slice(7, 8));
@@ -2454,22 +2417,177 @@ function iptu_sp(number) {
     }
     return iptuspDV;
 }
-exports.iptu_sp = iptu_sp;
-exports.default = {
+exports.create_iptu_sp = create_iptu_sp;
+exports.faker_iptu = function (estado, cidade) {
+    if (!mask_1.IPTUMASKS[estado] || !mask_1.IPTUMASKS[estado][cidade]) {
+        return;
+    }
+    var iptu = utils_1.makeGenericFaker(mask_1.IPTUMASKS[estado][cidade])();
+    if (exports.IPTUCREATE[estado] && exports.IPTUCREATE[estado][cidade]) {
+        var dv = exports.IPTUCREATE[estado][cidade](iptu);
+        var values = iptu.split('');
+        values[values.length - 1] = dv;
+        iptu = values.join('');
+    }
+    return iptu;
+};
+exports.IPTUCREATE = {
     'sao-paulo': {
-        'sao-paulo': iptu_sp,
+        'sao-paulo': create_iptu_sp,
     },
     'parana': {
-        'curitiba': iptu_ctba
+        'curitiba': create_iptu_ctba
     }
 };
 
-},{}],8:[function(require,module,exports){
+},{"../utils":15,"./mask":9}],8:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var validate_1 = require("./validate");
+var mask_1 = require("./mask");
+var utils_1 = require("../utils");
+var create_1 = require("./create");
+exports.create_iptu = function (number, estado, cidade) {
+    if (!create_1.IPTUCREATE[estado] || !create_1.IPTUCREATE[estado][cidade]) {
+        return true;
+    }
+    number = utils_1.getAllDigits(number);
+    return create_1.IPTUCREATE[estado][cidade](number);
+};
+exports.mask_iptu = function (number, estado, cidade) {
+    if (!mask_1.IPTUMASKS[estado] || !mask_1.IPTUMASKS[estado][cidade]) {
+        return number;
+    }
+    return mask_1.IPTUMASKS[estado][cidade];
+};
+exports.validate_iptu = function (number, estado, cidade) {
+    if (!validate_1.IPTUVALIDATE[estado] || !validate_1.IPTUVALIDATE[estado][cidade]) {
+        return true;
+    }
+    number = utils_1.getAllDigits(number);
+    return validate_1.IPTUVALIDATE[estado][cidade](number);
+};
+
+},{"../utils":15,"./create":7,"./mask":9,"./validate":10}],9:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IPTUMASKS = {
+    'minas-gerais': {
+        'belo-horizonte': {
+            text: '000.000.000.000.0',
+            textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
+        },
+        'contagem': {
+            text: '20.040.040-1',
+            textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/],
+            textMaskFunction: function mask(userInput) {
+                var numbers = userInput.match(/\d/g);
+                var numberLength = 0;
+                if (numbers) {
+                    numberLength = numbers.join('').length;
+                }
+                if (!userInput || numberLength > 9) {
+                    return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+                }
+                else {
+                    return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/];
+                }
+            }
+        }
+    },
+    'sao-paulo': {
+        'sao-paulo': {
+            text: '00000000000-0',
+            textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+        }
+    },
+    'parana': {
+        'curitiba': {
+            text: '00000000000-0',
+            textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+        }
+    }
+};
+
+},{}],10:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("../utils");
+var create_1 = require("./create");
+var validateRemoveDigito = function (number, max) {
+    number = utils_1.getAllDigits(number);
+    if (number.length > max) {
+        return false;
+    }
+    else if (number.length === max) {
+        number = number.slice(0, -1);
+    }
+    return number;
+};
+function validate_iptu_ctba(value) {
+    var number = validateRemoveDigito(value, 12);
+    if (!number) {
+        return false;
+    }
+    var dv = create_1.IPTUCREATE['parana']['curitiba'](number);
+    return parseInt(value[value.length - 1]) === dv;
+}
+exports.validate_iptu_ctba = validate_iptu_ctba;
+/**
+ * Índice Cadastral, ou inscrição imobiliária,  é o número de identificação do imóvel no cadastro da Prefeitura de Contagem.
+ * O índice é composto por 12 (doze) ou 13 (treze) números, sendo: 2 (dois) para a zona fiscal;
+ * 3 (três) ou 4 (quatro) para a quadra fiscal; 4 (quatro) para o lote fiscal; e 3 (três) para a unidade.
+ */
+function validate_iptu_contagem(number) {
+    number = validateRemoveDigito(number, 12);
+    if (!number) {
+        return false;
+    }
+}
+exports.validate_iptu_contagem = validate_iptu_contagem;
+function validate_iptu_sp(value) {
+    var number = validateRemoveDigito(value, 12);
+    if (!number) {
+        return false;
+    }
+    var dv = create_1.IPTUCREATE['sao-paulo']['sao-paulo'](number);
+    return parseInt(value[value.length - 1]) === dv;
+}
+exports.validate_iptu_sp = validate_iptu_sp;
+// export function validate_iptu(iptu: string) {
+//   let iptuClean = iptu.replace(/\./g, '');
+//   iptuClean = iptuClean.replace(/-/g, '');
+//   const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
+//   const expClean = /[a-z]{2}\d{8}/;
+//   const state = iptu.substr(0, 2).toUpperCase();
+//   if (!exp.test(iptu) && !expClean.test(iptuClean) && !(state in CEPRange)) {
+//     return false;
+//   }
+//   if (IPTU[state]) {
+//     const validateState = IPTU[state];
+//     return validateState(iptu);
+//   }
+//   return true;
+// }
+exports.IPTUVALIDATE = {
+    'sao-paulo': {
+        'sao-paulo': validate_iptu_sp,
+    },
+    'minas-gerais': {
+        'contagem': validate_iptu_contagem,
+    },
+    'parana': {
+        'curitiba': validate_iptu_ctba
+    }
+};
+
+},{"../utils":15,"./create":7}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
+var iptu_1 = require("./iptu/iptu");
 exports.MASKS = {
     aih: {
         text: '000000000000-0',
@@ -2704,7 +2822,13 @@ exports.maskBr = {
         }
         return conformToMask(inscricaoestadualValue, exports.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
     },
-    iptu: makeGeneric('iptu'),
+    iptu: function (iptuValue, estado, cidade) {
+        var mask = iptu_1.mask_iptu(iptuValue, estado, cidade);
+        if (!mask || !mask.textMask) {
+            return '';
+        }
+        return conformToMask(iptuValue, mask.textMask, { guide: false }).conformedValue;
+    },
     number: function (numberValue) {
         if (!numberValue) {
             return '';
@@ -2982,7 +3106,7 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
 }
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
 
-},{"./inscricaoestadual":6,"./utils":12,"text-mask-addons/dist/createNumberMask":22}],9:[function(require,module,exports){
+},{"./inscricaoestadual":6,"./iptu/iptu":8,"./utils":15,"text-mask-addons/dist/createNumberMask":25}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'São Paulo', 'Doze', 'Treze',
@@ -3356,7 +3480,7 @@ exports.LOCALIZACAO_CIDADES = [
     ['Mairiporã', 'São Paulo']
 ];
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PLACAS_RANGE = [
@@ -3516,7 +3640,7 @@ function validate_placa(placa) {
 }
 exports.validate_placa = validate_placa;
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function rg_sp(number) {
@@ -3583,7 +3707,7 @@ exports.default = {
     'rj': rg_rj
 };
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var estados_1 = require("./estados");
@@ -3780,8 +3904,57 @@ exports.randomEstadoSigla = function () {
 };
 exports.CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
     "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
+/**
+ *
+ */
+exports.makeGenericFaker = function (val, options) {
+    if (options === void 0) { options = null; }
+    return function () {
+        if (!val.textMask || !val.textMask.map) {
+            return '';
+        }
+        var newData = val.textMask.map(function (c, index) {
+            if (options && options[index]) {
+                return options[index]();
+            }
+            c = c.toString();
+            if (c === /\d/.toString()) {
+                return Math.floor(Math.random() * 10).toString();
+            }
+            else if (c === /[A-Za-z]/.toString()) {
+                return randomLetter(1).toString();
+            }
+            else if (c === /\w/.toString()) {
+                return randomLetterOrNumber(1).toString();
+            }
+            else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
+                c = c.replace('/[', '').replace(']/', '');
+                if (c.indexOf('-') > 0) {
+                    c = c.split('-');
+                    if (parseInt(c[1])) {
+                        var mult = c[1] - c[0];
+                        var plus = parseInt(c[0]);
+                        return (Math.floor(Math.random() * mult) + plus).toString();
+                    }
+                    else {
+                        return rand(1, [c[0], c[1]]);
+                    }
+                }
+                else if (c.indexOf('|') > 0) {
+                    c = c.split('|');
+                    var index_1 = Math.floor(Math.random() * c.length);
+                    return c[index_1];
+                }
+            }
+            else {
+                return c;
+            }
+        });
+        return newData.join('');
+    };
+};
 
-},{"./estados":4}],13:[function(require,module,exports){
+},{"./estados":4}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -3789,7 +3962,7 @@ var inscricaoestadual_1 = require("./inscricaoestadual");
 var placa_1 = require("./placa");
 var create_1 = require("./create");
 var rg_1 = require("./rg");
-var iptu_1 = require("./iptu");
+var iptu_1 = require("./iptu/iptu");
 function validate_aih(aih) {
     var aihClean = aih.replace(/[^\d]+/g, '');
     var dvOriginal = aihClean.substr(-1);
@@ -4014,22 +4187,6 @@ function validate_email(email) {
 function validate_endereco(number) {
     return true;
 }
-function validate_iptu(iptu) {
-    var iptuClean = iptu.replace(/\./g, '');
-    iptuClean = iptuClean.replace(/-/g, '');
-    var exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
-    var expClean = /[a-z]{2}\d{8}/;
-    var state = iptu.substr(0, 2).toUpperCase();
-    if (!exp.test(iptu) && !expClean.test(iptuClean) && !(state in exports.CEPRange)) {
-        return false;
-    }
-    if (iptu_1.default[state]) {
-        var validateState = iptu_1.default[state];
-        return validateState(iptu);
-    }
-    return true;
-}
-exports.validate_iptu = validate_iptu;
 function validate_number(number) {
     if (number.split(',').length > 2) {
         return false;
@@ -4211,7 +4368,7 @@ exports.validateBr = {
     email: validate_email,
     endereco: validate_endereco,
     inscricaoestadual: inscricaoestadual_1.validate_inscricaoestadual,
-    iptu: validate_iptu,
+    iptu: iptu_1.validate_iptu,
     number: validate_number,
     porcentagem: validate_porcentagem,
     pispasep: validate_pispasep,
@@ -4228,7 +4385,7 @@ exports.validateBr = {
     username: validate_username
 };
 
-},{"./create":3,"./inscricaoestadual":6,"./iptu":7,"./placa":10,"./rg":11,"./utils":12}],14:[function(require,module,exports){
+},{"./create":3,"./inscricaoestadual":6,"./iptu/iptu":8,"./placa":13,"./rg":14,"./utils":15}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CNH_CATEGORIAS = ["A", "AB", "B", "C", "D", "E", "ACC", "MOTOR-CASA"];
@@ -4566,7 +4723,7 @@ exports.VEICULOS = [
     { "modelo": "T-4 DESERT STORM 4x4 3.0 TB Int Diesel", "marca": "Troller" }
 ];
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /* eslint indent: ["warn", 4] */
 
 
@@ -4744,7 +4901,7 @@ class DRange {
 
 module.exports = DRange;
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 const ret    = require('ret');
 const DRange = require('drange');
 const types  = ret.types;
@@ -5007,7 +5164,7 @@ module.exports = class RandExp {
   }
 };
 
-},{"drange":15,"ret":17}],17:[function(require,module,exports){
+},{"drange":18,"ret":20}],20:[function(require,module,exports){
 const util      = require('./util');
 const types     = require('./types');
 const sets      = require('./sets');
@@ -5291,14 +5448,14 @@ module.exports = (regexpStr) => {
 
 module.exports.types = types;
 
-},{"./positions":18,"./sets":19,"./types":20,"./util":21}],18:[function(require,module,exports){
+},{"./positions":21,"./sets":22,"./types":23,"./util":24}],21:[function(require,module,exports){
 const types = require('./types');
 exports.wordBoundary = () => ({ type: types.POSITION, value: 'b' });
 exports.nonWordBoundary = () => ({ type: types.POSITION, value: 'B' });
 exports.begin = () => ({ type: types.POSITION, value: '^' });
 exports.end = () => ({ type: types.POSITION, value: '$' });
 
-},{"./types":20}],19:[function(require,module,exports){
+},{"./types":23}],22:[function(require,module,exports){
 const types = require('./types');
 
 const INTS = () => [{ type: types.RANGE , from: 48, to: 57 }];
@@ -5349,7 +5506,7 @@ exports.whitespace = () => ({ type: types.SET, set: WHITESPACE(), not: false });
 exports.notWhitespace = () => ({ type: types.SET, set: WHITESPACE(), not: true });
 exports.anyChar = () => ({ type: types.SET, set: NOTANYCHAR(), not: true });
 
-},{"./types":20}],20:[function(require,module,exports){
+},{"./types":23}],23:[function(require,module,exports){
 module.exports = {
   ROOT       : 0,
   GROUP      : 1,
@@ -5361,7 +5518,7 @@ module.exports = {
   CHAR       : 7,
 };
 
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 const types = require('./types');
 const sets  = require('./sets');
 
@@ -5471,7 +5628,7 @@ exports.error = (regexp, msg) => {
   throw new SyntaxError('Invalid regular expression: /' + regexp + '/: ' + msg);
 };
 
-},{"./sets":19,"./types":20}],22:[function(require,module,exports){
+},{"./sets":22,"./types":23}],25:[function(require,module,exports){
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.createNumberMask=t():e.createNumberMask=t()}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var i=o[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(2)},,function(e,t){"use strict";function o(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,t=e.length;if(e===l||e[0]===y[0]&&1===t)return y.split(l).concat([v]).concat(g.split(l));if(e===k&&M)return y.split(l).concat(["0",k,v]).concat(g.split(l));var o=e[0]===s&&q;o&&(e=e.toString().substr(1));var c=e.lastIndexOf(k),u=c!==-1,a=void 0,b=void 0,h=void 0;if(e.slice(T*-1)===g&&(e=e.slice(0,T*-1)),u&&(M||$)?(a=e.slice(e.slice(0,R)===y?R:0,c),b=e.slice(c+1,t),b=n(b.replace(f,l))):a=e.slice(0,R)===y?e.slice(R):e,P&&("undefined"==typeof P?"undefined":r(P))===p){var S="."===j?"[.]":""+j,w=(a.match(new RegExp(S,"g"))||[]).length;a=a.slice(0,P+w*Z)}return a=a.replace(f,l),E||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?i(a,j):a,h=n(a),(u&&M||$===!0)&&(e[c-1]!==k&&h.push(m),h.push(k,m),b&&(("undefined"==typeof L?"undefined":r(L))===p&&(b=b.slice(0,L)),h=h.concat(b)),$===!0&&e[c-1]===k&&h.push(v)),R>0&&(h=y.split(l).concat(h)),o&&(h.length===R&&h.push(v),h=[d].concat(h)),g.length>0&&(h=h.concat(g.split(l))),h}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},o=t.prefix,y=void 0===o?c:o,b=t.suffix,g=void 0===b?l:b,h=t.includeThousandsSeparator,x=void 0===h||h,S=t.thousandsSeparatorSymbol,j=void 0===S?u:S,w=t.allowDecimal,M=void 0!==w&&w,N=t.decimalSymbol,k=void 0===N?a:N,D=t.decimalLimit,L=void 0===D?2:D,O=t.requireDecimal,$=void 0!==O&&O,_=t.allowNegative,q=void 0!==_&&_,B=t.allowLeadingZeroes,E=void 0!==B&&B,I=t.integerLimit,P=void 0===I?null:I,R=y&&y.length||0,T=g&&g.length||0,Z=j&&j.length||0;return e.instanceOf="createNumberMask",e}function n(e){return e.split(l).map(function(e){return v.test(e)?v:e})}function i(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=o;var c="$",l="",u=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,m="[]"}])});
 },{}]},{},[2])(2)
 });

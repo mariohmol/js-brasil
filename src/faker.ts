@@ -7,53 +7,14 @@ import {
   create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
   create_cns, create_ect, create_certidao, create_aih, create_pispasep
 } from './create';
-import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify } from './utils';
+import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify, makeGenericFaker } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
 import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro, TELEFONE_ESTADO, CEP_ESTADO } from '../addons/pessoas';
-import cnaes from '../addons/cnaes';
+import { faker_iptu } from './iptu/create';
+// import cnaes from '../addons/cnaes';
 
-const makeGeneric = (val: any, options = null) => {
-  return () => {
-    if (!val.textMask || !val.textMask.map) {
-      return '';
-    }
-    const newData = val.textMask.map((c: string | any[], index: string | number) => {
-      if (options && options[index]) {
-        return options[index]();
-      }
-      c = c.toString();
-      if (c === /\d/.toString()) {
-        return Math.floor(Math.random() * 10).toString()
-      } else if (c === /[A-Za-z]/.toString()) {
-        return randomLetter(1).toString();
-      } else if (c === /\w/.toString()) {
-        return randomLetterOrNumber(1).toString();
-      } else if (c.indexOf('/[') === 0) { // /[1-9]/ ou /[5-9]/
-        c = c.replace('/[', '').replace(']/', '');
 
-        if (c.indexOf('-') > 0) {
-          c = c.split('-');
-          if (parseInt(c[1])) {
-            const mult = c[1] - c[0];
-            const plus = parseInt(c[0]);
-            return (Math.floor(Math.random() * mult) + plus).toString();
-          } else {
-            return rand(1, [c[0], c[1]]);
-          }
-        } else if (c.indexOf('|') > 0) {
-          c = c.split('|');
-          const index = Math.floor(Math.random() * c.length);
-          return c[index];
-        }
-
-      } else {
-        return c;
-      }
-    });
-    return newData.join('');
-  };
-}
 
 export const fakerBr = {
   aih: (uf = 35, ano = 19, tipo = 1, seq = null) => {
@@ -89,30 +50,30 @@ export const fakerBr = {
     return randexp(CEPRange[state]);
   },
   certidao: () => {
-    let value = makeGeneric(MASKS['certidao'])();
+    let value = makeGenericFaker(MASKS['certidao'])();
     let certidao = getAllDigits(value);
     let check = create_certidao(certidao);
     return certidao.substr(0, certidao.length - 2) + check;
   },
   chassi: () => {
-    let chassi = makeGeneric(MASKS['chassi'])();
+    let chassi = makeGenericFaker(MASKS['chassi'])();
     chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
     return chassi;
   },
   cid: () => {
-    // let chassi = makeGeneric(MASKS['chassi'])();
+    // let chassi = makeGenericFaker(MASKS['chassi'])();
     // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
     // return chassi;
   },
-  cnae: makeGeneric(MASKS['cnae']),
+  cnae: makeGenericFaker(MASKS['cnae']),
   cnh: () => {
-    let cnh = makeGeneric(MASKS['cnh'])();
+    let cnh = makeGenericFaker(MASKS['cnh'])();
     const nodigits = cnh;
     let check = create_cnh(nodigits);
     return cnh.substr(0, cnh.length - 2) + check;
   },
   cnpj: () => {
-    let cnpj = makeGeneric(MASKS['cnpj'])();
+    let cnpj = makeGenericFaker(MASKS['cnpj'])();
     cnpj = cnpj.replace(/[^\d]+/g, '');
 
     let restos = create_cnpj(cnpj);
@@ -124,7 +85,7 @@ export const fakerBr = {
   cns: () => {
     let cns;
     do {
-      cns = makeGeneric(MASKS['cns'])();
+      cns = makeGenericFaker(MASKS['cns'])();
 
       cns = getAllDigits(cns);
       const primeiroDigito = parseInt(cns[0]);
@@ -142,16 +103,16 @@ export const fakerBr = {
     return cns;
 
   },
-  contabanco: makeGeneric(MASKS['contabanco']),
+  contabanco: makeGenericFaker(MASKS['contabanco']),
   cpf: () => {
-    let cpf = makeGeneric(MASKS['cpf'])();
+    let cpf = makeGenericFaker(MASKS['cpf'])();
     let restos = create_cpf(cpf);
     cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
     restos = create_cpf(cpf);
     return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
   },
-  cpfcnpj: makeGeneric(MASKS['cpfcnpj']),
-  cartaocredito: makeGeneric(MASKS['cartaocredito']),
+  cpfcnpj: makeGenericFaker(MASKS['cpfcnpj']),
+  cartaocredito: makeGenericFaker(MASKS['cartaocredito']),
   currency: () => {
     const x = Math.random() * 10000;
     let final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -183,7 +144,7 @@ export const fakerBr = {
     return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
   },
   ect: () => {
-    const ect = makeGeneric(MASKS['ect'])();
+    const ect = makeGenericFaker(MASKS['ect'])();
     const dv = create_ect(ect.substr(0, ect.length - 1));
     return ect.substr(0, ect.length - 1) + dv;
   },
@@ -268,13 +229,15 @@ export const fakerBr = {
   },
   inscricaoestadual: estado => {
     estado = estado.toLowerCase();
-    let val = makeGeneric(MASKS['inscricaoestadual'][estado])();
+    let val = makeGenericFaker(MASKS['inscricaoestadual'][estado])();
     val = val.match(/\d/g).join('');
     const newval = generateInscricaoEstadual[estado](val);
     return newval;
   },
 
-  iptu: makeGeneric(MASKS['iptu']),
+  iptu: (estado, cidade) =>{
+    return faker_iptu(estado, cidade);
+  },
 
   number: (options: any = {}) => {
     if (!options.max) {
@@ -292,7 +255,7 @@ export const fakerBr = {
     }
     return parseFloat(x.toFixed(options.decimals));
   },
-  porcentagem: makeGeneric(MASKS['porcentagem']),
+  porcentagem: makeGenericFaker(MASKS['porcentagem']),
   pessoa: (options: any = {}) => {
     const faker = this.fakerBr;
     if (!options.estado) {
@@ -340,7 +303,7 @@ export const fakerBr = {
 
   },
   pispasep: () => {
-    let pis = makeGeneric(MASKS['pispasep'])();
+    let pis = makeGenericFaker(MASKS['pispasep'])();
     const digit = create_pispasep(pis);
     const values = pis.split('');
     values[values.length - 1] = digit;
@@ -349,13 +312,13 @@ export const fakerBr = {
   placa: () => {
     let placa: any;
     do {
-      placa = makeGeneric(MASKS['placa'])();
+      placa = makeGenericFaker(MASKS['placa'])();
     } while (!validate_placa(placa));
     return placa;
   },
-  processo: makeGeneric(MASKS['processo']),
+  processo: makeGenericFaker(MASKS['processo']),
   renavam: () => {
-    const renavam = makeGeneric(MASKS['renavam'])();
+    const renavam = makeGenericFaker(MASKS['renavam'])();
     const dv = create_renavam(renavam);
     return renavam.substr(0, renavam.length - 1) + dv;
   },
@@ -364,7 +327,7 @@ export const fakerBr = {
       options.estado = randomEstadoSigla();
     }
     const estado = options.estado.split('');
-    const makeRg = makeGeneric(MASKS['rg'], {
+    const makeRg = makeGenericFaker(MASKS['rg'], {
       0: () => estado[0],
       1: () => estado[1]
     });
@@ -409,9 +372,9 @@ export const fakerBr = {
     return url + nome + dominio;
 
   },
-  sped: makeGeneric(MASKS['sped']),
+  sped: makeGenericFaker(MASKS['sped']),
   telefone: (options: any = {}) => {
-    let telefone: any = makeGeneric(MASKS['telefone'])();
+    let telefone: any = makeGenericFaker(MASKS['telefone'])();
     if (options.estado) {
       const telefones = telefone.toString().split('');
       const ddd = TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
@@ -426,11 +389,11 @@ export const fakerBr = {
     }
     return telefone;
   },
-  time: makeGeneric(MASKS['time']),
+  time: makeGenericFaker(MASKS['time']),
   titulo: () => {
     let titulo;
     do {
-      titulo = makeGeneric(MASKS['titulo'])();
+      titulo = makeGenericFaker(MASKS['titulo'])();
       let number = titulo.substr(0, titulo.length - 2);
 
       if (number.substr(-2) === '29') {

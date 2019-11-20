@@ -1,6 +1,7 @@
 import { isArray, processCaretTraps } from './utils';
 import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+import { mask_iptu } from './iptu/iptu';
 
 export const MASKS = {
   aih: {
@@ -258,12 +259,22 @@ export const maskBr = {
       { guide: false }
     ).conformedValue;
   },
-  iptu: makeGeneric('iptu'),
+  iptu: (iptuValue: string, estado: string, cidade: string) => {
+    const mask = mask_iptu(iptuValue, estado, cidade);
+    if (!mask || !mask.textMask) {
+      return '';
+    }
+    return conformToMask(
+      iptuValue,
+      mask.textMask,
+      { guide: false }
+    ).conformedValue;
+  },
   number: (numberValue: any) => {
     if (!numberValue) {
       return '';
     }
-    
+
     if (!numberValue.split) {
       numberValue += '';
       numberValue = numberValue.replace('.', ',');
@@ -271,7 +282,7 @@ export const maskBr = {
 
     const vals = numberValue.split(',');
     const mask = MASKS.number.textMask(vals[0]);
-    let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString() ) : '00';
+    let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
     if (decimals.length > 2) {
       decimals = decimals.substring(0, 2);
     }
