@@ -16,8 +16,8 @@
     "a:browserify": "browserify dist/addons/addons.js --standalone jsbrasil-addons -o js-brasil-addons.js",
     "a:dist": "npm run a:build && npm run a:browserify && cp js-brasil-addons.js dist/",
     "publish-npm": "npm run dist && npm publish",
-    "demo": "cp js-brasil.js demo/ && cd demo && http-server",
-    "demo-full": "npm run dist && cp js-brasil.js demo/ && cd demo && http-server"
+    "demo": "cp js-brasil.js docs/ && cd docs && http-server",
+    "demo-full": "npm run dist && cp js-brasil.js docs/ && cd docs && http-server"
   },
   "repository": {
     "type": "git",
