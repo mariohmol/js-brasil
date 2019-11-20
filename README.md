@@ -22,6 +22,8 @@ Plugins para [Angular](https://github.com/mariohmol/ng-brazil) e
 
 Veja tudo em ação no Gerador Brasileiro - http://geradorbrasileiro.com/
 
+Ou veja um exemplo de código live: https://jsfiddle.net/mariohmol/qnmxhwrb/6/
+
 
 
 
