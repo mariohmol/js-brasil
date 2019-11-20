@@ -222,8 +222,99 @@ export function validate_cns(value) {
 
 
 export function validate_cartaocredito(value) {
+  value = getAllDigits(value);
+  const number = value.slice(0, 16);
+  const mes = value.slice(16, 18);
+  const ano = value.slice(18, 20);
+  const cvv = value.slice(20, 23);
+  
+  const d = new Date();
+  const anoAtual = (d.getFullYear() - 2000);
+  if (ano && ano < anoAtual) {
+    return false;
+  }
+  if (mes && mes < d.getMonth() + 1 && parseInt(ano) === anoAtual) {
+    return false;
+  }
+
+  if (cvv) {
+    const validcvv = validate_cvv(cvv);
+    if (validcvv.isValid === false) {
+      return false;
+    }
+  }
+
+  let found;
+  Object.keys(creditCardValidator).forEach(key => {
+    if (creditCardValidator[key].test(number)) {
+      found = key;
+    }
+  });
+  return !!found;
 
 }
+
+function validate_cvv(value, maxLength: any = 3) {
+  maxLength = maxLength instanceof Array ? maxLength : [maxLength];
+
+  if (typeof value !== 'string') {
+    return { isValid: false, isPotentiallyValid: false };
+  }
+  if (!/^\d*$/.test(value)) {
+    return { isValid: false, isPotentiallyValid: false };
+  }
+
+  var i = 0;
+  const max = value.length;
+  for (; i < maxLength.length; i++) {
+    if (max === maxLength[i]) {
+      return { isValid: true, isPotentiallyValid: true };
+    }
+  }
+
+  if (value.length < Math.min.apply(null, maxLength)) {
+    return { isValid: false, isPotentiallyValid: true };
+  }
+
+  var maximum = maxLength;
+  var i = 0;
+
+  for (; i < maxLength.length; i++) {
+    maximum = maxLength[i] > maximum ? maxLength[i] : maximum;
+  }
+
+  if (value.length > maximum) {
+    return { isValid: false, isPotentiallyValid: false };
+  }
+
+  return { isValid: true, isPotentiallyValid: true };
+}
+
+
+/**
+ *     A hash of valid CC abbreviations and regular expressions
+    mc: Mastercard
+    ec: Eurocard
+    vi: Visa
+    ax: American Express
+    dc: Diners Club
+    bl: Carte Blanch
+    di: Discover
+    jcb: JCB
+    er: Enroute
+*/
+export const creditCardValidator = {
+  'mc': /5[1-5][0-9]{14}/,
+  'ec': /5[1-5][0-9]{14}/,
+  'vi': /4(?:[0-9]{12}|[0-9]{15})/,
+  'ax': /3[47][0-9]{13}/,
+  'dc': /3(?:0[0-5][0-9]{11}|[68][0-9]{12})/,
+  'bl': /3(?:0[0-5][0-9]{11}|[68][0-9]{12})/,
+  'di': /6011[0-9]{12}/,
+  'jcb': /(?:3[0-9]{15}|(2131|1800)[0-9]{11})/,
+  'er': /2(?:014|149)[0-9]{11}/
+};
+
 
 export function validate_currency(currency: string | number) {
   if (typeof currency === 'number') {

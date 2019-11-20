@@ -85,9 +85,54 @@ describe('Validate test', () => {
     expect(validateBr.cpf('1234')).to.be.false;
   });
 
-  it('Credit Card - TODO', () => {
-    // expect(validateBr.cartaocredito('56.853.433/0001-44')).to.be.true;
-    // expect(validateBr.cartaocredito('1234')).to.be.false;
+  context('Cartão de Crédito', () => {
+    it('Varios numeros', () => {
+      const cards = [
+        //Visa
+        4188070876106948,
+        4828520877461391,
+        4235847202560382,
+        4583169254516867,
+        4127767936125719,
+
+        // MasterCard
+        5544041389465929,
+        5534440068754722,
+        5494914497723795,
+        5314873598838001,
+        5224028755804580,
+
+        // Discover
+        6011523319985755,
+        6011530975815416,
+        6011855196654181,
+        6011863578329737,
+        6011156237485580,
+
+        // AmericanExpress
+        377746315429590,
+        371710805536914,
+        372480110818253,
+        349390722611337,
+        343993210018935,
+
+        // JCB
+        3558158014498220,
+        3548269233562333,
+        3529944014226604,
+        3558044445895491,
+        3528714886433609];
+
+      cards.forEach(card => {
+        expect(validateBr.cartaocredito(card)).to.be.true;
+      });
+    })
+    it('Completo', () => {
+      expect(validateBr.cartaocredito('4688966912267492 01/21 488')).to.be.true;
+      expect(validateBr.cartaocredito('4688966912267492 01/19 488')).to.be.false;
+      expect(validateBr.cartaocredito('4688966912267492 10/19 488')).to.be.false;
+      expect(validateBr.cartaocredito('1234')).to.be.false;
+    });
   });
 
   it('Data', () => {
@@ -133,8 +178,8 @@ describe('Validate test', () => {
   });
 
   it('IPTU', () => {
-    expect(validateBr.iptu('668.686.179.694.6','minas-gerais','belo-horizonte')).to.be.true;
-    expect(validateBr.iptu('68152735387-9','sao-paulo','sao-paulo')).to.be.true;
+    expect(validateBr.iptu('668.686.179.694.6', 'minas-gerais', 'belo-horizonte')).to.be.true;
+    expect(validateBr.iptu('68152735387-9', 'sao-paulo', 'sao-paulo')).to.be.true;
     // expect(validateBr.iptu('12891948261-2','parana','curitiba')).to.be.true;
   });
 
