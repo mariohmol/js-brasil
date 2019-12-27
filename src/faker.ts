@@ -158,7 +158,7 @@ export const fakerBr = {
     nome = slugify(nome);
 
     let empresa = nome;
-    if(options.empresa){
+    if (options.empresa) {
       empresa = options.empresa;
     }
     const site = faker.site({ nome: empresa, url: '' });
@@ -235,7 +235,7 @@ export const fakerBr = {
     return newval;
   },
 
-  iptu: (estado, cidade) =>{
+  iptu: (estado, cidade) => {
     return faker_iptu(estado, cidade);
   },
 

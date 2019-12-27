@@ -227,7 +227,7 @@ export function validate_cartaocredito(value) {
   const mes = value.slice(16, 18);
   const ano = value.slice(18, 20);
   const cvv = value.slice(20, 23);
-  
+
   const d = new Date();
   const anoAtual = (d.getFullYear() - 2000);
   if (ano && ano < anoAtual) {
