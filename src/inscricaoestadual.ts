@@ -569,10 +569,10 @@ export function validate_inscricaoestadual(ie: string | Array<string>, estado: a
 
   if (Array.isArray(ie)) {
     let retorno = true;
-    ie.forEach(function (i) { 
-      if(!validate_inscricaoestadual(i, estado)) {
+    ie.forEach(function (i) {
+      if (!validate_inscricaoestadual(i, estado)) {
         retorno = false;
-      } 
+      }
     });
     return retorno;
   }

@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "watch": "onchange 'src/**/*.ts' '*.ts' -- npm run build",
+    "watch": "npm run build & onchange 'src/**/*.ts' '*.ts' -- npm run build",
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
     "clean": "find ./src -name \"*.js\" -type f -delete & rm *.js & rm -rf dist/ && mkdir dist ",
     "test": "mocha -r ts-node/register test/**.ts",

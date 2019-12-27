@@ -202,3 +202,6 @@ Utilize com React:
 Quer usar estes métodos através de uma API Web? Entre em contato conosco!
 
 
+# Contribuir
+
+Para ajudar veja nossa issues e use a seguinte documentação: [Contribuir](CONTRIBUTING.md)
