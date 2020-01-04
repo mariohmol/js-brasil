@@ -141,7 +141,16 @@ export const fakerBr = {
     if (config.anos) {
       date.setFullYear(date.getFullYear() + config.anos);
     }
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    let month: any = date.getMonth() + 1;
+    if (month < 10) {
+      month = '0' + month;
+    }
+
+    let day: any = date.getDate();
+    if (day < 10) {
+      day = '0' + day;
+    }
+    return `${day}/${month}/${date.getFullYear()}`;
   },
   ect: () => {
     const ect = makeGenericFaker(MASKS['ect'])();

@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
@@ -1397,7 +1397,15 @@ exports.fakerBr = {
         if (config.anos) {
             date.setFullYear(date.getFullYear() + config.anos);
         }
-        return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+        var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return day + "/" + month + "/" + date.getFullYear();
     },
     ect: function () {
         var ect = utils_1.makeGenericFaker(mask_1.MASKS['ect'])();
@@ -3773,6 +3781,9 @@ function allNumbersAreSame(inputValue) {
 }
 exports.allNumbersAreSame = allNumbersAreSame;
 function getAllDigits(input) {
+    if (!input.match) {
+        input = input.toString();
+    }
     var match = input.match(/\d/g);
     if (match) {
         return match.join("");
@@ -4150,8 +4161,86 @@ function validate_cns(value) {
 }
 exports.validate_cns = validate_cns;
 function validate_cartaocredito(value) {
+    value = utils_1.getAllDigits(value);
+    var number = value.slice(0, 16);
+    var mes = value.slice(16, 18);
+    var ano = value.slice(18, 20);
+    var cvv = value.slice(20, 23);
+    var d = new Date();
+    var anoAtual = (d.getFullYear() - 2000);
+    if (ano && ano < anoAtual) {
+        return false;
+    }
+    if (mes && mes < d.getMonth() + 1 && parseInt(ano) === anoAtual) {
+        return false;
+    }
+    if (cvv) {
+        var validcvv = validate_cvv(cvv);
+        if (validcvv.isValid === false) {
+            return false;
+        }
+    }
+    var found;
+    Object.keys(exports.creditCardValidator).forEach(function (key) {
+        if (exports.creditCardValidator[key].test(number)) {
+            found = key;
+        }
+    });
+    return !!found;
 }
 exports.validate_cartaocredito = validate_cartaocredito;
+function validate_cvv(value, maxLength) {
+    if (maxLength === void 0) { maxLength = 3; }
+    maxLength = maxLength instanceof Array ? maxLength : [maxLength];
+    if (typeof value !== 'string') {
+        return { isValid: false, isPotentiallyValid: false };
+    }
+    if (!/^\d*$/.test(value)) {
+        return { isValid: false, isPotentiallyValid: false };
+    }
+    var i = 0;
+    var max = value.length;
+    for (; i < maxLength.length; i++) {
+        if (max === maxLength[i]) {
+            return { isValid: true, isPotentiallyValid: true };
+        }
+    }
+    if (value.length < Math.min.apply(null, maxLength)) {
+        return { isValid: false, isPotentiallyValid: true };
+    }
+    var maximum = maxLength;
+    var i = 0;
+    for (; i < maxLength.length; i++) {
+        maximum = maxLength[i] > maximum ? maxLength[i] : maximum;
+    }
+    if (value.length > maximum) {
+        return { isValid: false, isPotentiallyValid: false };
+    }
+    return { isValid: true, isPotentiallyValid: true };
+}
+/**
+ *     A hash of valid CC abbreviations and regular expressions
+    mc: Mastercard
+    ec: Eurocard
+    vi: Visa
+    ax: American Express
+    dc: Diners Club
+    bl: Carte Blanch
+    di: Discover
+    jcb: JCB
+    er: Enroute
+*/
+exports.creditCardValidator = {
+    'mc': /5[1-5][0-9]{14}/,
+    'ec': /5[1-5][0-9]{14}/,
+    'vi': /4(?:[0-9]{12}|[0-9]{15})/,
+    'ax': /3[47][0-9]{13}/,
+    'dc': /3(?:0[0-5][0-9]{11}|[68][0-9]{12})/,
+    'bl': /3(?:0[0-5][0-9]{11}|[68][0-9]{12})/,
+    'di': /6011[0-9]{12}/,
+    'jcb': /(?:3[0-9]{15}|(2131|1800)[0-9]{11})/,
+    'er': /2(?:014|149)[0-9]{11}/
+};
 function validate_currency(currency) {
     if (typeof currency === 'number') {
         return true;

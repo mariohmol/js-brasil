@@ -1,6 +1,6 @@
 {
   "name": "js-brasil",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
@@ -16,8 +16,10 @@
     "a:browserify": "browserify dist/addons/addons.js --standalone jsbrasil-addons -o js-brasil-addons.js",
     "a:dist": "npm run a:build && npm run a:browserify && cp js-brasil-addons.js dist/",
     "publish-npm": "npm run dist && npm publish",
-    "demo": "cp js-brasil.js docs/ && cd docs && http-server",
-    "demo-full": "npm run dist && cp js-brasil.js docs/ && cd docs && http-server"
+    "start": "cd docs && http-server",
+    "demo": "cp js-brasil.js docs/ && npm run start",
+    "demo-build": "npm run dist && cp js-brasil.js docs/",
+    "demo-full": "npm run dist && npm run demo"
   },
   "repository": {
     "type": "git",
