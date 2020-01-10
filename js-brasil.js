@@ -4250,7 +4250,13 @@ function validate_currency(currency) {
 }
 exports.validate_currency = validate_currency;
 function validate_data(value) {
+    if (!value) {
+        return false;
+    }
     var values = value.split('/');
+    if (values.length !== 3) {
+        return false;
+    }
     if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
         return false;
     }

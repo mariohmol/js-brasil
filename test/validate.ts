@@ -139,6 +139,11 @@ describe('Validate test', () => {
     expect(validateBr.data('01/12/1980')).to.be.true;
     expect(validateBr.data('01/13/1980')).to.be.false;
     expect(validateBr.data('32/12/1980')).to.be.false;
+    expect(validateBr.data('')).to.be.false;
+    expect(validateBr.data(null)).to.be.false;
+    expect(validateBr.data('32')).to.be.false;
+    expect(validateBr.data('32/12')).to.be.false;
+    expect(validateBr.data('32/12/')).to.be.false;
   });
 
   context('Moeda', () => {

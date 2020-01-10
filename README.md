@@ -17,8 +17,11 @@ Site, Telefone , Time (data/hora), Título de Eleitor , Veículo
 
 Módulos ValidateBR, MaskBR e FakerBR para nodejs ou browser.
 
-Plugins para [Angular](https://github.com/mariohmol/ng-brazil) e 
-[React](https://github.com/mariohmol/react-brazil)
+Plugins para :
+
+* [Angular](https://github.com/mariohmol/ng-brazil) 
+* [React](https://github.com/mariohmol/react-brazil)
+* [Vue](https://github.com/mariohmol/vue-brazil)
 
 Veja tudo em ação no Gerador Brasileiro - http://geradorbrasileiro.com/
 

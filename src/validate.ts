@@ -326,7 +326,13 @@ export function validate_currency(currency: string | number) {
 
 
 function validate_data(value) {
+  if (!value) {
+    return false;
+  }
   const values = value.split('/');
+  if (values.length !== 3) {
+    return false;
+  }
   if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
     return false;
   }
