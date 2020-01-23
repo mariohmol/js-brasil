@@ -4133,6 +4133,12 @@ function validate_cpf(strCPF) {
     if (strCPF.length !== 11) {
         return false;
     }
+    //verifica se todos os numeros sao iguais
+    var expIguais = /^(?!.*(\d)\1{10}).*$/;
+    if (!strCPF.match(expIguais)) {
+        return false;
+    }
+    // valida digito verificados
     var restos = create_1.create_cpf(strCPF);
     if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
         return false;
