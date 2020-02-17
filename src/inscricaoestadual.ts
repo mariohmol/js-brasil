@@ -1,12 +1,11 @@
-import { allNumbersAreSame } from "./utils";
+import { allNumbersAreSame } from './utils';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
  */
 
-
 export const generateInscricaoEstadual = {
-  ac: function (valor: any) {
+  ac: function(valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -23,7 +22,7 @@ export const generateInscricaoEstadual = {
     return base + primeiroDigito + segundoDigito;
   },
 
-  am: function (valor: any) {
+  am: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -31,7 +30,7 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor);
   },
 
-  al: function (valor: any) {
+  al: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -51,18 +50,16 @@ export const generateInscricaoEstadual = {
     //     return false;
     // }
 
-    const base: any = primeiros(valor);
+    const base = primeiros(valor);
 
-    let resto = mod(base) * 10;
+    const resto = 11 - mod(base);
 
-    const resT = resto / 11
-    resto = resto - (resT * 11);
     const digito = resto === 10 ? 0 : resto;
 
     return base + digito;
   },
 
-  ap: function (valor: any) {
+  ap: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -100,7 +97,7 @@ export const generateInscricaoEstadual = {
     return base + digito;
   },
 
-  ba: function (valor: any) {
+  ba: function(valor: any) {
     if (tamanhoNaoE(valor, 8) && tamanhoNaoE(valor)) {
       return false;
     }
@@ -137,14 +134,14 @@ export const generateInscricaoEstadual = {
     return base + primeiroDigito + segundoDigito;
   },
 
-  ce: function (valor: any) {
+  ce: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
     return calculoTrivialGenerate(valor);
   },
 
-  df: function (valor: any) {
+  df: function(valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -161,10 +158,10 @@ export const generateInscricaoEstadual = {
     return base + primeiro + segundo;
   },
 
-  es: function (valor: any) {
+  es: function(valor: any) {
     return calculoTrivialGenerate(valor);
   },
-  go: function (valor: any) {
+  go: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -196,7 +193,7 @@ export const generateInscricaoEstadual = {
 
     return base + digito;
   },
-  ma: function (valor: any) {
+  ma: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -208,7 +205,7 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor);
   },
 
-  mg: function (valor: any) {
+  mg: function(valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
@@ -218,17 +215,21 @@ export const generateInscricaoEstadual = {
     const baseComZero = valor.substring(0, 3) + '0' + valor.substring(3, 11);
 
     let i = 0;
-    const produtorioLiteral = baseComZero.split('').reduceRight(function (anterior, atual) {
-      if (i > [2, 1].length - 1) {
-        i = 0;
-      }
+    const produtorioLiteral = baseComZero
+      .split('')
+      .reduceRight(function(anterior, atual) {
+        if (i > [2, 1].length - 1) {
+          i = 0;
+        }
 
-      return ([2, 1][i++] * parseInt(atual, 10)).toString() + anterior.toString();
-    }, '').split('').reduce(function (anterior, atual) {
-      return anterior + parseInt(atual, 10);
-    }, 0);
+        return ([2, 1][i++] * parseInt(atual, 10)).toString() + anterior.toString();
+      }, '')
+      .split('')
+      .reduce(function(anterior, atual) {
+        return anterior + parseInt(atual, 10);
+      }, 0);
 
-    let primeiro: any = ((Math.floor(produtorioLiteral / 10) + 1) * 10) - produtorioLiteral;
+    let primeiro: any = (Math.floor(produtorioLiteral / 10) + 1) * 10 - produtorioLiteral;
     if (primeiro === 10) {
       primeiro = 0;
     }
@@ -238,14 +239,14 @@ export const generateInscricaoEstadual = {
     return base + primeiro + segundo;
   },
 
-  ms: function (valor: any) {
+  ms: function(valor: any) {
     if (naoComecaCom(valor, '28')) {
       return false;
     }
 
     return calculoTrivialGenerate(valor);
   },
-  mt: function (valor: any) {
+  mt: function(valor: any) {
     if (tamanhoNaoE(valor, 11) && tamanhoNaoE(valor)) {
       return false;
     }
@@ -253,7 +254,7 @@ export const generateInscricaoEstadual = {
     const base = tamanhoE(valor, 11) ? valor.substring(0, 10) : primeiros(valor);
     return calculoTrivialGenerate(valor, base, true);
   },
-  pa: function (valor: any) {
+  pa: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -265,7 +266,7 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor);
   },
 
-  pb: function (valor: any) {
+  pb: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -273,7 +274,7 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor);
   },
 
-  pe: function (valor: any) {
+  pe: function(valor: any) {
     const base: any = valor.substring(0, valor.length - 2);
 
     const restoPrimeiro = mod(base);
@@ -285,11 +286,11 @@ export const generateInscricaoEstadual = {
     return base + primeiro + segundo;
   },
 
-  pi: function (valor: any) {
+  pi: function(valor: any) {
     return calculoTrivialGenerate(valor);
   },
 
-  pr: function (valor: any) {
+  pr: function(valor: any) {
     if (tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -304,7 +305,7 @@ export const generateInscricaoEstadual = {
 
     return base + primeiro + segundo;
   },
-  rj: function (valor: any) {
+  rj: function(valor: any) {
     if (tamanhoNaoE(valor, 8)) {
       return false;
     }
@@ -315,7 +316,7 @@ export const generateInscricaoEstadual = {
     return base + digito;
   },
 
-  rn: function (valor: any) {
+  rn: function(valor: any) {
     if (tamanhoNaoE(valor) && tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -336,7 +337,7 @@ export const generateInscricaoEstadual = {
 
     return base + digito;
   },
-  ro: function (valor: any) {
+  ro: function(valor: any) {
     let base: any, digito: number, resultadoMod: number;
 
     if (tamanhoE(valor, 9)) {
@@ -354,7 +355,7 @@ export const generateInscricaoEstadual = {
       return false;
     }
   },
-  rr: function (valor: any) {
+  rr: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -369,7 +370,7 @@ export const generateInscricaoEstadual = {
     return base + digito;
   },
 
-  rs: function (valor: any) {
+  rs: function(valor: any) {
     if (tamanhoNaoE(valor, 10)) {
       return false;
     }
@@ -378,11 +379,11 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor, base, true);
   },
 
-  sc: function (valor: any) {
+  sc: function(valor: any) {
     return calculoTrivialGenerate(valor);
   },
 
-  se: function (valor: any) {
+  se: function(valor: any) {
     if (tamanhoNaoE(valor)) {
       return false;
     }
@@ -390,7 +391,7 @@ export const generateInscricaoEstadual = {
     return calculoTrivialGenerate(valor);
   },
 
-  sp: function (valor: any) {
+  sp: function(valor: any) {
     valor = valor.toUpperCase();
 
     let segundaBase: string;
@@ -424,7 +425,7 @@ export const generateInscricaoEstadual = {
     }
   },
 
-  to: function (valor: any) {
+  to: function(valor: any) {
     if (tamanhoNaoE(valor) && tamanhoNaoE(valor, 11)) {
       return false;
     }
@@ -444,113 +445,107 @@ export const generateInscricaoEstadual = {
     const digito = substracaoPor11SeMaiorQue2CasoContrario0(mod(base));
 
     return valor.substring(0, valor.length - 1) + digito;
-  },
+  }
 };
 
-
-
-
 const funcoes = {
-  ac: function (valor: any) {
+  ac: function(valor: any) {
     return valor === generateInscricaoEstadual.ac(valor);
   },
 
-  am: function (valor: any) {
+  am: function(valor: any) {
     return valor === generateInscricaoEstadual.am(valor);
   },
 
-  al: function (valor: any) {
+  al: function(valor: any) {
     return valor === generateInscricaoEstadual.al(valor);
   },
 
-  ap: function (valor: any) {
+  ap: function(valor: any) {
     return valor === generateInscricaoEstadual.ap(valor);
   },
 
-  ba: function (valor: any) {
+  ba: function(valor: any) {
     return valor === generateInscricaoEstadual.ba(valor);
   },
 
-  ce: function (valor: any) {
+  ce: function(valor: any) {
     return valor === generateInscricaoEstadual.ce(valor);
   },
 
-  es: function (valor: any) {
+  es: function(valor: any) {
     return valor === generateInscricaoEstadual.es(valor);
   },
-  go: function (valor: any) {
+  go: function(valor: any) {
     return valor === generateInscricaoEstadual.go(valor);
   },
-  ma: function (valor: any) {
+  ma: function(valor: any) {
     return valor === generateInscricaoEstadual.ma(valor);
   },
 
-  mg: function (valor: any) {
+  mg: function(valor: any) {
     return valor === generateInscricaoEstadual.mg(valor);
   },
 
-  ms: function (valor: any) {
+  ms: function(valor: any) {
     return valor === generateInscricaoEstadual.ms(valor);
   },
-  mt: function (valor: any) {
+  mt: function(valor: any) {
     return valor === generateInscricaoEstadual.mt(valor);
   },
-  pa: function (valor: any) {
+  pa: function(valor: any) {
     return valor === generateInscricaoEstadual.pa(valor);
   },
 
-  pb: function (valor: any) {
+  pb: function(valor: any) {
     return valor === generateInscricaoEstadual.pb(valor);
   },
 
-  pe: function (valor: any) {
+  pe: function(valor: any) {
     return valor === generateInscricaoEstadual.pe(valor);
   },
 
-  pi: function (valor: any) {
+  pi: function(valor: any) {
     return valor === generateInscricaoEstadual.pi(valor);
   },
 
-  pr: function (valor: any) {
+  pr: function(valor: any) {
     return valor === generateInscricaoEstadual.pr(valor);
   },
-  rj: function (valor: any) {
+  rj: function(valor: any) {
     return valor === generateInscricaoEstadual.rj(valor);
   },
 
-  rn: function (valor: any) {
+  rn: function(valor: any) {
     return valor === generateInscricaoEstadual.rn(valor);
   },
-  ro: function (valor: any) {
+  ro: function(valor: any) {
     return valor === generateInscricaoEstadual.ro(valor);
   },
-  rr: function (valor: any) {
+  rr: function(valor: any) {
     return valor === generateInscricaoEstadual.rr(valor);
   },
 
-  rs: function (valor: any) {
+  rs: function(valor: any) {
     return valor === generateInscricaoEstadual.rs(valor);
   },
 
-  sc: function (valor: any) {
+  sc: function(valor: any) {
     return valor === generateInscricaoEstadual.sc(valor);
   },
 
-  se: function (valor: any) {
+  se: function(valor: any) {
     return valor === generateInscricaoEstadual.se(valor);
   },
 
-  sp: function (valor: string | boolean) {
+  sp: function(valor: string | boolean) {
     return valor === generateInscricaoEstadual.sp(valor);
   },
 
-  to: function (valor: any) {
+  to: function(valor: any) {
     return valor === generateInscricaoEstadual.to(valor);
-  },
+  }
 };
-
-
-
 
 export function validate_inscricaoestadual(ie: string | Array<string>, estado: any) {
   if (eIndefinido(estado) || estado === null) {
@@ -569,7 +564,7 @@ export function validate_inscricaoestadual(ie: string | Array<string>, estado: a
 
   if (Array.isArray(ie)) {
     let retorno = true;
-    ie.forEach(function (i) {
+    ie.forEach(function(i) {
       if (!validate_inscricaoestadual(i, estado)) {
         retorno = false;
       }
@@ -602,7 +597,6 @@ export function validate_inscricaoestadual(ie: string | Array<string>, estado: a
   if (/^\d+$/.test(ie) || estado === 'sp') {
     return funcoes[estado](ie);
   }
-
 
   return false;
 }
@@ -728,15 +722,14 @@ export const IEMASKS = {
   to: {
     text: '11 81 4878119',
     textMask: [/\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
-  },
+  }
 };
-
 
 function eIndefinido(objeto: any) {
   return typeof objeto === typeof undefined;
 }
 
-function tamanhoNaoE(string: { length: number; }, tamanho = 9) {
+function tamanhoNaoE(string: { length: number }, tamanho = 9) {
   if (eIndefinido(tamanho)) {
     tamanho = 9;
   }
@@ -781,13 +774,15 @@ function mod(valor: string, multiplicadores = serie(2, 9), divisor = 11) {
 
   let i = 0;
 
-  return valor.split('').reduceRight(function (anterior: number, atual: string) {
-    if (i > multiplicadores.length - 1) {
-      i = 0;
-    }
+  return (
+    valor.split('').reduceRight(function(anterior: number, atual: string) {
+      if (i > multiplicadores.length - 1) {
+        i = 0;
+      }
 
-    return (multiplicadores[i++] * parseInt(atual, 10)) + anterior;
-  }, 0) % divisor;
+      return multiplicadores[i++] * parseInt(atual, 10) + anterior;
+    }, 0) % divisor
+  );
 }
 
 function calculoTrivialGenerate(valor: any, base: any = null, validarTamanho = false) {
@@ -818,7 +813,6 @@ function entre(valor: string | number, limiteInferior: number, limiteSuperior: n
   return valor >= limiteInferior && valor <= limiteSuperior;
 }
 
-
 function lookup(ie: any) {
   const resultado = [];
 
@@ -834,4 +828,3 @@ function lookup(ie: any) {
     return resultado;
   }
 }
-
