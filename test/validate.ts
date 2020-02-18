@@ -185,35 +185,141 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('1234', 'mg')).to.be.false;
     });
 
-    // teste cases para cada estado, exemplos gerados através do site https://www.4devs.com.br/gerador_de_inscricao_estadual
-    it('Acre', () => expect(validateBr.inscricaoestadual('0118841365457', 'ac')).to.be.true);
-    it('Alagoas', () => expect(validateBr.inscricaoestadual('248167308', 'al')).to.be.true);
-    it('Amazonas', () => expect(validateBr.inscricaoestadual('251579085', 'am')).to.be.true);
-    it('Amapá', () => expect(validateBr.inscricaoestadual('251579085', 'am')).to.be.true);
-    it('Bahia', () => expect(validateBr.inscricaoestadual('44820020', 'ba')).to.be.true);
-    it('Bahia', () => expect(validateBr.inscricaoestadual('44820020', 'ba')).to.be.true);
-    it('Ceará', () => expect(validateBr.inscricaoestadual('158270479', 'ce')).to.be.true);
-    it('Distrito Federal', () => expect(validateBr.inscricaoestadual('0716738700135', 'df')).to.be.true);
-    it('Espírito Santo', () => expect(validateBr.inscricaoestadual('309772710', 'es')).to.be.true);
-    it('Goiás', () => expect(validateBr.inscricaoestadual('110790650', 'go')).to.be.true);
-    it('Maranhão', () => expect(validateBr.inscricaoestadual('126405328', 'ma')).to.be.true);
-    it('Mato Grosso', () => expect(validateBr.inscricaoestadual('22195854536', 'mt')).to.be.true);
-    it('Mato Grosso do Sul', () => expect(validateBr.inscricaoestadual('283514256', 'ms')).to.be.true);
-    it('Minas Gerais', () => expect(validateBr.inscricaoestadual('0317464219508', 'mg')).to.be.true);
-    it('Pará', () => expect(validateBr.inscricaoestadual('150462360', 'pa')).to.be.true);
-    it('Paraíba', () => expect(validateBr.inscricaoestadual('719171326', 'pb')).to.be.true);
-    it('Paraná', () => expect(validateBr.inscricaoestadual('1596278880', 'pr')).to.be.true);
-    it('Pernambuco', () => expect(validateBr.inscricaoestadual('753924617', 'pe')).to.be.true);
-    it('Piauí', () => expect(validateBr.inscricaoestadual('337433240', 'pi')).to.be.true);
-    it('Rio de Janeiro', () => expect(validateBr.inscricaoestadual('73287022', 'rj')).to.be.true);
-    it('Rio Grande do Norte', () => expect(validateBr.inscricaoestadual('208953124', 'rn')).to.be.true);
-    it('Rondônia', () => expect(validateBr.inscricaoestadual('09843902728133', 'ro')).to.be.true);
-    it('Rio Grande do Sul', () => expect(validateBr.inscricaoestadual('3233314614', 'rs')).to.be.true);
-    it('Roraima', () => expect(validateBr.inscricaoestadual('241618508', 'rr')).to.be.true);
-    it('Santa Catarina', () => expect(validateBr.inscricaoestadual('956029990', 'sc')).to.be.true);
-    it('Sergipe', () => expect(validateBr.inscricaoestadual('585565350', 'se')).to.be.true);
-    it('São Paulo', () => expect(validateBr.inscricaoestadual('226805188210', 'sp')).to.be.true);
-    it('Tocantins', () => expect(validateBr.inscricaoestadual('27036505735', 'to')).to.be.true);
+    it('Acre', () => {
+      expect(validateBr.inscricaoestadual('0118841365457', 'ac')).to.be.true;
+      expect(validateBr.inscricaoestadual('01.800.070/625-96', 'ac')).to.be.true;
+      expect(validateBr.inscricaoestadual('01.800.070/625-90', 'ac')).to.be.false;
+    });
+    it('Alagoas', () => {
+      expect(validateBr.inscricaoestadual('248167308', 'al')).to.be.true;
+      expect(validateBr.inscricaoestadual('248748394', 'al')).to.be.true;
+      expect(validateBr.inscricaoestadual('248748390', 'al')).to.be.false;
+    });
+    it('Amazonas', () => {
+      expect(validateBr.inscricaoestadual('251579085', 'am')).to.be.true;
+      expect(validateBr.inscricaoestadual('62.703.748-8', 'am')).to.be.true;
+      expect(validateBr.inscricaoestadual('62.703.748-0', 'am')).to.be.false;
+    });
+    it('Amapá', () => {
+      expect(validateBr.inscricaoestadual('034120068', 'ap')).to.be.true;
+      expect(validateBr.inscricaoestadual('031564976', 'ap')).to.be.true;
+      expect(validateBr.inscricaoestadual('031564970', 'ap')).to.be.false;
+    });
+    it('Bahia', () => {
+      expect(validateBr.inscricaoestadual('44820020', 'ba')).to.be.true;
+      expect(validateBr.inscricaoestadual('145065-36', 'ba')).to.be.true;
+      expect(validateBr.inscricaoestadual('145065-30', 'ba')).to.be.false;
+    });
+    it('Ceará', () => {
+      expect(validateBr.inscricaoestadual('158270479', 'ce')).to.be.true;
+      expect(validateBr.inscricaoestadual('37265082-1', 'ce')).to.be.true;
+      expect(validateBr.inscricaoestadual('37265082-0', 'ce')).to.be.false;
+    });
+    it('Distrito Federal', () => {
+      expect(validateBr.inscricaoestadual('0716738700135', 'df')).to.be.true;
+      expect(validateBr.inscricaoestadual('07574259001-32', 'df')).to.be.true;
+      expect(validateBr.inscricaoestadual('07574259001-30', 'df')).to.be.false;
+    });
+    it('Espírito Santo', () => {
+      expect(validateBr.inscricaoestadual('309772710', 'es')).to.be.true;
+      expect(validateBr.inscricaoestadual('85904869-1', 'es')).to.be.true;
+      expect(validateBr.inscricaoestadual('85904869-0', 'es')).to.be.false;
+    });
+    it('Goiás', () => {
+      expect(validateBr.inscricaoestadual('110790650', 'go')).to.be.true;
+      expect(validateBr.inscricaoestadual('10.395.974-2', 'go')).to.be.true;
+      expect(validateBr.inscricaoestadual('10.395.974-0', 'go')).to.be.false;
+    });
+    it('Maranhão', () => {
+      expect(validateBr.inscricaoestadual('126405328', 'ma')).to.be.true;
+      expect(validateBr.inscricaoestadual('12237083-0', 'ma')).to.be.true;
+      expect(validateBr.inscricaoestadual('12237083-1', 'ma')).to.be.false;
+    });
+    it('Mato Grosso', () => {
+      expect(validateBr.inscricaoestadual('22195854536', 'mt')).to.be.true;
+      expect(validateBr.inscricaoestadual('9412812487-1', 'mt')).to.be.true;
+      expect(validateBr.inscricaoestadual('9412812487-0', 'mt')).to.be.false;
+    });
+    it('Mato Grosso do Sul', () => {
+      expect(validateBr.inscricaoestadual('283514256', 'ms')).to.be.true;
+      expect(validateBr.inscricaoestadual('28209221-8', 'ms')).to.be.true;
+      expect(validateBr.inscricaoestadual('28209221-0', 'ms')).to.be.false;
+    });
+    it('Minas Gerais', () => {
+      expect(validateBr.inscricaoestadual('0317464219508', 'mg')).to.be.true;
+      expect(validateBr.inscricaoestadual('863.165.909/7859', 'mg')).to.be.true;
+      expect(validateBr.inscricaoestadual('863.165.909/7850', 'mg')).to.be.false;
+    });
+    it('Pará', () => {
+      expect(validateBr.inscricaoestadual('150462360', 'pa')).to.be.true;
+      expect(validateBr.inscricaoestadual('15-150482-2', 'pa')).to.be.true;
+      expect(validateBr.inscricaoestadual('15-150482-0', 'pa')).to.be.false;
+    });
+    it('Paraíba', () => {
+      expect(validateBr.inscricaoestadual('719171326', 'pb')).to.be.true;
+      expect(validateBr.inscricaoestadual('64133311-0', 'pb')).to.be.true;
+      expect(validateBr.inscricaoestadual('64133311-1', 'pb')).to.be.false;
+    });
+    it('Paraná', () => {
+      expect(validateBr.inscricaoestadual('1596278880', 'pr')).to.be.true;
+      expect(validateBr.inscricaoestadual('331.02095-88', 'pr')).to.be.true;
+      expect(validateBr.inscricaoestadual('331.02095-80', 'pr')).to.be.false;
+    });
+    it('Pernambuco', () => {
+      expect(validateBr.inscricaoestadual('753924617', 'pe')).to.be.true;
+      expect(validateBr.inscricaoestadual('0630612-87', 'pe')).to.be.true;
+      expect(validateBr.inscricaoestadual('0630612-80', 'pe')).to.be.false;
+    });
+    it('Piauí', () => {
+      expect(validateBr.inscricaoestadual('337433240', 'pi')).to.be.true;
+      expect(validateBr.inscricaoestadual('53457519-6', 'pi')).to.be.true;
+      expect(validateBr.inscricaoestadual('53457519-0', 'pi')).to.be.false;
+    });
+    it('Rio de Janeiro', () => {
+      expect(validateBr.inscricaoestadual('73287022', 'rj')).to.be.true;
+      expect(validateBr.inscricaoestadual('19.593.95-9', 'rj')).to.be.true;
+      expect(validateBr.inscricaoestadual('19.593.95-0', 'rj')).to.be.false;
+    });
+    it('Rio Grande do Norte', () => {
+      expect(validateBr.inscricaoestadual('208953124', 'rn')).to.be.true;
+      expect(validateBr.inscricaoestadual('20.569.316-4', 'rn')).to.be.true;
+      expect(validateBr.inscricaoestadual('20.569.316-0', 'rn')).to.be.false;
+    });
+    it('Rio Grande do Sul', () => {
+      expect(validateBr.inscricaoestadual('3233314614', 'rs')).to.be.true;
+      expect(validateBr.inscricaoestadual('019/3701847', 'rs')).to.be.true;
+      expect(validateBr.inscricaoestadual('019/3701840', 'rs')).to.be.false;
+    });
+    it('Rondônia', () => {
+      expect(validateBr.inscricaoestadual('09843902728133', 'ro')).to.be.true;
+      expect(validateBr.inscricaoestadual('1559902320570-1', 'ro')).to.be.true;
+      expect(validateBr.inscricaoestadual('1559902320570-0', 'ro')).to.be.false;
+    });
+    it('Roraima', () => {
+      expect(validateBr.inscricaoestadual('241618508', 'rr')).to.be.true;
+      expect(validateBr.inscricaoestadual('24080604-2', 'rr')).to.be.true;
+      expect(validateBr.inscricaoestadual('24080604-0', 'rr')).to.be.false;
+    });
+    it('Santa Catarina', () => {
+      expect(validateBr.inscricaoestadual('956029990', 'sc')).to.be.true;
+      expect(validateBr.inscricaoestadual('814.862.420', 'sc')).to.be.true;
+      expect(validateBr.inscricaoestadual('814.862.421', 'sc')).to.be.false;
+    });
+    it('São Paulo', () => {
+      expect(validateBr.inscricaoestadual('226805188210', 'sp')).to.be.true;
+      expect(validateBr.inscricaoestadual('323.255.276.630', 'sp')).to.be.true;
+      expect(validateBr.inscricaoestadual('323.255.276.631', 'sp')).to.be.false;
+    });
+    it('Sergipe', () => {
+      expect(validateBr.inscricaoestadual('585565350', 'se')).to.be.true;
+      expect(validateBr.inscricaoestadual('61846587-1', 'se')).to.be.true;
+      expect(validateBr.inscricaoestadual('61846587-0', 'se')).to.be.false;
+    });
+    it('Tocantins', () => {
+      expect(validateBr.inscricaoestadual('27036505735', 'to')).to.be.true;
+      expect(validateBr.inscricaoestadual('8103233399-3', 'to')).to.be.true;
+      expect(validateBr.inscricaoestadual('8103233399-0', 'to')).to.be.false;
+    });
   });
 
 

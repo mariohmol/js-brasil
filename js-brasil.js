@@ -1738,9 +1738,7 @@ exports.generateInscricaoEstadual = {
         //     return false;
         // }
         var base = primeiros(valor);
-        var resto = mod(base) * 10;
-        var resT = resto / 11;
-        resto = resto - (resT * 11);
+        var resto = 11 - mod(base);
         var digito = resto === 10 ? 0 : resto;
         return base + digito;
     },
@@ -2068,6 +2066,9 @@ var funcoes = {
     },
     ce: function (valor) {
         return valor === exports.generateInscricaoEstadual.ce(valor);
+    },
+    df: function (valor) {
+        return valor === exports.generateInscricaoEstadual.df(valor);
     },
     es: function (valor) {
         return valor === exports.generateInscricaoEstadual.es(valor);
