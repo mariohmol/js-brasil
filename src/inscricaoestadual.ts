@@ -53,10 +53,8 @@ export const generateInscricaoEstadual = {
 
     const base: any = primeiros(valor);
 
-    let resto = mod(base) * 10;
+    const resto = 11 - mod(base);
 
-    const resT = resto / 11
-    resto = resto - (resT * 11);
     const digito = resto === 10 ? 0 : resto;
 
     return base + digito;
@@ -473,6 +471,10 @@ const funcoes = {
 
   ce: function (valor: any) {
     return valor === generateInscricaoEstadual.ce(valor);
+  },
+
+  df: function (valor: any) {
+    return valor === generateInscricaoEstadual.df(valor);
   },
 
   es: function (valor: any) {
