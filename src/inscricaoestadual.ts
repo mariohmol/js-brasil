@@ -1,4 +1,4 @@
-import { allNumbersAreSame } from "./utils";
+import { allNumbersAreSame } from './utils';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -471,6 +471,10 @@ const funcoes = {
 
   ce: function (valor: any) {
     return valor === generateInscricaoEstadual.ce(valor);
+  },
+
+  df: function (valor: any) {
+    return valor === generateInscricaoEstadual.df(valor);
   },
 
   es: function (valor: any) {
