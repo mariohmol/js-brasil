@@ -1,4 +1,4 @@
-import { allNumbersAreSame } from './utils';
+import { allNumbersAreSame } from "./utils";
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
