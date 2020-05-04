@@ -87,6 +87,15 @@ describe('Validate test', () => {
     expect(validateBr.cpf('555.555.555-55')).to.be.false;
   });
 
+  it('CPFCNPJ', () => {
+    expect(validateBr.cpfcnpj('56.853.433/0001-44')).to.be.true;
+    expect(validateBr.cpfcnpj('56.853.433/0001-55')).to.be.false;
+    expect(validateBr.cpfcnpj('1234')).to.be.false;
+    expect(validateBr.cpfcnpj('127.529.875-46')).to.be.false;
+    expect(validateBr.cpfcnpj('127.529.875-37')).to.be.false;
+    expect(validateBr.cpfcnpj('00.000.000/0000-00')).to.be.false;
+  });
+
   context('Cartão de Crédito', () => {
     it('Varios numeros', () => {
       const cards = [

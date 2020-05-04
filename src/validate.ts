@@ -207,9 +207,8 @@ export function validate_cpf(strCPF: any) {
   return true;
 }
 
-
 function validate_cpfcnpj(number) {
-  return true;
+  return validate_cpf(number) || validate_cnpj(number);
 }
 
 export function validate_cns(value) {
