@@ -411,6 +411,9 @@ describe('Validate test', () => {
   it('Telefone', () => {
     expect(validateBr.telefone('31 99876767')).to.be.true;
     expect(validateBr.telefone('(90) 1057-1600')).to.be.true;
+
+    expect(validateBr.telefone('(47) 3500-3500')).to.be.true;
+    expect(validateBr.telefone('(47) 93500-3500')).to.be.true;
     expect(validateBr.telefone('(90) 0057-1600')).to.be.false;
     expect(validateBr.telefone('1234')).to.be.false;
   });

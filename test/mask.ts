@@ -209,11 +209,18 @@ describe('Mask test', () => {
       const telefone = '3135003500';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');
       expect(maskBr.telefone('123')).to.exist;
+
+      expect(maskBr.telefone('4735003500')).to.be.equal('(47) 3500-3500');
+      expect(maskBr.telefone('4835003500')).to.be.equal('(48) 3500-3500');
+      expect(maskBr.telefone('4935003500')).to.be.equal('(49) 3500-3500');
     });
 
     it('9 Digito', () => {
       const telefone = '31988886565';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
+      expect(maskBr.telefone('47935003500')).to.be.equal('(47) 93500-3500');
+      expect(maskBr.telefone('48935003500')).to.be.equal('(48) 93500-3500');
+      expect(maskBr.telefone('49935003500')).to.be.equal('(49) 93500-3500');
     });
   });
 
