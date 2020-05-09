@@ -211,7 +211,7 @@ describe('Mask test', () => {
       expect(maskBr.telefone('123')).to.exist;
 
       expect(maskBr.telefone('4735003500')).to.be.equal('(47) 3500-3500');
-      expect(maskBr.telefone('4835003500')).to.be.equal('(48) 3500-3500');
+      expect(maskBr.telefone('6135003500')).to.be.equal('(61) 3500-3500');
       expect(maskBr.telefone('4935003500')).to.be.equal('(49) 3500-3500');
     });
 
@@ -219,7 +219,7 @@ describe('Mask test', () => {
       const telefone = '31988886565';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 98888-6565');
       expect(maskBr.telefone('47935003500')).to.be.equal('(47) 93500-3500');
-      expect(maskBr.telefone('48935003500')).to.be.equal('(48) 93500-3500');
+      expect(maskBr.telefone('61935003500')).to.be.equal('(61) 93500-3500');
       expect(maskBr.telefone('49935003500')).to.be.equal('(49) 93500-3500');
     });
   });
