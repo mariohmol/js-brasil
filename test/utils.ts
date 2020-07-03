@@ -14,5 +14,16 @@ describe('Utils test', () => {
     const percent2 = utilsBr.currencyToNumber(' 12 % ');
     expect(percent2).to.be.equal(12);
   });
-
+  it('Utils numberToCurrency R$ 12,00', () => {
+    const currencyNumber = utilsBr.numberToCurrency(12);
+    expect(currencyNumber).to.be.equal(' R$ 12,00 ');
+  });
+  it('Utils numberToCurrency R$ 0.95 ', () => {
+    const currencyNumber = utilsBr.numberToCurrency(0.95);
+    expect(currencyNumber).to.be.equal(' R$ 0,95 ');
+  });
+  it('Utils numberToCurrency R$ 0,10 ', () => {
+    const currencyNumber = utilsBr.numberToCurrency(0.1);
+    expect(currencyNumber).to.be.equal(' R$ 0,10 ');
+  })
 });
