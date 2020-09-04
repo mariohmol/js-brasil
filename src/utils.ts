@@ -98,6 +98,10 @@ export function currencyToNumber(input) {
   return parseFloat(input);
 }
 
+export function numberToCurrency(value: number) {
+  return ' R$ ' + value.toFixed(2).replace('.', ',') + ' ';
+};
+
 export function slugify(value) {
 
   return value.toString().toLowerCase()
