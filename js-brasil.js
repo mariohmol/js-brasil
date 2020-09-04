@@ -1,6 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NAMES = exports.getAstro = exports.TIPOS_SANGUINEOS = exports.CEP_ESTADO = exports.TELEFONE_ESTADO = exports.EMPRESAS_NOMES = exports.EMPRESAS_TIPOS = exports.SOBRENOMES = exports.NOMES_MASCULINOS = exports.NOMES_FEMININOS = void 0;
 exports.NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
 exports.NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
 exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
@@ -734,23 +735,25 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.fakerBr = exports.maskBr = exports.utilsBr = exports.validateBr = void 0;
 var utils = require("./src/utils");
 var validate_1 = require("./src/validate");
-exports.validateBr = validate_1.validateBr;
-var faker = require("./src/faker");
+Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
+var faker_1 = require("./src/faker");
 var mask = require("./src/mask");
 var mask_1 = require("./src/mask");
 var placa_1 = require("./src/placa");
 var estados_1 = require("./src/estados");
-exports.utilsBr = __assign({}, utils, { MASKS: mask_1.MASKS,
+exports.utilsBr = __assign(__assign({}, utils), { MASKS: mask_1.MASKS,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS });
 exports.maskBr = mask.maskBr;
-exports.fakerBr = faker.fakerBr;
+exports.fakerBr = faker_1.default;
 
 },{"./src/estados":4,"./src/faker":5,"./src/mask":11,"./src/placa":13,"./src/utils":15,"./src/validate":16}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh_antigo = exports.create_cnh = exports.create_certidao = exports.create_aih = void 0;
 var utils_1 = require("./utils");
 /**
  *
@@ -1210,6 +1213,7 @@ exports.create_titulo = create_titulo;
 },{"./utils":15}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ESTADOS = exports.ESTADOS_SIGLA = void 0;
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
     'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
     'sc', 'se', 'sp', 'to'
@@ -1257,7 +1261,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var mask_1 = require("./mask");
 var validate_1 = require("./validate");
@@ -1271,432 +1274,461 @@ var name_1 = require("./name");
 var pessoas_1 = require("../addons/pessoas");
 var create_2 = require("./iptu/create");
 // import cnaes from '../addons/cnaes';
-exports.fakerBr = {
-    aih: function (uf, ano, tipo, seq) {
-        if (uf === void 0) { uf = 35; }
-        if (ano === void 0) { ano = 19; }
-        if (tipo === void 0) { tipo = 1; }
-        if (seq === void 0) { seq = null; }
-        if (!seq) {
-            seq = utils_1.randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
+function aih(uf, ano, tipo, seq) {
+    if (uf === void 0) { uf = 35; }
+    if (ano === void 0) { ano = 19; }
+    if (tipo === void 0) { tipo = 1; }
+    if (seq === void 0) { seq = null; }
+    if (!seq) {
+        seq = utils_1.randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
+    }
+    var cod = parseInt("" + uf + ano + tipo + seq);
+    var digito = create_1.create_aih(cod);
+    var result = "" + cod + digito;
+    return result;
+}
+function celular(options) {
+    if (options === void 0) { options = {}; }
+    return telefone(__assign(__assign({}, options), { celular: true }));
+}
+function cep(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.estado) {
+        options.estado = utils_1.randomEstadoSigla();
+    }
+    var range = pessoas_1.CEP_ESTADO[options.estado];
+    var cep = utils_1.randomNumber(range[0][0], range[0][1]);
+    if (cep < 10000000) {
+        cep = '0' + cep.toString();
+    }
+    else {
+        cep = cep.toString();
+    }
+    var mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
+    return mask;
+}
+function cepState(state) {
+    return randexp_1.randexp(validate_1.CEPRange[state]);
+}
+function certidao() {
+    var value = utils_1.makeGenericFaker(mask_1.MASKS['certidao'])();
+    var certidao = utils_1.getAllDigits(value);
+    var check = create_1.create_certidao(certidao);
+    return certidao.substr(0, certidao.length - 2) + check;
+}
+function chassi() {
+    var chassi = utils_1.makeGenericFaker(mask_1.MASKS['chassi'])();
+    chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
+    return chassi;
+}
+function cid() {
+    // let chassi = makeGenericFaker(MASKS['chassi'])();
+    // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
+    // return chassi;
+}
+var cnae = utils_1.makeGenericFaker(mask_1.MASKS['cnae']);
+function cnh() {
+    var cnh = utils_1.makeGenericFaker(mask_1.MASKS['cnh'])();
+    var nodigits = cnh;
+    var check = create_1.create_cnh(nodigits);
+    return cnh.substr(0, cnh.length - 2) + check;
+}
+function cnpj() {
+    var cnpj = utils_1.makeGenericFaker(mask_1.MASKS['cnpj'])();
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+    var restos = create_1.create_cnpj(cnpj);
+    cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0];
+    restos = create_1.create_cnpj(cnpj);
+    return cnpj.substr(0, cnpj.length - 1) + restos[1];
+}
+function cns() {
+    var cns;
+    do {
+        cns = utils_1.makeGenericFaker(mask_1.MASKS['cns'])();
+        cns = utils_1.getAllDigits(cns);
+        var primeiroDigito = parseInt(cns[0]);
+        if (primeiroDigito < 3) {
+            var cnsDigits = cns.split();
+            cnsDigits[cnsDigits.length - 2] = 0;
+            cnsDigits[cnsDigits.length - 3] = 0;
+            cnsDigits[cnsDigits.length - 4] = 0;
+            cns = cnsDigits.join();
         }
-        var cod = parseInt("" + uf + ano + tipo + seq);
-        var digito = create_1.create_aih(cod);
-        var result = "" + cod + digito;
-        return result;
-    },
-    celular: function (options) {
-        if (options === void 0) { options = {}; }
-        var faker = _this.fakerBr;
-        return faker.telefone(__assign({}, options, { celular: true }));
-    },
-    cep: function (options) {
-        if (options === void 0) { options = {}; }
-        if (!options.estado) {
-            options.estado = utils_1.randomEstadoSigla();
-        }
-        var range = pessoas_1.CEP_ESTADO[options.estado];
-        var cep = utils_1.randomNumber(range[0][0], range[0][1]);
-        if (cep < 10000000) {
-            cep = '0' + cep.toString();
-        }
-        else {
-            cep = cep.toString();
-        }
-        var mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
-        return mask;
-    },
-    cepState: function (state) {
-        return randexp_1.randexp(validate_1.CEPRange[state]);
-    },
-    certidao: function () {
-        var value = utils_1.makeGenericFaker(mask_1.MASKS['certidao'])();
-        var certidao = utils_1.getAllDigits(value);
-        var check = create_1.create_certidao(certidao);
-        return certidao.substr(0, certidao.length - 2) + check;
-    },
-    chassi: function () {
-        var chassi = utils_1.makeGenericFaker(mask_1.MASKS['chassi'])();
-        chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
-        return chassi;
-    },
-    cid: function () {
-        // let chassi = makeGenericFaker(MASKS['chassi'])();
-        // chassi = chassi.replace(/i|I|o|O|q|Q/g, 'A');
-        // return chassi;
-    },
-    cnae: utils_1.makeGenericFaker(mask_1.MASKS['cnae']),
-    cnh: function () {
-        var cnh = utils_1.makeGenericFaker(mask_1.MASKS['cnh'])();
-        var nodigits = cnh;
-        var check = create_1.create_cnh(nodigits);
-        return cnh.substr(0, cnh.length - 2) + check;
-    },
-    cnpj: function () {
-        var cnpj = utils_1.makeGenericFaker(mask_1.MASKS['cnpj'])();
-        cnpj = cnpj.replace(/[^\d]+/g, '');
-        var restos = create_1.create_cnpj(cnpj);
-        cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0];
-        restos = create_1.create_cnpj(cnpj);
-        return cnpj.substr(0, cnpj.length - 1) + restos[1];
-    },
-    cns: function () {
-        var cns;
-        do {
-            cns = utils_1.makeGenericFaker(mask_1.MASKS['cns'])();
-            cns = utils_1.getAllDigits(cns);
-            var primeiroDigito = parseInt(cns[0]);
-            if (primeiroDigito < 3) {
-                var cnsDigits = cns.split();
-                cnsDigits[cnsDigits.length - 2] = 0;
-                cnsDigits[cnsDigits.length - 3] = 0;
-                cnsDigits[cnsDigits.length - 4] = 0;
-                cns = cnsDigits.join();
-            }
-            var digito = create_1.create_cns(cns);
-            cns = cns.substr(0, cns.length - 2) + digito;
-        } while (!validate_1.validate_cns(cns));
-        return cns;
-    },
-    contabanco: utils_1.makeGenericFaker(mask_1.MASKS['contabanco']),
-    cpf: function () {
-        var cpf = utils_1.makeGenericFaker(mask_1.MASKS['cpf'])();
-        var restos = create_1.create_cpf(cpf);
-        cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-        restos = create_1.create_cpf(cpf);
-        return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-    },
-    cpfcnpj: utils_1.makeGenericFaker(mask_1.MASKS['cpfcnpj']),
-    cartaocredito: utils_1.makeGenericFaker(mask_1.MASKS['cartaocredito']),
-    currency: function () {
-        var x = Math.random() * 10000;
-        var final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        if (final[final.length - 3] === '.') {
-            final = final.replace(/\./g, '#');
-            final = final.replace(/\,/g, '.');
-            final = final.replace(/\#/g, ',');
-        }
-        return final;
-    },
-    currencyNumber: function () {
-        var x = Math.random() * 10000;
-        return parseFloat(x.toFixed(2));
-    },
-    data: function (config) {
-        if (config === void 0) { config = {}; }
-        var date = new Date();
-        if (config.dias) {
-            date.setDate(date.getDate() + config.dias);
-        }
-        if (config.meses) {
-            date.setMonth(date.getMonth() + config.meses);
-        }
-        if (config.idadeMin && config.idadeMax) {
-            config.anos = -utils_1.randomNumber(config.idadeMin, config.idadeMax);
-        }
-        if (config.anos) {
-            date.setFullYear(date.getFullYear() + config.anos);
-        }
-        var month = date.getMonth() + 1;
-        if (month < 10) {
-            month = '0' + month;
-        }
-        var day = date.getDate();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        return day + "/" + month + "/" + date.getFullYear();
-    },
-    ect: function () {
-        var ect = utils_1.makeGenericFaker(mask_1.MASKS['ect'])();
-        var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
-        return ect.substr(0, ect.length - 1) + dv;
-    },
-    email: function (options) {
-        if (options === void 0) { options = {}; }
-        var faker = _this.fakerBr;
-        var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS);
-        if (options.nome) {
-            nome = options.nome;
-        }
-        nome = utils_1.slugify(nome);
-        var empresa = nome;
-        if (options.empresa) {
-            empresa = options.empresa;
-        }
-        var site = faker.site({ nome: empresa, url: '' });
-        return nome + '@' + site;
-    },
-    empresa: function (options) {
-        if (options === void 0) { options = {}; }
-        var faker = _this.fakerBr;
-        var cnpj = faker.cnpj();
-        if (!options.estado) {
-            options.estado = utils_1.randomEstadoSigla();
-        }
-        var endereco = faker.endereco(options);
-        var telefone = faker.telefone({
-            estado: endereco.estadoSigla
-        });
-        var celular = faker.celular({
-            estado: endereco.estadoSigla
-        });
-        var inscricaoestadual = faker.inscricaoestadual(endereco.estadoSigla);
-        var dataAbertura = exports.fakerBr.data({
-            idadeMin: 4,
-            idadeMax: 20
-        });
-        var fundador1 = faker.pessoa(options);
-        var fundador2 = faker.pessoa(options);
-        var fundadores = [
-            fundador1,
-            fundador2
-        ];
-        var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
-        // const site = faker.site();
-        var email = faker.email({
-            nome: 'contato',
-            empresa: nome
-        });
-        return {
-            nome: nome, email: email,
-            inscricaoestadual: inscricaoestadual, fundadores: fundadores,
-            cnpj: cnpj, telefone: telefone, celular: celular,
-            endereco: endereco, dataAbertura: dataAbertura
-        };
-    },
-    endereco: function (options) {
-        if (options === void 0) { options = {}; }
-        var fakerBr = _this.fakerBr;
-        var cep = fakerBr.cep();
-        if (!options.estado) {
-            options.estado = utils_1.randomEstadoSigla();
-        }
-        var estadoFound = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.uf.toLowerCase() === options.estado; });
-        var cidades = name_1.LOCALIZACAO_CIDADES.filter(function (c) { return c[1] === estadoFound.nome; });
-        var cidade = utils_1.randArray(cidades);
-        var estado = cidade[1].toLowerCase();
-        estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado.toLowerCase(); });
-        return {
-            cep: cep,
-            logradouro: utils_1.randArray(name_1.LOCALIZACAO_RUAS),
-            complemento: utils_1.randArray(name_1.LOCALIZACAO_COMPLEMENTOS) + ' ' + fakerBr.number({ min: 1, max: 10, decimals: 0 }),
-            numero: fakerBr.number({ min: 1, decimals: 0 }),
-            bairro: utils_1.randArray(name_1.LOCALIZACAO_BAIRROS),
-            cidade: cidade[0],
-            estado: cidade[1],
-            estadoSigla: estado.uf
-        };
-    },
-    inscricaoestadual: function (estado) {
-        estado = estado.toLowerCase();
-        var val = utils_1.makeGenericFaker(mask_1.MASKS['inscricaoestadual'][estado])();
-        val = val.match(/\d/g).join('');
-        var newval = inscricaoestadual_1.generateInscricaoEstadual[estado](val);
-        return newval;
-    },
-    iptu: function (estado, cidade) {
-        return create_2.faker_iptu(estado, cidade);
-    },
-    number: function (options) {
-        if (options === void 0) { options = {}; }
-        if (!options.max) {
-            options.max = 10000;
-        }
-        if (options.min === undefined) {
-            options.min = 0;
-        }
-        if (options.decimals === undefined) {
-            options.decimals = 2;
-        }
-        var x = (Math.random() * options.max) + options.min;
-        if (options.decimals === 0) {
-            return Math.floor(x);
-        }
-        return parseFloat(x.toFixed(options.decimals));
-    },
-    porcentagem: utils_1.makeGenericFaker(mask_1.MASKS['porcentagem']),
-    pessoa: function (options) {
-        if (options === void 0) { options = {}; }
-        var faker = _this.fakerBr;
-        if (!options.estado) {
-            options.estado = utils_1.randomEstadoSigla();
-        }
-        var cpf = faker.cpf();
-        var rg = faker.rg(options);
-        var telefone = faker.telefone(options);
-        var celular = faker.celular(options);
-        var dataNascimento = exports.fakerBr.data({
-            idadeMin: 18,
-            idadeMax: 40
-        });
-        var site = faker.site();
-        var email = faker.email();
-        var senha = faker.senha();
-        var endereco = faker.endereco(options);
-        var altura = '1.' + utils_1.randomNumber(35, 90);
-        var peso = utils_1.randomNumber(50, 120);
-        var signo = pessoas_1.getAstro(dataNascimento);
-        var tipoSanguineo = utils_1.randArray(pessoas_1.TIPOS_SANGUINEOS);
-        var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
-        var sobrenomeMae = utils_1.randArray(pessoas_1.SOBRENOMES);
-        var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
-        var mae = utils_1.randArray(pessoas_1.NOMES_FEMININOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
-        var pai = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + utils_1.randArray(pessoas_1.SOBRENOMES) + ' ' + sobrenomePai;
-        var usuario = faker.usuario(nome);
-        return {
-            nome: nome,
-            mae: mae,
-            pai: pai,
-            site: site,
-            rg: rg, email: email,
-            cpf: cpf, telefone: telefone, celular: celular,
-            dataNascimento: dataNascimento,
-            endereco: endereco,
-            senha: senha, usuario: usuario,
-            signo: signo, tipoSanguineo: tipoSanguineo, altura: altura, peso: peso
-        };
-    },
-    pispasep: function () {
-        var pis = utils_1.makeGenericFaker(mask_1.MASKS['pispasep'])();
-        var digit = create_1.create_pispasep(pis);
-        var values = pis.split('');
-        values[values.length - 1] = digit;
-        return values;
-    },
-    placa: function () {
-        var placa;
-        do {
-            placa = utils_1.makeGenericFaker(mask_1.MASKS['placa'])();
-        } while (!placa_1.validate_placa(placa));
-        return placa;
-    },
-    processo: utils_1.makeGenericFaker(mask_1.MASKS['processo']),
-    renavam: function () {
-        var renavam = utils_1.makeGenericFaker(mask_1.MASKS['renavam'])();
-        var dv = create_1.create_renavam(renavam);
-        return renavam.substr(0, renavam.length - 1) + dv;
-    },
-    rg: function (options) {
-        if (options === void 0) { options = {}; }
-        if (!options.estado) {
-            options.estado = utils_1.randomEstadoSigla();
-        }
-        var estado = options.estado.split('');
-        var makeRg = utils_1.makeGenericFaker(mask_1.MASKS['rg'], {
-            0: function () { return estado[0]; },
-            1: function () { return estado[1]; }
-        });
-        return makeRg();
-    },
-    senha: function (options) {
-        if (options === void 0) { options = {}; }
-        if (!options.size) {
-            options.size = 8;
-        }
-        var pass = [
+        var digito = create_1.create_cns(cns);
+        cns = cns.substr(0, cns.length - 2) + digito;
+    } while (!validate_1.validate_cns(cns));
+    return cns;
+}
+var contabanco = utils_1.makeGenericFaker(mask_1.MASKS['contabanco']);
+function cpf() {
+    var cpf = utils_1.makeGenericFaker(mask_1.MASKS['cpf'])();
+    var restos = create_1.create_cpf(cpf);
+    cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+    restos = create_1.create_cpf(cpf);
+    return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+}
+var cpfcnpj = utils_1.makeGenericFaker(mask_1.MASKS['cpfcnpj']);
+var cartaocredito = utils_1.makeGenericFaker(mask_1.MASKS['cartaocredito']);
+function currency() {
+    var x = Math.random() * 10000;
+    var final = x.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (final[final.length - 3] === '.') {
+        final = final.replace(/\./g, '#');
+        final = final.replace(/\,/g, '.');
+        final = final.replace(/\#/g, ',');
+    }
+    return final;
+}
+function currencyNumber() {
+    var x = Math.random() * 10000;
+    return parseFloat(x.toFixed(2));
+}
+function data(config) {
+    if (config === void 0) { config = {}; }
+    var date = new Date();
+    if (config.dias) {
+        date.setDate(date.getDate() + config.dias);
+    }
+    if (config.meses) {
+        date.setMonth(date.getMonth() + config.meses);
+    }
+    if (config.idadeMin && config.idadeMax) {
+        config.anos = -utils_1.randomNumber(config.idadeMin, config.idadeMax);
+    }
+    if (config.anos) {
+        date.setFullYear(date.getFullYear() + config.anos);
+    }
+    var month = date.getMonth() + 1;
+    if (month < 10) {
+        month = '0' + month;
+    }
+    var day = date.getDate();
+    if (day < 10) {
+        day = '0' + day;
+    }
+    return day + "/" + month + "/" + date.getFullYear();
+}
+function ect() {
+    var ect = utils_1.makeGenericFaker(mask_1.MASKS['ect'])();
+    var dv = create_1.create_ect(ect.substr(0, ect.length - 1));
+    return ect.substr(0, ect.length - 1) + dv;
+}
+function email(options) {
+    if (options === void 0) { options = {}; }
+    var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS);
+    if (options.nome) {
+        nome = options.nome;
+    }
+    nome = utils_1.slugify(nome);
+    var empresa = nome;
+    if (options.empresa) {
+        empresa = options.empresa;
+    }
+    return nome + '@' + site({ nome: empresa, url: '' });
+}
+function empresa(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.estado) {
+        options.estado = utils_1.randomEstadoSigla();
+    }
+    var enderecoVal = endereco(options);
+    var inscricaoestadualVal = inscricaoestadual(enderecoVal.estadoSigla);
+    var dataAbertura = data({
+        idadeMin: 4,
+        idadeMax: 20
+    });
+    var fundador1 = pessoa(options);
+    var fundador2 = pessoa(options);
+    var fundadores = [
+        fundador1,
+        fundador2
+    ];
+    var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
+    // const site = faker.site();
+    var emailVal = email({
+        nome: 'contato',
+        empresa: nome
+    });
+    return {
+        nome: nome,
+        email: emailVal,
+        inscricaoestadual: inscricaoestadualVal,
+        fundadores: fundadores,
+        cnpj: cnpj(),
+        endereco: enderecoVal,
+        telefone: telefone({
+            estado: enderecoVal.estadoSigla
+        }),
+        celular: celular({
+            estado: enderecoVal.estadoSigla
+        }),
+        dataAbertura: dataAbertura
+    };
+}
+function endereco(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.estado) {
+        options.estado = utils_1.randomEstadoSigla();
+    }
+    var estadoFound = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.uf.toLowerCase() === options.estado; });
+    var cidades = name_1.LOCALIZACAO_CIDADES.filter(function (c) { return c[1] === estadoFound.nome; });
+    var cidade = utils_1.randArray(cidades);
+    var estado = cidade[1].toLowerCase();
+    estado = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.nome.toLowerCase() === estado.toLowerCase(); });
+    return {
+        cep: cep(),
+        logradouro: utils_1.randArray(name_1.LOCALIZACAO_RUAS),
+        complemento: utils_1.randArray(name_1.LOCALIZACAO_COMPLEMENTOS) + ' ' + number({ min: 1, max: 10, decimals: 0 }),
+        numero: number({ min: 1, decimals: 0 }),
+        bairro: utils_1.randArray(name_1.LOCALIZACAO_BAIRROS),
+        cidade: cidade[0],
+        estado: cidade[1],
+        estadoSigla: estado.uf
+    };
+}
+var inscricaoestadual = function (estado) {
+    estado = estado.toLowerCase();
+    var val = utils_1.makeGenericFaker(mask_1.MASKS['inscricaoestadual'][estado])();
+    val = val.match(/\d/g).join('');
+    var newval = inscricaoestadual_1.generateInscricaoEstadual[estado](val);
+    return newval;
+};
+function iptu(estado, cidade) {
+    return create_2.faker_iptu(estado, cidade);
+}
+function number(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.max) {
+        options.max = 10000;
+    }
+    if (options.min === undefined) {
+        options.min = 0;
+    }
+    if (options.decimals === undefined) {
+        options.decimals = 2;
+    }
+    var x = (Math.random() * options.max) + options.min;
+    if (options.decimals === 0) {
+        return Math.floor(x);
+    }
+    return parseFloat(x.toFixed(options.decimals));
+}
+var porcentagem = utils_1.makeGenericFaker(mask_1.MASKS['porcentagem']);
+function pessoa(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.estado) {
+        options.estado = utils_1.randomEstadoSigla();
+    }
+    var dataNascimento = data({
+        idadeMin: 18,
+        idadeMax: 40
+    });
+    var altura = '1.' + utils_1.randomNumber(35, 90);
+    var peso = utils_1.randomNumber(50, 120);
+    var signo = pessoas_1.getAstro(dataNascimento);
+    var tipoSanguineo = utils_1.randArray(pessoas_1.TIPOS_SANGUINEOS);
+    var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
+    var sobrenomeMae = utils_1.randArray(pessoas_1.SOBRENOMES);
+    var nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+    var mae = utils_1.randArray(pessoas_1.NOMES_FEMININOS) + ' ' + sobrenomeMae + ' ' + sobrenomePai;
+    var pai = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + utils_1.randArray(pessoas_1.SOBRENOMES) + ' ' + sobrenomePai;
+    return {
+        nome: nome,
+        mae: mae,
+        pai: pai,
+        site: site(),
+        email: email(),
+        senha: senha(),
+        rg: rg(options),
+        cpf: cpf(),
+        telefone: telefone(options),
+        celular: celular(options),
+        dataNascimento: dataNascimento,
+        endereco: endereco(options),
+        usuario: usuario(nome),
+        signo: signo, tipoSanguineo: tipoSanguineo, altura: altura, peso: peso
+    };
+}
+function pispasep() {
+    var pis = utils_1.makeGenericFaker(mask_1.MASKS['pispasep'])();
+    var digit = create_1.create_pispasep(pis);
+    var values = pis.split('');
+    values[values.length - 1] = digit;
+    return values;
+}
+function placa() {
+    var placa;
+    do {
+        placa = utils_1.makeGenericFaker(mask_1.MASKS['placa'])();
+    } while (!placa_1.validate_placa(placa));
+    return placa;
+}
+var processo = utils_1.makeGenericFaker(mask_1.MASKS['processo']);
+function renavam() {
+    var renavam = utils_1.makeGenericFaker(mask_1.MASKS['renavam'])();
+    var dv = create_1.create_renavam(renavam);
+    return renavam.substr(0, renavam.length - 1) + dv;
+}
+function rg(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.estado) {
+        options.estado = utils_1.randomEstadoSigla();
+    }
+    var estado = options.estado.split('');
+    var makeRg = utils_1.makeGenericFaker(mask_1.MASKS['rg'], {
+        0: function () { return estado[0]; },
+        1: function () { return estado[1]; }
+    });
+    return makeRg();
+}
+function senha(options) {
+    if (options === void 0) { options = {}; }
+    if (!options.size) {
+        options.size = 8;
+    }
+    var pass = [
+        utils_1.randomLetter().toLowerCase(),
+        utils_1.randomLetter().toUpperCase(),
+        utils_1.randomNumber(0, 9),
+        utils_1.randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
+    ];
+    var i = 4;
+    for (i = 4; i <= options.size; i++) {
+        var newchar = utils_1.randArray([
             utils_1.randomLetter().toLowerCase(),
             utils_1.randomLetter().toUpperCase(),
             utils_1.randomNumber(0, 9),
             utils_1.randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
-        ];
-        var i = 4;
-        for (i = 4; i <= options.size; i++) {
-            var newchar = utils_1.randArray([
-                utils_1.randomLetter().toLowerCase(),
-                utils_1.randomLetter().toUpperCase(),
-                utils_1.randomNumber(0, 9),
-                utils_1.randArray(['!', '@', '#', '$', '%', '^', '&', '*'])
-            ]);
-            pass.push(newchar);
-        }
-        return pass.join('');
-    },
-    site: function (options) {
-        if (options === void 0) { options = {}; }
-        var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
-        var dominio = '.com.br';
-        var url = utils_1.randArray(['http://', 'https://']);
-        if (options.nome) {
-            nome = options.nome;
-        }
-        if (options.dominio) {
-            dominio = options.dominio;
-        }
-        if (options.url !== undefined) {
-            url = options.url;
-        }
-        nome = utils_1.slugify(nome);
-        return url + nome + dominio;
-    },
-    sped: utils_1.makeGenericFaker(mask_1.MASKS['sped']),
-    telefone: function (options) {
-        if (options === void 0) { options = {}; }
-        var telefone = utils_1.makeGenericFaker(mask_1.MASKS['telefone'])();
-        if (options.estado) {
-            var telefones = telefone.toString().split('');
-            var ddd = pessoas_1.TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
-            telefones[1] = ddd[0];
-            telefones[2] = ddd[1];
-            telefone = telefones.join('');
-        }
-        if (options.celular) {
-            var telefones = telefone.toString().split('');
-            telefones[5] = '9';
-            telefone = telefones.join('');
-        }
-        return telefone;
-    },
-    time: utils_1.makeGenericFaker(mask_1.MASKS['time']),
-    titulo: function () {
-        var titulo;
-        do {
-            titulo = utils_1.makeGenericFaker(mask_1.MASKS['titulo'])();
-            var number = titulo.substr(0, titulo.length - 2);
-            if (number.substr(-2) === '29') {
-                var numbers = number.split();
-                numbers[numbers.length - 1] = '8';
-                number = numbers.join();
-            }
-            try {
-                var dig = create_1.create_titulo(number);
-                titulo = number + dig[0] + dig[1];
-            }
-            catch (e) {
-            }
-        } while (!validate_1.validate_titulo(titulo));
-        return titulo;
-    },
-    veiculo: function () {
-        var faker = _this.fakerBr;
-        var placa = faker.placa();
-        var chassi = faker.chassi();
-        var veiculo = utils_1.randArray(veiculos_1.VEICULOS);
-        return {
-            placa: placa, chassi: chassi,
-            marca: veiculo.marca,
-            modelo: veiculo.modelo,
-            categoria: utils_1.randArray(veiculos_1.VEICULOS_CATEGORIAS),
-            especie: utils_1.randArray(veiculos_1.VEICULOS_ESPECIES),
-            restricao: utils_1.randArray(veiculos_1.VEICULOS_RESTRICOES),
-            tipo: utils_1.randArray(veiculos_1.VEICULOS_TIPOS),
-            carroceria: utils_1.randArray(veiculos_1.VEICULOS_CARROCERIAS),
-            combustivel: utils_1.randArray(veiculos_1.VEICULOS_COMBUSTIVEIS),
-            cor: utils_1.randArray(utils_1.CORES)
-        };
-    },
-    usuario: function (nome) {
-        if (!nome) {
-            var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
-            nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomePai;
-        }
-        return utils_1.slugify(nome);
+        ]);
+        pass.push(newchar);
     }
+    return pass.join('');
+}
+function site(options) {
+    if (options === void 0) { options = {}; }
+    var nome = utils_1.randArray(pessoas_1.EMPRESAS_TIPOS) + ' ' + utils_1.randArray(pessoas_1.EMPRESAS_NOMES);
+    var dominio = '.com.br';
+    var url = utils_1.randArray(['http://', 'https://']);
+    if (options.nome) {
+        nome = options.nome;
+    }
+    if (options.dominio) {
+        dominio = options.dominio;
+    }
+    if (options.url !== undefined) {
+        url = options.url;
+    }
+    nome = utils_1.slugify(nome);
+    return url + nome + dominio;
+}
+var sped = utils_1.makeGenericFaker(mask_1.MASKS['sped']);
+function telefone(options) {
+    if (options === void 0) { options = {}; }
+    var telefone = utils_1.makeGenericFaker(mask_1.MASKS['telefone'])();
+    if (options.estado) {
+        var telefones = telefone.toString().split('');
+        var ddd = pessoas_1.TELEFONE_ESTADO[options.estado.toLowerCase()].toString();
+        telefones[1] = ddd[0];
+        telefones[2] = ddd[1];
+        telefone = telefones.join('');
+    }
+    if (options.celular) {
+        var telefones = telefone.toString().split('');
+        telefones[5] = '9';
+        telefone = telefones.join('');
+    }
+    return telefone;
+}
+var time = utils_1.makeGenericFaker(mask_1.MASKS['time']);
+function titulo() {
+    var titulo;
+    do {
+        titulo = utils_1.makeGenericFaker(mask_1.MASKS['titulo'])();
+        var number_1 = titulo.substr(0, titulo.length - 2);
+        if (number_1.substr(-2) === '29') {
+            var numbers = number_1.split();
+            numbers[numbers.length - 1] = '8';
+            number_1 = numbers.join();
+        }
+        try {
+            var dig = create_1.create_titulo(number_1);
+            titulo = number_1 + dig[0] + dig[1];
+        }
+        catch (e) {
+        }
+    } while (!validate_1.validate_titulo(titulo));
+    return titulo;
+}
+function veiculo() {
+    var veiculo = utils_1.randArray(veiculos_1.VEICULOS);
+    return {
+        placa: placa(),
+        chassi: chassi(),
+        marca: veiculo.marca,
+        modelo: veiculo.modelo,
+        categoria: utils_1.randArray(veiculos_1.VEICULOS_CATEGORIAS),
+        especie: utils_1.randArray(veiculos_1.VEICULOS_ESPECIES),
+        restricao: utils_1.randArray(veiculos_1.VEICULOS_RESTRICOES),
+        tipo: utils_1.randArray(veiculos_1.VEICULOS_TIPOS),
+        carroceria: utils_1.randArray(veiculos_1.VEICULOS_CARROCERIAS),
+        combustivel: utils_1.randArray(veiculos_1.VEICULOS_COMBUSTIVEIS),
+        cor: utils_1.randArray(utils_1.CORES)
+    };
+}
+function usuario(nome) {
+    if (!nome) {
+        var sobrenomePai = utils_1.randArray(pessoas_1.SOBRENOMES);
+        nome = utils_1.randArray(pessoas_1.NOMES_MASCULINOS) + ' ' + sobrenomePai;
+    }
+    return utils_1.slugify(nome);
+}
+exports.default = {
+    aih: aih,
+    cartaocredito: cartaocredito,
+    celular: celular,
+    cep: cep,
+    cepState: cepState,
+    certidao: certidao,
+    chassi: chassi,
+    cid: cid,
+    cnae: cnae,
+    cnh: cnh,
+    cnpj: cnpj,
+    cns: cns,
+    contabanco: contabanco,
+    cpf: cpf,
+    cpfcnpj: cpfcnpj,
+    currency: currency,
+    currencyNumber: currencyNumber,
+    data: data,
+    ect: ect,
+    email: email,
+    empresa: empresa,
+    endereco: endereco,
+    inscricaoestadual: inscricaoestadual,
+    iptu: iptu,
+    number: number,
+    pessoa: pessoa,
+    pispasep: pispasep,
+    placa: placa,
+    porcentagem: porcentagem,
+    processo: processo,
+    renavam: renavam,
+    rg: rg,
+    senha: senha,
+    site: site,
+    sped: sped,
+    telefone: telefone,
+    time: time,
+    titulo: titulo,
+    veiculo: veiculo,
+    usuario: usuario,
 };
 
 },{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./iptu/create":7,"./mask":11,"./name":12,"./placa":13,"./utils":15,"./validate":16,"./veiculos":17,"randexp":19}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IEMASKS = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
 var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -2387,6 +2419,7 @@ function lookup(ie) {
 },{"./utils":15}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IPTUCREATE = exports.faker_iptu = exports.create_iptu_sp = exports.create_iptu_ctba = void 0;
 var utils_1 = require("../utils");
 var mask_1 = require("./mask");
 function create_iptu_ctba(number) {
@@ -2452,6 +2485,7 @@ exports.IPTUCREATE = {
 },{"../utils":15,"./mask":9}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validate_iptu = exports.mask_iptu = exports.create_iptu = void 0;
 var validate_1 = require("./validate");
 var mask_1 = require("./mask");
 var utils_1 = require("../utils");
@@ -2480,6 +2514,7 @@ exports.validate_iptu = function (number, estado, cidade) {
 },{"../utils":15,"./create":7,"./mask":9,"./validate":10}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IPTUMASKS = void 0;
 exports.IPTUMASKS = {
     'minas-gerais': {
         'belo-horizonte': {
@@ -2521,6 +2556,7 @@ exports.IPTUMASKS = {
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IPTUVALIDATE = exports.validate_iptu_sp = exports.validate_iptu_contagem = exports.validate_iptu_ctba = void 0;
 var utils_1 = require("../utils");
 var create_1 = require("./create");
 var validateRemoveDigito = function (number, max) {
@@ -2593,6 +2629,7 @@ exports.IPTUVALIDATE = {
 },{"../utils":15,"./create":7}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
@@ -3118,6 +3155,7 @@ exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
 },{"./inscricaoestadual":6,"./iptu/iptu":8,"./utils":15,"text-mask-addons/dist/createNumberMask":25}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LOCALIZACAO_CIDADES = exports.LOCALIZACAO_ESTADOS = exports.LOCALIZACAO_BAIRROS = exports.LOCALIZACAO_COMPLEMENTOS = exports.LOCALIZACAO_LOGRADOUROS = exports.LOCALIZACAO_RUAS = void 0;
 exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'São Paulo', 'Doze', 'Treze',
     'Santo Antônio', 'Brasil', 'A', 'São Pedro', 'Quinze', 'São João',
     'Quatorze', 'São Francisco', 'Sete de Setembro', 'Dezesseis', 'Quinze de Novembro',
@@ -3128,8 +3166,7 @@ exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'S�
     'Pernambuco', 'Piauí', 'Vinte e Três', 'Mato Grosso', 'Santa Maria', 'Dom Pedro II',
     'Primeiro de Maio', 'Pará', 'Maranhão', 'Alagoas', 'Boa Vista', 'São Luiz', 'Vinte e Quatro', 'Paraíba', 'Santa Rita'];
 exports.LOCALIZACAO_LOGRADOUROS = ['Avenida', 'Rua', 'Marginal'];
-exports.LOCALIZACAO_COMPLEMENTOS = ["Apartamento", 'Aeroporto', 'Anexo', "Andar", "Bloco", "Conjunto", 'Cobertura', "Casa",
-    'Fazenda', 'Fundos', 'Galeria', "Galp\u00E3o", "Lote", "Loja", "Port\u00E3o", "Quadra", "Sala", "Sobreloja", 'Subsolo', 'Terreo'];
+exports.LOCALIZACAO_COMPLEMENTOS = ["Apartamento", 'Aeroporto', 'Anexo', "Andar", "Bloco", "Conjunto", 'Cobertura', "Casa", 'Fazenda', 'Fundos', 'Galeria', "Galp\u00E3o", "Lote", "Loja", "Port\u00E3o", "Quadra", "Sala", "Sobreloja", 'Subsolo', 'Terreo'];
 exports.LOCALIZACAO_BAIRROS = ['Centro', 'Bela Vista', 'São José', 'Santo Antônio', 'São Francisco', 'Vila Nova',
     'Boa Vista', 'Industrial', 'São Cristóvão', 'Planalto'];
 exports.LOCALIZACAO_ESTADOS = [
@@ -3492,6 +3529,7 @@ exports.LOCALIZACAO_CIDADES = [
 },{}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validate_placa = exports.PLACAS_INVALID = exports.PLACAS_RANGE = void 0;
 exports.PLACAS_RANGE = [
     { start: 'AAA0001', end: 'BEZ9999', state: '', desc: 'Paraná]] (PR)', since: '02/1990' },
     { start: 'BFA0001', end: 'GKI9999', state: '', desc: 'São Paulo (estado)|São Paulo]] (SP)', since: '10/1991' },
@@ -3652,6 +3690,7 @@ exports.validate_placa = validate_placa;
 },{}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rg_rj = exports.rg_sp = void 0;
 function rg_sp(number) {
     // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}
     number = "0000000" + number;
@@ -3719,6 +3758,7 @@ exports.default = {
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeGenericFaker = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
 var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
@@ -3969,6 +4009,7 @@ exports.makeGenericFaker = function (val, options) {
 },{"./estados":4}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateBr = exports.validate_titulo = exports.validate_time = exports.validate_telefone = exports.validate_sped = exports.validate_rg = exports.validate_renavam = exports.validate_pispasep = exports.validate_processo = exports.validate_porcentagem = exports.validate_number = exports.validate_ect = exports.validate_currency = exports.creditCardValidator = exports.validate_cartaocredito = exports.validate_cns = exports.validate_cpf = exports.validate_cnpj = exports.validate_cnh = exports.validate_chassi = exports.validate_certidao = exports.cep_ranges = exports.validate_cep = exports.CEPRange = exports.validate_celular = exports.validate_aih = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var placa_1 = require("./placa");
@@ -4151,7 +4192,7 @@ function validate_cpf(strCPF) {
 }
 exports.validate_cpf = validate_cpf;
 function validate_cpfcnpj(number) {
-    return true;
+    return validate_cpf(number) || validate_cnpj(number);
 }
 function validate_cns(value) {
     var cns = utils_1.getAllDigits(value);
@@ -4490,6 +4531,7 @@ exports.validateBr = {
 },{"./create":3,"./inscricaoestadual":6,"./iptu/iptu":8,"./placa":13,"./rg":14,"./utils":15}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VEICULOS = exports.VEICULOS_ESPECIES = exports.VEICULOS_RESTRICOES = exports.VEICULOS_COMBUSTIVEIS = exports.VEICULOS_TIPOS = exports.VEICULOS_CATEGORIAS = exports.VEICULOS_CARROCERIAS = exports.CNH_CATEGORIAS = void 0;
 exports.CNH_CATEGORIAS = ["A", "AB", "B", "C", "D", "E", "ACC", "MOTOR-CASA"];
 exports.VEICULOS_CARROCERIAS = ["AMBULÂNCIA", "BASCULANTE", "BLINDADA", "BUGGY", "C. FECHADA", "CAB. DUPLA", "CAB. ABERTA",
     "CONVERSÍVEL", "FURGÃO", "JIPE", "TRAILER"];

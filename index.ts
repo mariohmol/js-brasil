@@ -1,6 +1,6 @@
 import * as utils from './src/utils';
 export { validateBr } from './src/validate';
-import * as faker from './src/faker';
+import faker from './src/faker';
 import * as mask from './src/mask';
 import { MASKS } from './src/mask';
 import { PLACAS_RANGE } from './src/placa';
@@ -14,4 +14,4 @@ export const utilsBr = {
 };
 
 export const maskBr = mask.maskBr;
-export const fakerBr = faker.fakerBr;
+export const fakerBr = faker;
