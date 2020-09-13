@@ -138,21 +138,30 @@ export const PLACAS_RANGE = [
 
 export const PLACAS_INVALID = { start: 'SAW0001', end: 'ZZZ9999' } // || Sequências ainda não definidas
 
-export function validate_placa(placa: string | number) {
-  let placaClean: string = placa.toString();
-  placaClean = placaClean.replace(/-/g, '').toUpperCase();
-  const exp = /[A-Za-z]{3}\-\d{4}/;
-  const expClean = /[A-Za-z]{3}\d{4}/;
-  // const letters = placa.substr(0, 3).toUpperCase();
-  const placaString = placa.toString();
-  if (!exp.test(placaString) && !expClean.test(placaClean)) {
-    return false;
+export function validate_placa(placa: string | number, incluiMercosul?: boolean) {
+  const placaClean = placa.toString()
+                          .replace(/-/g, '')
+                          .replace(/ /g, '')
+                          .toUpperCase();
+  const regex = {
+    legadoBR: /[A-Z]{3}[0-9]{4}/,
+    mercosulBR: /[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}/,
+    mercosulAR: /[A-Z]{2}[0-9]{3}[A-Z]{2}|[A-Z]{1}[0-9]{3}[A-Z]{3}/,
+    mercosulBO: /[A-Z]{2}[0-9]{5}/,
+    mercosulPY: /[A-Z]{4}[0-9]{3}|[0-9]{3}[A-Z]{4}/,
+    mercosulUY: /[A-Z]{3}[0-9]{4}/,
   }
-  const found = placaString >= PLACAS_INVALID.start && placaString <= PLACAS_INVALID.end;
-  if (found) {
-    return false;
-  } else {
+  const isLegadoBRInvalid = 
+                      placaClean >= PLACAS_INVALID.start && placaClean <= PLACAS_INVALID.end;
+  if((regex.legadoBR.test(placaClean) && !isLegadoBRInvalid)
+    || (regex.mercosulBR.test(placaClean))
+    || (incluiMercosul && (
+        (regex.mercosulAR.test(placaClean))
+        || (regex.mercosulBO.test(placaClean))
+        || (regex.mercosulPY.test(placaClean))
+        || (regex.mercosulUY.test(placaClean))
+  ))) {
     return true;
   }
-
+  return false;
 }
