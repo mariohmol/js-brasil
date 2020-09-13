@@ -3667,23 +3667,29 @@ exports.PLACAS_RANGE = [
     { start: 'SAV0001', end: 'SAV9999', state: '', desc: 'ão Paulo (estado)|São Paulo]] (SP) 2º sequência', since: '09/2009' },
 ];
 exports.PLACAS_INVALID = { start: 'SAW0001', end: 'ZZZ9999' }; // || Sequências ainda não definidas
-function validate_placa(placa) {
-    var placaClean = placa.toString();
-    placaClean = placaClean.replace(/-/g, '').toUpperCase();
-    var exp = /[A-Za-z]{3}\-\d{4}/;
-    var expClean = /[A-Za-z]{3}\d{4}/;
-    // const letters = placa.substr(0, 3).toUpperCase();
-    var placaString = placa.toString();
-    if (!exp.test(placaString) && !expClean.test(placaClean)) {
-        return false;
-    }
-    var found = placaString >= exports.PLACAS_INVALID.start && placaString <= exports.PLACAS_INVALID.end;
-    if (found) {
-        return false;
-    }
-    else {
+function validate_placa(placa, incluiMercosul) {
+    var placaClean = placa.toString()
+        .replace(/-/g, '')
+        .replace(/ /g, '')
+        .toUpperCase();
+    var regex = {
+        legadoBR: /[A-Z]{3}[0-9]{4}/,
+        mercosulBR: /[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}/,
+        mercosulAR: /[A-Z]{2}[0-9]{3}[A-Z]{2}|[A-Z]{1}[0-9]{3}[A-Z]{3}/,
+        mercosulBO: /[A-Z]{2}[0-9]{5}/,
+        mercosulPY: /[A-Z]{4}[0-9]{3}|[0-9]{3}[A-Z]{4}/,
+        mercosulUY: /[A-Z]{3}[0-9]{4}/,
+    };
+    var isLegadoBRInvalid = placaClean >= exports.PLACAS_INVALID.start && placaClean <= exports.PLACAS_INVALID.end;
+    if ((regex.legadoBR.test(placaClean) && !isLegadoBRInvalid)
+        || (regex.mercosulBR.test(placaClean))
+        || (incluiMercosul && ((regex.mercosulAR.test(placaClean))
+            || (regex.mercosulBO.test(placaClean))
+            || (regex.mercosulPY.test(placaClean))
+            || (regex.mercosulUY.test(placaClean))))) {
         return true;
     }
+    return false;
 }
 exports.validate_placa = validate_placa;
 
@@ -3758,7 +3764,7 @@ exports.default = {
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeGenericFaker = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
+exports.makeGenericFaker = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
 var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
@@ -3851,6 +3857,11 @@ function currencyToNumber(input) {
     return parseFloat(input);
 }
 exports.currencyToNumber = currencyToNumber;
+function numberToCurrency(value) {
+    return ' R$ ' + value.toFixed(2).replace('.', ',') + ' ';
+}
+exports.numberToCurrency = numberToCurrency;
+;
 function slugify(value) {
     return value.toString().toLowerCase()
         .replace(/[àÀáÁâÂãäÄÅåª]+/g, 'a') // Special Characters #1
