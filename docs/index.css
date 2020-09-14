@@ -13,9 +13,11 @@ footer {
 .card .card-content {
   min-height: 100px;
 }
-.nav-wrapper.container{
+
+.nav-wrapper.container {
   width: 90%;
 }
+
 .card-action {
   height: 77px;
   text-align: center;
@@ -34,5 +36,12 @@ footer {
 }
 
 .text-lighten-4 img {
-  width: 30px
+  width: 20px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+table {
+  background-color: #fff;
+  padding: 20px;
 }

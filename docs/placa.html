@@ -27,7 +27,8 @@
 
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Validar se a placa do carro tem um formato padrão</span>
+                  <span class="card-title activator grey-text text-darken-4">Validar se a placa do carro tem um formato
+                    padrão</span>
                   <input id="validated" type="text" class="validate">
                   <label for="validated">Digite o Placa</label>
 
@@ -41,7 +42,8 @@
                   </ul>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn" id="validatedAction"><i class="material-icons right">check</i>validar</a>
+                  <a class="waves-effect waves-light btn" id="validatedAction"><i
+                      class="material-icons right">check</i>validar</a>
                 </div>
               </div>
             </div>
@@ -49,12 +51,14 @@
             <div class="input-field col s6">
               <div class="card">
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Gerar uma placa aletória no formato padrão do estado</span>
+                  <span class="card-title activator grey-text text-darken-4">Gerar uma placa aletória no formato padrão
+                    do estado</span>
                   <input id="generated" type="text" class="validate">
                   <label for="generated"></label>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn" id="generatedAction"><i class="material-icons right">add</i>gerar
+                  <a class="waves-effect waves-light btn" id="generatedAction"><i
+                      class="material-icons right">add</i>gerar
                     novo</a>
                 </div>
               </div>
@@ -66,35 +70,82 @@
   </main>
 
   <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Como Funciona?</h5>
+          <p class="grey-text text-lighten-4">
+
+
+            A formatação adotava é o "ABC·1234" com um hífen ou ponto entre as letras e os números.
+            Há uma tabela de distribuição de placas por estado, mas que ainda não está implementado
+            neste validador.
+
+
+
+
+          </p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Referências</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3"
+                href="https://pt.wikipedia.org/wiki/Placas_de_identificação_de_veículos_no_Brasil">Wikipedia</a></li>
+            <li><a class="grey-text text-lighten-3"
+                href="https://es.wikipedia.org/wiki/Patente_%C3%9Anica_del_Mercosur">Formato das placas</a></li>
+          </ul>
+        </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <th>País</th>
+              <th>Formato</th>
+              <th>Implementação</th>
+            </tr>
+            <tr>
+              <td>Argentina </td>
+              <td>AB 123 CD ​para autos e<br>A12 3BCD ​para motos.</td>
+              <td>Desde abril de 2016.
+              </td>
+            </tr>
+            <tr>
+              <td>Brasil </td>
+              <td>ABC1D23 ​para autos e <br>ABC 1D23 ​para motos</td>
+              <td>Desde septiembre de 2018.
+              </td>
+            </tr>
+            <tr>
+              <td>Bolivia </td>
+              <td>AB 12345</td>
+              <td>Desde abril de 2017 só para transporte internacional.
+              </td>
+            </tr>
+            <tr>
+              <td>Paraguay </td>
+              <td>ABCD 123 ​para autos e<br>123 ABCD ​para motos.</td>
+              <td>Desde julho de 2019.
+              </td>
+            </tr>
+            <tr>
+              <td>Uruguay </td>
+              <td>ABC 1234 ​para autos e<br> ABC 1234 ​para motos.</td>
+              <td>Desde março de 2015.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer-copyright">
       <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Como Funciona?</h5>
-            <p class="grey-text text-lighten-4"> 
-              
-               
-                A formatação adotava é o "ABC·1234" com um hífen ou ponto entre as letras e os números. 
-                Há uma tabela de distribuição de placas por estado, mas que ainda não está implementado neste validador.
-              </p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Referências</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://pt.wikipedia.org/wiki/Placas_de_identificação_de_veículos_no_Brasil">Wikipedia</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
         © 2019 Gerador Brasileiro
-        <a class="grey-text text-lighten-4 right" 
-        href="https://github.com/mariohmol/js-brasil">Quer colaborar? 
-        <img src="github.png">js-brasil</a>
-        </div>
+        <a class="grey-text text-lighten-4 right" href="https://github.com/mariohmol/js-brasil">Quer colaborar?
+          <img src="github.png">js-brasil</a>
       </div>
-    </footer>
-        
+    </div>
+  </footer>
+
 
 
   <!-- Compiled and minified JavaScript -->
