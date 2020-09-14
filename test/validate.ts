@@ -368,6 +368,8 @@ describe('Validate test', () => {
   context('PLACA', () => {
     it('Legado BR', () => {
       expect(validateBr.placa('ABC1234')).to.be.true;
+      expect(validateBr.placa('ABCD1234')).to.be.false;
+      expect(validateBr.placa('ACD12345')).to.be.false;
       expect(validateBr.placa('SAW0002')).to.be.false;
       expect(validateBr.placa('1234')).to.be.false;
     });
@@ -380,22 +382,31 @@ describe('Validate test', () => {
     it('Mercosul AR', () => {
       expect(validateBr.placa('AB 123 CD', true)).to.be.true;
       expect(validateBr.placa('A12 3BCD', true)).to.be.true;
+      expect(validateBr.placa('A12 3BCDD', true)).to.be.false;
+      expect(validateBr.placa('AA12 3BCD', true)).to.be.false;
     });
     it('Mercosul BO', () => {
       expect(validateBr.placa('AB 12345', true)).to.be.true;
+      expect(validateBr.placa('AB 123456', true)).to.be.false;
+      expect(validateBr.placa('AAB 12345', true)).to.be.false;
     });
     it('Mercosul PY', () => {
       expect(validateBr.placa('ABCD 123', true)).to.be.true;
       expect(validateBr.placa('123 ABCD', true)).to.be.true;
+      expect(validateBr.placa('123 ABCDD', true)).to.be.false;
+      expect(validateBr.placa('1123 ABCD', true)).to.be.false;
     });
     it('Mercosul UY', () => {
       expect(validateBr.placa('ABC 1234', true)).to.be.true;
+      expect(validateBr.placa('ABC 12344', true)).to.be.false;
+      expect(validateBr.placa('AABC 1234', true)).to.be.false;
     });
     it('Mercosul Invalid', () => {
       expect(validateBr.placa('A1BC234', true)).to.be.false;
       expect(validateBr.placa('A1B2C34', true)).to.be.false;
       expect(validateBr.placa('A1B23C4', true)).to.be.false;
       expect(validateBr.placa('AB123C4', true)).to.be.false;
+      expect(validateBr.placa('AAB123C4', true)).to.be.false;
     });
   });
 

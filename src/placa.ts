@@ -144,12 +144,12 @@ export function validate_placa(placa: string | number, incluiMercosul?: boolean)
                           .replace(/ /g, '')
                           .toUpperCase();
   const regex = {
-    legadoBR: /[A-Z]{3}[0-9]{4}/,
-    mercosulBR: /[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}/,
-    mercosulAR: /[A-Z]{2}[0-9]{3}[A-Z]{2}|[A-Z]{1}[0-9]{3}[A-Z]{3}/,
-    mercosulBO: /[A-Z]{2}[0-9]{5}/,
-    mercosulPY: /[A-Z]{4}[0-9]{3}|[0-9]{3}[A-Z]{4}/,
-    mercosulUY: /[A-Z]{3}[0-9]{4}/,
+    legadoBR: /^[A-Z]{3}[0-9]{4}$/,
+    mercosulBR: /^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}$/,
+    mercosulAR: /^[A-Z]{2}[0-9]{3}[A-Z]{2}$|^[A-Z]{1}[0-9]{3}[A-Z]{3}$/,
+    mercosulBO: /^[A-Z]{2}[0-9]{5}$/,
+    mercosulPY: /^[A-Z]{4}[0-9]{3}$|^[0-9]{3}[A-Z]{4}$/,
+    mercosulUY: /^[A-Z]{3}[0-9]{4}$/,
   }
   const isLegadoBRInvalid = 
                       placaClean >= PLACAS_INVALID.start && placaClean <= PLACAS_INVALID.end;
