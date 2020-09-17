@@ -72,7 +72,8 @@ export const MASKS = {
       allowDecimal: true,
       integerLimit: 15,
       prefix: 'R$ ',
-      suffix: ''
+      suffix: '',
+      allowNegative : true
     })
   },
   data: {
