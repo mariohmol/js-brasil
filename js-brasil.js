@@ -2701,7 +2701,8 @@ exports.MASKS = {
             allowDecimal: true,
             integerLimit: 15,
             prefix: 'R$ ',
-            suffix: ''
+            suffix: '',
+            allowNegative: true
         })
     },
     data: {
@@ -4304,7 +4305,7 @@ function validate_currency(currency) {
     if (typeof currency === 'number') {
         return true;
     }
-    var regex = /^(R\$|R\$ )?((\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;
+    var regex = /^(R\$|R\$ )?(()-(\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;
     return regex.test(currency);
 }
 exports.validate_currency = validate_currency;
