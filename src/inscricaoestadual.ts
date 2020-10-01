@@ -1,11 +1,12 @@
 import { allNumbersAreSame } from './utils';
+import { BigObject } from 'interfaces';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
  */
 
 
-export const generateInscricaoEstadual = {
+export const generateInscricaoEstadual: BigObject<Function> = {
   ac: function (valor: any) {
     if (tamanhoNaoE(valor, 13)) {
       return false;
@@ -448,7 +449,7 @@ export const generateInscricaoEstadual = {
 
 
 
-const funcoes = {
+const funcoes: BigObject<Function> = {
   ac: function (valor: any) {
     return valor === generateInscricaoEstadual.ac(valor);
   },
@@ -601,7 +602,7 @@ export function validate_inscricaoestadual(ie: string | Array<string>, estado: a
     }
   }
 
-  if (/^\d+$/.test(ie) || estado === 'sp') {
+  if (/^\d+$/.test(ie) || estado === 'sp' || funcoes[estado]) {
     return funcoes[estado](ie);
   }
 

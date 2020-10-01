@@ -1,20 +1,20 @@
 import { BigObject } from "../src/interfaces";
 
-export const NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
-export const NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
-export const SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
+export const NOMES_FEMININOS: Array<string> = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
+export const NOMES_MASCULINOS: Array<string> = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
+export const SOBRENOMES: Array<string> = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
     'COSTA', 'DIAS', 'DUARTE', 'FREITAS', 'FERNANDES', 'FERREIRA', 'GARCIA', 'GOMES', 'GONÇALVES', 'LIMA', 'LOPES', 'MACHADO', 'MARQUES', 'MARTINS', 'MEDEIROS',
     'MELO', 'MENDES', 'MIRANDA', 'MONTEIRO', 'MORAES', 'MOREIRA', 'MOURA', 'NASCIMENTO', 'NUNES', 'OLIVEIRA', 'PEREIRA', 'RAMOS', 'REIS', 'RIBEIRO', 'ROCHA',
     'SANTANA', 'SANTOS', 'SILVA', 'SOARES', 'SOUZA', 'TEIXEIRA', 'VIEIRA'];
 
 
-export const EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
-export const EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
+export const EMPRESAS_TIPOS: Array<string> = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
+export const EMPRESAS_NOMES: Array<string> = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
 
-export const TELEFONE_ESTADO = {
-    ac: 68, al: 82, ap: 96, am: 92, ba: 71, ce: 88, df: 61, es: 27, go: 62,
-    ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
-    rr: 95, sc: 48, se: 79, sp: 11, to: 63
+export const TELEFONE_ESTADO: BigObject<number> = {
+    'ac': 68, 'al': 82, 'ap': 96, 'am': 92, 'ba': 71, 'ce': 88, 'df': 61, 'es': 27, 'go': 62,
+    'ma': 98, 'mt': 65, 'ms': 84, 'mg': 31, 'pr': 41, 'pb': 83, 'pa': 91, 'pe': 81, 'pi': 86, 'rj': 21, 'rn': 84, 'rs': 51, 'ro': 69,
+    'rr': 95, 'sc': 48, 'se': 79, 'sp': 11, 'to': 63
 }
 
 export const CEP_ESTADO: BigObject<Array<Array<number>>> = {

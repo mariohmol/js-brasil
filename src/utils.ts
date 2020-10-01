@@ -1,4 +1,5 @@
 import { ESTADOS_SIGLA } from "./estados";
+import { BigObject } from "interfaces";
 
 export function isPresent(obj: any): boolean {
   return obj !== undefined && obj !== null;
@@ -212,10 +213,17 @@ export const CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "
   "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
 
 
+export function getSpecialProperty<TModel, TKey extends keyof TModel>(
+  model: TModel,
+  key: TKey
+) {
+  return model[key];
+}
+
 /**
  * 
  */
-export const makeGenericFaker = (val: any, options: object | null = null) => {
+export const makeGenericFaker = (val: any, options: BigObject<Function> | null = null) => {
   return () => {
     if (!val.textMask || !val.textMask.map) {
       return '';

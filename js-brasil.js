@@ -11,9 +11,9 @@ exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATIS
 exports.EMPRESAS_TIPOS = ['Pizzaria', 'Mecânica', 'Laboratórios', 'Contabilidade', 'Padaria', 'Pastelaria'];
 exports.EMPRESAS_NOMES = ['do Barão', 'União', 'Teixeira', 'Nova Era', 'Genuíno', 'Autêntica', 'Lux'];
 exports.TELEFONE_ESTADO = {
-    ac: 68, al: 82, ap: 96, am: 92, ba: 71, ce: 88, df: 61, es: 27, go: 62,
-    ma: 98, mt: 65, ms: 84, mg: 31, pr: 41, pb: 83, pa: 91, pe: 81, pi: 86, rj: 21, rn: 84, rs: 51, ro: 69,
-    rr: 95, sc: 48, se: 79, sp: 11, to: 63
+    'ac': 68, 'al': 82, 'ap': 96, 'am': 92, 'ba': 71, 'ce': 88, 'df': 61, 'es': 27, 'go': 62,
+    'ma': 98, 'mt': 65, 'ms': 84, 'mg': 31, 'pr': 41, 'pb': 83, 'pa': 91, 'pe': 81, 'pi': 86, 'rj': 21, 'rn': 84, 'rs': 51, 'ro': 69,
+    'rr': 95, 'sc': 48, 'se': 79, 'sp': 11, 'to': 63
 };
 exports.CEP_ESTADO = {
     ac: [[69900000, 69999999]],
@@ -827,7 +827,7 @@ exports.create_certidao = create_certidao;
 function create_cnh(cnh) {
     var v = 0;
     for (var i = 0, j = 9; i < 9; ++i, --j) {
-        v += +(cnh.charAt(i) * j);
+        v += +(parseInt(cnh.charAt(i)) * j);
     }
     var dsc = 0, vl1 = v % 11;
     if (vl1 >= 10) {
@@ -835,7 +835,7 @@ function create_cnh(cnh) {
         dsc = 2;
     }
     for (var i = 0, j = 1, v_1 = 0; i < 9; ++i, ++j) {
-        v_1 += +(cnh.charAt(i) * j);
+        v_1 += +(parseInt(cnh.charAt(i)) * j);
     }
     var x = v % 11;
     var vl2 = (x >= 10) ? 0 : x - dsc;
@@ -844,16 +844,17 @@ function create_cnh(cnh) {
 exports.create_cnh = create_cnh;
 function create_cnh_antigo(value) {
     value = utils_1.getAllDigits(value);
-    if (value.length != 11 || value === 0) {
+    if (value.length != 11 || value === '0') {
         return false;
     }
     var s1, s2;
     for (var c = s1 = s2 = 0, p = 9; c < 9; c++, p--) {
-        s1 += value[c] * p;
-        s2 += value[c] * (10 - p);
+        s1 += parseInt(value[c]) * p;
+        s2 += parseInt(value[c]) * (10 - p);
     }
     var dv1 = s1 % 11;
-    if (value[9] != (dv1 > 9) ? 0 : dv1) {
+    dv1 = (dv1 > 9 ? 0 : dv1);
+    if (parseInt(value[9]) !== dv1) {
         return false;
     }
     var dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
@@ -913,7 +914,7 @@ function create_cns(number) {
     number = utils_1.getAllDigits(number);
     var somaInicial = 0;
     for (var i = 0; i < number.length - 1; i++) {
-        somaInicial += number[i] * (15 - i);
+        somaInicial += parseInt(number[i]) * (15 - i);
     }
     var soma = somaInicial;
     var rest = 0;
@@ -1040,7 +1041,7 @@ function create_pispasep(number) {
     var d;
     var p = 2, c = 9;
     for (d = 0; c >= 0; c--, (p < 9) ? p++ : p = 2) {
-        d += nis[c] * p;
+        d += parseInt(nis[c]) * p;
     }
     var digit = (((10 * d) % 11) % 10);
     return digit;
@@ -1297,12 +1298,13 @@ function cep(options) {
         options.estado = utils_1.randomEstadoSigla();
     }
     var range = pessoas_1.CEP_ESTADO[options.estado];
-    var cep = utils_1.randomNumber(range[0][0], range[0][1]);
-    if (cep < 10000000) {
-        cep = '0' + cep.toString();
+    var cepNumber = utils_1.randomNumber(range[0][0], range[0][1]);
+    var cep;
+    if (cepNumber < 10000000) {
+        cep = '0' + cepNumber.toString();
     }
     else {
-        cep = cep.toString();
+        cep = cepNumber.toString();
     }
     var mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
     return mask;
@@ -1336,9 +1338,9 @@ function cnh() {
 function cnpj() {
     var cnpj = utils_1.makeGenericFaker(mask_1.MASKS['cnpj'])();
     cnpj = cnpj.replace(/[^\d]+/g, '');
-    var restos = create_1.create_cnpj(cnpj);
+    var restos = create_1.create_cnpj(cnpj) || [0, 1];
     cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0];
-    restos = create_1.create_cnpj(cnpj);
+    restos = create_1.create_cnpj(cnpj) || [0, 1];
     return cnpj.substr(0, cnpj.length - 1) + restos[1];
 }
 function cns() {
@@ -1348,10 +1350,10 @@ function cns() {
         cns = utils_1.getAllDigits(cns);
         var primeiroDigito = parseInt(cns[0]);
         if (primeiroDigito < 3) {
-            var cnsDigits = cns.split();
-            cnsDigits[cnsDigits.length - 2] = 0;
-            cnsDigits[cnsDigits.length - 3] = 0;
-            cnsDigits[cnsDigits.length - 4] = 0;
+            var cnsDigits = cns.split('');
+            cnsDigits[cnsDigits.length - 2] = '0';
+            cnsDigits[cnsDigits.length - 3] = '0';
+            cnsDigits[cnsDigits.length - 4] = '0';
             cns = cnsDigits.join();
         }
         var digito = create_1.create_cns(cns);
@@ -1361,11 +1363,18 @@ function cns() {
 }
 var contabanco = utils_1.makeGenericFaker(mask_1.MASKS['contabanco']);
 function cpf() {
-    var cpf = utils_1.makeGenericFaker(mask_1.MASKS['cpf'])();
-    var restos = create_1.create_cpf(cpf);
-    cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-    restos = create_1.create_cpf(cpf);
-    return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+    var cpf_fake = utils_1.makeGenericFaker(mask_1.MASKS['cpf'])();
+    var restos = create_1.create_cpf(cpf_fake);
+    if (!restos) {
+        throw new Error('Could not create cpf on faker cpf');
+    }
+    cpf_fake = cpf_fake.substr(0, cpf_fake.length - 2) + restos[0] + restos[1];
+    restos = create_1.create_cpf(cpf_fake);
+    if (!restos) {
+        throw new Error('Could not create cpf on faker cpf');
+    }
+    cpf_fake = cpf_fake.substr(0, cpf_fake.length - 2) + restos[0] + restos[1];
+    return cpf_fake;
 }
 var cpfcnpj = utils_1.makeGenericFaker(mask_1.MASKS['cpfcnpj']);
 var cartaocredito = utils_1.makeGenericFaker(mask_1.MASKS['cartaocredito']);
@@ -1470,7 +1479,7 @@ function endereco(options) {
     if (!options.estado) {
         options.estado = utils_1.randomEstadoSigla();
     }
-    var estadoFound = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.uf.toLowerCase() === options.estado; });
+    var estadoFound = name_1.LOCALIZACAO_ESTADOS.find(function (e) { return e.uf.toLowerCase() === options.estado; }) || name_1.LOCALIZACAO_ESTADOS[0];
     var cidades = name_1.LOCALIZACAO_CIDADES.filter(function (c) { return c[1] === estadoFound.nome; });
     var cidade = utils_1.randArray(cidades);
     var estado = cidade[1].toLowerCase();
@@ -1488,7 +1497,12 @@ function endereco(options) {
 }
 var inscricaoestadual = function (estado) {
     estado = estado.toLowerCase();
-    var val = utils_1.makeGenericFaker(mask_1.MASKS['inscricaoestadual'][estado])();
+    if (!mask_1.MASKS['inscricaoestadual']) {
+        return;
+    }
+    var maskIE = utils_1.getSpecialProperty(mask_1.MASKS, 'inscricaoestadual');
+    var funcIE = utils_1.getSpecialProperty(maskIE, estado);
+    var val = utils_1.makeGenericFaker(funcIE)();
     val = val.match(/\d/g).join('');
     var newval = inscricaoestadual_1.generateInscricaoEstadual[estado](val);
     return newval;
@@ -2201,7 +2215,7 @@ function validate_inscricaoestadual(ie, estado) {
             return false;
         }
     }
-    if (/^\d+$/.test(ie) || estado === 'sp') {
+    if (/^\d+$/.test(ie) || estado === 'sp' || funcoes[estado]) {
         return funcoes[estado](ie);
     }
     return false;
@@ -2560,7 +2574,7 @@ exports.IPTUVALIDATE = exports.validate_iptu_sp = exports.validate_iptu_contagem
 var utils_1 = require("../utils");
 var create_1 = require("./create");
 var validateRemoveDigito = function (number, max) {
-    number = utils_1.getAllDigits(number);
+    number = utils_1.getAllDigits(number.toString());
     if (number.length > max) {
         return false;
     }
@@ -2821,9 +2835,12 @@ var makeGeneric = function (key) {
         if (!value) {
             return '';
         }
+        var test = utils_1.getSpecialProperty(exports.MASKS, key);
+        // console.log(test)
         var mask = exports.MASKS[key].textMask;
-        if (exports.MASKS[key].textMaskFunction) {
-            mask = exports.MASKS[key].textMaskFunction(value);
+        var textMaskFunction = exports.MASKS[key].textMaskFunction;
+        if (typeof textMaskFunction === 'function') {
+            mask = textMaskFunction(value);
         }
         return conformToMask(value, mask, { guide: false }).conformedValue;
     };
@@ -2851,6 +2868,9 @@ exports.maskBr = {
             currencyValue = currencyValue.replace('.', ',');
         }
         var vals = currencyValue.split(',');
+        if (!exports.MASKS.currency.textMask || typeof exports.MASKS.currency.textMask !== 'function') {
+            return;
+        }
         var mask = exports.MASKS.currency.textMask(vals[0]);
         var decimals = vals.length > 1 ? vals[1].toString() : '00';
         if (decimals.length > 2) {
@@ -2863,15 +2883,17 @@ exports.maskBr = {
     ect: makeGeneric('ect'),
     endereco: makeGeneric('endereco'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
-        if (!inscricaoestadualValue || !estado || !exports.MASKS.inscricaoestadual[estado] ||
-            !exports.MASKS.inscricaoestadual[estado].textMask) {
+        var ie = exports.MASKS.inscricaoestadual;
+        var ieState = ie[estado];
+        if (!inscricaoestadualValue || !estado || !ieState ||
+            !ieState.textMask) {
             return '';
         }
-        return conformToMask(inscricaoestadualValue, exports.MASKS.inscricaoestadual[estado].textMask, { guide: false }).conformedValue;
+        return conformToMask(inscricaoestadualValue, ieState.textMask, { guide: false }).conformedValue;
     },
     iptu: function (iptuValue, estado, cidade) {
         var mask = iptu_1.mask_iptu(iptuValue, estado, cidade);
-        if (!mask || !mask.textMask) {
+        if (!mask || typeof mask === 'string') {
             return '';
         }
         return conformToMask(iptuValue, mask.textMask, { guide: false }).conformedValue;
@@ -2885,6 +2907,9 @@ exports.maskBr = {
             numberValue = numberValue.replace('.', ',');
         }
         var vals = numberValue.split(',');
+        if (!exports.MASKS.number.textMask || typeof exports.MASKS.number.textMask !== 'function') {
+            return;
+        }
         var mask = exports.MASKS.number.textMask(vals[0]);
         var decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
         if (decimals.length > 2) {
@@ -2897,6 +2922,10 @@ exports.maskBr = {
             return '';
         }
         var vals = porcentagemValue.split(',');
+        var textMask = exports.MASKS.porcentagem.textMask || function (v) { return v; };
+        if (!exports.MASKS.porcentagem.textMask || typeof exports.MASKS.porcentagem.textMask !== 'function') {
+            return;
+        }
         var mask = exports.MASKS.porcentagem.textMask(vals[0]);
         var decimals = vals.length > 1 ? ',' + vals[1] : '';
         return conformToMask(porcentagemValue, mask, { guide: false }).conformedValue + decimals + '%';
@@ -3757,15 +3786,16 @@ function rg_rj(number) {
     return cirjDig;
 }
 exports.rg_rj = rg_rj;
-exports.default = {
-    'sp': rg_sp,
-    'rj': rg_rj
+var RG = {
+    sp: rg_sp,
+    rj: rg_rj
 };
+exports.default = RG;
 
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeGenericFaker = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
+exports.makeGenericFaker = exports.getSpecialProperty = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
 var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
@@ -3848,6 +3878,9 @@ function getAllWords(input) {
 }
 exports.getAllWords = getAllWords;
 function currencyToNumber(input) {
+    if (typeof input === 'number') {
+        return input;
+    }
     input = input.replace(/ /g, '');
     if (input.indexOf('$') !== -1) {
         var vals = input.split('$');
@@ -3894,8 +3927,8 @@ exports.slugify = slugify;
  * Returns: 00000012345
  */
 function fillString(string, size, fill) {
-    if (string.size < size) {
-        var dif = size - string.size;
+    if (string.length < size) {
+        var dif = size - string.length;
         for (var i = 0; i < dif; i++) {
             string = fill + string;
         }
@@ -3968,6 +4001,10 @@ exports.randomEstadoSigla = function () {
 };
 exports.CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
     "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
+function getSpecialProperty(model, key) {
+    return model[key];
+}
+exports.getSpecialProperty = getSpecialProperty;
 /**
  *
  */
@@ -4091,12 +4128,12 @@ function cep_ranges(cep) {
     var cepString = cep.toString();
     var keys = Object.keys(exports.CEPRange);
     var found;
-    for (var i = void 0; i < keys.length; i++) {
-        var estado = keys[i];
-        var r = new RegExp(exports.CEPRange[estado]).test(cepString);
+    for (var estado in exports.CEPRange) {
+        var v = exports.CEPRange[estado];
+        var r = new RegExp(v).test(cepString);
         if (r) {
             found = r;
-            i = keys.length;
+            return true;
         }
     }
     if (!found) {
@@ -4169,10 +4206,9 @@ function validate_cnpj(cnpj) {
     var tamanho = cnpj.length - 2;
     var digitos = cnpj.substring(tamanho);
     var resultados = create_1.create_cnpj(cnpj);
-    if (resultados[0] !== parseInt(digitos.charAt(0), 10)) {
-        return false;
-    }
-    if (resultados[1] !== parseInt(digitos.charAt(1), 10)) {
+    if (!resultados ||
+        resultados[0] !== parseInt(digitos.charAt(0), 10) ||
+        resultados[1] !== parseInt(digitos.charAt(1), 10)) {
         return false;
     }
     return true;
@@ -4194,10 +4230,9 @@ function validate_cpf(strCPF) {
     }
     // valida digito verificados
     var restos = create_1.create_cpf(strCPF);
-    if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
-        return false;
-    }
-    if (restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+    if (!restos ||
+        restos[0] !== parseInt(strCPF.substring(9, 10), 10) ||
+        restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
         return false;
     }
     return true;
@@ -4220,18 +4255,24 @@ function validate_cns(value) {
     return soma % 11 == 0;
 }
 exports.validate_cns = validate_cns;
-function validate_cartaocredito(value) {
-    value = utils_1.getAllDigits(value);
+function validate_cartaocredito(input) {
+    var value;
+    if (typeof input == 'string') {
+        value = utils_1.getAllDigits(input);
+    }
+    else {
+        value = input.toString();
+    }
     var number = value.slice(0, 16);
-    var mes = value.slice(16, 18);
-    var ano = value.slice(18, 20);
+    var mes = parseInt(value.slice(16, 18));
+    var ano = parseInt(value.slice(18, 20));
     var cvv = value.slice(20, 23);
     var d = new Date();
     var anoAtual = (d.getFullYear() - 2000);
     if (ano && ano < anoAtual) {
         return false;
     }
-    if (mes && mes < d.getMonth() + 1 && parseInt(ano) === anoAtual) {
+    if (mes && mes < d.getMonth() + 1 && ano === anoAtual) {
         return false;
     }
     if (cvv) {
@@ -4317,7 +4358,7 @@ function validate_data(value) {
     if (values.length !== 3) {
         return false;
     }
-    if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
+    if (parseInt(values[0]) > 31 || parseInt(values[1]) > 12 || parseInt(values[2]) < 1000) {
         return false;
     }
     return true;
@@ -4406,8 +4447,8 @@ function validate_rg(rg) {
     if (!exp.test(rg) && !expClean.test(rgClean) && !(state in exports.CEPRange)) {
         return false;
     }
-    if (rg_1.default[state]) {
-        var validateState = rg_1.default[state];
+    var validateState = rg_1.default[state];
+    if (validateState) {
         return validateState(rg);
     }
     return true;
@@ -4474,6 +4515,9 @@ function validate_time(time, options) {
 }
 exports.validate_time = validate_time;
 function validate_titulo(titulo) {
+    if (!titulo) {
+        return false;
+    }
     var tituloClean = titulo.replace(/\./g, '');
     var exp = /\d{4}\.\d{4}\.\d{4}/;
     var expClean = /\d{4}\d{4}\d{4}/;

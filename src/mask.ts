@@ -1,10 +1,8 @@
-import { isArray, processCaretTraps } from './utils';
-import { BigObject, MaskType, IEMaskType } from "./interfaces";
+import { isArray, processCaretTraps, getSpecialProperty } from './utils';
+import { Masks, BigObject, MaskType, IEMaskType } from "./interfaces";
 import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';
-
-
 
 export const MASKS: BigObject<MaskType | IEMaskType> = {
   aih: {
@@ -190,19 +188,20 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
   }
 }
 
-
 const makeGeneric = (key: string) => {
   return (value: string) => {
     if (!value) {
       return '';
     }
 
+    const test = getSpecialProperty(MASKS, key);
+    // console.log(test)
     let mask = MASKS[key].textMask
     let textMaskFunction = MASKS[key].textMaskFunction
     if (typeof textMaskFunction === 'function') {
       mask = textMaskFunction(value);
     }
-    
+
 
     return conformToMask(
       value,
@@ -258,20 +257,24 @@ export const maskBr = {
   data: makeGeneric('data'),
   ect: makeGeneric('ect'),
   endereco: makeGeneric('endereco'),
-  inscricaoestadual: (inscricaoestadualValue: string, estado: string | number) => {
-    if (!inscricaoestadualValue || !estado || !MASKS.inscricaoestadual[estado] ||
-      !MASKS.inscricaoestadual[estado].textMask) {
+  inscricaoestadual: (inscricaoestadualValue: string, estado: string) => {
+    const ie: IEMaskType = <IEMaskType>MASKS.inscricaoestadual;
+    const ieState = ie[estado]
+
+    if (!inscricaoestadualValue || !estado || !ieState ||
+      !ieState.textMask) {
       return '';
     }
+
     return conformToMask(
       inscricaoestadualValue,
-      MASKS.inscricaoestadual[estado].textMask,
+      ieState.textMask,
       { guide: false }
     ).conformedValue;
   },
   iptu: (iptuValue: string, estado: string, cidade: string) => {
     const mask = mask_iptu(iptuValue, estado, cidade);
-    if (!mask || !mask.textMask) {
+    if (!mask || typeof mask === 'string') {
       return '';
     }
     return conformToMask(

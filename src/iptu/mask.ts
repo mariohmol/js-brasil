@@ -1,4 +1,6 @@
-export const IPTUMASKS = {
+import { BigObject, MaskType } from "interfaces";
+
+export const IPTUMASKS: BigObject<BigObject<MaskType>> = {
   'minas-gerais': {
     'belo-horizonte': {
       text: '000.000.000.000.0', //123.456.789.012.3

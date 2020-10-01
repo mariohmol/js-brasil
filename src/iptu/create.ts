@@ -1,5 +1,6 @@
 import { getAllDigits, makeGenericFaker } from "../utils";
 import { IPTUMASKS } from "./mask";
+import { BigObject } from "interfaces";
 
 export function create_iptu_ctba(number: string) {
   number = getAllDigits(number);
@@ -52,7 +53,7 @@ export const faker_iptu = (estado: string | number, cidade: string | number) => 
   return iptu;
 }
 
-export const IPTUCREATE = {
+export const IPTUCREATE: BigObject<BigObject<Function>> = {
   'sao-paulo': {
     'sao-paulo': create_iptu_sp,
   },

@@ -1,8 +1,9 @@
 import { getAllDigits } from "../utils";
 import { IPTUCREATE } from "./create";
+import { BigObject } from "interfaces";
 
-const validateRemoveDigito = (number, max) => {
-  number = getAllDigits(number);
+const validateRemoveDigito = (number: string | any[], max: number) => {
+  number = getAllDigits(number.toString());
   if (number.length > max) {
     return false;
   } else if (number.length === max) {
@@ -11,7 +12,7 @@ const validateRemoveDigito = (number, max) => {
   return number;
 }
 
-export function validate_iptu_ctba(value) {
+export function validate_iptu_ctba(value: string | any[]) {
   let number = validateRemoveDigito(value, 12);
   if (!number) {
     return false;
@@ -26,14 +27,14 @@ export function validate_iptu_ctba(value) {
  * O índice é composto por 12 (doze) ou 13 (treze) números, sendo: 2 (dois) para a zona fiscal; 
  * 3 (três) ou 4 (quatro) para a quadra fiscal; 4 (quatro) para o lote fiscal; e 3 (três) para a unidade.
  */
-export function validate_iptu_contagem(number) {
+export function validate_iptu_contagem(number: any) {
   number = validateRemoveDigito(number, 12);
   if (!number) {
     return false;
   }
 }
 
-export function validate_iptu_sp(value) {
+export function validate_iptu_sp(value: string | any[]) {
   let number = validateRemoveDigito(value, 12);
   if (!number) {
     return false;
@@ -59,7 +60,7 @@ export function validate_iptu_sp(value) {
 //   return true;
 // }
 
-export const IPTUVALIDATE = {
+export const IPTUVALIDATE: BigObject<BigObject<Function>> = {
   'sao-paulo': {
     'sao-paulo': validate_iptu_sp,
   },
