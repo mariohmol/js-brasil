@@ -5,6 +5,7 @@ import * as mask from './src/mask';
 import { MASKS } from './src/mask';
 import { PLACAS_RANGE } from './src/placa';
 import { ESTADOS } from './src/estados';
+import { BigObject } from 'interfaces';
 
 export const utilsBr = {
   ...utils,
@@ -13,5 +14,5 @@ export const utilsBr = {
   ESTADOS
 };
 
-export const maskBr = mask.maskBr;
-export const fakerBr = faker;
+export const maskBr: BigObject<Function> = mask.maskBr;
+export const fakerBr: BigObject<Function> = faker;

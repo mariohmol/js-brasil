@@ -554,7 +554,7 @@ function validate_username(value: any) {
   return re.test(String(value).toLowerCase());
 }
 
-export const validateBr = {
+export const validateBr: BigObject<Function> = {
   aih: validate_aih,
   cartaocredito: validate_cartaocredito,
   celular: validate_celular,
