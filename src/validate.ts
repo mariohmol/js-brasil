@@ -1,4 +1,5 @@
 import { getAllDigits, fillString, getAllWords } from "./utils";
+import { BigObject } from "./interfaces";
 import { validate_inscricaoestadual } from "./inscricaoestadual";
 import { validate_placa } from "./placa";
 import {
@@ -28,7 +29,7 @@ export function validate_celular(cel: any) {
   return true;
 }
 
-export const CEPRange = {
+export const CEPRange: BigObject<RegExp> = {
   'SP': /^([1][0-9]{3}|[01][0-9]{4})[0-9]{3}$/g,
   'RJ': /^[2][0-8][0-9]{3}[0-9]{3}$/g,
   'MS': /^[7][9][0-9]{3}[0-9]{3}$/g,
@@ -67,20 +68,22 @@ export function validate_cep(cep: string) {
   return true;
 }
 
+
 export function cep_ranges(cep: string | number) {
   cep = (cep.toString()).replace(/[^\d]+/g, '');
   cep = parseInt(cep, 10);
   const cepString: string = cep.toString();
   const keys = Object.keys(CEPRange);
   let found: any;
-  for (let i; i < keys.length; i++) {
-    const estado = keys[i];
-    const r = new RegExp(CEPRange[estado]).test(cepString);
+  for (let estado in CEPRange) {
+    const v = CEPRange[estado];
+    const r = new RegExp(v).test(cepString);
     if (r) {
       found = r;
-      i = keys.length
+      return true;
     }
   }
+
   if (!found) {
     return false;
   }
@@ -90,7 +93,7 @@ export function cep_ranges(cep: string | number) {
 
 
 
-export function validate_certidao(value) {
+export function validate_certidao(value: string) {
   let certidao = getAllDigits(value);
 
   const format = /[0-9]{32}/;
@@ -109,7 +112,7 @@ export function validate_certidao(value) {
  * 
  * @param chassi 
  */
-export function validate_chassi(chassi) {
+export function validate_chassi(chassi: string) {
 
   // 1 - Possuir o número "0" (ZERO) como 1º dígito.
   const zeroNoPrimeiroDigito = /^0/;
@@ -147,11 +150,11 @@ export function validate_chassi(chassi) {
   return true;
 }
 
-function validate_cnae(number) {
+function validate_cnae(number: any) {
   return true;
 }
 
-export function validate_cnh(value) {
+export function validate_cnh(value: string) {
   value = getAllDigits(value);
   var char1 = value.charAt(0);
   if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
@@ -167,17 +170,17 @@ export function validate_cnpj(cnpj: any) {
   let tamanho = cnpj.length - 2
   const digitos = cnpj.substring(tamanho);
   const resultados = create_cnpj(cnpj);
-  if (resultados[0] !== parseInt(digitos.charAt(0), 10)) {
-    return false;
+  if (!resultados ||
+    resultados[0] !== parseInt(digitos.charAt(0), 10) ||
+    resultados[1] !== parseInt(digitos.charAt(1), 10)
+  ) {
+    return false
   }
 
-  if (resultados[1] !== parseInt(digitos.charAt(1), 10)) {
-    return false;
-  }
   return true;
 }
 
-function validate_contabanco(number) {
+function validate_contabanco(number: any) {
   return true;
 }
 
@@ -197,21 +200,19 @@ export function validate_cpf(strCPF: any) {
   // valida digito verificados
   const restos = create_cpf(strCPF);
 
-  if (restos[0] !== parseInt(strCPF.substring(9, 10), 10)) {
-    return false;
-  }
-
-  if (restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+  if(!restos || 
+    restos[0] !== parseInt(strCPF.substring(9, 10), 10) ||
+    restos[1] !== parseInt(strCPF.substring(10, 11), 10) ){
     return false;
   }
   return true;
 }
 
-function validate_cpfcnpj(number) {
+function validate_cpfcnpj(number: any) {
   return validate_cpf(number) || validate_cnpj(number);
 }
 
-export function validate_cns(value) {
+export function validate_cns(value: string) {
   const cns = getAllDigits(value);
   const definitivo = /[1-2][0-9]{10}00[0-1][0-9]/; // começam com 1 ou 2
   const provisorio = /[7-9][0-9]{14}/;              // começam com 7,8 ou 9
@@ -228,11 +229,17 @@ export function validate_cns(value) {
 }
 
 
-export function validate_cartaocredito(value) {
-  value = getAllDigits(value);
+export function validate_cartaocredito(input: string | number) {
+  let value: string;
+  if (typeof input == 'string') {
+    value = getAllDigits(input);
+  } else {
+    value = input.toString();
+  }
+
   const number = value.slice(0, 16);
-  const mes = value.slice(16, 18);
-  const ano = value.slice(18, 20);
+  const mes = parseInt(value.slice(16, 18));
+  const ano = parseInt(value.slice(18, 20));
   const cvv = value.slice(20, 23);
 
   const d = new Date();
@@ -240,7 +247,7 @@ export function validate_cartaocredito(value) {
   if (ano && ano < anoAtual) {
     return false;
   }
-  if (mes && mes < d.getMonth() + 1 && parseInt(ano) === anoAtual) {
+  if (mes && mes < d.getMonth() + 1 && ano === anoAtual) {
     return false;
   }
 
@@ -261,7 +268,7 @@ export function validate_cartaocredito(value) {
 
 }
 
-function validate_cvv(value, maxLength: any = 3) {
+function validate_cvv(value: string | any[], maxLength: any = 3) {
   maxLength = maxLength instanceof Array ? maxLength : [maxLength];
 
   if (typeof value !== 'string') {
@@ -310,7 +317,7 @@ function validate_cvv(value, maxLength: any = 3) {
     jcb: JCB
     er: Enroute
 */
-export const creditCardValidator = {
+export const creditCardValidator: BigObject<RegExp> = {
   'mc': /5[1-5][0-9]{14}/,
   'ec': /5[1-5][0-9]{14}/,
   'vi': /4(?:[0-9]{12}|[0-9]{15})/,
@@ -332,7 +339,7 @@ export function validate_currency(currency: string | number) {
 }
 
 
-function validate_data(value) {
+function validate_data(value: string | null) {
   if (!value) {
     return false;
   }
@@ -340,13 +347,13 @@ function validate_data(value) {
   if (values.length !== 3) {
     return false;
   }
-  if (values[0] > 31 || values[1] > 12 || values[2] < 1000) {
+  if (parseInt(values[0]) > 31 || parseInt(values[1]) > 12 || parseInt(values[2]) < 1000) {
     return false;
   }
   return true;
 }
 
-export function validate_ect(number) {
+export function validate_ect(number: string) {
   number = getAllDigits(number);
   if (number.length > 9) {
     return false
@@ -361,12 +368,12 @@ export function validate_ect(number) {
   return false;
 }
 
-function validate_email(email) {
+function validate_email(email: any) {
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
 
-function validate_endereco(number) {
+function validate_endereco(number: any) {
   return true;
 }
 
@@ -441,14 +448,14 @@ export function validate_rg(rg: string) {
   if (!exp.test(rg) && !expClean.test(rgClean) && !(state in CEPRange)) {
     return false;
   }
-  if (RG[state]) {
-    const validateState = RG[state];
+  const validateState = RG[state];
+  if (validateState) {
     return validateState(rg);
   }
   return true;
 }
 
-function validate_senha(value, options: any = {}) {
+function validate_senha(value: string, options: any = {}) {
   let finalregex = '^';
   //   ^	The password string will start this way
   // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
@@ -479,7 +486,7 @@ function validate_senha(value, options: any = {}) {
 }
 
 
-function validate_site(value) {
+function validate_site(value: any) {
   var re = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/g;
   return re.test(String(value).toLowerCase());
 }
@@ -513,6 +520,9 @@ export function validate_time(time: string | number, options: any = {}) {
 }
 
 export function validate_titulo(titulo: any) {
+  if(!titulo){
+    return false;
+  }
   const tituloClean = titulo.replace(/\./g, '');
   const exp = /\d{4}\.\d{4}\.\d{4}/;
   const expClean = /\d{4}\d{4}\d{4}/;
@@ -539,7 +549,7 @@ export function validate_titulo(titulo: any) {
   }
 }
 
-function validate_username(value) {
+function validate_username(value: any) {
   var re = /^[a-z0-9_-]{3,16}$/igm;
   return re.test(String(value).toLowerCase());
 }

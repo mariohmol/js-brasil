@@ -4,6 +4,6 @@ export {
     CNAES
 };
 
-export default function main(jsbrasil) {
+export default function main(jsbrasil: typeof import("..")) {
     console.log(jsbrasil);
 }

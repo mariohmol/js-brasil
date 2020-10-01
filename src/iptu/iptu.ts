@@ -3,7 +3,7 @@ import { IPTUMASKS } from './mask';
 import { getAllDigits } from '../utils';
 import { IPTUCREATE } from './create';
 
-export const create_iptu = (number, estado, cidade) => {
+export const create_iptu = (number: string, estado: string | number, cidade: string | number) => {
   if (!IPTUCREATE[estado] || !IPTUCREATE[estado][cidade]) {
     return true;
   }
@@ -11,13 +11,13 @@ export const create_iptu = (number, estado, cidade) => {
   return IPTUCREATE[estado][cidade](number);
 };
 
-export const mask_iptu = (number, estado, cidade) => {
+export const mask_iptu = (number: string, estado: string, cidade: string) => {
   if (!IPTUMASKS[estado] || !IPTUMASKS[estado][cidade]) {
     return number;
   }
   return IPTUMASKS[estado][cidade];
 };
-export const validate_iptu = (number, estado, cidade) => {
+export const validate_iptu = (number: string, estado: string | number, cidade: string | number) => {
   if (!IPTUVALIDATE[estado] || !IPTUVALIDATE[estado][cidade]) {
     return true;
   }

@@ -1,9 +1,12 @@
 import { isArray, processCaretTraps } from './utils';
+import { BigObject, MaskType, IEMaskType } from "./interfaces";
 import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';
 
-export const MASKS = {
+
+
+export const MASKS: BigObject<MaskType | IEMaskType> = {
   aih: {
     text: '000000000000-0', // 351923414312-8
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
@@ -73,7 +76,7 @@ export const MASKS = {
       integerLimit: 15,
       prefix: 'R$ ',
       suffix: '',
-      allowNegative : true
+      allowNegative: true
     })
   },
   data: {
@@ -195,9 +198,12 @@ const makeGeneric = (key: string) => {
     }
 
     let mask = MASKS[key].textMask
-    if (MASKS[key].textMaskFunction) {
-      mask = MASKS[key].textMaskFunction(value);
+    let textMaskFunction = MASKS[key].textMaskFunction
+    if (typeof textMaskFunction === 'function') {
+      mask = textMaskFunction(value);
     }
+    
+
     return conformToMask(
       value,
       mask,
@@ -232,6 +238,9 @@ export const maskBr = {
     }
 
     const vals = currencyValue.split(',');
+    if (!MASKS.currency.textMask || typeof MASKS.currency.textMask !== 'function') {
+      return;
+    }
     const mask = MASKS.currency.textMask(vals[0]);
     let decimals = vals.length > 1 ? vals[1].toString() : '00';
     if (decimals.length > 2) {
@@ -282,6 +291,11 @@ export const maskBr = {
     }
 
     const vals = numberValue.split(',');
+
+    if (!MASKS.number.textMask || typeof MASKS.number.textMask !== 'function') {
+      return;
+    }
+
     const mask = MASKS.number.textMask(vals[0]);
     let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
     if (decimals.length > 2) {
@@ -299,6 +313,12 @@ export const maskBr = {
       return '';
     }
     const vals = porcentagemValue.split(',');
+    const textMask = MASKS.porcentagem.textMask || function (v: string) { return v };
+
+    if (!MASKS.porcentagem.textMask || typeof MASKS.porcentagem.textMask !== 'function') {
+      return;
+    }
+
     const mask = MASKS.porcentagem.textMask(vals[0]);
     const decimals = vals.length > 1 ? ',' + vals[1] : '';
 

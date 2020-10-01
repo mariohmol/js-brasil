@@ -20,6 +20,9 @@ export function isNil(value: any) {
   return typeof value === 'undefined' || value === null
 }
 
+
+
+
 const strCaretTrap = '[]'
 export function processCaretTraps(mask: any) {
   const indexes = []
@@ -85,7 +88,10 @@ export function getAllWords(input: string) {
   return '';
 }
 
-export function currencyToNumber(input) {
+export function currencyToNumber(input: string | number) {
+  if (typeof input === 'number') {
+    return input;
+  }
   input = input.replace(/ /g, '');
   if (input.indexOf('$') !== -1) {
     const vals = input.split('$');
@@ -102,7 +108,7 @@ export function numberToCurrency(value: number) {
   return ' R$ ' + value.toFixed(2).replace('.', ',') + ' ';
 };
 
-export function slugify(value) {
+export function slugify(value: string) {
 
   return value.toString().toLowerCase()
     .replace(/[àÀáÁâÂãäÄÅåª]+/g, 'a')       // Special Characters #1
@@ -132,9 +138,9 @@ export function slugify(value) {
  * 
  * Returns: 00000012345
  */
-export function fillString(string, size, fill) {
-  if (string.size < size) {
-    const dif = size - string.size;
+export function fillString(string: string, size: number, fill: string) {
+  if (string.length < size) {
+    const dif = size - string.length;
     for (let i = 0; i < dif; i++) {
       string = fill + string
     }
@@ -143,7 +149,7 @@ export function fillString(string, size, fill) {
 }
 
 
-export function randArray(array) {
+export function randArray(array: string | any[]) {
   const index = randomNumber(0, array.length);
   return array[index];
 }
@@ -161,7 +167,7 @@ export function rand(length: number, ...ranges: any[]) {
   return str;                                                         // return str
 }
 
-export function randomNumber(begin, end) {
+export function randomNumber(begin: number, end: number) {
   const dif = end - begin;
   const number = Math.floor(Math.random() * dif) + begin;
   return number;
@@ -209,12 +215,12 @@ export const CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "
 /**
  * 
  */
-export const makeGenericFaker = (val: any, options = null) => {
+export const makeGenericFaker = (val: any, options: object | null = null) => {
   return () => {
     if (!val.textMask || !val.textMask.map) {
       return '';
     }
-    const newData = val.textMask.map((c: string | any[], index: string | number) => {
+    const newData = val.textMask.map((c: string | any[], index: number) => {
       if (options && options[index]) {
         return options[index]();
       }

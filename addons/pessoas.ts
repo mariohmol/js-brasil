@@ -1,3 +1,5 @@
+import { BigObject } from "../src/interfaces";
+
 export const NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
 export const NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
 export const SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
@@ -15,7 +17,7 @@ export const TELEFONE_ESTADO = {
     rr: 95, sc: 48, se: 79, sp: 11, to: 63
 }
 
-export const CEP_ESTADO = {
+export const CEP_ESTADO: BigObject<Array<Array<number>>> = {
     ac: [[69900000, 69999999]],
     al: [[57000000, 57999999]],
     am: [[69000000, 69299999], [69400000, 69899999]],
@@ -47,7 +49,7 @@ export const CEP_ESTADO = {
 
 export const TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
 
-export function getAstro(data) {
+export function getAstro(data:string|Date) {
     let month, day;
     if (typeof data === 'string') {
         day = parseInt(data.split('/')[0]);

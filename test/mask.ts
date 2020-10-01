@@ -2,14 +2,14 @@ import { maskBr, fakerBr, validateBr } from '../index';
 import { expect } from 'chai';
 
 
-const testGeneric = (key) => {
+const testGeneric = (key: string) => {
   let val = fakerBr[key]();
   val = val.replace(/[^\d\w]+/g, '');
   const valMask = maskBr[key](val);
   expect(validateBr[key](valMask)).to.be.true;
 }
 
-const testGenericIPTU = (estado, cidade) => {
+const testGenericIPTU = (estado: string, cidade: string) => {
   let val = fakerBr['iptu'](estado, cidade);
   val = val.replace(/[^\d\w]+/g, '');
   const valMask = maskBr['iptu'](val,estado, cidade);

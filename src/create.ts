@@ -6,7 +6,7 @@ import { modulo11, getAllDigits, rand, fillString } from "./utils";
  * @param ano - ANO do número da guia. Ex: 2018, 2019
  * @param tipo - TIPO da guia. Aih = 1, APAC = 2
  */
-export function create_aih(value) {
+export function create_aih(value: string | number | any[]) {
   value = getAllDigits(value.toString());
   if (value.length > 12) {
     value = value.toString().substr(0, value.length - 1);
@@ -17,7 +17,7 @@ export function create_aih(value) {
   return digito;
 }
 
-export function create_certidao(value) {
+export function create_certidao(value: string) {
 
   if (value.length > 30) {
     value = value.substring(0, value.length - 2);
@@ -65,11 +65,11 @@ export function create_certidao(value) {
 }
 
 
-export function create_cnh(cnh) {
+export function create_cnh(cnh: string) {
 
   let v = 0;
   for (let i = 0, j = 9; i < 9; ++i, --j) {
-    v += +(cnh.charAt(i) * j);
+    v += +(parseInt(cnh.charAt(i)) * j);
   }
 
   let dsc = 0,
@@ -81,7 +81,7 @@ export function create_cnh(cnh) {
   }
 
   for (let i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
-    v += +(cnh.charAt(i) * j);
+    v += +(parseInt(cnh.charAt(i)) * j);
   }
 
   let x = v % 11;
@@ -90,18 +90,19 @@ export function create_cnh(cnh) {
   return ('' + vl1 + vl2); // === cnh.substr(-2);
 }
 
-export function create_cnh_antigo(value) {
+export function create_cnh_antigo(value: string) {
   value = getAllDigits(value);
-  if (value.length != 11 || value === 0) {
+  if (value.length != 11 || value === '0') {
     return false;
   }
-  let s1, s2;
+  let s1: number, s2: number;
   for (let c = s1 = s2 = 0, p = 9; c < 9; c++ , p--) {
-    s1 += value[c] * p;
-    s2 += value[c] * (10 - p);
+    s1 += parseInt(value[c]) * p;
+    s2 += parseInt(value[c]) * (10 - p);
   }
   let dv1 = s1 % 11;
-  if (value[9] != (dv1 > 9) ? 0 : dv1) {
+  dv1 = (dv1 > 9 ? 0 : dv1);
+  if (parseInt(value[9]) !== dv1) {
     return false;
   }
   let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
@@ -163,11 +164,11 @@ export function create_cnpj(cnpj: string) {
   return resultados;
 }
 
-export function create_cns(number) {
+export function create_cns(number: string) {
   number = getAllDigits(number);
   let somaInicial = 0;
   for (let i = 0; i < number.length - 1; i++) {
-    somaInicial += number[i] * (15 - i);
+    somaInicial += parseInt(number[i]) * (15 - i);
   }
   let soma = somaInicial;
   let rest = 0;
@@ -192,7 +193,7 @@ export function create_cpf(strCPF: string) {
   return restos;
 }
 
-export function create_cartaocredito(number) {
+export function create_cartaocredito(number: string) {
 
   // if (number.length > 18) { alert("Erro. A rotina não abrange cartões\ncom mais de 18 dígitos (fora o DV).\nIntroduza 18 dígitos, no máximo."); }
 
@@ -244,7 +245,7 @@ export function create_cartaocredito(number) {
   return ccredDig;
 }
 
-export function create_ect(number) {
+export function create_ect(number: string) {
   number = getAllDigits(number);
   number = "0000000" + number;
   number = number.slice(number.length - 8);
@@ -273,7 +274,7 @@ export function create_pispasep(number: string) {
   let d;
   let p = 2, c = 9;
   for (d = 0; c >= 0; c-- , (p < 9) ? p++ : p = 2) {
-    d += nis[c] * p;
+    d += parseInt(nis[c]) * p;
   }
 
   const digit = (((10 * d) % 11) % 10);
@@ -305,7 +306,7 @@ export function create_renavam(renavam: string) {
  * Font: http://ghiorzi.org/index.htm
  * @param number 
  */
-export function create_processo(number) {
+export function create_processo(number: string) {
   number = getAllDigits(number);
   number = "00000000000000000" + number;
   number = number.slice(number.length - 18);
@@ -395,7 +396,7 @@ export function create_titulo_atual(titulo: string) {
   return dig1.toString() + dig2.toString();
 }
 
-export function create_titulo(titNum) {
+export function create_titulo(titNum: string) {
   titNum = getAllDigits(titNum);
 
   if (titNum.length > 11) {

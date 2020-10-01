@@ -1,7 +1,7 @@
 import { getAllDigits, makeGenericFaker } from "../utils";
 import { IPTUMASKS } from "./mask";
 
-export function create_iptu_ctba(number) {
+export function create_iptu_ctba(number: string) {
   number = getAllDigits(number);
   let a1 = parseInt(number.slice(10));
   let a2 = parseInt(number.slice(9, 10));
@@ -20,7 +20,7 @@ export function create_iptu_ctba(number) {
   return iptuctbaDV;
 }
 
-export function create_iptu_sp(number) {
+export function create_iptu_sp(number: string) {
   let a1 = parseInt(number.slice(9));
   let a2 = parseInt(number.slice(8, 9));
   let a3 = parseInt(number.slice(7, 8));
@@ -38,7 +38,7 @@ export function create_iptu_sp(number) {
 }
 
 
-export const faker_iptu = (estado, cidade) => {
+export const faker_iptu = (estado: string | number, cidade: string | number) => {
   if (!IPTUMASKS[estado] || !IPTUMASKS[estado][cidade]) {
     return;
   }

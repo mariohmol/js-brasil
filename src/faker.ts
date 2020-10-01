@@ -15,7 +15,7 @@ import { faker_iptu } from './iptu/create';
 // import cnaes from '../addons/cnaes';
 
 
-function aih(uf = 35, ano = 19, tipo = 1, seq = null) {
+function aih(uf = 35, ano = 19, tipo = 1, seq: number | null = null) {
   if (!seq) {
     seq = randomNumber(1000000, 9999999); // new Random().Next(1, 9999999).ToString().PadLeft(7, '0');
   }
@@ -33,11 +33,12 @@ function cep(options: any = {}) {
   }
 
   const range = CEP_ESTADO[options.estado];
-  let cep = randomNumber(range[0][0], range[0][1]);
-  if (cep < 10000000) {
-    cep = '0' + cep.toString();
+  let cepNumber = randomNumber(range[0][0], range[0][1]);
+  let cep: string;
+  if (cepNumber < 10000000) {
+    cep = '0' + cepNumber.toString();
   } else {
-    cep = cep.toString();
+    cep = cepNumber.toString();
   }
 
   const mask = cep.slice(0, cep.length - 3) + '-' + cep.slice(cep.length - 3, cep.length);
@@ -73,10 +74,12 @@ function cnpj() {
   let cnpj = makeGenericFaker(MASKS['cnpj'])();
   cnpj = cnpj.replace(/[^\d]+/g, '');
 
-  let restos = create_cnpj(cnpj);
+  let restos = create_cnpj(cnpj) || [0, 1];
+
   cnpj = cnpj.substr(0, cnpj.length - 2) + restos[0] + restos[0]
 
-  restos = create_cnpj(cnpj);
+  restos = create_cnpj(cnpj) || [0, 1];
+
   return cnpj.substr(0, cnpj.length - 1) + restos[1];
 }
 function cns() {
@@ -87,10 +90,10 @@ function cns() {
     cns = getAllDigits(cns);
     const primeiroDigito = parseInt(cns[0]);
     if (primeiroDigito < 3) {
-      const cnsDigits = cns.split();
-      cnsDigits[cnsDigits.length - 2] = 0;
-      cnsDigits[cnsDigits.length - 3] = 0;
-      cnsDigits[cnsDigits.length - 4] = 0;
+      const cnsDigits = cns.split('');
+      cnsDigits[cnsDigits.length - 2] = '0';
+      cnsDigits[cnsDigits.length - 3] = '0';
+      cnsDigits[cnsDigits.length - 4] = '0';
       cns = cnsDigits.join();
     }
 
@@ -102,11 +105,20 @@ function cns() {
 }
 const contabanco = makeGenericFaker(MASKS['contabanco']);
 function cpf() {
-  let cpf = makeGenericFaker(MASKS['cpf'])();
-  let restos = create_cpf(cpf);
-  cpf = cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
-  restos = create_cpf(cpf);
-  return cpf.substr(0, cpf.length - 2) + restos[0] + restos[1];
+  let cpf_fake = makeGenericFaker(MASKS['cpf'])();
+  let restos = create_cpf(cpf_fake);
+  if (!restos) {
+    throw new Error('Could not create cpf on faker cpf')
+  }
+  cpf_fake = cpf_fake.substr(0, cpf_fake.length - 2) + restos[0] + restos[1];
+
+  restos = create_cpf(cpf_fake);
+  if (!restos) {
+    throw new Error('Could not create cpf on faker cpf')
+  }
+  cpf_fake = cpf_fake.substr(0, cpf_fake.length - 2) + restos[0] + restos[1];
+
+  return cpf_fake;
 }
 const cpfcnpj = makeGenericFaker(MASKS['cpfcnpj']);
 const cartaocredito = makeGenericFaker(MASKS['cartaocredito']);
@@ -214,7 +226,7 @@ function endereco(options: any = {}) {
   if (!options.estado) {
     options.estado = randomEstadoSigla();
   }
-  const estadoFound = LOCALIZACAO_ESTADOS.find(e => e.uf.toLowerCase() === options.estado);
+  const estadoFound = LOCALIZACAO_ESTADOS.find(e => e.uf.toLowerCase() === options.estado) || LOCALIZACAO_ESTADOS[0];
   const cidades = LOCALIZACAO_CIDADES.filter(c => c[1] === estadoFound.nome);
   const cidade = randArray(cidades);
   let estado = cidade[1].toLowerCase();
@@ -230,7 +242,7 @@ function endereco(options: any = {}) {
     estadoSigla: estado.uf
   }
 }
-const inscricaoestadual = estado => {
+const inscricaoestadual = (estado: string) => {
   estado = estado.toLowerCase();
   let val = makeGenericFaker(MASKS['inscricaoestadual'][estado])();
   val = val.match(/\d/g).join('');
@@ -238,7 +250,7 @@ const inscricaoestadual = estado => {
   return newval;
 }
 
-function iptu(estado, cidade) {
+function iptu(estado: any, cidade: any) {
   return faker_iptu(estado, cidade);
 }
 
@@ -422,7 +434,7 @@ function veiculo() {
     cor: randArray(CORES)
   }
 }
-function usuario(nome) {
+function usuario(nome: string) {
   if (!nome) {
     const sobrenomePai = randArray(SOBRENOMES);
     nome = randArray(NOMES_MASCULINOS) + ' ' + sobrenomePai;

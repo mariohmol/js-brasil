@@ -1,6 +1,6 @@
-export function rg_sp(number) {
+import { BigObject } from "./interfaces";
 
-
+export function rg_sp(number: string) {
   // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}
 
   number = "0000000" + number;
@@ -23,7 +23,7 @@ export function rg_sp(number) {
 
 }
 
-export function rg_rj(number) {
+export function rg_rj(number: string) {
 
 
   // if(number.length>8){alert("Erro. Não existe RG-RJ/MaSP-MG\ncom mais de 8 dígitos.");}
@@ -55,7 +55,9 @@ export function rg_rj(number) {
   return cirjDig;
 }
 
-export default {
-  'sp': rg_sp,
-  'rj': rg_rj
+const RG: BigObject<Function> = {
+  sp: rg_sp,
+  rj: rg_rj
 }
+
+export default RG;
