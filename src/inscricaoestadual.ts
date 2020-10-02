@@ -1,5 +1,5 @@
 import { allNumbersAreSame } from './utils';
-import { BigObject } from 'interfaces';
+import { BigObject } from './interfaces';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
