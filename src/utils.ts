@@ -1,5 +1,5 @@
 import { ESTADOS_SIGLA } from "./estados";
-import { BigObject } from "interfaces";
+import { BigObject } from "./interfaces";
 
 export function isPresent(obj: any): boolean {
   return obj !== undefined && obj !== null;
@@ -53,8 +53,8 @@ export const modulo11 = (string: string, size: number, mod: number) => {
 }
 
 /**
- * 
- * @param input 
+ *
+ * @param input
  * ^ - Match line start
   (\d) - match first digit and capture it in back reference #1 i.e. \1
   (?!..) is a negative lookahead
@@ -132,11 +132,11 @@ export function slugify(value: string) {
 
 };
 /**
- * 
+ *
  * @param string  ex. 12345
  * @param size   11
  * @param fill   0
- * 
+ *
  * Returns: 00000012345
  */
 export function fillString(string: string, size: number, fill: string) {
@@ -221,7 +221,7 @@ export function getSpecialProperty<TModel, TKey extends keyof TModel>(
 }
 
 /**
- * 
+ *
  */
 export const makeGenericFaker = (val: any, options: BigObject<Function> | null = null) => {
   return () => {
