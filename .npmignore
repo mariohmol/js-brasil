@@ -3,8 +3,6 @@
 .idea/
 docs/
 node_modules
-src/
-addons/
 test/
 .travis.yml
 tsconfig.json
