@@ -1,2 +1,10 @@
+.github
+.vscode
+docs
 node_modules
-tests
+src
+addons
+test
+.travis.yml
+tsconfig.json
+tslint.json
