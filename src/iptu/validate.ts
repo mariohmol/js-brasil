@@ -1,6 +1,6 @@
 import { getAllDigits } from "../utils";
 import { IPTUCREATE } from "./create";
-import { BigObject } from "interfaces";
+import { BigObject } from "../interfaces";
 
 const validateRemoveDigito = (number: string | any[], max: number) => {
   number = getAllDigits(number.toString());

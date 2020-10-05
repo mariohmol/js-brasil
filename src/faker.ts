@@ -1,14 +1,13 @@
 import { MASKS } from './mask';
-import { IEMaskType } from './interfaces';
 import { CEPRange, validate_cns, validate_titulo } from './validate';
 import { randexp } from 'randexp';
 import { validate_placa } from './placa';
-import { generateInscricaoEstadual, IEMASKS } from './inscricaoestadual';
+import { generateInscricaoEstadual } from './inscricaoestadual';
 import {
   create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
   create_cns, create_ect, create_certidao, create_aih, create_pispasep
 } from './create';
-import { getAllDigits, randArray, CORES, randomLetterOrNumber, randomLetter, rand, randomNumber, randomEstadoSigla, slugify, makeGenericFaker, getSpecialProperty } from './utils';
+import { getAllDigits, randArray, CORES, randomLetter, randomNumber, randomEstadoSigla, slugify, makeGenericFaker, getSpecialProperty } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
 import { LOCALIZACAO_CIDADES, LOCALIZACAO_BAIRROS, LOCALIZACAO_RUAS, LOCALIZACAO_COMPLEMENTOS, LOCALIZACAO_ESTADOS } from './name';
 import { NOMES_MASCULINOS, EMPRESAS_TIPOS, EMPRESAS_NOMES, NOMES_FEMININOS, SOBRENOMES, TIPOS_SANGUINEOS, getAstro, TELEFONE_ESTADO, CEP_ESTADO } from '../addons/pessoas';

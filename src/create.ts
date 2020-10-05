@@ -1,4 +1,4 @@
-import { modulo11, getAllDigits, rand, fillString } from "./utils";
+import { modulo11, getAllDigits, fillString } from "./utils";
 
 /**
  * 

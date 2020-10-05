@@ -1,6 +1,6 @@
 import { getAllDigits, makeGenericFaker } from "../utils";
 import { IPTUMASKS } from "./mask";
-import { BigObject } from "interfaces";
+import { BigObject } from "../interfaces";
 
 export function create_iptu_ctba(number: string) {
   number = getAllDigits(number);

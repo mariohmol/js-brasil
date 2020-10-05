@@ -1,5 +1,5 @@
 import { isArray, processCaretTraps, getSpecialProperty } from './utils';
-import { Masks, BigObject, MaskType, IEMaskType } from "./interfaces";
+import { BigObject, MaskType, IEMaskType } from "./interfaces";
 import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';

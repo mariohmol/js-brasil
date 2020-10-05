@@ -5,7 +5,7 @@ import * as mask from './src/mask';
 import { MASKS } from './src/mask';
 import { PLACAS_RANGE } from './src/placa';
 import { ESTADOS } from './src/estados';
-import { BigObject } from 'interfaces';
+import { BigObject } from './src/interfaces';
 
 export const utilsBr = {
   ...utils,
