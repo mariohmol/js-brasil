@@ -1,4 +1,3 @@
-import { rand } from "./utils";
 
 export const AIH_ESTADOS = {
   'AC': '12', 'AL': '27', 'AP': '16', 'AM': '13', 'BA': '29', 'CE': '23', 'DF': '53',

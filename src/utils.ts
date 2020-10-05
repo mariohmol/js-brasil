@@ -1,5 +1,5 @@
-import { ESTADOS_SIGLA } from "./estados";
-import { BigObject } from "interfaces";
+import { ESTADOS_SIGLA } from './estados';
+import { BigObject } from './interfaces';
 
 export function isPresent(obj: any): boolean {
   return obj !== undefined && obj !== null;

@@ -1,4 +1,4 @@
-import { BigObject } from "./interfaces";
+import { BigObject } from './interfaces';
 
 export function rg_sp(number: string) {
   // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}

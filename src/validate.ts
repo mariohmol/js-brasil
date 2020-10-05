@@ -1,13 +1,13 @@
-import { getAllDigits, fillString, getAllWords } from "./utils";
-import { BigObject } from "./interfaces";
-import { validate_inscricaoestadual } from "./inscricaoestadual";
-import { validate_placa } from "./placa";
+import { getAllDigits, fillString, getAllWords } from './utils';
+import { BigObject } from './interfaces';
+import { validate_inscricaoestadual } from './inscricaoestadual';
+import { validate_placa } from './placa';
 import {
   create_cnpj, create_cpf,
   create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep
-} from "./create";
-import RG from "./rg";
-import { validate_iptu } from "./iptu/iptu";
+} from './create';
+import RG from './rg';
+import { validate_iptu } from './iptu/iptu';
 
 
 export function validate_aih(aih: string) {

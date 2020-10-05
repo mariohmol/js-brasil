@@ -1,4 +1,4 @@
-import { BigObject, MaskType } from "../interfaces";
+import { BigObject, MaskType } from '../interfaces';
 
 export const IPTUMASKS: BigObject<BigObject<MaskType>> = {
   'minas-gerais': {
