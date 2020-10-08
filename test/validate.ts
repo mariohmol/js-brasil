@@ -230,7 +230,11 @@ describe('Validate test', () => {
     });
     it('Distrito Federal', () => {
       expect(validateBr.inscricaoestadual('0716738700135', 'df')).to.be.true;
+      expect(validateBr.inscricaoestadual('0816738700107', 'df')).to.be.true;
+      expect(validateBr.inscricaoestadual('0916738700135', 'df')).to.be.false;
+      expect(validateBr.inscricaoestadual('0616738700135', 'df')).to.be.false;
       expect(validateBr.inscricaoestadual('07574259001-32', 'df')).to.be.true;
+      expect(validateBr.inscricaoestadual('08167387001-07', 'df')).to.be.true;
       expect(validateBr.inscricaoestadual('07574259001-30', 'df')).to.be.false;
     });
     it('Espírito Santo', () => {

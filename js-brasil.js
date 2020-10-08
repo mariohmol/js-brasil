@@ -1861,7 +1861,7 @@ exports.generateInscricaoEstadual = {
         if (tamanhoNaoE(valor, 13)) {
             return false;
         }
-        if (naoComecaCom(valor, '07')) {
+        if (naoComecaCom(valor, '07') && naoComecaCom(valor, '08')) {
             return false;
         }
         var base = primeiros(valor, 11);

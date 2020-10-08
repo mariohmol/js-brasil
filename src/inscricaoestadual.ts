@@ -147,16 +147,14 @@ export const generateInscricaoEstadual: BigObject<Function> = {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
-
-    if (naoComecaCom(valor, '07')) {
+    
+    if (naoComecaCom(valor, '07') && naoComecaCom(valor, '08')) {
       return false;
     }
-
     const base: any = primeiros(valor, 11);
 
     const primeiro = substracaoPor11SeMaiorQue2CasoContrario0(mod(base));
     const segundo = substracaoPor11SeMaiorQue2CasoContrario0(mod(base + primeiro));
-
     return base + primeiro + segundo;
   },
 
