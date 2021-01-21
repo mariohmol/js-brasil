@@ -43,13 +43,13 @@ export const CEP_ESTADO: BigObject<Array<Array<number>>> = {
     rs: [[90000000, 99999999]],
     sc: [[88000000, 89999999]],
     se: [[49000000, 49999999]],
-    sp: [[ 1000000, 19999999]],
+    sp: [[1000000, 19999999]],
     to: [[77000000, 77999999]]
 }
 
 export const TIPOS_SANGUINEOS = ['O+', 'A+', 'B+', 'AB+', ' O−', ' A−', ' B−', 'AB−'];
 
-export function getAstro(data:string|Date) {
+export function getAstro(data: string | Date) {
     let month, day;
     if (typeof data === 'string') {
         day = parseInt(data.split('/')[0]);
@@ -63,27 +63,28 @@ export function getAstro(data:string|Date) {
 
     if ((month == 1 && day < 20) || (month == 12 && day >= 22)) {
         return 'Capricórnio';
-    } else if ((month == 2 && day < 19) || (month == 1 && day >= 22)) {
+    } else if ((month == 2 && day < 19) || (month == 1 && day >= 20)) {
         return 'Aquários';
-    } else if ((month == 3 && day < 21) || (month == 2 && day >= 24)) {
+    } else if ((month == 3 && day < 21) || (month == 2 && day >= 19)) {
         return 'Peixes';
-    } else if ((month == 4 && day < 20) || (month == 3 && day >= 23)) {
+    } else if ((month == 4 && day < 20) || (month == 3 && day >= 21)) {
         return 'Aries';
-    } else if ((month == 5 && day < 21) || (month == 4 && day >= 23)) {
+    } else if ((month == 5 && day < 21) || (month == 4 && day >= 20)) {
         return 'Touro';
-    } else if ((month == 6 && day < 22) || (month == 5 && day >= 23)) {
+    } else if ((month == 6 && day < 22) || (month == 5 && day >= 21)) {
         return 'Gêmeos';
     } else if ((month == 7 && day < 23) || (month == 6 && day >= 22)) {
         return 'Cancer';
-    } else if ((month == 8 && day < 23) || (month == 7 && day >= 21)) {
+    } else if ((month == 8 && day < 23) || (month == 7 && day >= 23)) {
         return 'Leao';
-    } else if ((month == 9 && day < 23) || (month == 8 && day >= 20)) {
+    } else if ((month == 9 && day < 23) || (month == 8 && day >= 23)) {
         return 'Virgo';
-    } else if ((month == 10 && day < 24) || (month == 9 && day >= 21)) {
+    } else if ((month == 10 && day < 24) || (month == 9 && day >= 22)) {
         return 'Libra';
-    } else if ((month == 11 && day < 22) || (month == 10 && day >= 19)) {
+    } else if ((month == 11 && day < 22) || (month == 10 && day >= 24)) {
         return 'Escorpião';
-    } else if ((month == 12 && day < 22) || (month == 11 && day >= 20)) { return 'Sagitário' }
+    } else if ((month == 12 && day < 22) || (month == 11 && day >= 22)) { return 'Sagitário' }
+    throw new Error("Signo não encontrado : " + day + '/' + month);
 }
 
 

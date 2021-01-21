@@ -283,7 +283,7 @@ export const maskBr = {
       { guide: false }
     ).conformedValue;
   },
-  number: (numberValue: any) => {
+  number: (numberValue: any, decimalsFormat: number = 2) => {
     if (!numberValue) {
       return '';
     }
@@ -301,15 +301,15 @@ export const maskBr = {
 
     const mask = MASKS.number.textMask(vals[0]);
     let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
-    if (decimals.length > 2) {
-      decimals = decimals.substring(0, 2);
+    if (decimals.length > decimalsFormat) {
+      decimals = decimals.substring(0, decimalsFormat);
     }
 
     return conformToMask(
       numberValue,
       mask,
       { guide: false }
-    ).conformedValue + ',' + decimals;
+    ).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
   },
   porcentagem: (porcentagemValue: string) => {
     if (!porcentagemValue) {

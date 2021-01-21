@@ -103,33 +103,6 @@ describe('Mask test', () => {
     // testGeneric('cartaocredito');
   });
 
-  it('Moeda', () => {
-    const currency = 'R$ 5.103,94';
-    const currencyText = '5.103,94';
-    const currencyNumber = 5103.94;
-    const currencyNoDecimals = 'R$ 5.103';
-    const currencyTextNoDecimals = '5.103';
-    const currencyNumberNoDecimals = 5103;
-    const currencyNumberMany = 5103.9423234;
-    const currencyTextNegative = '-5.103,94';
-    const currencyNumberNegative = -125.95;
-    const currencyNegative = '-R$ 5.103,94';
-
-    expect(maskBr.currency(currencyNoDecimals)).to.be.equal('R$ 5.103,00');
-    expect(maskBr.currency(currencyTextNoDecimals)).to.be.equal('R$ 5.103,00');
-    expect(maskBr.currency(currencyNumberNoDecimals)).to.be.equal('R$ 5.103,00');
-
-    expect(maskBr.currency(currency)).to.be.equal('R$ 5.103,94');
-    expect(maskBr.currency(currencyNumber)).to.be.equal('R$ 5.103,94');
-    expect(maskBr.currency(currencyText)).to.be.equal('R$ 5.103,94');
-    expect(maskBr.currency(currencyNumberMany)).to.be.equal('R$ 5.103,94');
-    expect(maskBr.currency(currencyTextNegative)).to.be.equal('-R$ 5.103,94');
-    expect(maskBr.currency(currencyNumberNegative)).to.be.equal('-R$ 125,95');
-    expect(maskBr.currency(currencyNegative)).to.be.equal('-R$ 5.103,94');
-    // testGeneric('currency');
-    // expect(maskBr.currency('123')).to.exist;
-    // expect(maskBr.currency(123)).to.exist;
-  });
 
   it('DATA', () => {
     const data = '01/12/1980';
@@ -165,8 +138,41 @@ describe('Mask test', () => {
     const number = '1234,10';
     expect(maskBr.number(number)).to.be.equal('1.234,10');
     expect(maskBr.number(1234.10)).to.be.equal('1.234,10');
+    expect(maskBr.number(1234 , 0)).to.be.equal('1.234');
+    expect(maskBr.number(1234.56 , 1)).to.be.equal('1.234,5');
+    expect(maskBr.number(1234.56 , 2)).to.be.equal('1.234,56');
+    expect(maskBr.number(1234.565 , 3)).to.be.equal('1.234,565');
+    expect(maskBr.number(1234.5656 , 4)).to.be.equal('1.234,5656');
   });
 
+
+  it('Moeda', () => {
+    const currency = 'R$ 5.103,94';
+    const currencyText = '5.103,94';
+    const currencyNumber = 5103.94;
+    const currencyNoDecimals = 'R$ 5.103';
+    const currencyTextNoDecimals = '5.103';
+    const currencyNumberNoDecimals = 5103;
+    const currencyNumberMany = 5103.9423234;
+    const currencyTextNegative = '-5.103,94';
+    const currencyNumberNegative = -125.95;
+    const currencyNegative = '-R$ 5.103,94';
+
+    expect(maskBr.currency(currencyNoDecimals)).to.be.equal('R$ 5.103,00');
+    expect(maskBr.currency(currencyTextNoDecimals)).to.be.equal('R$ 5.103,00');
+    expect(maskBr.currency(currencyNumberNoDecimals)).to.be.equal('R$ 5.103,00');
+
+    expect(maskBr.currency(currency)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumber)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyText)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumberMany)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyTextNegative)).to.be.equal('-R$ 5.103,94');
+    expect(maskBr.currency(currencyNumberNegative)).to.be.equal('-R$ 125,95');
+    expect(maskBr.currency(currencyNegative)).to.be.equal('-R$ 5.103,94');
+    // testGeneric('currency');
+    // expect(maskBr.currency('123')).to.exist;
+    // expect(maskBr.currency(123)).to.exist;
+  });
 
   it('Porcentagem', () => {
     const porcentagem = '80';

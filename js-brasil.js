@@ -64,39 +64,40 @@ function getAstro(data) {
     if ((month == 1 && day < 20) || (month == 12 && day >= 22)) {
         return 'Capricórnio';
     }
-    else if ((month == 2 && day < 19) || (month == 1 && day >= 22)) {
+    else if ((month == 2 && day < 19) || (month == 1 && day >= 20)) {
         return 'Aquários';
     }
-    else if ((month == 3 && day < 21) || (month == 2 && day >= 24)) {
+    else if ((month == 3 && day < 21) || (month == 2 && day >= 19)) {
         return 'Peixes';
     }
-    else if ((month == 4 && day < 20) || (month == 3 && day >= 23)) {
+    else if ((month == 4 && day < 20) || (month == 3 && day >= 21)) {
         return 'Aries';
     }
-    else if ((month == 5 && day < 21) || (month == 4 && day >= 23)) {
+    else if ((month == 5 && day < 21) || (month == 4 && day >= 20)) {
         return 'Touro';
     }
-    else if ((month == 6 && day < 22) || (month == 5 && day >= 23)) {
+    else if ((month == 6 && day < 22) || (month == 5 && day >= 21)) {
         return 'Gêmeos';
     }
     else if ((month == 7 && day < 23) || (month == 6 && day >= 22)) {
         return 'Cancer';
     }
-    else if ((month == 8 && day < 23) || (month == 7 && day >= 21)) {
+    else if ((month == 8 && day < 23) || (month == 7 && day >= 23)) {
         return 'Leao';
     }
-    else if ((month == 9 && day < 23) || (month == 8 && day >= 20)) {
+    else if ((month == 9 && day < 23) || (month == 8 && day >= 23)) {
         return 'Virgo';
     }
-    else if ((month == 10 && day < 24) || (month == 9 && day >= 21)) {
+    else if ((month == 10 && day < 24) || (month == 9 && day >= 22)) {
         return 'Libra';
     }
-    else if ((month == 11 && day < 22) || (month == 10 && day >= 19)) {
+    else if ((month == 11 && day < 22) || (month == 10 && day >= 24)) {
         return 'Escorpião';
     }
-    else if ((month == 12 && day < 22) || (month == 11 && day >= 20)) {
+    else if ((month == 12 && day < 22) || (month == 11 && day >= 22)) {
         return 'Sagitário';
     }
+    throw new Error("Signo não encontrado : " + day + '/' + month);
 }
 exports.getAstro = getAstro;
 exports.NAMES = [
@@ -2898,7 +2899,8 @@ exports.maskBr = {
         }
         return conformToMask(iptuValue, mask.textMask, { guide: false }).conformedValue;
     },
-    number: function (numberValue) {
+    number: function (numberValue, decimalsFormat) {
+        if (decimalsFormat === void 0) { decimalsFormat = 2; }
         if (!numberValue) {
             return '';
         }
@@ -2912,10 +2914,10 @@ exports.maskBr = {
         }
         var mask = exports.MASKS.number.textMask(vals[0]);
         var decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
-        if (decimals.length > 2) {
-            decimals = decimals.substring(0, 2);
+        if (decimals.length > decimalsFormat) {
+            decimals = decimals.substring(0, decimalsFormat);
         }
-        return conformToMask(numberValue, mask, { guide: false }).conformedValue + ',' + decimals;
+        return conformToMask(numberValue, mask, { guide: false }).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
     },
     porcentagem: function (porcentagemValue) {
         if (!porcentagemValue) {
