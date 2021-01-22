@@ -12,8 +12,8 @@ const testGeneric = (key: string) => {
 const testGenericIPTU = (estado: string, cidade: string) => {
   let val = fakerBr['iptu'](estado, cidade);
   val = val.replace(/[^\d\w]+/g, '');
-  const valMask = maskBr['iptu'](val,estado, cidade);
-  expect(validateBr['iptu'](valMask,estado, cidade)).to.be.true;
+  const valMask = maskBr['iptu'](val, estado, cidade);
+  expect(validateBr['iptu'](valMask, estado, cidade)).to.be.true;
 }
 
 describe('Mask test', () => {
@@ -124,13 +124,13 @@ describe('Mask test', () => {
   });
 
   it('IPTU', () => {
-    expect(maskBr.iptu('1231234512132','minas-gerais','belo-horizonte')).to.be.equal('123.123.451.213.2');
-    testGenericIPTU('minas-gerais','belo-horizonte');
+    expect(maskBr.iptu('1231234512132', 'minas-gerais', 'belo-horizonte')).to.be.equal('123.123.451.213.2');
+    testGenericIPTU('minas-gerais', 'belo-horizonte');
 
-    expect(maskBr.iptu('123456789012','sao-paulo','sao-paulo')).to.be.equal('12345678901-2');
-    testGenericIPTU('sao-paulo','sao-paulo');
+    expect(maskBr.iptu('123456789012', 'sao-paulo', 'sao-paulo')).to.be.equal('12345678901-2');
+    testGenericIPTU('sao-paulo', 'sao-paulo');
 
-    expect(maskBr.iptu('123456789012','parana','curitiba')).to.be.equal('12345678901-2');
+    expect(maskBr.iptu('123456789012', 'parana', 'curitiba')).to.be.equal('12345678901-2');
     // testGenericIPTU('parana','curitiba');
   });
 
@@ -138,11 +138,11 @@ describe('Mask test', () => {
     const number = '1234,10';
     expect(maskBr.number(number)).to.be.equal('1.234,10');
     expect(maskBr.number(1234.10)).to.be.equal('1.234,10');
-    expect(maskBr.number(1234 , 0)).to.be.equal('1.234');
-    expect(maskBr.number(1234.56 , 1)).to.be.equal('1.234,5');
-    expect(maskBr.number(1234.56 , 2)).to.be.equal('1.234,56');
-    expect(maskBr.number(1234.565 , 3)).to.be.equal('1.234,565');
-    expect(maskBr.number(1234.5656 , 4)).to.be.equal('1.234,5656');
+    expect(maskBr.number(1234, 0)).to.be.equal('1.234');
+    expect(maskBr.number(1234.56, 1)).to.be.equal('1.234,5');
+    expect(maskBr.number(1234.56, 2)).to.be.equal('1.234,56');
+    expect(maskBr.number(1234.565, 3)).to.be.equal('1.234,565');
+    expect(maskBr.number(1234.5656, 4)).to.be.equal('1.234,5656');
   });
 
 
@@ -169,15 +169,17 @@ describe('Mask test', () => {
     expect(maskBr.currency(currencyTextNegative)).to.be.equal('-R$ 5.103,94');
     expect(maskBr.currency(currencyNumberNegative)).to.be.equal('-R$ 125,95');
     expect(maskBr.currency(currencyNegative)).to.be.equal('-R$ 5.103,94');
-    // testGeneric('currency');
-    // expect(maskBr.currency('123')).to.exist;
-    // expect(maskBr.currency(123)).to.exist;
-  });
 
-  it('Porcentagem', () => {
-    const porcentagem = '80';
-    expect(maskBr.porcentagem(porcentagem)).to.be.equal('80%');
-    expect(maskBr.porcentagem('65,10')).to.be.equal('65,10%');
+    expect(maskBr.currency(currencyNumberMany,0)).to.be.equal('R$ 5.103');
+    expect(maskBr.currency(currencyNumberMany,1)).to.be.equal('R$ 5.103,9');
+    expect(maskBr.currency(currencyNumberMany,2)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumberMany,3)).to.be.equal('R$ 5.103,942');
+    expect(maskBr.currency(currencyNumberMany,4)).to.be.equal('R$ 5.103,9423');
+
+    const currencyNumberBig = 1239999999.99
+    expect(maskBr.currency(currencyNumberBig)).to.be.equal('R$ 1.239.999.999,99');
+
+    
   });
 
   it('PIS/PASEP', () => {
@@ -190,6 +192,20 @@ describe('Mask test', () => {
     expect(maskBr.placa(placa)).to.be.equal('ABC-1234');
     testGeneric('placa');
     expect(maskBr.placa('123')).to.exist;
+  });
+
+  it('Porcentagem', () => {
+    const porcentagem = '80';
+    expect(maskBr.porcentagem(porcentagem)).to.be.equal('80,00%');
+    expect(maskBr.porcentagem('65,10')).to.be.equal('65,10%');
+
+
+    const porcentagemFull = '80,5656';
+    expect(maskBr.porcentagem(porcentagemFull,0)).to.be.equal('80%');
+    expect(maskBr.porcentagem(porcentagemFull,1)).to.be.equal('80,5%');
+    expect(maskBr.porcentagem(porcentagemFull,2)).to.be.equal('80,56%');
+    expect(maskBr.porcentagem(porcentagemFull,3)).to.be.equal('80,565%');
+    expect(maskBr.porcentagem(porcentagemFull,4)).to.be.equal('80,5656%');
   });
 
   it('Processos', () => {

@@ -2860,25 +2860,9 @@ exports.maskBr = {
     cpf: makeGeneric('cpf'),
     cpfcnpj: makeGeneric('cpfcnpj'),
     cartaocredito: makeGeneric('cartaocredito'),
-    currency: function (currencyValueInput) {
-        if (!currencyValueInput) {
-            return '';
-        }
-        var currencyValue = currencyValueInput.toString();
-        if (typeof currencyValueInput === 'number') {
-            currencyValue = currencyValue.replace('.', ',');
-        }
-        var vals = currencyValue.split(',');
-        if (!exports.MASKS.currency.textMask || typeof exports.MASKS.currency.textMask !== 'function') {
-            return;
-        }
-        var mask = exports.MASKS.currency.textMask(vals[0]);
-        var decimals = vals.length > 1 ? vals[1].toString() : '00';
-        if (decimals.length > 2) {
-            decimals = decimals.substring(0, 2);
-        }
-        var finalValue = conformToMask(currencyValue, mask, { guide: false }).conformedValue + ',' + decimals;
-        return finalValue;
+    currency: function (currencyValueInput, decimalsFormat) {
+        if (decimalsFormat === void 0) { decimalsFormat = 2; }
+        return formatNumber(exports.MASKS.currency, currencyValueInput, decimalsFormat);
     },
     data: makeGeneric('data'),
     ect: makeGeneric('ect'),
@@ -2901,36 +2885,10 @@ exports.maskBr = {
     },
     number: function (numberValue, decimalsFormat) {
         if (decimalsFormat === void 0) { decimalsFormat = 2; }
-        if (!numberValue) {
-            return '';
-        }
-        if (!numberValue.split) {
-            numberValue += '';
-            numberValue = numberValue.replace('.', ',');
-        }
-        var vals = numberValue.split(',');
-        if (!exports.MASKS.number.textMask || typeof exports.MASKS.number.textMask !== 'function') {
-            return;
-        }
-        var mask = exports.MASKS.number.textMask(vals[0]);
-        var decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
-        if (decimals.length > decimalsFormat) {
-            decimals = decimals.substring(0, decimalsFormat);
-        }
-        return conformToMask(numberValue, mask, { guide: false }).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
+        return formatNumber(exports.MASKS.number, numberValue, decimalsFormat);
     },
-    porcentagem: function (porcentagemValue) {
-        if (!porcentagemValue) {
-            return '';
-        }
-        var vals = porcentagemValue.split(',');
-        var textMask = exports.MASKS.porcentagem.textMask || function (v) { return v; };
-        if (!exports.MASKS.porcentagem.textMask || typeof exports.MASKS.porcentagem.textMask !== 'function') {
-            return;
-        }
-        var mask = exports.MASKS.porcentagem.textMask(vals[0]);
-        var decimals = vals.length > 1 ? ',' + vals[1] : '';
-        return conformToMask(porcentagemValue, mask, { guide: false }).conformedValue + decimals + '%';
+    porcentagem: function (porcentagemValue, decimalsFormat) {
+        return formatNumber(exports.MASKS.porcentagem, porcentagemValue, decimalsFormat) + '%';
     },
     pispasep: makeGeneric('pispasep'),
     placa: makeGeneric('placa'),
@@ -3183,6 +3141,32 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
     }).join('');
 }
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
+function formatNumber(maskType, numberValue, decimalsFormat) {
+    if (decimalsFormat === void 0) { decimalsFormat = 2; }
+    if (!numberValue) {
+        return '';
+    }
+    if (!numberValue.split) {
+        numberValue += '';
+        numberValue = numberValue.replace('.', ',');
+    }
+    var vals = numberValue.split(',');
+    if (!maskType.textMask || typeof maskType.textMask !== 'function') {
+        return;
+    }
+    var mask = maskType.textMask(vals[0]);
+    var decimals = '';
+    if (decimalsFormat == undefined) {
+        decimals = vals.length > 1 ? ',' + vals[1] : '';
+    }
+    else {
+        decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
+        if (decimals.length > decimalsFormat) {
+            decimals = decimals.substring(0, decimalsFormat);
+        }
+    }
+    return conformToMask(numberValue, mask, { guide: false }).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
+}
 
 },{"./inscricaoestadual":6,"./iptu/iptu":8,"./utils":15,"text-mask-addons/dist/createNumberMask":25}],12:[function(require,module,exports){
 "use strict";

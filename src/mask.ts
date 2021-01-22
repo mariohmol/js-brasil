@@ -225,34 +225,8 @@ export const maskBr = {
   cpf: makeGeneric('cpf'),
   cpfcnpj: makeGeneric('cpfcnpj'),
   cartaocredito: makeGeneric('cartaocredito'),
-  currency: (currencyValueInput: string | number) => {
-    if (!currencyValueInput) {
-      return '';
-    }
-
-    let currencyValue: string = currencyValueInput.toString();
-
-    if (typeof currencyValueInput === 'number') {
-      currencyValue = currencyValue.replace('.', ',');
-    }
-
-    const vals = currencyValue.split(',');
-    if (!MASKS.currency.textMask || typeof MASKS.currency.textMask !== 'function') {
-      return;
-    }
-    const mask = MASKS.currency.textMask(vals[0]);
-    let decimals = vals.length > 1 ? vals[1].toString() : '00';
-    if (decimals.length > 2) {
-      decimals = decimals.substring(0, 2);
-    }
-
-    const finalValue = conformToMask(
-      currencyValue,
-      mask,
-      { guide: false }
-    ).conformedValue + ',' + decimals;
-
-    return finalValue
+  currency: (currencyValueInput: string | number, decimalsFormat: number = 2) => {
+    return formatNumber(MASKS.currency, currencyValueInput, decimalsFormat);
   },
   data: makeGeneric('data'),
   ect: makeGeneric('ect'),
@@ -284,52 +258,10 @@ export const maskBr = {
     ).conformedValue;
   },
   number: (numberValue: any, decimalsFormat: number = 2) => {
-    if (!numberValue) {
-      return '';
-    }
-
-    if (!numberValue.split) {
-      numberValue += '';
-      numberValue = numberValue.replace('.', ',');
-    }
-
-    const vals = numberValue.split(',');
-
-    if (!MASKS.number.textMask || typeof MASKS.number.textMask !== 'function') {
-      return;
-    }
-
-    const mask = MASKS.number.textMask(vals[0]);
-    let decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
-    if (decimals.length > decimalsFormat) {
-      decimals = decimals.substring(0, decimalsFormat);
-    }
-
-    return conformToMask(
-      numberValue,
-      mask,
-      { guide: false }
-    ).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
+    return formatNumber(MASKS.number, numberValue, decimalsFormat);
   },
-  porcentagem: (porcentagemValue: string) => {
-    if (!porcentagemValue) {
-      return '';
-    }
-    const vals = porcentagemValue.split(',');
-    const textMask = MASKS.porcentagem.textMask || function (v: string) { return v };
-
-    if (!MASKS.porcentagem.textMask || typeof MASKS.porcentagem.textMask !== 'function') {
-      return;
-    }
-
-    const mask = MASKS.porcentagem.textMask(vals[0]);
-    const decimals = vals.length > 1 ? ',' + vals[1] : '';
-
-    return conformToMask(
-      porcentagemValue,
-      mask,
-      { guide: false }
-    ).conformedValue + decimals + '%';
+  porcentagem: (porcentagemValue: string, decimalsFormat: number) => {
+    return formatNumber(MASKS.porcentagem, porcentagemValue, decimalsFormat) + '%';
   },
   pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),
@@ -621,4 +553,38 @@ export function convertMaskToPlaceholder(mask = emptyArray, placeholderChar = de
   return mask.map((char: any) => {
     return (char instanceof RegExp) ? placeholderChar : char
   }).join('')
+}
+
+function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 2) {
+  if (!numberValue) {
+    return '';
+  }
+
+  if (!numberValue.split) {
+    numberValue += '';
+    numberValue = numberValue.replace('.', ',');
+  }
+
+  const vals = numberValue.split(',');
+
+  if (!maskType.textMask || typeof maskType.textMask !== 'function') {
+    return;
+  }
+
+  const mask = maskType.textMask(vals[0]);
+  let decimals = ''
+  if (decimalsFormat == undefined) {
+    decimals = vals.length > 1 ? ',' + vals[1] : '';
+  } else {
+    decimals = vals.length > 1 ? (vals[1] < 10 ? vals[1].toString() + '0' : vals[1].toString()) : '00';
+    if (decimals.length > decimalsFormat) {
+      decimals = decimals.substring(0, decimalsFormat);
+    }
+  }
+
+  return conformToMask(
+    numberValue,
+    mask,
+    { guide: false }
+  ).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
 }
