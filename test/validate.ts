@@ -161,6 +161,7 @@ describe('Validate test', () => {
     it('Pass when valid', () => {
       // expect(validateBr.currency('R$ 1234')).to.be.true;
       expect(validateBr.currency('R$ 1234,10')).to.be.true;
+      expect(validateBr.currency('R$ 99.999.999,99')).to.be.true;
       expect(validateBr.currency('R$ 1.234,10')).to.be.true;
       expect(validateBr.currency('1234,56')).to.be.true;
       expect(validateBr.currency('1.234,56')).to.be.true;

@@ -334,7 +334,7 @@ export function validate_currency(currency: string | number) {
   if (typeof currency === 'number') {
     return true;
   }
-  const regex = /^(R\$|R\$ )?(()-(\d{1,3})(?:.[0-9]{3}){0,1}|(\d{1})(?:.[0-9]{3}){0,2}|(\d{1,7}))(\,\d{1,2})?$/g;
+  const regex = /^(R\$|R\$ )?(-)?(?!0(\.)?00)\d{1,3}((\.)?\d{3})*(,\d\d)?$/g;
   return regex.test(currency);
 }
 

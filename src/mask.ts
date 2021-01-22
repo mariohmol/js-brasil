@@ -71,7 +71,7 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
       thousandsSeparatorSymbol: '.',
       decimalSymbol: ',',
       allowDecimal: true,
-      integerLimit: 15,
+      integerLimit: 17,
       prefix: 'R$ ',
       suffix: '',
       allowNegative: true
@@ -101,7 +101,7 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
       thousandsSeparatorSymbol: '.',
       decimalSymbol: ',',
       allowDecimal: true,
-      integerLimit: 15,
+      integerLimit: 17,
       prefix: '',
       suffix: ''
     })
@@ -113,7 +113,7 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
       thousandsSeparatorSymbol: '.',
       decimalSymbol: ',',
       allowDecimal: true,
-      integerLimit: 15,
+      integerLimit: 17,
       prefix: '',
       // suffix: '%'
     })
