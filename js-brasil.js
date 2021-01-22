@@ -3143,7 +3143,7 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
 function formatNumber(maskType, numberValue, decimalsFormat) {
     if (decimalsFormat === void 0) { decimalsFormat = 2; }
-    if (!numberValue) {
+    if (!numberValue && numberValue !== 0) {
         return '';
     }
     if (!numberValue.split) {

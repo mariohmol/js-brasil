@@ -556,7 +556,7 @@ export function convertMaskToPlaceholder(mask = emptyArray, placeholderChar = de
 }
 
 function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 2) {
-  if (!numberValue) {
+  if (!numberValue && numberValue!==0) {
     return '';
   }
 

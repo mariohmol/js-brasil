@@ -178,8 +178,8 @@ describe('Mask test', () => {
 
     const currencyNumberBig = 1239999999.99
     expect(maskBr.currency(currencyNumberBig)).to.be.equal('R$ 1.239.999.999,99');
-
-    
+    expect(maskBr.currency(0)).to.be.equal('R$ 0,00');
+    expect(maskBr.currency(25.5)).to.be.equal('R$ 25,50');
   });
 
   it('PIS/PASEP', () => {
