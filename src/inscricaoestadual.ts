@@ -147,7 +147,7 @@ export const generateInscricaoEstadual: BigObject<Function> = {
     if (tamanhoNaoE(valor, 13)) {
       return false;
     }
-    
+
     if (naoComecaCom(valor, '07') && naoComecaCom(valor, '08')) {
       return false;
     }
@@ -626,8 +626,16 @@ export const IEMASKS = {
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
   },
   ba: {
-    text: '123456-63',
-    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+    text: '1234567-48',
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+    textMaskFunction: function mask(userInput: any) {
+      const numberLength = getSizeNumbers(userInput);
+      if (!userInput || numberLength > 8) {
+        return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+      } else {
+        return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+      }
+    }
   },
   ce: {
     text: '06.000001-5',
@@ -689,11 +697,7 @@ export const IEMASKS = {
     text: '20.040.040-1',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/],
     textMaskFunction: function mask(userInput: any) {
-      const numbers: any = userInput.match(/\d/g);
-      let numberLength = 0;
-      if (numbers) {
-        numberLength = numbers.join('').length;
-      }
+      const numberLength = getSizeNumbers(userInput);
 
       if (!userInput || numberLength > 9) {
         return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
@@ -732,6 +736,14 @@ export const IEMASKS = {
   },
 };
 
+function getSizeNumbers(userInput: string) {
+  const numbers: any = userInput.match(/\d/g);
+  let numberLength = 0;
+  if (numbers) {
+    numberLength = numbers.join('').length;
+  }
+  return numberLength
+}
 
 function eIndefinido(objeto: any) {
   return typeof objeto === typeof undefined;

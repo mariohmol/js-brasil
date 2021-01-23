@@ -195,7 +195,6 @@ const makeGeneric = (key: string) => {
     }
 
     const test = getSpecialProperty(MASKS, key);
-    // console.log(test)
     let mask = MASKS[key].textMask
     let textMaskFunction = MASKS[key].textMaskFunction
     if (typeof textMaskFunction === 'function') {
@@ -240,9 +239,15 @@ export const maskBr = {
       return '';
     }
 
+    let mask = ieState.textMask;
+    let textMaskFunction = ieState.textMaskFunction
+    if (typeof textMaskFunction === 'function') {
+      mask = textMaskFunction(inscricaoestadualValue);
+    }
+
     return conformToMask(
       inscricaoestadualValue,
-      ieState.textMask,
+      mask,
       { guide: false }
     ).conformedValue;
   },
@@ -556,7 +561,7 @@ export function convertMaskToPlaceholder(mask = emptyArray, placeholderChar = de
 }
 
 function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 2) {
-  if (!numberValue && numberValue!==0) {
+  if (!numberValue && numberValue !== 0) {
     return '';
   }
 

@@ -121,6 +121,10 @@ describe('Mask test', () => {
     expect(maskBr.inscricaoestadual(estado, '123')).to.exist;
     const inscricaoestadual = fakerBr.inscricaoestadual(estado);
     expect(validateBr.inscricaoestadual(inscricaoestadual, estado)).to.be.true;
+
+    expect(maskBr.inscricaoestadual('1234567-48', 'ba')).to.be.equal('1234567-48');
+    expect(maskBr.inscricaoestadual('123456-63', 'ba')).to.be.equal('123456-63');
+    expect(maskBr.inscricaoestadual('1 6 2 3 4 5 6 -5 1', 'ba')).to.be.equal('1623456-51');
   });
 
   it('IPTU', () => {

@@ -223,6 +223,9 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('44820020', 'ba')).to.be.true;
       expect(validateBr.inscricaoestadual('145065-36', 'ba')).to.be.true;
       expect(validateBr.inscricaoestadual('145065-30', 'ba')).to.be.false;
+      expect(validateBr.inscricaoestadual('1623456-51', 'ba')).to.be.true;
+      expect(validateBr.inscricaoestadual('1234567-48', 'ba')).to.be.true;
+      expect(validateBr.inscricaoestadual('123456-63', 'ba')).to.be.true;
     });
     it('Ceará', () => {
       expect(validateBr.inscricaoestadual('158270479', 'ce')).to.be.true;
@@ -237,6 +240,7 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('07574259001-32', 'df')).to.be.true;
       expect(validateBr.inscricaoestadual('08167387001-07', 'df')).to.be.true;
       expect(validateBr.inscricaoestadual('07574259001-30', 'df')).to.be.false;
+      expect(validateBr.inscricaoestadual('06000001123-55', 'df')).to.be.false;
     });
     it('Espírito Santo', () => {
       expect(validateBr.inscricaoestadual('309772710', 'es')).to.be.true;
@@ -462,6 +466,7 @@ describe('Validate test', () => {
 
     expect(validateBr.telefone('(47) 3500-3500')).to.be.true;
     expect(validateBr.telefone('(61) 93500-3500')).to.be.true;
+    expect(validateBr.telefone('(61) 9350-3500')).to.be.true;
     expect(validateBr.telefone('(90) 0057-1600')).to.be.false;
     expect(validateBr.telefone('1234')).to.be.false;
   });

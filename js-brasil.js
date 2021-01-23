@@ -2240,8 +2240,17 @@ exports.IEMASKS = {
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
     ba: {
-        text: '123456-63',
-        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+        text: '1234567-48',
+        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+        textMaskFunction: function mask(userInput) {
+            var numberLength = getSizeNumbers(userInput);
+            if (!userInput || numberLength > 8) {
+                return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+            }
+            else {
+                return [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+            }
+        }
     },
     ce: {
         text: '06.000001-5',
@@ -2303,11 +2312,7 @@ exports.IEMASKS = {
         text: '20.040.040-1',
         textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/],
         textMaskFunction: function mask(userInput) {
-            var numbers = userInput.match(/\d/g);
-            var numberLength = 0;
-            if (numbers) {
-                numberLength = numbers.join('').length;
-            }
+            var numberLength = getSizeNumbers(userInput);
             if (!userInput || numberLength > 9) {
                 return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
             }
@@ -2345,6 +2350,14 @@ exports.IEMASKS = {
         textMask: [/\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
 };
+function getSizeNumbers(userInput) {
+    var numbers = userInput.match(/\d/g);
+    var numberLength = 0;
+    if (numbers) {
+        numberLength = numbers.join('').length;
+    }
+    return numberLength;
+}
 function eIndefinido(objeto) {
     return typeof objeto === typeof undefined;
 }
@@ -2837,7 +2850,6 @@ var makeGeneric = function (key) {
             return '';
         }
         var test = utils_1.getSpecialProperty(exports.MASKS, key);
-        // console.log(test)
         var mask = exports.MASKS[key].textMask;
         var textMaskFunction = exports.MASKS[key].textMaskFunction;
         if (typeof textMaskFunction === 'function') {
@@ -2874,7 +2886,12 @@ exports.maskBr = {
             !ieState.textMask) {
             return '';
         }
-        return conformToMask(inscricaoestadualValue, ieState.textMask, { guide: false }).conformedValue;
+        var mask = ieState.textMask;
+        var textMaskFunction = ieState.textMaskFunction;
+        if (typeof textMaskFunction === 'function') {
+            mask = textMaskFunction(inscricaoestadualValue);
+        }
+        return conformToMask(inscricaoestadualValue, mask, { guide: false }).conformedValue;
     },
     iptu: function (iptuValue, estado, cidade) {
         var mask = iptu_1.mask_iptu(iptuValue, estado, cidade);
