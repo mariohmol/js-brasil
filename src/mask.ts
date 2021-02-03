@@ -297,6 +297,9 @@ export function conformToMask(rawValue = emptyString, mask = emptyArray, config:
     // function to get the mask array - Normally this is handled by the
     // `createTextMaskInputElement:update` function - this allows mask functions
     // to be used directly with `conformToMask`
+    if (typeof rawValue === 'number') {
+      rawValue = (<number>rawValue).toString();
+    }
     if (typeof mask === strFunction) {
       // call the mask function to get the mask array
       mask = mask(rawValue, config)

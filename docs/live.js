@@ -4,186 +4,186 @@ let testGeneric = (key) => {
   let val = fakerBr[key]();
   val = val.replace(/[^\d\w]+/g, '');
   let valMask = maskBr[key](val);
-  console.log(validateBr[key](valMask));
+  console.info(validateBr[key](valMask));
 }
 
 
 // 'AIH'
 let aih = '3519234143128';
-console.log(maskBr.aih(aih));
+console.info(maskBr.aih(aih));
 aih = fakerBr.aih();
-console.log(validateBr.aih(aih), aih);
+console.info(validateBr.aih(aih), aih);
 
 // 'cartaocredito - TODO'
 let cartaocredito = '12312345121';
-// console.log(maskBr.cartaocredito(cartaocredito));
+// console.info(maskBr.cartaocredito(cartaocredito));
 // testGeneric('cartaocredito');
 
 // 'celular'
 let celular = '31999915454';
-console.log(maskBr.celular(celular));
+console.info(maskBr.celular(celular));
 testGeneric('celular');
 celular = fakerBr.celular();
-console.log(validateBr.celular(celular), celular);
+console.info(validateBr.celular(celular), celular);
 
 // 'CEP'
 let cep = '30456098';
-console.log(maskBr.cep(cep));
+console.info(maskBr.cep(cep));
 testGeneric('cep');
-console.log(maskBr.cep('123'));
-console.log(fakerBr.cep());
+console.info(maskBr.cep('123'));
+console.info(fakerBr.cep());
 cep = fakerBr.cep();
-console.log(validateBr.cep(cep), cep);
+console.info(validateBr.cep(cep), cep);
 
 // 'Certidão'
 let certidao = '10453901552013100012021000012321';
 let mask = maskBr.certidao(certidao);
-console.log(mask);
+console.info(mask);
 certidao = fakerBr.certidao();
-console.log(validateBr.certidao(certidao), certidao);
+console.info(validateBr.certidao(certidao), certidao);
 
 
 // 'CHASSI'
 let chassi = '9BWZZZ377VT004251';
-console.log(maskBr.chassi(chassi));
+console.info(maskBr.chassi(chassi));
 testGeneric('chassi');
 chassi = fakerBr.chassi();
-console.log(validateBr.chassi(chassi), chassi);
+console.info(validateBr.chassi(chassi), chassi);
 
 
 // 'cnae - TODO'
 let cnae = '12312345121';
-// console.log(maskBr.cnae(cnae));
+// console.info(maskBr.cnae(cnae));
 // testGeneric('cnae');
 cnae = fakerBr.cnae();
-console.log(validateBr.cnae(cnae), cnae);
+console.info(validateBr.cnae(cnae), cnae);
 
 
 // 'CNH'
 let cnh = '99739507132';
-console.log(maskBr.cnh(cnh));
+console.info(maskBr.cnh(cnh));
 testGeneric('cnh');
 cnh = fakerBr.cnh();
-console.log(validateBr.cnh(cnh), cnh);
+console.info(validateBr.cnh(cnh), cnh);
 
 
 // 'CNPJ'
 let cnpj = '83529443183182';
-console.log(maskBr.cnpj(cnpj));
-console.log(maskBr.cnpj('123'));
+console.info(maskBr.cnpj(cnpj));
+console.info(maskBr.cnpj('123'));
 testGeneric('cnpj');
-console.log(fakerBr.cnpj());
+console.info(fakerBr.cnpj());
 cnpj = fakerBr.cnpj();
-console.log(validateBr.cnpj(cnpj), cnpj);
+console.info(validateBr.cnpj(cnpj), cnpj);
 
 
 // 'CNS'
 let cns = '755845919762262';
-console.log(maskBr.cns(cns));
+console.info(maskBr.cns(cns));
 cns = fakerBr.cns();
-console.log(validateBr.cns(cns), cns);
+console.info(validateBr.cns(cns), cns);
 
 
 
 let contabanco = fakerBr.contabanco();
-console.log(validateBr.contabanco(contabanco), contabanco);
+console.info(validateBr.contabanco(contabanco), contabanco);
 
 
 // 'CPF'
 let cpf = '92044202271';
-console.log(maskBr.cpf(cpf));
+console.info(maskBr.cpf(cpf));
 testGeneric('cpf');
-console.log(maskBr.cpf('123'));
+console.info(maskBr.cpf('123'));
 cpf = fakerBr.cpf();
-console.log(validateBr.cpf(cpf), cpf);
+console.info(validateBr.cpf(cpf), cpf);
 
 
 // 'cpfcnpj - TODO'
 let cpfcnpj = '12312345121';
-// console.log(maskBr.cpfcnpj(cpfcnpj));
+// console.info(maskBr.cpfcnpj(cpfcnpj));
 // testGeneric('cpfcnpj');
 cpfcnpj = fakerBr.cpfcnpj();
-console.log(validateBr.cpfcnpj(cpfcnpj), cpfcnpj);
+console.info(validateBr.cpfcnpj(cpfcnpj), cpfcnpj);
 
 
 // 'DATA'
 let data = '01/12/1980';
-console.log(maskBr.data(data));
+console.info(maskBr.data(data));
 testGeneric('data');
 data = fakerBr.data();
-console.log(validateBr.data(data), data);
+console.info(validateBr.data(data), data);
 data = fakerBr.data({
   idadeMin: 18,
   idadeMax: 40
 });
 
-console.log(validateBr.data(data), data);
+console.info(validateBr.data(data), data);
 
 
 // 'ECT'
 let ect = '315296490';
-console.log(maskBr.ect(ect));
+console.info(maskBr.ect(ect));
 testGeneric('ect');
 ect = fakerBr.ect();
-console.log(validateBr.ect(ect), ect);
+console.info(validateBr.ect(ect), ect);
 
 
 
 let email = fakerBr.email();
-console.log(validateBr.email(email), email);
+console.info(validateBr.email(email), email);
 
 email = fakerBr.email({
   nome: 'mario mol',
   empresa: 'JS Brasil',
 })
 
-console.log(validateBr.email(email), email);
+console.info(validateBr.email(email), email);
 
 
 
 let empresa = fakerBr.empresa();
-console.log(empresa);
-console.log(validateBr.cnpj(empresa.cnpj));
-console.log(validateBr.telefone(empresa.telefone));
-console.log(validateBr.telefone(empresa.celular));
-console.log(validateBr.email(empresa.email));
-console.log(validateBr.data(empresa.dataAbertura));
-// console.log(validateBr.inscricaoestadual(empresa.inscricaoestadual, empresa.endereco.estadoSigla));
-console.log(empresa.endereco);
-console.log(empresa.inscricaoestadual);
+console.info(empresa);
+console.info(validateBr.cnpj(empresa.cnpj));
+console.info(validateBr.telefone(empresa.telefone));
+console.info(validateBr.telefone(empresa.celular));
+console.info(validateBr.email(empresa.email));
+console.info(validateBr.data(empresa.dataAbertura));
+// console.info(validateBr.inscricaoestadual(empresa.inscricaoestadual, empresa.endereco.estadoSigla));
+console.info(empresa.endereco);
+console.info(empresa.inscricaoestadual);
 
 
 
 let endereco = fakerBr.endereco();
-console.log(endereco.cep);
-console.log(endereco.logradouro);
-console.log(endereco.complemento);
-console.log(endereco.numero);
-console.log(endereco.bairro);
-console.log(endereco.cidade);
-console.log(endereco.estado);
-console.log(endereco.estadoSigla);
+console.info(endereco.cep);
+console.info(endereco.logradouro);
+console.info(endereco.complemento);
+console.info(endereco.numero);
+console.info(endereco.bairro);
+console.info(endereco.cidade);
+console.info(endereco.estado);
+console.info(endereco.estadoSigla);
 
 
 
 // 'Inscricao estadual'
 let estado = 'mg';
-console.log(maskBr.inscricaoestadual(estado, '123'));
+console.info(maskBr.inscricaoestadual(estado, '123'));
 let inscricaoestadual = fakerBr.inscricaoestadual(estado);
-console.log(validateBr.inscricaoestadual(inscricaoestadual, estado));
+console.info(validateBr.inscricaoestadual(inscricaoestadual, estado));
 
-// console.log(fakerBr.inscricaoestadual());
+// console.info(fakerBr.inscricaoestadual());
 // let inscricaoestadual = fakerBr.inscricaoestadual();
-// console.log(validateBr.inscricaoestadual(inscricaoestadual));
+// console.info(validateBr.inscricaoestadual(inscricaoestadual));
 
 
 
 // 'iptu - TODO'
 let iptu = '12312345121';
-// console.log(maskBr.iptu(iptu));
+// console.info(maskBr.iptu(iptu));
 // testGeneric('iptu');
 // let iptu = fakerBr.iptu();
-// console.log(validateBr.iptu(iptu));
+// console.info(validateBr.iptu(iptu));
 
 
 
@@ -195,171 +195,171 @@ let currencyNoDecimals = 'R$ 5.103';
 let currencyTextNoDecimals = '5.103';
 let currencyNumberNoDecimals = 5103;
 let currencyNumberMany = 5103.9423234;
-console.log(maskBr.currency(currencyNoDecimals));
-console.log(maskBr.currency(currencyTextNoDecimals));
-console.log(maskBr.currency(currencyNumberNoDecimals));
-console.log(maskBr.currency(currency));
-console.log(maskBr.currency(currencyNumber));
-console.log(maskBr.currency(currencyText));
-console.log(maskBr.currency(currencyNumberMany));
+console.info(maskBr.currency(currencyNoDecimals));
+console.info(maskBr.currency(currencyTextNoDecimals));
+console.info(maskBr.currency(currencyNumberNoDecimals));
+console.info(maskBr.currency(currency));
+console.info(maskBr.currency(currencyNumber));
+console.info(maskBr.currency(currencyText));
+console.info(maskBr.currency(currencyNumberMany));
 // testGeneric('currency');
-// console.log(maskBr.currency('123'));
-// console.log(maskBr.currency(123));
-console.log(fakerBr.currency());
+// console.info(maskBr.currency('123'));
+// console.info(maskBr.currency(123));
+console.info(fakerBr.currency());
 // let currency = fakerBr.currency();
-// console.log(validateBr.currency(currency));
+// console.info(validateBr.currency(currency));
 currencyNumber = fakerBr.currencyNumber();
-console.log(validateBr.currency(currencyNumber), currencyNumber);
+console.info(validateBr.currency(currencyNumber), currencyNumber);
 
 
 // 'Número'
 let number = '1234,10';
-console.log(maskBr.number(number));
-console.log(maskBr.number(1234.10));
+console.info(maskBr.number(number));
+console.info(maskBr.number(1234.10));
 // let number = fakerBr.number();
-// console.log(validateBr.number(number));
+// console.info(validateBr.number(number));
 
-// console.log(fakerBr.porcentagem());
+// console.info(fakerBr.porcentagem());
 // let porcentagem = fakerBr.porcentagem();
-// console.log(validateBr.porcentagem(porcentagem));
+// console.info(validateBr.porcentagem(porcentagem));
 
 
 // 'PIS/PASEP'
 let pispasep = '12312345121';
-console.log(maskBr.pispasep(pispasep));
+console.info(maskBr.pispasep(pispasep));
 
 let pessoa = fakerBr.pessoa();
-console.log(pessoa, pessoa.nome);
-console.log(pessoa.mae);
-console.log(pessoa.pai);
-console.log(pessoa.pai);
-console.log(pessoa.endereco);
+console.info(pessoa, pessoa.nome);
+console.info(pessoa.mae);
+console.info(pessoa.pai);
+console.info(pessoa.pai);
+console.info(pessoa.endereco);
 
-console.log(pessoa.usuario);
-console.log(pessoa.senha);
-console.log(pessoa.site);
-console.log(pessoa.altura);
-console.log(pessoa.peso);
-console.log(pessoa.signo);
-console.log(pessoa.tipoSanguineo);
-console.log(validateBr.rg(pessoa.rg));
-console.log(validateBr.email(pessoa.email));
-console.log(validateBr.cpf(pessoa.cpf));
-console.log(validateBr.telefone(pessoa.telefone));
-console.log(validateBr.celular(pessoa.celular));
-console.log(validateBr.data(pessoa.dataNascimento));
+console.info(pessoa.usuario);
+console.info(pessoa.senha);
+console.info(pessoa.site);
+console.info(pessoa.altura);
+console.info(pessoa.peso);
+console.info(pessoa.signo);
+console.info(pessoa.tipoSanguineo);
+console.info(validateBr.rg(pessoa.rg));
+console.info(validateBr.email(pessoa.email));
+console.info(validateBr.cpf(pessoa.cpf));
+console.info(validateBr.telefone(pessoa.telefone));
+console.info(validateBr.celular(pessoa.celular));
+console.info(validateBr.data(pessoa.dataNascimento));
 
 
 
 // let pispasep = fakerBr.pispasep();
-// console.log(validateBr.pispasep(pispasep));
+// console.info(validateBr.pispasep(pispasep));
 
 
 // 'PLACA'
 let placa = 'ABC1234';
-console.log(maskBr.placa(placa));
+console.info(maskBr.placa(placa));
 testGeneric('placa');
-console.log(maskBr.placa('123'));
-console.log(fakerBr.placa());
+console.info(maskBr.placa('123'));
+console.info(fakerBr.placa());
 placa = fakerBr.placa();
-console.log(validateBr.placa(placa), placa);
+console.info(validateBr.placa(placa), placa);
 
 // 'Porcentagem'
 let porcentagem = '80';
-console.log(maskBr.porcentagem(porcentagem));
-console.log(maskBr.porcentagem('65,10'));
+console.info(maskBr.porcentagem(porcentagem));
+console.info(maskBr.porcentagem('65,10'));
 
 // 'Renavam'
 testGeneric('renavam');
 let renavam = fakerBr.renavam();
-console.log(validateBr.renavam(renavam), renavam);
+console.info(validateBr.renavam(renavam), renavam);
 
 
 // 'RG MG'
 let rg = 'mg11164324';
-console.log(maskBr.rg(rg));
+console.info(maskBr.rg(rg));
 testGeneric('rg');
-console.log(maskBr.rg('123'));
-console.log(fakerBr.rg());
+console.info(maskBr.rg('123'));
+console.info(fakerBr.rg());
 rg = fakerBr.rg();
-console.log(validateBr.rg(rg), rg);
+console.info(validateBr.rg(rg), rg);
 
 
 
 let senha = fakerBr.senha();
-console.log(validateBr.senha(senha), senha);
+console.info(validateBr.senha(senha), senha);
 senha = fakerBr.senha({
   size: 20
 })
-console.log(validateBr.senha(senha), senha);
+console.info(validateBr.senha(senha), senha);
 
 
 
 let site = fakerBr.site();
-console.log(validateBr.site(site), site);
+console.info(validateBr.site(site), site);
 
 // 'SPED'
 let sped = '313500350012';
-console.log(maskBr.sped(sped));
+console.info(maskBr.sped(sped));
 // testGeneric('sped');
-console.log(maskBr.sped('123'));
+console.info(maskBr.sped('123'));
 // let sped = fakerBr.sped();
-// console.log(validateBr.sped(sped));
+// console.info(validateBr.sped(sped));
 
 
 // 'Fixo'
 let telefone = '3135003500';
-console.log(maskBr.telefone(telefone));
-console.log(maskBr.telefone('123'));
-console.log(fakerBr.telefone());
+console.info(maskBr.telefone(telefone));
+console.info(maskBr.telefone('123'));
+console.info(fakerBr.telefone());
 telefone = fakerBr.telefone();
-console.log(validateBr.telefone(telefone), telefone);
+console.info(validateBr.telefone(telefone), telefone);
 // '9 Digito'
 telefone = '31988886565';
-console.log(maskBr.telefone(telefone));
+console.info(maskBr.telefone(telefone));
 
 
 // 'Time'
 let time = fakerBr.time();
-console.log(validateBr.time(time));
-console.log(validateBr.time('23:61'));
-console.log(validateBr.time('33:58', { diario: true }));
+console.info(validateBr.time(time));
+console.info(validateBr.time('23:61'));
+console.info(validateBr.time('33:58', { diario: true }));
 // 
-// console.log(fakerBr.time());
+// console.info(fakerBr.time());
 //   let time = fakerBr.time();
-//   console.log(validateBr.time(time));
+//   console.info(validateBr.time(time));
 // 
 
 // 'Titulo'
 let titulo = fakerBr.titulo();
-console.log(validateBr.titulo(titulo));
+console.info(validateBr.titulo(titulo));
 testGeneric('titulo');
-console.log(maskBr.titulo('123'));
-console.log(fakerBr.titulo());
+console.info(maskBr.titulo('123'));
+console.info(fakerBr.titulo());
 titulo = fakerBr.titulo();
-console.log(validateBr.titulo(titulo), titulo);
+console.info(validateBr.titulo(titulo), titulo);
 
 
 
 let veiculo = fakerBr.veiculo();
-console.log(veiculo, veiculo.placa);
-console.log(veiculo.chassi);
-console.log(veiculo.marca);
-console.log(veiculo.modelo);
-console.log(veiculo.categoria);
-console.log(veiculo.especie);
-console.log(veiculo.restricao);
-console.log(veiculo.tipo);
-console.log(veiculo.carroceria);
-console.log(veiculo.combustivel);
+console.info(veiculo, veiculo.placa);
+console.info(veiculo.chassi);
+console.info(veiculo.marca);
+console.info(veiculo.modelo);
+console.info(veiculo.categoria);
+console.info(veiculo.especie);
+console.info(veiculo.restricao);
+console.info(veiculo.tipo);
+console.info(veiculo.carroceria);
+console.info(veiculo.combustivel);
 
 // 'Others'
 // let currency  = fakerBr.currency();
-// console.log(validateBr.currency(currency));
+// console.info(validateBr.currency(currency));
 // let porcentagem  = fakerBr.porcentagem();
-// console.log(validateBr.porcentagem(porcentagem));
-// console.log(maskBr.porcentagem('123'));
-// console.log(maskBr.time('123'));
+// console.info(validateBr.porcentagem(porcentagem));
+// console.info(maskBr.porcentagem('123'));
+// console.info(maskBr.time('123'));
 // testGeneric('porcentagem');
 // testGeneric('time');
 

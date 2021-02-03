@@ -5,5 +5,5 @@ export {
 };
 
 export default function main(jsbrasil: typeof import("..")) {
-    console.log(jsbrasil);
+    console.info(jsbrasil);
 }

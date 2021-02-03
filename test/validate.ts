@@ -139,7 +139,7 @@ describe('Validate test', () => {
       });
     })
     it('Completo', () => {
-      expect(validateBr.cartaocredito('4688966912267492 01/21 488')).to.be.true;
+      expect(validateBr.cartaocredito('4688966912267492 01/28 488')).to.be.true;
       expect(validateBr.cartaocredito('4688966912267492 01/19 488')).to.be.false;
       expect(validateBr.cartaocredito('4688966912267492 10/19 488')).to.be.false;
       expect(validateBr.cartaocredito('1234')).to.be.false;

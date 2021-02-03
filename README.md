@@ -106,14 +106,14 @@ Node:
 ```js
 const { maskBr } = require('js-brasil');
 const cpf = maskBr.cpf('12345678900'); 
-console.log(cpf) // '123.456.789-00'
+console.info(cpf) // '123.456.789-00'
 ```
 
 Typescript:
 ```ts
 import { maskBr } from 'js-brasil';
 const cpf = maskBr.cpf('12345678900'); 
-console.log(cpf) // '123.456.789-00'
+console.info(cpf) // '123.456.789-00'
 ```
 
 Browser:
@@ -121,7 +121,7 @@ Browser:
 <script src="js-brasil.js"></script>
 <script>
 var cpf = jsbrasil.maskBr.cpf('12345678900'); 
-console.log(cpf) // '123.456.789-00'
+console.info(cpf) // '123.456.789-00'
 </script>  
 ```
 

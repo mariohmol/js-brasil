@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var CNAES = require("./cnaes");
 exports.CNAES = CNAES;
 function main(jsbrasil) {
-    console.log(jsbrasil);
+    console.info(jsbrasil);
 }
 exports.default = main;
 
