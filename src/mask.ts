@@ -576,7 +576,7 @@ function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 
   const vals = numberValue.split(',');
 
   if (!maskType.textMask || typeof maskType.textMask !== 'function') {
-    return;
+    return '';
   }
 
   const mask = maskType.textMask(vals[0]);

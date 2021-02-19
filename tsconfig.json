@@ -5,6 +5,7 @@
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
+    "noImplicitReturns": true,
     "strict": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,

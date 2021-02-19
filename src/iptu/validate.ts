@@ -32,6 +32,7 @@ export function validate_iptu_contagem(number: any) {
   if (!number) {
     return false;
   }
+  return true;
 }
 
 export function validate_iptu_sp(value: string | any[]) {

@@ -2616,6 +2616,7 @@ function validate_iptu_contagem(number) {
     if (!number) {
         return false;
     }
+    return true;
 }
 exports.validate_iptu_contagem = validate_iptu_contagem;
 function validate_iptu_sp(value) {
@@ -2934,6 +2935,9 @@ function conformToMask(rawValue, mask, config) {
         // function to get the mask array - Normally this is handled by the
         // `createTextMaskInputElement:update` function - this allows mask functions
         // to be used directly with `conformToMask`
+        if (typeof rawValue === 'number') {
+            rawValue = rawValue.toString();
+        }
         if (typeof mask === exports.strFunction) {
             // call the mask function to get the mask array
             mask = mask(rawValue, config);
@@ -3169,7 +3173,7 @@ function formatNumber(maskType, numberValue, decimalsFormat) {
     }
     var vals = numberValue.split(',');
     if (!maskType.textMask || typeof maskType.textMask !== 'function') {
-        return;
+        return '';
     }
     var mask = maskType.textMask(vals[0]);
     var decimals = '';
