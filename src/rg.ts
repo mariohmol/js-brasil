@@ -20,6 +20,7 @@ export function rg_sp(number: string) {
     cispDig = "X";
   }
 
+  return cispDig;
 }
 
 export function rg_rj(number: string) {
