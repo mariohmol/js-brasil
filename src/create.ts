@@ -80,10 +80,6 @@ export function create_cnh(cnh: string) {
     dsc = 2;
   }
 
-  for (let i = 0, j = 1, v = 0; i < 9; ++i, ++j) {
-    v += +(parseInt(cnh.charAt(i)) * j);
-  }
-
   let x = v % 11;
   let vl2 = (x >= 10) ? 0 : x - dsc;
 

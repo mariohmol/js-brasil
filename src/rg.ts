@@ -19,7 +19,6 @@ export function rg_sp(number: string) {
   if (cispDig == 10) {
     cispDig = "X";
   }
-  let cispDV = cispDig;
 
 }
 

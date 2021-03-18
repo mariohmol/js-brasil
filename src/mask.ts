@@ -194,7 +194,6 @@ const makeGeneric = (key: string) => {
       return '';
     }
 
-    const test = getSpecialProperty(MASKS, key);
     let mask = MASKS[key].textMask
     let textMaskFunction = MASKS[key].textMaskFunction
     if (typeof textMaskFunction === 'function') {
