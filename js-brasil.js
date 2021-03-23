@@ -2657,12 +2657,32 @@ exports.IPTUVALIDATE = {
 
 },{"../utils":15,"./create":7}],11:[function(require,module,exports){
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 var iptu_1 = require("./iptu/iptu");
+var maskNumber = {
+    decimalLimit: 2,
+    thousandsSeparatorSymbol: '.',
+    decimalSymbol: ',',
+    allowDecimal: true,
+    integerLimit: 17,
+    prefix: '',
+    suffix: ''
+};
 exports.MASKS = {
     aih: {
         text: '000000000000-0',
@@ -2723,16 +2743,7 @@ exports.MASKS = {
     },
     currency: {
         text: '0.000,00',
-        textMask: createNumberMask_1.default({
-            decimalLimit: 2,
-            thousandsSeparatorSymbol: '.',
-            decimalSymbol: ',',
-            allowDecimal: true,
-            integerLimit: 17,
-            prefix: 'R$ ',
-            suffix: '',
-            allowNegative: true
-        })
+        textMask: createNumberMask_1.default(__assign(__assign({}, maskNumber), { prefix: 'R$ ', allowNegative: true }))
     },
     data: {
         text: '00/00/0000',
@@ -2753,26 +2764,11 @@ exports.MASKS = {
     },
     number: {
         text: '0.000,00',
-        textMask: createNumberMask_1.default({
-            decimalLimit: 2,
-            thousandsSeparatorSymbol: '.',
-            decimalSymbol: ',',
-            allowDecimal: true,
-            integerLimit: 17,
-            prefix: '',
-            suffix: ''
-        })
+        textMask: createNumberMask_1.default(maskNumber)
     },
     porcentagem: {
         text: '00,00%',
-        textMask: createNumberMask_1.default({
-            decimalLimit: 2,
-            thousandsSeparatorSymbol: '.',
-            decimalSymbol: ',',
-            allowDecimal: true,
-            integerLimit: 17,
-            prefix: '',
-        })
+        textMask: createNumberMask_1.default(__assign(__assign({}, maskNumber), { suffix: '%' }))
     },
     pispasep: {
         text: '000.00000.00-0',
@@ -2850,7 +2846,6 @@ var makeGeneric = function (key) {
         if (!value) {
             return '';
         }
-        var test = utils_1.getSpecialProperty(exports.MASKS, key);
         var mask = exports.MASKS[key].textMask;
         var textMaskFunction = exports.MASKS[key].textMaskFunction;
         if (typeof textMaskFunction === 'function') {
@@ -2906,7 +2901,8 @@ exports.maskBr = {
         return formatNumber(exports.MASKS.number, numberValue, decimalsFormat);
     },
     porcentagem: function (porcentagemValue, decimalsFormat) {
-        return formatNumber(exports.MASKS.porcentagem, porcentagemValue, decimalsFormat) + '%';
+        if (decimalsFormat === void 0) { decimalsFormat = 2; }
+        return formatNumber(exports.MASKS.porcentagem, porcentagemValue, decimalsFormat);
     },
     pispasep: makeGeneric('pispasep'),
     placa: makeGeneric('placa'),
@@ -3162,6 +3158,13 @@ function convertMaskToPlaceholder(mask, placeholderChar) {
     }).join('');
 }
 exports.convertMaskToPlaceholder = convertMaskToPlaceholder;
+/**
+ * Due to a bug on textmask, the requireDecimal its not working, so this function solves this problem
+ * @param maskType
+ * @param numberValue
+ * @param decimalsFormat
+ * @returns
+ */
 function formatNumber(maskType, numberValue, decimalsFormat) {
     if (decimalsFormat === void 0) { decimalsFormat = 2; }
     if (!numberValue && numberValue !== 0) {
@@ -3186,7 +3189,13 @@ function formatNumber(maskType, numberValue, decimalsFormat) {
             decimals = decimals.substring(0, decimalsFormat);
         }
     }
-    return conformToMask(numberValue, mask, { guide: false }).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
+    var conformedValue = conformToMask(numberValue, mask, { guide: false }).conformedValue;
+    var suffix = '';
+    if (conformedValue.indexOf('%') >= 0) {
+        conformedValue = conformedValue.replace('%', '');
+        suffix = '%';
+    }
+    return conformedValue + (decimalsFormat > 0 ? ',' + decimals : '') + suffix;
 }
 
 },{"./inscricaoestadual":6,"./iptu/iptu":8,"./utils":15,"text-mask-addons/dist/createNumberMask":25}],12:[function(require,module,exports){

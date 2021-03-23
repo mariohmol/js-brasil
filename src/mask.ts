@@ -4,6 +4,18 @@ import { IEMASKS } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';
 
+
+
+const maskNumber: any = {
+  decimalLimit: 2,
+  thousandsSeparatorSymbol: '.',
+  decimalSymbol: ',',
+  allowDecimal: true,
+  integerLimit: 17,
+  prefix: '',
+  suffix: ''
+}
+
 export const MASKS: BigObject<MaskType | IEMaskType> = {
   aih: {
     text: '000000000000-0', // 351923414312-8
@@ -67,13 +79,8 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
   currency: {
     text: '0.000,00',
     textMask: createNumberMask({
-      decimalLimit: 2,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      allowDecimal: true,
-      integerLimit: 17,
+      ...maskNumber,
       prefix: 'R$ ',
-      suffix: '',
       allowNegative: true
     })
   },
@@ -96,26 +103,13 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
   },
   number: {
     text: '0.000,00',
-    textMask: createNumberMask({
-      decimalLimit: 2,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      allowDecimal: true,
-      integerLimit: 17,
-      prefix: '',
-      suffix: ''
-    })
+    textMask: createNumberMask(maskNumber)
   },
   porcentagem: {
     text: '00,00%',
     textMask: createNumberMask({
-      decimalLimit: 2,
-      thousandsSeparatorSymbol: '.',
-      decimalSymbol: ',',
-      allowDecimal: true,
-      integerLimit: 17,
-      prefix: '',
-      // suffix: '%'
+      ...maskNumber,
+      suffix: '%'
     })
   },
   pispasep: {
@@ -194,7 +188,6 @@ const makeGeneric = (key: string) => {
       return '';
     }
 
-    const test = getSpecialProperty(MASKS, key);
     let mask = MASKS[key].textMask
     let textMaskFunction = MASKS[key].textMaskFunction
     if (typeof textMaskFunction === 'function') {
@@ -265,8 +258,8 @@ export const maskBr = {
   number: (numberValue: any, decimalsFormat: number = 2) => {
     return formatNumber(MASKS.number, numberValue, decimalsFormat);
   },
-  porcentagem: (porcentagemValue: string, decimalsFormat: number) => {
-    return formatNumber(MASKS.porcentagem, porcentagemValue, decimalsFormat) + '%';
+  porcentagem: (porcentagemValue: string, decimalsFormat: number = 2) => {
+    return formatNumber(MASKS.porcentagem, porcentagemValue, decimalsFormat);
   },
   pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),
@@ -563,6 +556,13 @@ export function convertMaskToPlaceholder(mask = emptyArray, placeholderChar = de
   }).join('')
 }
 
+/**
+ * Due to a bug on textmask, the requireDecimal its not working, so this function solves this problem
+ * @param maskType 
+ * @param numberValue 
+ * @param decimalsFormat 
+ * @returns 
+ */
 function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 2) {
   if (!numberValue && numberValue !== 0) {
     return '';
@@ -580,6 +580,7 @@ function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 
   }
 
   const mask = maskType.textMask(vals[0]);
+
   let decimals = ''
   if (decimalsFormat == undefined) {
     decimals = vals.length > 1 ? ',' + vals[1] : '';
@@ -590,9 +591,17 @@ function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 
     }
   }
 
-  return conformToMask(
+  let conformedValue = conformToMask(
     numberValue,
     mask,
     { guide: false }
-  ).conformedValue + (decimalsFormat > 0 ? ',' + decimals : '');
+  ).conformedValue
+
+
+  let suffix = ''
+  if (conformedValue.indexOf('%') >= 0) {
+    conformedValue = conformedValue.replace('%', '')
+    suffix = '%'
+  }
+  return conformedValue + (decimalsFormat > 0 ? ',' + decimals : '') + suffix;
 }
