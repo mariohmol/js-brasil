@@ -44,7 +44,7 @@ export const MASKS: BigObject<MaskType> = {
     textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
   },
   cid: {
-
+    textMask: false
   },
   cnae: {
     text: '0000-0/00', // 6821-8/01
@@ -176,7 +176,8 @@ export const MASKS: BigObject<MaskType> = {
         return n;
       }
       return (n.toString()).replace('.', ',');
-    }
+    },
+    textMask: false
   }
 }
 

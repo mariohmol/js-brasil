@@ -746,6 +746,7 @@ var mask_1 = require("./src/mask");
 var placa_1 = require("./src/placa");
 var estados_1 = require("./src/estados");
 exports.utilsBr = __assign(__assign({}, utils), { MASKS: mask_1.MASKS,
+    MASKSIE: mask_1.MASKSIE,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS });
 exports.maskBr = mask.maskBr;
@@ -1496,13 +1497,12 @@ function endereco(options) {
         estadoSigla: estado.uf
     };
 }
-var inscricaoestadual = function (estado) {
-    estado = estado.toLowerCase();
-    if (!mask_1.MASKS['inscricaoestadual']) {
+var inscricaoestadual = function (estadoInput) {
+    var estado = estadoInput.toLowerCase();
+    if (!mask_1.MASKSIE) {
         return;
     }
-    var maskIE = utils_1.getSpecialProperty(mask_1.MASKS, 'inscricaoestadual');
-    var funcIE = utils_1.getSpecialProperty(maskIE, estado);
+    var funcIE = utils_1.getSpecialProperty(mask_1.MASKSIE, estado);
     var val = utils_1.makeGenericFaker(funcIE)();
     val = val.match(/\d/g).join('');
     var newval = inscricaoestadual_1.generateInscricaoEstadual[estado](val);
@@ -1743,7 +1743,7 @@ exports.default = {
 },{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./iptu/create":7,"./mask":11,"./name":12,"./placa":13,"./utils":15,"./validate":16,"./veiculos":17,"randexp":19}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IEMASKS = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
+exports.MASKSIE = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
 var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -2222,7 +2222,7 @@ function validate_inscricaoestadual(ie, estado) {
     return false;
 }
 exports.validate_inscricaoestadual = validate_inscricaoestadual;
-exports.IEMASKS = {
+exports.MASKSIE = {
     ac: {
         text: '01.004.823/001-12',
         textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
@@ -2669,11 +2669,13 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = void 0;
+exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = exports.MASKSIE = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
+Object.defineProperty(exports, "MASKSIE", { enumerable: true, get: function () { return inscricaoestadual_1.MASKSIE; } });
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 var iptu_1 = require("./iptu/iptu");
+var inscricaoestadual_2 = require("./inscricaoestadual");
 var maskNumber = {
     decimalLimit: 2,
     thousandsSeparatorSymbol: '.',
@@ -2711,7 +2713,9 @@ exports.MASKS = {
         text: 'AAA AAAAAA AA AA0000',
         textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
     },
-    cid: {},
+    cid: {
+        textMask: false
+    },
     cnae: {
         text: '0000-0/00',
         textMask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, '/', /\d/, /\d/]
@@ -2757,7 +2761,6 @@ exports.MASKS = {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
     },
-    inscricaoestadual: inscricaoestadual_1.IEMASKS,
     iptu: {
         text: '0000.0000.0000',
         textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
@@ -2838,7 +2841,8 @@ exports.MASKS = {
                 return n;
             }
             return (n.toString()).replace('.', ',');
-        }
+        },
+        textMask: false
     }
 };
 var makeGeneric = function (key) {
@@ -2876,7 +2880,7 @@ exports.maskBr = {
     ect: makeGeneric('ect'),
     endereco: makeGeneric('endereco'),
     inscricaoestadual: function (inscricaoestadualValue, estado) {
-        var ie = exports.MASKS.inscricaoestadual;
+        var ie = inscricaoestadual_2.MASKSIE;
         var ieState = ie[estado];
         if (!inscricaoestadualValue || !estado || !ieState ||
             !ieState.textMask) {

@@ -5,7 +5,7 @@ export interface BigObject<T> {
 
 export interface MaskType {
     text?: string,
-    textMask?: Array<RegExp | string> | Function,
+    textMask: false | (string | RegExp)[] | ((raw: string) => (string | RegExp)[]),
     numberToString?: Function,
     textMaskFunction?: Function
 }

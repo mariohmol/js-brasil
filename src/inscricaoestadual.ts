@@ -1,6 +1,5 @@
 import { allNumbersAreSame } from './utils';
 import { BigObject, MaskType } from './interfaces';
-import { EstadosType } from 'estados';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
