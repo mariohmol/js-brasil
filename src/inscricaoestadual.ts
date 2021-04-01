@@ -1,5 +1,6 @@
 import { allNumbersAreSame } from './utils';
-import { BigObject } from './interfaces';
+import { BigObject, MaskType } from './interfaces';
+import { EstadosType } from 'estados';
 
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -608,7 +609,7 @@ export function validate_inscricaoestadual(ie: string | Array<string>, estado: a
   return false;
 }
 
-export const IEMASKS = {
+export const MASKSIE: BigObject<MaskType> = {
   ac: {
     text: '01.004.823/001-12',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, '-', /\d/, /\d/]

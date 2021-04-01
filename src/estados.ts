@@ -3,6 +3,12 @@ export const ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'g
   'sc', 'se', 'sp', 'to'
 ];
 
+
+export type EstadosType = 'ac'| 'al'| 'am'| 'ap'| 'ba'| 'ce'| 'df'| 'es'| 'go'| 'ma'|
+'mg'| 'ms'| 'mt'| 'pa'| 'pb'| 'pe'| 'pi'| 'pr'| 'rj'| 'rn'| 'ro'| 'rr'| 'rs'|
+'sc'| 'se'| 'sp'| 'to';
+
+
 export const ESTADOS = [
   { name: 'Acre', shortname: 'AC', slug: 'acre' },
   { name: 'Alagoas', shortname: 'AL', slug: 'alagoas' },

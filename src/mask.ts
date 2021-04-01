@@ -1,10 +1,9 @@
 import { isArray, processCaretTraps, getSpecialProperty } from './utils';
-import { BigObject, MaskType, IEMaskType } from './interfaces';
-import { IEMASKS } from './inscricaoestadual';
+import { BigObject, MaskType, MasksIE } from './interfaces';
+export { MASKSIE } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';
-
-
+import { MASKSIE } from './inscricaoestadual';
 
 const maskNumber: any = {
   decimalLimit: 2,
@@ -16,7 +15,7 @@ const maskNumber: any = {
   suffix: ''
 }
 
-export const MASKS: BigObject<MaskType | IEMaskType> = {
+export const MASKS: BigObject<MaskType> = {
   aih: {
     text: '000000000000-0', // 351923414312-8
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
@@ -96,7 +95,6 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
-  inscricaoestadual: IEMASKS,
   iptu: {
     text: '0000.0000.0000',
     textMask: [/\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, '.', /[0-2]/, /[0-9]/, /\d/, /\d/]
@@ -182,6 +180,7 @@ export const MASKS: BigObject<MaskType | IEMaskType> = {
   }
 }
 
+
 const makeGeneric = (key: string) => {
   return (value: string) => {
     if (!value) {
@@ -224,7 +223,7 @@ export const maskBr = {
   ect: makeGeneric('ect'),
   endereco: makeGeneric('endereco'),
   inscricaoestadual: (inscricaoestadualValue: string, estado: string) => {
-    const ie: IEMaskType = <IEMaskType>MASKS.inscricaoestadual;
+    const ie = MASKSIE;
     const ieState = ie[estado]
 
     if (!inscricaoestadualValue || !estado || !ieState ||
