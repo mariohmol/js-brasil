@@ -73,7 +73,6 @@ export function cep_ranges(cep: string | number) {
   cep = (cep.toString()).replace(/[^\d]+/g, '');
   cep = parseInt(cep, 10);
   const cepString: string = cep.toString();
-  const keys = Object.keys(CEPRange);
   let found: any;
   for (let estado in CEPRange) {
     const v = CEPRange[estado];
