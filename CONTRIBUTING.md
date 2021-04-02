@@ -6,7 +6,7 @@ Fork este projeto , clone no seu computador e instale as libs locais:
 
 Installe lib globais:
 
- `npm i -g onchange browserify`
+ `npm i -g onchange browserify http-server`
  
  Você pode executar o `npm run dist` para gerar o js-brasil.js.
  

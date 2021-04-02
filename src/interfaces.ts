@@ -5,7 +5,7 @@ export interface BigObject<T> {
 
 export interface MaskType {
     text?: string,
-    textMask?: Array<RegExp | string> | Function,
+    textMask: false | (string | RegExp)[] | ((raw: string) => (string | RegExp)[]),
     numberToString?: Function,
     textMaskFunction?: Function
 }
@@ -29,7 +29,6 @@ export interface Masks {
     data: MaskType,
     ect: MaskType,
     endereco: MaskType,
-    inscricaoestadual: IEMaskType,
     iptu: MaskType,
     number: MaskType,
     porcentagem: MaskType,
@@ -45,6 +44,6 @@ export interface Masks {
     utils: MaskType
 }
 
-export interface IEMaskType {
+export interface MasksIE {
     [index: string]: MaskType
 }
