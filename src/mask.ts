@@ -1,4 +1,4 @@
-import { isArray, processCaretTraps, getSpecialProperty } from './utils';
+import { isArray, processCaretTraps } from './utils';
 import { BigObject, MaskType, MasksIE } from './interfaces';
 export { MASKSIE } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
