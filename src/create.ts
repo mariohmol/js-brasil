@@ -64,46 +64,41 @@ export function create_certidao(value: string) {
   return certDV.toString();
 }
 
-
-export function create_cnh(cnh: string) {
-
-  let v = 0;
-  for (let i = 0, j = 9; i < 9; ++i, --j) {
-    v += +(parseInt(cnh.charAt(i)) * j);
+/**
+ * TODO: Not working with mod11 function
+ * @param strCNH 
+ * @returns 
+ */
+export function create_cnh_mod11(strCNH: string) {
+  strCNH = strCNH.replace(/[^\d]+/g, '');
+  if (strCNH === '00000000000') {
+    return false;
   }
-
-  let dsc = 0,
-    vl1 = v % 11;
-
-  if (vl1 >= 10) {
-    vl1 = 0;
-    dsc = 2;
-  }
-
-  let x = v % 11;
-  let vl2 = (x >= 10) ? 0 : x - dsc;
-
-  return ('' + vl1 + vl2); // === cnh.substr(-2);
+  let v1 = modulo11(strCNH, 9, 11);
+  let v2 = modulo11(strCNH, 10, 11)
+  if (v1 < 1) v1 = 0;
+  if (v2 < 1) v2 = 0;
+  console.warn(strCNH, v1, v2)
+  return '' + v1+v2;
 }
 
-export function create_cnh_antigo(value: string) {
-  value = getAllDigits(value);
+export function create_cnh(value: string) {
+  value = value.replace(/[^\d]+/g, '');
+  
   if (value.length != 11 || value === '0') {
     return false;
   }
   let s1: number, s2: number;
-  for (let c = s1 = s2 = 0, p = 9; c < 9; c++ , p--) {
+  for (let c = s1 = s2 = 0, p = 9; c < 9; c++, p--) {
     s1 += parseInt(value[c]) * p;
     s2 += parseInt(value[c]) * (10 - p);
   }
   let dv1 = s1 % 11;
   dv1 = (dv1 > 9 ? 0 : dv1);
-  if (parseInt(value[9]) !== dv1) {
-    return false;
-  }
+
   let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
   let check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
-  return check;
+  return ""+dv1+check;
 }
 
 export function create_cnpj(cnpj: string) {
@@ -269,7 +264,7 @@ export function create_pispasep(number: string) {
 
   let d;
   let p = 2, c = 9;
-  for (d = 0; c >= 0; c-- , (p < 9) ? p++ : p = 2) {
+  for (d = 0; c >= 0; c--, (p < 9) ? p++ : p = 2) {
     d += parseInt(nis[c]) * p;
   }
 

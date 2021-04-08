@@ -755,7 +755,7 @@ exports.fakerBr = faker_1.default;
 },{"./src/estados":4,"./src/faker":5,"./src/mask":11,"./src/placa":13,"./src/utils":15,"./src/validate":16}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh_antigo = exports.create_cnh = exports.create_certidao = exports.create_aih = void 0;
+exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh = exports.create_cnh_mod11 = exports.create_certidao = exports.create_aih = void 0;
 var utils_1 = require("./utils");
 /**
  *
@@ -826,26 +826,28 @@ function create_certidao(value) {
     return certDV.toString();
 }
 exports.create_certidao = create_certidao;
-function create_cnh(cnh) {
-    var v = 0;
-    for (var i = 0, j = 9; i < 9; ++i, --j) {
-        v += +(parseInt(cnh.charAt(i)) * j);
+/**
+ * TODO: Not working with mod11 function
+ * @param strCNH
+ * @returns
+ */
+function create_cnh_mod11(strCNH) {
+    strCNH = strCNH.replace(/[^\d]+/g, '');
+    if (strCNH === '00000000000') {
+        return false;
     }
-    var dsc = 0, vl1 = v % 11;
-    if (vl1 >= 10) {
-        vl1 = 0;
-        dsc = 2;
-    }
-    for (var i = 0, j = 1, v_1 = 0; i < 9; ++i, ++j) {
-        v_1 += +(parseInt(cnh.charAt(i)) * j);
-    }
-    var x = v % 11;
-    var vl2 = (x >= 10) ? 0 : x - dsc;
-    return ('' + vl1 + vl2); // === cnh.substr(-2);
+    var v1 = utils_1.modulo11(strCNH, 9, 11);
+    var v2 = utils_1.modulo11(strCNH, 10, 11);
+    if (v1 < 1)
+        v1 = 0;
+    if (v2 < 1)
+        v2 = 0;
+    console.warn(strCNH, v1, v2);
+    return '' + v1 + v2;
 }
-exports.create_cnh = create_cnh;
-function create_cnh_antigo(value) {
-    value = utils_1.getAllDigits(value);
+exports.create_cnh_mod11 = create_cnh_mod11;
+function create_cnh(value) {
+    value = value.replace(/[^\d]+/g, '');
     if (value.length != 11 || value === '0') {
         return false;
     }
@@ -856,14 +858,11 @@ function create_cnh_antigo(value) {
     }
     var dv1 = s1 % 11;
     dv1 = (dv1 > 9 ? 0 : dv1);
-    if (parseInt(value[9]) !== dv1) {
-        return false;
-    }
     var dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
     var check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
-    return check;
+    return "" + dv1 + check;
 }
-exports.create_cnh_antigo = create_cnh_antigo;
+exports.create_cnh = create_cnh;
 function create_cnpj(cnpj) {
     cnpj = cnpj.replace(/[^\d]+/g, '');
     if (cnpj === '') {
@@ -3763,7 +3762,7 @@ function rg_sp(number) {
     if (cispDig == 10) {
         cispDig = "X";
     }
-    var cispDV = cispDig;
+    return cispDig;
 }
 exports.rg_sp = rg_sp;
 function rg_rj(number) {
@@ -4146,7 +4145,6 @@ function cep_ranges(cep) {
     cep = (cep.toString()).replace(/[^\d]+/g, '');
     cep = parseInt(cep, 10);
     var cepString = cep.toString();
-    var keys = Object.keys(exports.CEPRange);
     var found;
     for (var estado in exports.CEPRange) {
         var v = exports.CEPRange[estado];
@@ -4212,9 +4210,9 @@ function validate_cnae(number) {
     return true;
 }
 function validate_cnh(value) {
-    value = utils_1.getAllDigits(value);
+    value = value.replace(/[^\d]/g, '');
     var char1 = value.charAt(0);
-    if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
+    if (value.length !== 11) {
         return false;
     }
     var check = create_1.create_cnh(value);

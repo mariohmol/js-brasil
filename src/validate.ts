@@ -154,13 +154,12 @@ function validate_cnae(number: any) {
 }
 
 export function validate_cnh(value: string) {
-  value = getAllDigits(value);
+  value = value.replace(/[^\d]/g, '');
   var char1 = value.charAt(0);
-  if (value.replace(/[^\d]/g, '').length !== 11 || char1.repeat(11) === value) {
+  if (value.length !== 11) {
     return false;
   }
   const check = create_cnh(value);
-
   return value.substr(-2) == check;
 }
 
@@ -199,9 +198,9 @@ export function validate_cpf(strCPF: any) {
   // valida digito verificados
   const restos = create_cpf(strCPF);
 
-  if(!restos || 
+  if (!restos ||
     restos[0] !== parseInt(strCPF.substring(9, 10), 10) ||
-    restos[1] !== parseInt(strCPF.substring(10, 11), 10) ){
+    restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
     return false;
   }
   return true;
@@ -519,7 +518,7 @@ export function validate_time(time: string | number, options: any = {}) {
 }
 
 export function validate_titulo(titulo: any) {
-  if(!titulo){
+  if (!titulo) {
     return false;
   }
   const tituloClean = titulo.replace(/\./g, '');

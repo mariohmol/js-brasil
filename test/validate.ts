@@ -57,10 +57,14 @@ describe('Validate test', () => {
 
   it('CNH', () => {
     expect(validateBr.cnh('9973')).to.be.false;
-    expect(validateBr.cnh('997395071-33')).to.be.true;
-    expect(validateBr.cnh('99739507133')).to.be.true;
-    expect(validateBr.cnh('997395071-31')).to.be.false;
-    expect(validateBr.cnh('99739507131')).to.be.false;
+    expect(validateBr.cnh('997395071-33')).to.be.false;
+    expect(validateBr.cnh('99739507133')).to.be.false;
+
+    expect(validateBr.cnh('99739507132')).to.be.true;
+    expect(validateBr.cnh('59796888141')).to.be.true;
+    expect(validateBr.cnh('07021871297')).to.be.true;
+    expect(validateBr.cnh('07021871296')).to.be.false;
+
   });
 
   it('CNPJ', () => {
@@ -423,7 +427,7 @@ describe('Validate test', () => {
     });
   });
 
-  // it.only('PROCESSO', () => {
+  // it('PROCESSO', () => {
   //   // expect(validateBr.processo('0123456-15.2008.100.0000')).to.be.true;
   //   expect(validateBr.processo('000208-36.0201.2.51.50049')).to.be.true;
   // });
