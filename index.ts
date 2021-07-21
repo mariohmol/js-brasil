@@ -1,4 +1,24 @@
-import utils from './src/utils';
+import {
+  isPresent,
+  isArray,
+  isString,
+  isNumber,
+  isNil,
+  processCaretTraps,
+  allNumbersAreSame,
+  getAllDigits,
+  getAllWords,
+  currencyToNumber,
+  numberToCurrency,
+  slugify,
+  fillString,
+  randArray,
+  rand,
+  randomNumber,
+  randomLetter,
+  randomLetterOrNumber,
+  getSpecialProperty
+} from './src/utils';
 export { validateBr } from './src/validate';
 import faker from './src/faker';
 import * as mask from './src/mask';
@@ -8,7 +28,25 @@ import { ESTADOS } from './src/estados';
 import { BigObject } from './src/interfaces';
 
 export const utilsBr = {
-  ...utils,
+  isPresent,
+  isArray,
+  isString,
+  isNumber,
+  isNil,
+  processCaretTraps,
+  allNumbersAreSame,
+  getAllDigits,
+  getAllWords,
+  currencyToNumber,
+  numberToCurrency,
+  slugify,
+  fillString,
+  randArray,
+  rand,
+  randomNumber,
+  randomLetter,
+  randomLetterOrNumber,
+  getSpecialProperty,
   MASKS,
   MASKSIE,
   PLACAS_RANGE,
