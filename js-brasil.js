@@ -737,7 +737,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fakerBr = exports.maskBr = exports.utilsBr = exports.validateBr = void 0;
-var utils = require("./src/utils");
+var utils_1 = require("./src/utils");
 var validate_1 = require("./src/validate");
 Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
 var faker_1 = require("./src/faker");
@@ -745,7 +745,7 @@ var mask = require("./src/mask");
 var mask_1 = require("./src/mask");
 var placa_1 = require("./src/placa");
 var estados_1 = require("./src/estados");
-exports.utilsBr = __assign(__assign({}, utils), { MASKS: mask_1.MASKS,
+exports.utilsBr = __assign(__assign({}, utils_1.default), { MASKS: mask_1.MASKS,
     MASKSIE: mask_1.MASKSIE,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS });
@@ -1773,18 +1773,25 @@ exports.generateInscricaoEstadual = {
         if (naoComecaCom(valor, '24')) {
             return false;
         }
-        //
-        // Removi a validação do tipo da empresa abaixo
-        // devido a ambiguidade entre a especificação do
-        // Sintegra (http://www.sintegra.gov.br/Cad_Estados/cad_AL.html) e do
-        // site do da Sefaz do Alagoas (http://www.sefaz.al.gov.br/sintegra/cad_AL.asp).
-        // Veja o issue #4 - https://github.com/gammasoft/ie/issues/4
-        //
-        // if('03578'.split('').indexOf(valor.substring(2, 3)) === -1) {
-        //     return false;
-        // }
+        // FORMAÇÃO: 24XNNNNND,  sendo:
+        // 24 – Código do Estado
+        // X – Tipo de empresa (0-Normal, 3-Produtor Rural, 5-Substituta, 7- Micro-Empresa Ambulante, 8-Micro-Empresa)
+        // NNNNN – Número da empresa
+        // D – Dígito de verificação calculado pelo Módulo11, pêsos 2 à 9 da direita para a esquerda, exceto D
+        // Exemplo: Número 2 4 0 0 0 0 0 4 D
+        //                 2 4 X N N N N N D
+        // Fonte: http://www.sintegra.gov.br/Cad_Estados/cad_AL.html
         var base = primeiros(valor);
-        var resto = 11 - mod(base);
+        // Pesos 9 8 7 6 5 4 3 2
+        // SOMA = (2 * 4) + (3 * 0) + (4 * 0) + (5 * 0) + (6 * 0) + (7 * 0) + (8 * 4) + (9 * 2) = 58
+        var soma = base.split('').reduce(function (acc, v, i) {
+            return acc + (9 - i) * Number(v);
+        }, 0);
+        // PRODUTO = 58 * 10 = 580
+        var produto = soma * 10;
+        // RESTO = 580 – INTEIRO(580 / 11)*11 = 580 – (52*11) = 8
+        var resto = produto - Math.floor(produto / 11) * 11;
+        // DÍGITO = 8 - Caso RESTO seja igual a 10 o DÍGITO será 0 (zero)
         var digito = resto === 10 ? 0 : resto;
         return base + digito;
     },
@@ -3905,8 +3912,16 @@ function currencyToNumber(input) {
         var vals = input.split('$');
         input = vals[1];
     }
-    input = input.replace('%', '');
-    input = input.replace(/\./g, '').replace(',', '.');
+    // Keeping just numbers . and ,
+    input = input.replace(/[^0-9.,]+/, '');
+    // eua format
+    if (input.indexOf('.') === (input.length - 1) - 2) {
+        input = input.replace(/\,/g, '');
+    }
+    // br format
+    else {
+        input = input.replace(/\./g, '').replace(',', '.');
+    }
     return parseFloat(input);
 }
 exports.currencyToNumber = currencyToNumber;
@@ -4073,6 +4088,28 @@ exports.makeGenericFaker = function (val, options) {
         return newData.join('');
     };
 };
+var utilsBr = {
+    isPresent: isPresent,
+    isArray: isArray,
+    isString: isString,
+    isNumber: isNumber,
+    isNil: isNil,
+    processCaretTraps: processCaretTraps,
+    allNumbersAreSame: allNumbersAreSame,
+    getAllDigits: getAllDigits,
+    getAllWords: getAllWords,
+    currencyToNumber: currencyToNumber,
+    numberToCurrency: numberToCurrency,
+    slugify: slugify,
+    fillString: fillString,
+    randArray: randArray,
+    rand: rand,
+    randomNumber: randomNumber,
+    randomLetter: randomLetter,
+    randomLetterOrNumber: randomLetterOrNumber,
+    getSpecialProperty: getSpecialProperty
+};
+exports.default = utilsBr;
 
 },{"./estados":4}],16:[function(require,module,exports){
 "use strict";
