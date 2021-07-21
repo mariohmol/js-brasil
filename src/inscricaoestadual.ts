@@ -40,24 +40,29 @@ export const generateInscricaoEstadual: BigObject<Function> = {
     if (naoComecaCom(valor, '24')) {
       return false;
     }
-
-    //
-    // Removi a validação do tipo da empresa abaixo
-    // devido a ambiguidade entre a especificação do
-    // Sintegra (http://www.sintegra.gov.br/Cad_Estados/cad_AL.html) e do
-    // site do da Sefaz do Alagoas (http://www.sefaz.al.gov.br/sintegra/cad_AL.asp).
-    // Veja o issue #4 - https://github.com/gammasoft/ie/issues/4
-    //
-    // if('03578'.split('').indexOf(valor.substring(2, 3)) === -1) {
-    //     return false;
-    // }
+    
+    // FORMAÇÃO: 24XNNNNND,  sendo:
+    // 24 – Código do Estado
+    // X – Tipo de empresa (0-Normal, 3-Produtor Rural, 5-Substituta, 7- Micro-Empresa Ambulante, 8-Micro-Empresa)
+    // NNNNN – Número da empresa
+    // D – Dígito de verificação calculado pelo Módulo11, pêsos 2 à 9 da direita para a esquerda, exceto D
+    // Exemplo: Número 2 4 0 0 0 0 0 4 D
+    //                 2 4 X N N N N N D
+    // Fonte: http://www.sintegra.gov.br/Cad_Estados/cad_AL.html
 
     const base: any = primeiros(valor);
 
-    const resto = 11 - mod(base);
-
-    const digito = resto === 10 ? 0 : resto;
-
+    // Pesos 9 8 7 6 5 4 3 2
+    // SOMA = (2 * 4) + (3 * 0) + (4 * 0) + (5 * 0) + (6 * 0) + (7 * 0) + (8 * 4) + (9 * 2) = 58
+    const soma = base.split('').reduce((acc: number, v: string, i: number) => {
+      return acc + (9-i) * Number(v)
+    }, 0)
+    // PRODUTO = 58 * 10 = 580
+    const produto = soma * 10
+    // RESTO = 580 – INTEIRO(580 / 11)*11 = 580 – (52*11) = 8
+    const resto = produto - Math.floor(produto / 11) * 11
+    // DÍGITO = 8 - Caso RESTO seja igual a 10 o DÍGITO será 0 (zero)
+    const digito = resto === 10 ? 0 : resto
     return base + digito;
   },
 

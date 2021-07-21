@@ -209,9 +209,11 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('01.800.070/625-90', 'ac')).to.be.false;
     });
     it('Alagoas', () => {
-      expect(validateBr.inscricaoestadual('248167308', 'al')).to.be.true;
-      expect(validateBr.inscricaoestadual('248748394', 'al')).to.be.true;
-      expect(validateBr.inscricaoestadual('248748390', 'al')).to.be.false;
+      expect(validateBr.inscricaoestadual('24816730-8', 'al')).to.be.true;
+      expect(validateBr.inscricaoestadual('24874839-4', 'al')).to.be.true;
+      expect(validateBr.inscricaoestadual('24874839-0', 'al')).to.be.false;
+      expect(validateBr.inscricaoestadual('240000048', 'al')).to.be.true;
+      expect(validateBr.inscricaoestadual('240841530', 'al')).to.be.true;
     });
     it('Amazonas', () => {
       expect(validateBr.inscricaoestadual('251579085', 'am')).to.be.true;
