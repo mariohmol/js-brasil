@@ -99,9 +99,18 @@ export function currencyToNumber(input: string | number) {
     input = vals[1];
   }
 
-  input = input.replace('%', '');
-  input = input.replace(/\./g, '').replace(',', '.');
+  // Keeping just numbers . and ,
+  input = input.replace(/[^0-9.,]+/, '');
 
+  // eua format
+  if(input.indexOf('.') === (input.length - 1) -2){
+    input = input.replace(/\,/g, '')
+  }
+  // br format
+  else{
+    input = input.replace(/\./g, '').replace(',', '.');
+  }
+  
   return parseFloat(input);
 }
 
@@ -264,3 +273,27 @@ export const makeGenericFaker = (val: any, options: BigObject<Function> | null =
     return newData.join('');
   };
 }
+
+const utilsBr = {
+  isPresent,
+  isArray,
+  isString,
+  isNumber,
+  isNil,
+  processCaretTraps,
+  allNumbersAreSame,
+  getAllDigits,
+  getAllWords,
+  currencyToNumber,
+  numberToCurrency,
+  slugify,
+  fillString,
+  randArray,
+  rand,
+  randomNumber,
+  randomLetter,
+  randomLetterOrNumber,
+  getSpecialProperty
+}
+
+export default utilsBr;

@@ -1,4 +1,4 @@
-import * as utils from './src/utils';
+import utils from './src/utils';
 export { validateBr } from './src/validate';
 import faker from './src/faker';
 import * as mask from './src/mask';
