@@ -187,8 +187,14 @@ function validate_contabanco(number: any) {
   return true;
 }
 
-// http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
+// http://www.receita.fazenda.gov.br/aplicacoes/atcta/
+/funcoes.js
 export function validate_cpf(strCPF: any) {
+  
+  let precisaFicarVazio = strCPF.replace(/^[0-9.-]*$/gm, '')
+  if (precisaFicarVazio != '')
+    return false
+  
   strCPF = strCPF.replace(/[^\d]+/g, '');
   if (strCPF.length !== 11) {
     return false;
