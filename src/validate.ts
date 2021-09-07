@@ -164,6 +164,11 @@ export function validate_cnh(value: string) {
 }
 
 export function validate_cnpj(cnpj: any) {
+  
+  let precisaFicarVazio = cnpj.replace(/^[0-9./-]*$/gm, '')
+  if (precisaFicarVazio != '')
+    return false
+  
   cnpj = cnpj.replace(/[^\d]+/g, '');
   let tamanho = cnpj.length - 2
   const digitos = cnpj.substring(tamanho);
