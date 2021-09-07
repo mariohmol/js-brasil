@@ -4267,6 +4267,10 @@ function validate_cnh(value) {
 }
 exports.validate_cnh = validate_cnh;
 function validate_cnpj(cnpj) {
+    // Valida se tem apenas número, - ou .
+    var precisaFicarVazio = cnpj.replace(/^[0-9./-]*$/gm, '');
+    if (precisaFicarVazio != '')
+        return false;
     cnpj = cnpj.replace(/[^\d]+/g, '');
     var tamanho = cnpj.length - 2;
     var digitos = cnpj.substring(tamanho);
@@ -4282,8 +4286,16 @@ exports.validate_cnpj = validate_cnpj;
 function validate_contabanco(number) {
     return true;
 }
-// http://www.receita.fazenda.gov.br/aplicacoes/atcta/cpf/funcoes.js
+/**
+ * Referencia: http://www.receita.fazenda.gov.br/aplicacoes/atcta/funcoes.js
+ * @param strCPF
+ * @returns
+ */
 function validate_cpf(strCPF) {
+    // Valida se tem apenas número, - ou .
+    var precisaFicarVazio = strCPF.replace(/^[0-9.-]*$/gm, '');
+    if (precisaFicarVazio != '')
+        return false;
     strCPF = strCPF.replace(/[^\d]+/g, '');
     if (strCPF.length !== 11) {
         return false;

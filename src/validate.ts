@@ -164,7 +164,7 @@ export function validate_cnh(value: string) {
 }
 
 export function validate_cnpj(cnpj: any) {
-  
+  // Valida se tem apenas número, - ou .
   let precisaFicarVazio = cnpj.replace(/^[0-9./-]*$/gm, '')
   if (precisaFicarVazio != '')
     return false
@@ -187,10 +187,13 @@ function validate_contabanco(number: any) {
   return true;
 }
 
-// http://www.receita.fazenda.gov.br/aplicacoes/atcta/
-/funcoes.js
+/**
+ * Referencia: http://www.receita.fazenda.gov.br/aplicacoes/atcta/funcoes.js
+ * @param strCPF 
+ * @returns 
+ */
 export function validate_cpf(strCPF: any) {
-  
+  // Valida se tem apenas número, - ou .
   let precisaFicarVazio = strCPF.replace(/^[0-9.-]*$/gm, '')
   if (precisaFicarVazio != '')
     return false

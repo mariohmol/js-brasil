@@ -1,6 +1,6 @@
 {
   "name": "js-brasil",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "type": "git",
     "url": "git+https://github.com/mariohmol/js-brasil.git"
   },
-  "author": "Mario Mol <mariohmol@gmail.com> (http://rama.net.br)",
+  "author": "Mario Mol <mariohmol@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mariohmol/js-brasil/issues"
