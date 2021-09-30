@@ -155,7 +155,6 @@ function validate_cnae(number: any) {
 
 export function validate_cnh(value: string) {
   value = value.replace(/[^\d]/g, '');
-  var char1 = value.charAt(0);
   if (value.length !== 11) {
     return false;
   }
