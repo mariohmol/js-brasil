@@ -4258,7 +4258,6 @@ function validate_cnae(number) {
 }
 function validate_cnh(value) {
     value = value.replace(/[^\d]/g, '');
-    var char1 = value.charAt(0);
     if (value.length !== 11) {
         return false;
     }
@@ -4454,7 +4453,7 @@ function validate_ect(number) {
 }
 exports.validate_ect = validate_ect;
 function validate_email(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
 }
 function validate_endereco(number) {
