@@ -66,10 +66,27 @@ describe('Mask test', () => {
     // testGeneric('cnae');
   });
 
-  it('CNH', () => {
+  it('CNH - BINCO', () => {
     const cnh = '99739507132';
     expect(maskBr.cnh(cnh)).to.be.equal('997395071-32');
     testGeneric('cnh');
+  });
+
+  it('RENACH SEGURANÇA CNH', () => {
+    const renachseguranca = '51474546854';
+    expect(maskBr.renachseguranca(renachseguranca)).to.be.equal('51474546854');
+    testGeneric('renachseguranca');
+  });
+
+  it('RENACH ESTADUAL CNH', () => {
+    const renachestadual = 'MG597812560';
+    expect(maskBr.renachestadual(renachestadual)).to.be.equal('MG597812560');
+  });
+
+  it('ESPELHO CNH', () => {
+    const cnhespelho = '2318339130';
+    expect(maskBr.cnhespelho(cnhespelho)).to.be.equal('2318339130');
+    testGeneric('cnhespelho');
   });
 
   it('CNPJ', () => {

@@ -1,4 +1,5 @@
-import { modulo11, getAllDigits, fillString } from './utils';
+import { ESTADOS_SIGLA } from './estados';
+import { getAllDigits, fillString, modulo11Custom } from './utils';
 
 /**
  * 
@@ -64,41 +65,58 @@ export function create_certidao(value: string) {
   return certDV.toString();
 }
 
-/**
- * TODO: Not working with mod11 function
- * @param strCNH 
- * @returns 
- */
-export function create_cnh_mod11(strCNH: string) {
-  strCNH = strCNH.replace(/[^\d]+/g, '');
-  if (strCNH === '00000000000') {
-    return false;
-  }
-  let v1 = modulo11(strCNH, 9, 11);
-  let v2 = modulo11(strCNH, 10, 11)
-  if (v1 < 1) v1 = 0;
-  if (v2 < 1) v2 = 0;
-  console.warn(strCNH, v1, v2)
-  return '' + v1+v2;
+export function create_cnhespelho(value: string) {
+  let v1 = modulo11Custom(value.substr(0, value.length - 1), 1, 8, false);
+  return v1
 }
 
+export function create_renachestadual(value: string) {
+
+  const state = value.substr(0, 2).toLowerCase()
+  if (!ESTADOS_SIGLA.includes(state)) {
+    return false
+  }
+
+  let digits = value.substr(2)
+  digits = digits.replace(/[^\d]/g, '');
+  if (digits.length !== 9) {
+    return false;
+  }
+
+  let v1 = modulo11Custom(digits.substr(0, digits.length - 1), 1, 11);
+  return '' + v1
+}
+
+/**
+ * 
+ * @param value 
+ * @returns 
+ */
+export function create_renachseguranca(value: string) {
+  value = value.replace(/[^\d]+/g, '');
+  if (value.length !== 11) {
+    return false;
+  }
+
+  let v1 = modulo11Custom(value.substr(0, value.length - 1), 1, 11);
+  return "" + v1;
+}
+
+/**
+ * Dígito verificador da CNH não é mais o módulo 11 conforme últimas resoluções
+ * @param value 
+ * @returns 
+ */
 export function create_cnh(value: string) {
   value = value.replace(/[^\d]+/g, '');
-  
+
   if (value.length != 11 || value === '0') {
     return false;
   }
-  let s1: number, s2: number;
-  for (let c = s1 = s2 = 0, p = 9; c < 9; c++, p--) {
-    s1 += parseInt(value[c]) * p;
-    s2 += parseInt(value[c]) * (10 - p);
-  }
-  let dv1 = s1 % 11;
-  dv1 = (dv1 > 9 ? 0 : dv1);
-
-  let dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
-  let check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
-  return ""+dv1+check;
+  // let v1 = modulo11Custom(value.substr(0, value.length - 2), 2);
+  // if (v1 === '10') v1 = '00'
+  let v1 = value.substr(-2)
+  return v1;
 }
 
 export function create_cnpj(cnpj: string) {
@@ -176,12 +194,14 @@ export function create_cpf(strCPF: string) {
     return false;
   }
 
-  const restos = [
-    modulo11(strCPF, 9, 11),
-    modulo11(strCPF, 10, 12)
-  ];
+  // const r1 = modulo11(strCPF.substr(0, strCPF.length - 2))
+  // const r2 = modulo11(strCPF.substr(0, strCPF.length - 2) + '' + r1)
+  // const restos = [
+  //   r1, r2
+  // ];
 
-  return restos;
+  const restoscustom = modulo11Custom(strCPF.substr(0, strCPF.length - 2), 2, 12);
+  return restoscustom
 }
 
 export function create_cartaocredito(number: string) {

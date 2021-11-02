@@ -54,6 +54,18 @@ export const MASKS: BigObject<MaskType> = {
     text: '000000000-00', // 123456789-1
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   },
+  renachseguranca: {
+    text: '00000000000', // 51474546854
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  },
+  renachestadual: {
+    text: 'AA000000000', // MG597812560
+    textMask: [/[A-S]/, /[A-Z]/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  },
+  cnhespelho: {
+    text: '0000000000', // 123456789-1
+    textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+  },
   cnpj: {
     text: '00.000.000/0000-00',
     textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
@@ -211,6 +223,9 @@ export const maskBr = {
   chassi: makeGeneric('chassi'),
   cnae: makeGeneric('cnae'),
   cnh: makeGeneric('cnh'),
+  renachseguranca: makeGeneric('renachseguranca'),
+  renachestadual: makeGeneric('renachestadual'),
+  cnhespelho: makeGeneric('cnhespelho'),
   cnpj: makeGeneric('cnpj'),
   cns: makeGeneric('cns'),
   contabanco: makeGeneric('contabanco'),

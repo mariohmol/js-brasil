@@ -1,5 +1,6 @@
 import { validateBr } from '../index';
 import { expect } from 'chai';
+import CNH_DATA from './data/cnh'
 
 describe('Validate test', () => {
 
@@ -50,21 +51,44 @@ describe('Validate test', () => {
     expect(validateBr.chassi('9BWZZZ377VT004251')).to.be.true;
   });
 
-  it('CANE - TODO', () => {
-    // expect(validateBr.cnae('9973')).to.be.false;
-    // expect(validateBr.cnae('997395071-33')).to.be.true;
-  });
+  // it('CNAE - TODO', () => {
+  //   expect(validateBr.cnae('9973')).to.be.false;
+  //   expect(validateBr.cnae('997395071-33')).to.be.true;
+  // });
 
-  it('CNH', () => {
+  it('RENACH SEGURANÇA CNH', () => {
+    expect(validateBr.renachseguranca('997395071-33')).to.be.false;
+    expect(validateBr.renachseguranca('51474546854')).to.be.true;
+  })
+
+  it('RENACH ESTADUAL CNH', () => {
+    expect(validateBr.renachestadual('997395071-33')).to.be.false;
+    expect(validateBr.renachestadual('MG597812560')).to.be.true;
+    expect(validateBr.renachestadual('XX598814566')).to.be.false;
+    expect(validateBr.renachestadual('MG597812565')).to.be.false;
+  })
+
+  it('ESPELHO CNH', () => {
+    expect(validateBr.cnhespelho('997395071-33')).to.be.false;
+    expect(validateBr.cnhespelho('2318339130')).to.be.true;
+    expect(validateBr.cnhespelho('2244559032')).to.be.true;
+  })
+
+  it('CNH - BINCO', () => {
     expect(validateBr.cnh('9973')).to.be.false;
-    expect(validateBr.cnh('997395071-33')).to.be.false;
-    expect(validateBr.cnh('99739507133')).to.be.false;
-
-    expect(validateBr.cnh('99739507132')).to.be.true;
+    expect(validateBr.cnh('997395071-1')).to.be.false;
+    expect(validateBr.cnh('9973950711')).to.be.false;
+    expect(validateBr.cnh('99739507183')).to.be.true;
     expect(validateBr.cnh('59796888141')).to.be.true;
     expect(validateBr.cnh('07021871297')).to.be.true;
-    expect(validateBr.cnh('07021871296')).to.be.false;
-
+    expect(validateBr.cnh('0702187120')).to.be.false;
+    CNH_DATA.forEach(cnh => {
+      let cnhString = cnh.toString()
+      while (cnhString.length < 11) {
+        cnhString = '0' + cnhString
+      }
+      expect(validateBr.cnh(cnhString)).to.be.true
+    })
   });
 
   it('CNPJ', () => {

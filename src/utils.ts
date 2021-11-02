@@ -38,7 +38,50 @@ export function processCaretTraps(mask: any) {
   return { maskWithoutCaretTraps: mask, indexes }
 }
 
-export const modulo11 = (string: string, size: number, mod: number) => {
+export const modulo11 = (value: string) => {
+  let mults: any = []
+  let weightVal = 2
+  for (let i = 0; i < value.length; i++) {
+    // mults = [weightVal, ...mults]
+    mults.push(weightVal)
+    weightVal++
+    if (weightVal > 9) weightVal = 2
+  }
+
+  mults = mults.reverse()
+
+  let sum = 0
+  for (let i = 0; i < value.length; i++) {
+    sum += parseInt(value[i]) * mults[i]
+  }
+  const digit = (sum *10) % 11
+  return digit
+}
+
+export const modulo11Custom = (string: string, size: number, maxMult = string.length, by10 = true) => {
+  if (!by10) size = 1
+  for (let n = 1; n <= size; n++) {
+    let soma = 0
+    let mult = 2
+    for (let i = string.length - 1; i >= 0; i--) {
+      soma += (mult * parseInt(string.charAt(i)))
+      mult++
+      if (mult > maxMult) mult = 2
+    }
+    let dig
+    if (by10) {
+      dig = ((soma * 10) % 11) % 10;
+    } else {
+      dig = soma % 11;
+      if (dig == 10) dig = 0;
+    }
+    string += dig;
+  }
+  return string.substr(string.length - size, size);
+}
+
+
+export const modulo11a = (string: string, size: number, mod: number) => {
   let soma = 0;
   for (let i = 1; i <= size; i++) {
     // tslint:disable-next-line:radix
@@ -103,14 +146,14 @@ export function currencyToNumber(input: string | number) {
   input = input.replace(/[^0-9.,]+/, '');
 
   // eua format
-  if(input.indexOf('.') === (input.length - 1) -2){
+  if (input.indexOf('.') === (input.length - 1) - 2) {
     input = input.replace(/\,/g, '')
   }
   // br format
-  else{
+  else {
     input = input.replace(/\./g, '').replace(',', '.');
   }
-  
+
   return parseFloat(input);
 }
 

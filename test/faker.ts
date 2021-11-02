@@ -39,10 +39,25 @@ describe('Faker test', () => {
     expect(validateBr.cnae(cnae)).to.be.true;
   });
 
-  it('CNH', () => {
+  it('CNH - BINCO', () => {
     const cnh = fakerBr.cnh();
     expect(validateBr.cnh(cnh)).to.be.true;
   });
+
+  it('RENACH SEGURANÇA CNH', () => {
+    const renachseguranca = fakerBr.renachseguranca();
+    expect(validateBr.renachseguranca(renachseguranca)).to.be.true;
+  })
+
+  it('RENACH ESTADUAL CNH', () => {
+    const renachestadual = fakerBr.renachestadual();
+    expect(validateBr.renachestadual(renachestadual)).to.be.true;
+  })
+
+  it('ESPELHO CNH', () => {
+    const cnhespelho = fakerBr.cnhespelho();
+    expect(validateBr.cnhespelho(cnhespelho)).to.be.true;
+  })
 
   it('CNPJ', () => {
     expect(fakerBr.cnpj()).to.exist;
@@ -62,7 +77,7 @@ describe('Faker test', () => {
 
   it('CPF', () => {
     const cpf = fakerBr.cpf();
-    expect(fakerBr.cpf()).to.exist;
+    expect(cpf).to.exist;
     expect(validateBr.cpf(cpf)).to.be.true;
   });
 

@@ -5,7 +5,7 @@ import { validate_placa } from './placa';
 import { generateInscricaoEstadual } from './inscricaoestadual';
 import {
   create_cpf, create_cnpj, create_titulo, create_renavam, create_cnh,
-  create_cns, create_ect, create_certidao, create_aih, create_pispasep
+  create_cns, create_ect, create_certidao, create_aih, create_pispasep, create_cnhespelho, create_renachestadual, create_renachseguranca
 } from './create';
 import { getAllDigits, randArray, CORES, randomLetter, randomNumber, randomEstadoSigla, slugify, makeGenericFaker, getSpecialProperty } from './utils';
 import { VEICULOS, VEICULOS_CARROCERIAS, VEICULOS_CATEGORIAS, VEICULOS_TIPOS, VEICULOS_COMBUSTIVEIS, VEICULOS_ESPECIES, VEICULOS_RESTRICOES } from './veiculos';
@@ -65,12 +65,32 @@ function cid() {
   // return chassi;
 }
 const cnae = makeGenericFaker(MASKS['cnae']);
+
 function cnh() {
   let cnh = makeGenericFaker(MASKS['cnh'])();
-  const nodigits = cnh;
-  let check = create_cnh(nodigits);
+  let check = create_cnh(cnh);
   return cnh.substr(0, cnh.length - 2) + check;
 }
+
+function renachseguranca() {
+  let renachseguranca = makeGenericFaker(MASKS['renachseguranca'])();
+  let check = create_renachseguranca(renachseguranca);
+  return renachseguranca.substr(0, renachseguranca.length - 1) + check;
+}
+
+function renachestadual() {
+  let renachestadual = makeGenericFaker(MASKS['renachestadual'])();
+  renachestadual = randomEstadoSigla() + renachestadual.substr(2, renachestadual.length)
+  let check = create_renachestadual(renachestadual);
+  return renachestadual.substr(0, renachestadual.length - 1) + check;
+}
+
+function cnhespelho() {
+  let cnhespelho = makeGenericFaker(MASKS['cnhespelho'])();
+  let check = create_cnhespelho(cnhespelho);
+  return cnhespelho.substr(0, cnhespelho.length - 1) + check;
+}
+
 function cnpj() {
   let cnpj = makeGenericFaker(MASKS['cnpj'])();
   cnpj = cnpj.replace(/[^\d]+/g, '');
@@ -459,6 +479,9 @@ export default {
   cid: cid,
   cnae: cnae,
   cnh: cnh,
+  renachseguranca: renachseguranca,
+  renachestadual: renachestadual,
+  cnhespelho: cnhespelho,
   cnpj: cnpj,
   cns: cns,
   contabanco: contabanco,

@@ -4,10 +4,11 @@ import { validate_inscricaoestadual } from './inscricaoestadual';
 import { validate_placa } from './placa';
 import {
   create_cnpj, create_cpf,
-  create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep
+  create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep, create_cnhespelho, create_renachestadual, create_renachseguranca
 } from './create';
 import RG from './rg';
 import { validate_iptu } from './iptu/iptu';
+import { ESTADOS_SIGLA } from './estados';
 
 
 export function validate_aih(aih: string) {
@@ -153,12 +154,87 @@ function validate_cnae(number: any) {
   return true;
 }
 
-export function validate_cnh(value: string) {
+/**
+ * 
+ * II - Número do Espelho da CNH - segundo número de identificação nacional, 
+ * que será formado por 9 (nove) caracteres mais 1 (um) dígito verificador de segurança, 
+ * autorizado e controlado pelo DENATRAN, e identificará cada espelho de CNH expedida.
+ * https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-denatran/resolucoes-contran
+ * https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf
+ * 598: https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao59820162.pdf
+ * @param value 
+ */
+export function validate_cnhespelho(value: string) {
+  value = value.replace(/[^\d]/g, '')
+  if (value.length !== 10) {
+    return false
+  }
+
+  let check = create_cnhespelho(value)
+  if (check === '0' || check === '1') check = '0'
+  return value.substr(-1) == check
+}
+
+/**
+ * 
+ * III – Número do formulário RENACH - número de identificação
+* estadual, documento de coleta de dados do candidato/condutor gerado a cada serviço,
+* composto, obrigatoriamente, por 11 (onze) caracteres, sendo as duas primeiras
+* posições formadas pela sigla da Unidade de Federação expedidora, facultada a
+* utilização da última posição como dígito verificador de segurança.
+*  a) O número do formulário RENACH identificará a Unidade da
+* Federação onde o condutor foi habilitado ou realizou alterações de dados no seu
+* cadastro pela última vez.
+*  b) O Formulário RENACH que dá origem às informações na
+* BINCO e autorização para a impressão da CNH deverá ficar arquivado em seg
+* 598 - https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao59820162.pdf
+* 718 - https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao7182017.pdf
+* @param value 
+ */
+export function validate_renachestadual(value: string) {
+  const state = value.substr(0, 2).toLowerCase()
+  if (!ESTADOS_SIGLA.includes(state)) {
+    return false
+  }
+
+  let digits = value.substr(2)
+  digits = digits.replace(/[^\d]/g, '');
+  if (digits.length !== 9) {
+    return false;
+  }
+  let check = create_renachestadual(value)
+  if (check === '0' || check === '1') check = '0'
+  return value.substr(-1) == check;
+}
+
+export function validate_renachseguranca(value: string) {
   value = value.replace(/[^\d]/g, '');
+
   if (value.length !== 11) {
     return false;
   }
-  const check = create_cnh(value);
+
+  let check = create_renachseguranca(value)
+  return value.substr(-1) == check;
+}
+
+/**
+ * BINCO
+ * I – o primeiro número de identificação nacional – Registro Nacional, 
+ * será gerado pelo sistema informatizado da Base Índice Nacional de Condutores – 
+ * BINCO, composto de 9 (nove) caracteres mais 2 (dois) dígitos verificadores de 
+ * segurança, sendo único para cada condutor e o acompanhará durante toda a 
+ * sua existência como condutor, não sendo permitida a sua reutilização para 
+ * outro condutor.
+ * @param value 
+ * @returns 
+ */
+export function validate_cnh(value: string) {
+  value = value.toString().replace(/[^\d]/g, '');
+  if (value.length !== 11) {
+    return false;
+  }
+  let check = create_cnh(value);
   return value.substr(-2) == check;
 }
 
@@ -167,7 +243,7 @@ export function validate_cnpj(cnpj: any) {
   let precisaFicarVazio = cnpj.replace(/^[0-9./-]*$/gm, '')
   if (precisaFicarVazio != '')
     return false
-  
+
   cnpj = cnpj.replace(/[^\d]+/g, '');
   let tamanho = cnpj.length - 2
   const digitos = cnpj.substring(tamanho);
@@ -196,7 +272,7 @@ export function validate_cpf(strCPF: any) {
   let precisaFicarVazio = strCPF.replace(/^[0-9.-]*$/gm, '')
   if (precisaFicarVazio != '')
     return false
-  
+
   strCPF = strCPF.replace(/[^\d]+/g, '');
   if (strCPF.length !== 11) {
     return false;
@@ -210,10 +286,7 @@ export function validate_cpf(strCPF: any) {
 
   // valida digito verificados
   const restos = create_cpf(strCPF);
-
-  if (!restos ||
-    restos[0] !== parseInt(strCPF.substring(9, 10), 10) ||
-    restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+  if (!restos || restos != strCPF.substr(-2)) {
     return false;
   }
   return true;
@@ -574,6 +647,9 @@ export const validateBr: BigObject<Function> = {
   chassi: validate_chassi,
   cnae: validate_cnae,
   cnh: validate_cnh,
+  cnhespelho: validate_cnhespelho,
+  renachestadual: validate_renachestadual,
+  renachseguranca: validate_renachseguranca,
   cnpj: validate_cnpj,
   cns: validate_cns,
   contabanco: validate_contabanco,
