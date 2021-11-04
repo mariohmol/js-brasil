@@ -82,7 +82,7 @@ describe('Faker test', () => {
   });
 
   it('CPFCNPJ - TODO', () => {
-    const cpfcnpj = fakerBr.cpfcnpj();
+    // const cpfcnpj = fakerBr.cpfcnpj();
     // expect(validateBr.cpfcnpj(cpfcnpj)).to.be.true;
   });
 

@@ -151,7 +151,8 @@ export function validate_chassi(chassi: string) {
 }
 
 function validate_cnae(number: any) {
-  return true;
+  if(!number) return true;
+  return false
 }
 
 /**
@@ -259,6 +260,7 @@ export function validate_cnpj(cnpj: any) {
 }
 
 function validate_contabanco(number: any) {
+  if(!number) return false
   return true;
 }
 
@@ -453,17 +455,18 @@ export function validate_ect(number: string) {
 }
 
 function validate_email(email: any) {
-  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(String(email).toLowerCase());
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(String(email).toLowerCase())
 }
 
 function validate_endereco(number: any) {
-  return true;
+  if(!number) return false
+  return true
 }
 
 export function validate_number(number: string) {
   if (number.split(',').length > 2) {
-    return false;
+    return false
   }
   const regexDecimal = /^\d+(?:\.\d{0,2})$/;
   const regex = /^[0-9]{0,10}[,]{1,1}[0-9]{0,4}/;
@@ -576,7 +579,8 @@ function validate_site(value: any) {
 }
 
 export function validate_sped(sped: string) {
-
+  if(!sped) return false
+  return true
 }
 
 export function validate_telefone(tel: any) {

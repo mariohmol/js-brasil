@@ -1,5 +1,5 @@
 import { isArray, processCaretTraps } from './utils';
-import { BigObject, MaskType, MasksIE } from './interfaces';
+import { BigObject, MaskType } from './interfaces';
 export { MASKSIE } from './inscricaoestadual';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu/iptu';
