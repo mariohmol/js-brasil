@@ -1,7 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NAMES = exports.getAstro = exports.TIPOS_SANGUINEOS = exports.CEP_ESTADO = exports.TELEFONE_ESTADO = exports.EMPRESAS_NOMES = exports.EMPRESAS_TIPOS = exports.SOBRENOMES = exports.NOMES_MASCULINOS = exports.NOMES_FEMININOS = void 0;
 exports.NOMES_FEMININOS = ['MARIA', 'ANA', 'FRANCISCA', 'ANTONIA', 'ADRIANA', 'JULIANA', 'MARCIA', 'FERNANDA', 'PATRICIA', 'ALINE'];
 exports.NOMES_MASCULINOS = ['JOSE', 'JOAO', 'ANTONIO', 'FRANCISCO', 'CARLOS', 'PAULO', 'PEDRO', 'LUCAS', 'LUIZ', 'MARCOS'];
 exports.SOBRENOMES = ['ALMEIDA', 'ALVES', 'ANDRADE', 'BARBOSA', 'BARROS', 'BATISTA', 'BORGES', 'CAMPOS', 'CARDOSO', 'CARVALHO', 'CASTRO',
@@ -725,10 +724,9 @@ exports.NAMES = [
 },{}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fakerBr = exports.maskBr = exports.utilsBr = exports.validateBr = void 0;
 var utils_1 = require("./src/utils");
 var validate_1 = require("./src/validate");
-Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
+exports.validateBr = validate_1.validateBr;
 var faker_1 = require("./src/faker");
 var mask = require("./src/mask");
 var mask_1 = require("./src/mask");
@@ -745,6 +743,7 @@ exports.utilsBr = {
     getAllDigits: utils_1.getAllDigits,
     getAllWords: utils_1.getAllWords,
     currencyToNumber: utils_1.currencyToNumber,
+    modulo11: utils_1.modulo11,
     numberToCurrency: utils_1.numberToCurrency,
     slugify: utils_1.slugify,
     fillString: utils_1.fillString,
@@ -765,7 +764,7 @@ exports.fakerBr = faker_1.default;
 },{"./src/estados":4,"./src/faker":5,"./src/mask":11,"./src/placa":13,"./src/utils":15,"./src/validate":16}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh = exports.create_cnh_mod11 = exports.create_certidao = exports.create_aih = void 0;
+var estados_1 = require("./estados");
 var utils_1 = require("./utils");
 /**
  *
@@ -836,41 +835,53 @@ function create_certidao(value) {
     return certDV.toString();
 }
 exports.create_certidao = create_certidao;
-/**
- * TODO: Not working with mod11 function
- * @param strCNH
- * @returns
- */
-function create_cnh_mod11(strCNH) {
-    strCNH = strCNH.replace(/[^\d]+/g, '');
-    if (strCNH === '00000000000') {
+function create_cnhespelho(value) {
+    var v1 = utils_1.modulo11Custom(value.substr(0, value.length - 1), 1, 8, false);
+    return v1;
+}
+exports.create_cnhespelho = create_cnhespelho;
+function create_renachestadual(value) {
+    var state = value.substr(0, 2).toLowerCase();
+    if (!estados_1.ESTADOS_SIGLA.includes(state)) {
         return false;
     }
-    var v1 = utils_1.modulo11(strCNH, 9, 11);
-    var v2 = utils_1.modulo11(strCNH, 10, 11);
-    if (v1 < 1)
-        v1 = 0;
-    if (v2 < 1)
-        v2 = 0;
-    console.warn(strCNH, v1, v2);
-    return '' + v1 + v2;
+    var digits = value.substr(2);
+    digits = digits.replace(/[^\d]/g, '');
+    if (digits.length !== 9) {
+        return false;
+    }
+    var v1 = utils_1.modulo11Custom(digits.substr(0, digits.length - 1), 1, 11);
+    return '' + v1;
 }
-exports.create_cnh_mod11 = create_cnh_mod11;
+exports.create_renachestadual = create_renachestadual;
+/**
+ *
+ * @param value
+ * @returns
+ */
+function create_renachseguranca(value) {
+    value = value.replace(/[^\d]+/g, '');
+    if (value.length !== 11) {
+        return false;
+    }
+    var v1 = utils_1.modulo11Custom(value.substr(0, value.length - 1), 1, 11);
+    return "" + v1;
+}
+exports.create_renachseguranca = create_renachseguranca;
+/**
+ * Dígito verificador da CNH não é mais o módulo 11 conforme últimas resoluções
+ * @param value
+ * @returns
+ */
 function create_cnh(value) {
     value = value.replace(/[^\d]+/g, '');
     if (value.length != 11 || value === '0') {
         return false;
     }
-    var s1, s2;
-    for (var c = s1 = s2 = 0, p = 9; c < 9; c++, p--) {
-        s1 += parseInt(value[c]) * p;
-        s2 += parseInt(value[c]) * (10 - p);
-    }
-    var dv1 = s1 % 11;
-    dv1 = (dv1 > 9 ? 0 : dv1);
-    var dv2 = s2 % 11 - (dv1 > 9 ? 2 : 0);
-    var check = dv2 < 0 ? dv2 + 11 : dv2 > 9 ? 0 : dv2;
-    return "" + dv1 + check;
+    // let v1 = modulo11Custom(value.substr(0, value.length - 2), 2);
+    // if (v1 === '10') v1 = '00'
+    var v1 = value.substr(-2);
+    return v1;
 }
 exports.create_cnh = create_cnh;
 function create_cnpj(cnpj) {
@@ -941,11 +952,13 @@ function create_cpf(strCPF) {
     if (strCPF === '00000000000') {
         return false;
     }
-    var restos = [
-        utils_1.modulo11(strCPF, 9, 11),
-        utils_1.modulo11(strCPF, 10, 12)
-    ];
-    return restos;
+    // const r1 = modulo11(strCPF.substr(0, strCPF.length - 2))
+    // const r2 = modulo11(strCPF.substr(0, strCPF.length - 2) + '' + r1)
+    // const restos = [
+    //   r1, r2
+    // ];
+    var restoscustom = utils_1.modulo11Custom(strCPF.substr(0, strCPF.length - 2), 2, 12);
+    return restoscustom;
 }
 exports.create_cpf = create_cpf;
 function create_cartaocredito(number) {
@@ -1222,10 +1235,9 @@ function create_titulo(titNum) {
 }
 exports.create_titulo = create_titulo;
 
-},{"./utils":15}],4:[function(require,module,exports){
+},{"./estados":4,"./utils":15}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ESTADOS = exports.ESTADOS_SIGLA = void 0;
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
     'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
     'sc', 'se', 'sp', 'to'
@@ -1342,9 +1354,24 @@ function cid() {
 var cnae = utils_1.makeGenericFaker(mask_1.MASKS['cnae']);
 function cnh() {
     var cnh = utils_1.makeGenericFaker(mask_1.MASKS['cnh'])();
-    var nodigits = cnh;
-    var check = create_1.create_cnh(nodigits);
+    var check = create_1.create_cnh(cnh);
     return cnh.substr(0, cnh.length - 2) + check;
+}
+function renachseguranca() {
+    var renachseguranca = utils_1.makeGenericFaker(mask_1.MASKS['renachseguranca'])();
+    var check = create_1.create_renachseguranca(renachseguranca);
+    return renachseguranca.substr(0, renachseguranca.length - 1) + check;
+}
+function renachestadual() {
+    var renachestadual = utils_1.makeGenericFaker(mask_1.MASKS['renachestadual'])();
+    renachestadual = utils_1.randomEstadoSigla() + renachestadual.substr(2, renachestadual.length);
+    var check = create_1.create_renachestadual(renachestadual);
+    return renachestadual.substr(0, renachestadual.length - 1) + check;
+}
+function cnhespelho() {
+    var cnhespelho = utils_1.makeGenericFaker(mask_1.MASKS['cnhespelho'])();
+    var check = create_1.create_cnhespelho(cnhespelho);
+    return cnhespelho.substr(0, cnhespelho.length - 1) + check;
 }
 function cnpj() {
     var cnpj = utils_1.makeGenericFaker(mask_1.MASKS['cnpj'])();
@@ -1717,6 +1744,9 @@ exports.default = {
     cid: cid,
     cnae: cnae,
     cnh: cnh,
+    renachseguranca: renachseguranca,
+    renachestadual: renachestadual,
+    cnhespelho: cnhespelho,
     cnpj: cnpj,
     cns: cns,
     contabanco: contabanco,
@@ -1752,7 +1782,6 @@ exports.default = {
 },{"../addons/pessoas":1,"./create":3,"./inscricaoestadual":6,"./iptu/create":7,"./mask":11,"./name":12,"./placa":13,"./utils":15,"./validate":16,"./veiculos":17,"randexp":19}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MASKSIE = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
 var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -2463,7 +2492,6 @@ function lookup(ie) {
 },{"./utils":15}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUCREATE = exports.faker_iptu = exports.create_iptu_sp = exports.create_iptu_ctba = void 0;
 var utils_1 = require("../utils");
 var mask_1 = require("./mask");
 function create_iptu_ctba(number) {
@@ -2529,7 +2557,6 @@ exports.IPTUCREATE = {
 },{"../utils":15,"./mask":9}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_iptu = exports.mask_iptu = exports.create_iptu = void 0;
 var validate_1 = require("./validate");
 var mask_1 = require("./mask");
 var utils_1 = require("../utils");
@@ -2558,7 +2585,6 @@ exports.validate_iptu = function (number, estado, cidade) {
 },{"../utils":15,"./create":7,"./mask":9,"./validate":10}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUMASKS = void 0;
 exports.IPTUMASKS = {
     'minas-gerais': {
         'belo-horizonte': {
@@ -2600,7 +2626,6 @@ exports.IPTUMASKS = {
 },{}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUVALIDATE = exports.validate_iptu_sp = exports.validate_iptu_contagem = exports.validate_iptu_ctba = void 0;
 var utils_1 = require("../utils");
 var create_1 = require("./create");
 var validateRemoveDigito = function (number, max) {
@@ -2685,10 +2710,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = exports.MASKSIE = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
-Object.defineProperty(exports, "MASKSIE", { enumerable: true, get: function () { return inscricaoestadual_1.MASKSIE; } });
+exports.MASKSIE = inscricaoestadual_1.MASKSIE;
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 var iptu_1 = require("./iptu/iptu");
 var inscricaoestadual_2 = require("./inscricaoestadual");
@@ -2739,6 +2763,18 @@ exports.MASKS = {
     cnh: {
         text: '000000000-00',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+    },
+    renachseguranca: {
+        text: '00000000000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+    },
+    renachestadual: {
+        text: 'AA000000000',
+        textMask: [/[A-S]/, /[A-Z]/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
+    },
+    cnhespelho: {
+        text: '0000000000',
+        textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
     cnpj: {
         text: '00.000.000/0000-00',
@@ -2882,6 +2918,9 @@ exports.maskBr = {
     chassi: makeGeneric('chassi'),
     cnae: makeGeneric('cnae'),
     cnh: makeGeneric('cnh'),
+    renachseguranca: makeGeneric('renachseguranca'),
+    renachestadual: makeGeneric('renachestadual'),
+    cnhespelho: makeGeneric('cnhespelho'),
     cnpj: makeGeneric('cnpj'),
     cns: makeGeneric('cns'),
     contabanco: makeGeneric('contabanco'),
@@ -3221,7 +3260,6 @@ function formatNumber(maskType, numberValue, decimalsFormat) {
 },{"./inscricaoestadual":6,"./iptu/iptu":8,"./utils":15,"text-mask-addons/dist/createNumberMask":25}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LOCALIZACAO_CIDADES = exports.LOCALIZACAO_ESTADOS = exports.LOCALIZACAO_BAIRROS = exports.LOCALIZACAO_COMPLEMENTOS = exports.LOCALIZACAO_LOGRADOUROS = exports.LOCALIZACAO_RUAS = void 0;
 exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'São Paulo', 'Doze', 'Treze',
     'Santo Antônio', 'Brasil', 'A', 'São Pedro', 'Quinze', 'São João',
     'Quatorze', 'São Francisco', 'Sete de Setembro', 'Dezesseis', 'Quinze de Novembro',
@@ -3232,7 +3270,8 @@ exports.LOCALIZACAO_RUAS = ['Dois', 'Um', 'Principal', 'São José', 'Onze', 'S�
     'Pernambuco', 'Piauí', 'Vinte e Três', 'Mato Grosso', 'Santa Maria', 'Dom Pedro II',
     'Primeiro de Maio', 'Pará', 'Maranhão', 'Alagoas', 'Boa Vista', 'São Luiz', 'Vinte e Quatro', 'Paraíba', 'Santa Rita'];
 exports.LOCALIZACAO_LOGRADOUROS = ['Avenida', 'Rua', 'Marginal'];
-exports.LOCALIZACAO_COMPLEMENTOS = ["Apartamento", 'Aeroporto', 'Anexo', "Andar", "Bloco", "Conjunto", 'Cobertura', "Casa", 'Fazenda', 'Fundos', 'Galeria', "Galp\u00E3o", "Lote", "Loja", "Port\u00E3o", "Quadra", "Sala", "Sobreloja", 'Subsolo', 'Terreo'];
+exports.LOCALIZACAO_COMPLEMENTOS = ["Apartamento", 'Aeroporto', 'Anexo', "Andar", "Bloco", "Conjunto", 'Cobertura', "Casa",
+    'Fazenda', 'Fundos', 'Galeria', "Galp\u00E3o", "Lote", "Loja", "Port\u00E3o", "Quadra", "Sala", "Sobreloja", 'Subsolo', 'Terreo'];
 exports.LOCALIZACAO_BAIRROS = ['Centro', 'Bela Vista', 'São José', 'Santo Antônio', 'São Francisco', 'Vila Nova',
     'Boa Vista', 'Industrial', 'São Cristóvão', 'Planalto'];
 exports.LOCALIZACAO_ESTADOS = [
@@ -3595,7 +3634,6 @@ exports.LOCALIZACAO_CIDADES = [
 },{}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_placa = exports.PLACAS_INVALID = exports.PLACAS_RANGE = void 0;
 exports.PLACAS_RANGE = [
     { start: 'AAA0001', end: 'BEZ9999', state: '', desc: 'Paraná]] (PR)', since: '02/1990' },
     { start: 'BFA0001', end: 'GKI9999', state: '', desc: 'São Paulo (estado)|São Paulo]] (SP)', since: '10/1991' },
@@ -3762,7 +3800,6 @@ exports.validate_placa = validate_placa;
 },{}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rg_rj = exports.rg_sp = void 0;
 function rg_sp(number) {
     // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}
     number = "0000000" + number;
@@ -3831,7 +3868,6 @@ exports.default = RG;
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeGenericFaker = exports.getSpecialProperty = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
 var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
@@ -3864,7 +3900,52 @@ function processCaretTraps(mask) {
     return { maskWithoutCaretTraps: mask, indexes: indexes };
 }
 exports.processCaretTraps = processCaretTraps;
-exports.modulo11 = function (string, size, mod) {
+exports.modulo11 = function (value) {
+    var mults = [];
+    var weightVal = 2;
+    for (var i = 0; i < value.length; i++) {
+        // mults = [weightVal, ...mults]
+        mults.push(weightVal);
+        weightVal++;
+        if (weightVal > 9)
+            weightVal = 2;
+    }
+    mults = mults.reverse();
+    var sum = 0;
+    for (var i = 0; i < value.length; i++) {
+        sum += parseInt(value[i]) * mults[i];
+    }
+    var digit = (sum * 10) % 11;
+    return digit;
+};
+exports.modulo11Custom = function (string, size, maxMult, by10) {
+    if (maxMult === void 0) { maxMult = string.length; }
+    if (by10 === void 0) { by10 = true; }
+    if (!by10)
+        size = 1;
+    for (var n = 1; n <= size; n++) {
+        var soma = 0;
+        var mult = 2;
+        for (var i = string.length - 1; i >= 0; i--) {
+            soma += (mult * parseInt(string.charAt(i)));
+            mult++;
+            if (mult > maxMult)
+                mult = 2;
+        }
+        var dig = void 0;
+        if (by10) {
+            dig = ((soma * 10) % 11) % 10;
+        }
+        else {
+            dig = soma % 11;
+            if (dig == 10)
+                dig = 0;
+        }
+        string += dig;
+    }
+    return string.substr(string.length - size, size);
+};
+exports.modulo11a = function (string, size, mod) {
     var soma = 0;
     for (var i = 1; i <= size; i++) {
         // tslint:disable-next-line:radix
@@ -4124,13 +4205,13 @@ exports.default = utilsBr;
 },{"./estados":4}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateBr = exports.validate_titulo = exports.validate_time = exports.validate_telefone = exports.validate_sped = exports.validate_rg = exports.validate_renavam = exports.validate_pispasep = exports.validate_processo = exports.validate_porcentagem = exports.validate_number = exports.validate_ect = exports.validate_currency = exports.creditCardValidator = exports.validate_cartaocredito = exports.validate_cns = exports.validate_cpf = exports.validate_cnpj = exports.validate_cnh = exports.validate_chassi = exports.validate_certidao = exports.cep_ranges = exports.validate_cep = exports.CEPRange = exports.validate_celular = exports.validate_aih = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var placa_1 = require("./placa");
 var create_1 = require("./create");
 var rg_1 = require("./rg");
 var iptu_1 = require("./iptu/iptu");
+var estados_1 = require("./estados");
 function validate_aih(aih) {
     var aihClean = aih.replace(/[^\d]+/g, '');
     var dvOriginal = aihClean.substr(-1);
@@ -4256,8 +4337,81 @@ exports.validate_chassi = validate_chassi;
 function validate_cnae(number) {
     return true;
 }
-function validate_cnh(value) {
+/**
+ *
+ * II - Número do Espelho da CNH - segundo número de identificação nacional,
+ * que será formado por 9 (nove) caracteres mais 1 (um) dígito verificador de segurança,
+ * autorizado e controlado pelo DENATRAN, e identificará cada espelho de CNH expedida.
+ * https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-denatran/resolucoes-contran
+ * https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf
+ * 598: https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao59820162.pdf
+ * @param value
+ */
+function validate_cnhespelho(value) {
     value = value.replace(/[^\d]/g, '');
+    if (value.length !== 10) {
+        return false;
+    }
+    var check = create_1.create_cnhespelho(value);
+    if (check === '0' || check === '1')
+        check = '0';
+    return value.substr(-1) == check;
+}
+exports.validate_cnhespelho = validate_cnhespelho;
+/**
+ *
+ * III – Número do formulário RENACH - número de identificação
+* estadual, documento de coleta de dados do candidato/condutor gerado a cada serviço,
+* composto, obrigatoriamente, por 11 (onze) caracteres, sendo as duas primeiras
+* posições formadas pela sigla da Unidade de Federação expedidora, facultada a
+* utilização da última posição como dígito verificador de segurança.
+*  a) O número do formulário RENACH identificará a Unidade da
+* Federação onde o condutor foi habilitado ou realizou alterações de dados no seu
+* cadastro pela última vez.
+*  b) O Formulário RENACH que dá origem às informações na
+* BINCO e autorização para a impressão da CNH deverá ficar arquivado em seg
+* 598 - https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao59820162.pdf
+* 718 - https://www.gov.br/infraestrutura/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao7182017.pdf
+* @param value
+ */
+function validate_renachestadual(value) {
+    var state = value.substr(0, 2).toLowerCase();
+    if (!estados_1.ESTADOS_SIGLA.includes(state)) {
+        return false;
+    }
+    var digits = value.substr(2);
+    digits = digits.replace(/[^\d]/g, '');
+    if (digits.length !== 9) {
+        return false;
+    }
+    var check = create_1.create_renachestadual(value);
+    if (check === '0' || check === '1')
+        check = '0';
+    return value.substr(-1) == check;
+}
+exports.validate_renachestadual = validate_renachestadual;
+function validate_renachseguranca(value) {
+    value = value.replace(/[^\d]/g, '');
+    if (value.length !== 11) {
+        return false;
+    }
+    var check = create_1.create_renachseguranca(value);
+    return value.substr(-1) == check;
+}
+exports.validate_renachseguranca = validate_renachseguranca;
+/**
+ * BINCO
+ * I – o primeiro número de identificação nacional – Registro Nacional,
+ * será gerado pelo sistema informatizado da Base Índice Nacional de Condutores –
+ * BINCO, composto de 9 (nove) caracteres mais 2 (dois) dígitos verificadores de
+ * segurança, sendo único para cada condutor e o acompanhará durante toda a
+ * sua existência como condutor, não sendo permitida a sua reutilização para
+ * outro condutor.
+ * @param value
+ * @returns
+ */
+function validate_cnh(value) {
+    value = value.toString().replace(/[^\d]/g, '');
     if (value.length !== 11) {
         return false;
     }
@@ -4306,9 +4460,7 @@ function validate_cpf(strCPF) {
     }
     // valida digito verificados
     var restos = create_1.create_cpf(strCPF);
-    if (!restos ||
-        restos[0] !== parseInt(strCPF.substring(9, 10), 10) ||
-        restos[1] !== parseInt(strCPF.substring(10, 11), 10)) {
+    if (!restos || restos != strCPF.substr(-2)) {
         return false;
     }
     return true;
@@ -4632,6 +4784,9 @@ exports.validateBr = {
     chassi: validate_chassi,
     cnae: validate_cnae,
     cnh: validate_cnh,
+    cnhespelho: validate_cnhespelho,
+    renachestadual: validate_renachestadual,
+    renachseguranca: validate_renachseguranca,
     cnpj: validate_cnpj,
     cns: validate_cns,
     contabanco: validate_contabanco,
@@ -4660,10 +4815,9 @@ exports.validateBr = {
     username: validate_username
 };
 
-},{"./create":3,"./inscricaoestadual":6,"./iptu/iptu":8,"./placa":13,"./rg":14,"./utils":15}],17:[function(require,module,exports){
+},{"./create":3,"./estados":4,"./inscricaoestadual":6,"./iptu/iptu":8,"./placa":13,"./rg":14,"./utils":15}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VEICULOS = exports.VEICULOS_ESPECIES = exports.VEICULOS_RESTRICOES = exports.VEICULOS_COMBUSTIVEIS = exports.VEICULOS_TIPOS = exports.VEICULOS_CATEGORIAS = exports.VEICULOS_CARROCERIAS = exports.CNH_CATEGORIAS = void 0;
 exports.CNH_CATEGORIAS = ["A", "AB", "B", "C", "D", "E", "ACC", "MOTOR-CASA"];
 exports.VEICULOS_CARROCERIAS = ["AMBULÂNCIA", "BASCULANTE", "BLINDADA", "BUGGY", "C. FECHADA", "CAB. DUPLA", "CAB. ABERTA",
     "CONVERSÍVEL", "FURGÃO", "JIPE", "TRAILER"];

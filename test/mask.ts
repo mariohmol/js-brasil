@@ -24,13 +24,13 @@ describe('Mask test', () => {
   });
 
   it('endereco - TODO', () => {
-    const endereco = '12312345121';
+    // const endereco = '12312345121';
     // expect(maskBr.endereco(endereco)).to.be.equal('123.12345.12-1');
     // testGeneric('endereco');
   });
 
   it('contabanco - TODO', () => {
-    const contabanco = '12312345121';
+    // const contabanco = '12312345121';
     // expect(maskBr.contabanco(contabanco)).to.be.equal('123.12345.12-1');
     // testGeneric('contabanco');
   });
@@ -61,7 +61,7 @@ describe('Mask test', () => {
   });
 
   it('cnae - TODO', () => {
-    const cnae = '12312345121';
+    // const cnae = '12312345121';
     // expect(maskBr.cnae(cnae)).to.be.equal('123.12345.12-1');
     // testGeneric('cnae');
   });
@@ -109,13 +109,13 @@ describe('Mask test', () => {
   });
 
   it('cpfcnpj - TODO', () => {
-    const cpfcnpj = '12312345121';
+    // const cpfcnpj = '12312345121';
     // expect(maskBr.cpfcnpj(cpfcnpj)).to.be.equal('123.12345.12-1');
     // testGeneric('cpfcnpj');
   });
 
   it('cartaocredito - TODO', () => {
-    const cartaocredito = '12312345121';
+    // const cartaocredito = '12312345121';
     // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
     // testGeneric('cartaocredito');
   });
