@@ -1,6 +1,6 @@
 {
   "name": "js-brasil",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {

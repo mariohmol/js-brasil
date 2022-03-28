@@ -185,6 +185,33 @@ describe('Validate test', () => {
     expect(validateBr.data('32/12/')).to.be.false;
   });
 
+  it('DataHora', () => {
+    expect(validateBr.datahora('12/01/1980 12:34')).to.be.true;
+    expect(validateBr.datahora('12/01/1980 1234')).to.be.false;
+  });
+
+  it('Date', () => {
+    expect(validateBr.date('12/01/1980')).to.be.true;
+    expect(validateBr.date('13/01/1980')).to.be.false;
+    expect(validateBr.date('12/32/1980')).to.be.false;
+    expect(validateBr.date('')).to.be.false;
+    expect(validateBr.date(null)).to.be.false;
+    expect(validateBr.date('32')).to.be.false;
+    expect(validateBr.date('32/12')).to.be.false;
+    expect(validateBr.date('32/12/')).to.be.false;
+  });
+
+  it('DateTime', () => {
+    expect(validateBr.datetime('12/01/1980 12:34')).to.be.true;
+    expect(validateBr.datetime('13/01/1980 12:34')).to.be.false;
+    expect(validateBr.datetime('12/01/1980 1234')).to.be.false;
+    expect(validateBr.date('')).to.be.false;
+    expect(validateBr.date(null)).to.be.false;
+    expect(validateBr.date('32')).to.be.false;
+    expect(validateBr.date('32/12')).to.be.false;
+    expect(validateBr.date('32/12/')).to.be.false;
+  });
+
   context('Moeda', () => {
     it('Pass when valid', () => {
       // expect(validateBr.currency('R$ 1234')).to.be.true;
@@ -504,6 +531,8 @@ describe('Validate test', () => {
   it('Time', () => {
     expect(validateBr.time('12:34')).to.be.true;
     expect(validateBr.time('1234')).to.be.false;
+    expect(validateBr.time('23:61')).to.be.false;
+    expect(validateBr.time('2361')).to.be.false;
   });
 
   context('TITULO', () => {

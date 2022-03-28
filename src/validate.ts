@@ -151,7 +151,7 @@ export function validate_chassi(chassi: string) {
 }
 
 function validate_cnae(number: any) {
-  if(!number) return true;
+  if (!number) return true;
   return false
 }
 
@@ -260,7 +260,7 @@ export function validate_cnpj(cnpj: any) {
 }
 
 function validate_contabanco(number: any) {
-  if(!number) return false
+  if (!number) return false
   return true;
 }
 
@@ -433,10 +433,49 @@ function validate_data(value: string | null) {
   if (values.length !== 3) {
     return false;
   }
-  if (parseInt(values[0]) > 31 || parseInt(values[1]) > 12 || parseInt(values[2]) < 1000) {
+  const testData: Date = new Date(values[1] + '/' + values[0] + '/' + values[2])
+  if (!testData.getTime()) {
+    return false;
+  }
+  // if (parseInt(values[0]) > 31 || parseInt(values[1]) > 12 || parseInt(values[2]) < 1000) return false;
+  return true;
+}
+
+
+function validate_date(value: string | null) {
+  if (!value || value.length < 10) {
+    return false;
+  }
+  const testData: Date = new Date(value)
+  if (!testData.getTime()) {
     return false;
   }
   return true;
+}
+
+export function validate_datetime(time: string | number, options: any = {}) {
+  if (!time) {
+    return false;
+  }
+  time = time.toString();
+  const values = time.split(' ');
+  if (validate_date(values[0]) && validate_time(values[1], options)) {
+    return true;
+  }
+  return false;
+}
+
+
+export function validate_datahora(time: string | number, options: any = {}) {
+  if (!time) {
+    return false;
+  }
+  time = time.toString();
+  const values = time.split(' ');
+  if (validate_data(values[0]) && validate_time(values[1], options)) {
+    return true;
+  }
+  return false;
 }
 
 export function validate_ect(number: string) {
@@ -460,7 +499,7 @@ function validate_email(email: any) {
 }
 
 function validate_endereco(number: any) {
-  if(!number) return false
+  if (!number) return false
   return true
 }
 
@@ -579,7 +618,7 @@ function validate_site(value: any) {
 }
 
 export function validate_sped(sped: string) {
-  if(!sped) return false
+  if (!sped) return false
   return true
 }
 
@@ -661,6 +700,9 @@ export const validateBr: BigObject<Function> = {
   cpfcnpj: validate_cpfcnpj,
   currency: validate_currency,
   data: validate_data,
+  date: validate_date,
+  datetime: validate_datetime,
+  datahora: validate_datahora,
   ect: validate_ect,
   email: validate_email,
   endereco: validate_endereco,

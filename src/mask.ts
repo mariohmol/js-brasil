@@ -99,6 +99,18 @@ export const MASKS: BigObject<MaskType> = {
     text: '00/00/0000',
     textMask: [/[0-3]/, /[0-9]/, '/', /[0-1]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/]
   },
+  date: {
+    text: '00/00/0000',
+    textMask: [/[0-1]/, /[0-9]/, '/', /[0-3]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/]
+  },
+  datetime: {
+    text: '00/00/0000 00:00',
+    textMask: [/[0-1]/, /[0-9]/, '/', /[0-3]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/, ' ', /\d/, /\d/, ':', /[0-5]/, /\d/]
+  },
+  datahora: {
+    text: '00/00/0000 00:00',
+    textMask: [/[0-3]/, /[0-9]/, '/', /[0-1]/, /[0-9]/, '/', /[0-2]/, /[0-9]/, /\d/, /\d/, ' ', /\d/, /\d/, ':', /[0-5]/, /\d/]
+  },
   ect: {
     text: '00000000-0',
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
@@ -199,7 +211,6 @@ const makeGeneric = (key: string) => {
     if (!value) {
       return '';
     }
-
     let mask = MASKS[key].textMask
     let textMaskFunction = MASKS[key].textMaskFunction
     if (typeof textMaskFunction === 'function') {
@@ -236,6 +247,9 @@ export const maskBr = {
     return formatNumber(MASKS.currency, currencyValueInput, decimalsFormat);
   },
   data: makeGeneric('data'),
+  date: makeGeneric('date'),
+  datetime: makeGeneric('datetime'),
+  datahora: makeGeneric('datahora'),
   ect: makeGeneric('ect'),
   endereco: makeGeneric('endereco'),
   inscricaoestadual: (inscricaoestadualValue: string, estado: string) => {
@@ -283,7 +297,12 @@ export const maskBr = {
   rg: makeGeneric('rg'),
   sped: makeGeneric('sped'),
   telefone: makeGeneric('telefone'),
-  time: makeGeneric('time'),
+  time: (value: string | Date) => {
+    if (value instanceof Date) {
+      value = value.toTimeString().split(' ')[0]
+    }
+    return makeGeneric('time')(value)
+  },
   titulo: makeGeneric('titulo')
 };
 
@@ -299,18 +318,24 @@ const defaultPlaceholderChar = placeholderChar;
 const emptyArray: any = []
 const emptyString = ''
 
-export function conformToMask(rawValue = emptyString, mask = emptyArray, config: any = {}) {
+export function conformToMask(inputValue: String | Date = emptyString, mask = emptyArray, config: any = {}) {
+  let rawValue = inputValue.toString();
+  if (typeof inputValue === 'number') {
+    rawValue = (<number>inputValue).toString();
+  }
+  if (inputValue instanceof Date) {
+    rawValue = (<Date>inputValue).toLocaleString("pt-br")
+  }
+
   if (!isArray(mask)) {
     // If someone passes a function as the mask property, we should call the
     // function to get the mask array - Normally this is handled by the
     // `createTextMaskInputElement:update` function - this allows mask functions
     // to be used directly with `conformToMask`
-    if (typeof rawValue === 'number') {
-      rawValue = (<number>rawValue).toString();
-    }
+
     if (typeof mask === strFunction) {
       // call the mask function to get the mask array
-      mask = mask(rawValue, config)
+      mask = mask(inputValue, config)
 
       // mask functions can setup caret traps to have some control over how the caret moves. We need to process
       // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask

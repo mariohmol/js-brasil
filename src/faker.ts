@@ -180,8 +180,24 @@ function data(config: any = {}) {
   if (day < 10) {
     day = '0' + day;
   }
-  return `${day}/${month}/${date.getFullYear()}`;
+  if (!config.lang || config.lang.indexOf('pt') == 0) {
+    return `${day}/${month}/${date.getFullYear()}`;
+  }
+  return `${month}/${day}/${date.getFullYear()}`;
 }
+
+function datahora(config: any = {}) {
+  return data(config) + ' ' + time();
+}
+
+function date(config: any = {}) {
+  return data({ ...config, lang: 'en' })
+}
+
+function datetime(config: any = {}) {
+  return data({ ...config, lang: 'en' }) + ' ' + time();
+}
+
 function ect() {
   const ect = makeGenericFaker(MASKS['ect'])();
   const dv = create_ect(ect.substr(0, ect.length - 1));
@@ -490,6 +506,9 @@ export default {
   currency: currency,
   currencyNumber: currencyNumber,
   data: data,
+  date: date,
+  datetime: datetime,
+  datahora: datahora,
   ect: ect,
   email: email,
   empresa: empresa,

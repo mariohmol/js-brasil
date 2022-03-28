@@ -122,9 +122,35 @@ describe('Mask test', () => {
 
 
   it('DATA', () => {
-    const data = '01/12/1980';
-    expect(maskBr.data(data)).to.be.equal('01/12/1980');
     testGeneric('data');
+    const data = '01/12/1980';
+    expect(maskBr.data(data)).to.be.equal(data);
+    const dateObj = new Date('12/01/1980');
+    expect(maskBr.data(dateObj)).to.be.equal(data);
+  });
+
+  it('DATE', () => {
+    testGeneric('date');
+    const date = '01/12/1980';
+    expect(maskBr.date(date)).to.be.equal(date);
+    const dateObj = new Date('12/01/1980');
+    expect(maskBr.date(dateObj)).to.be.equal(date);
+  });
+
+  it('DATAHORA', () => {
+    testGeneric('datahora');
+    const datahora = '01/12/1980 12:33';
+    expect(maskBr.datahora(datahora)).to.be.equal(datahora);
+    const dateObj = new Date('12/01/1980 12:33');
+    expect(maskBr.datahora(dateObj)).to.be.equal(datahora);
+  });
+
+  it('DATETIME', () => {
+    testGeneric('datetime');
+    const datetime = '01/12/1980 12:33';
+    expect(maskBr.datetime(datetime)).to.be.equal(datetime);
+    const dateObj = new Date('12/01/1980 12:33');
+    expect(maskBr.datetime(dateObj)).to.be.equal(datetime);
   });
 
   it('ECT', () => {
@@ -191,11 +217,11 @@ describe('Mask test', () => {
     expect(maskBr.currency(currencyNumberNegative)).to.be.equal('-R$ 125,95');
     expect(maskBr.currency(currencyNegative)).to.be.equal('-R$ 5.103,94');
 
-    expect(maskBr.currency(currencyNumberMany,0)).to.be.equal('R$ 5.103');
-    expect(maskBr.currency(currencyNumberMany,1)).to.be.equal('R$ 5.103,9');
-    expect(maskBr.currency(currencyNumberMany,2)).to.be.equal('R$ 5.103,94');
-    expect(maskBr.currency(currencyNumberMany,3)).to.be.equal('R$ 5.103,942');
-    expect(maskBr.currency(currencyNumberMany,4)).to.be.equal('R$ 5.103,9423');
+    expect(maskBr.currency(currencyNumberMany, 0)).to.be.equal('R$ 5.103');
+    expect(maskBr.currency(currencyNumberMany, 1)).to.be.equal('R$ 5.103,9');
+    expect(maskBr.currency(currencyNumberMany, 2)).to.be.equal('R$ 5.103,94');
+    expect(maskBr.currency(currencyNumberMany, 3)).to.be.equal('R$ 5.103,942');
+    expect(maskBr.currency(currencyNumberMany, 4)).to.be.equal('R$ 5.103,9423');
 
     const currencyNumberBig = 1239999999.99
     expect(maskBr.currency(currencyNumberBig)).to.be.equal('R$ 1.239.999.999,99');
@@ -222,11 +248,11 @@ describe('Mask test', () => {
 
 
     const porcentagemFull = '80,5656';
-    expect(maskBr.porcentagem(porcentagemFull,0)).to.be.equal('80%');
-    expect(maskBr.porcentagem(porcentagemFull,1)).to.be.equal('80,5%');
-    expect(maskBr.porcentagem(porcentagemFull,2)).to.be.equal('80,56%');
-    expect(maskBr.porcentagem(porcentagemFull,3)).to.be.equal('80,565%');
-    expect(maskBr.porcentagem(porcentagemFull,4)).to.be.equal('80,5656%');
+    expect(maskBr.porcentagem(porcentagemFull, 0)).to.be.equal('80%');
+    expect(maskBr.porcentagem(porcentagemFull, 1)).to.be.equal('80,5%');
+    expect(maskBr.porcentagem(porcentagemFull, 2)).to.be.equal('80,56%');
+    expect(maskBr.porcentagem(porcentagemFull, 3)).to.be.equal('80,565%');
+    expect(maskBr.porcentagem(porcentagemFull, 4)).to.be.equal('80,5656%');
   });
 
   it('Processos', () => {
@@ -274,10 +300,11 @@ describe('Mask test', () => {
   });
 
   it('Time', () => {
-    const time = fakerBr.time();
-    expect(validateBr.time(time)).to.be.true;
-    expect(validateBr.time('23:61')).to.be.false;
-    expect(validateBr.time('33:58', { diario: true })).to.be.false;
+    expect(maskBr.time('23:51')).to.be.equal('23:51');
+    expect(maskBr.time('23:61')).to.be.equal('23:1_');
+    testGeneric('time');
+    const dateObj = new Date('12/01/1980 21:58');
+    expect(maskBr.time(dateObj)).to.be.equal('21:58');
   });
 
   it('Titulo', () => {

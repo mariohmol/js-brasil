@@ -45,7 +45,7 @@ Ou veja um exemplo de código live: https://jsfiddle.net/mariohmol/qnmxhwrb/6/
 * CPF - http://geradorbrasileiro.com/cpf.html
 * CPF/CNPF - http://geradorbrasileiro.com/cpfcnpj.html **(TODO #15)**
 * Currency - http://geradorbrasileiro.com/others.html
-* Date - http://geradorbrasileiro.com/data.html
+* Data/Date/DataHora/Datetime - http://geradorbrasileiro.com/data.html
 * ECT - http://geradorbrasileiro.com/ect.html
 * EMAIL - http://geradorbrasileiro.com/email.html
 * Empresa - http://geradorbrasileiro.com/empresa.html

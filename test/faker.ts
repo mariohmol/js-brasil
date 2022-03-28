@@ -33,11 +33,11 @@ describe('Faker test', () => {
     const chassi = fakerBr.chassi();
     expect(validateBr.chassi(chassi)).to.be.true;
   });
-
-  it('CNAE', () => {
-    const cnae = fakerBr.cnae();
-    expect(validateBr.cnae(cnae)).to.be.true;
-  });
+  // TODO: Faker CNAE
+  // it('CNAE', () => {
+  //   const cnae = fakerBr.cnae();
+  //   expect(validateBr.cnae(cnae)).to.be.true;
+  // });
 
   it('CNH - BINCO', () => {
     const cnh = fakerBr.cnh();
@@ -54,6 +54,7 @@ describe('Faker test', () => {
     expect(validateBr.renachestadual(renachestadual)).to.be.true;
   })
 
+  // TODO: Instavel
   it('ESPELHO CNH', () => {
     const cnhespelho = fakerBr.cnhespelho();
     expect(validateBr.cnhespelho(cnhespelho)).to.be.true;
@@ -94,6 +95,28 @@ describe('Faker test', () => {
       idadeMax: 40
     });
     expect(validateBr.data(data)).to.be.true;
+  });
+
+  it('DATE', () => {
+    let date = fakerBr.date();
+    expect(validateBr.date(date)).to.be.true;
+    date = fakerBr.date({
+      idadeMin: 18,
+      idadeMax: 40
+    });
+    expect(validateBr.date(date)).to.be.true;
+  });
+
+  it('DataHora', () => {
+    expect(fakerBr.datahora()).to.exist;
+    const datahora = fakerBr.datahora();
+    expect(validateBr.datahora(datahora)).to.be.true;
+  });
+
+  it('DateTime', () => {
+    expect(fakerBr.datetime()).to.exist;
+    const datetime = fakerBr.datetime();
+    expect(validateBr.datetime(datetime)).to.be.true;
   });
 
   it('ECT', () => {
@@ -147,11 +170,11 @@ describe('Faker test', () => {
 
   it('IPTU', () => {
     let iptu;
-    iptu = fakerBr.iptu('minas-gerais','belo-horizonte');
-    expect(validateBr.iptu(iptu, 'minas-gerais','belo-horizonte')).to.be.true;
-    iptu = fakerBr.iptu('sao-paulo','sao-paulo');
-    expect(validateBr.iptu(iptu, 'sao-paulo','sao-paulo')).to.be.true;
-    iptu = fakerBr.iptu('parana','curitiba');
+    iptu = fakerBr.iptu('minas-gerais', 'belo-horizonte');
+    expect(validateBr.iptu(iptu, 'minas-gerais', 'belo-horizonte')).to.be.true;
+    iptu = fakerBr.iptu('sao-paulo', 'sao-paulo');
+    expect(validateBr.iptu(iptu, 'sao-paulo', 'sao-paulo')).to.be.true;
+    iptu = fakerBr.iptu('parana', 'curitiba');
     // expect(validateBr.iptu(iptu, 'parana','curitiba')).to.be.true;
   });
 
@@ -225,7 +248,7 @@ describe('Faker test', () => {
     let senha = fakerBr.senha();
     expect(validateBr.senha(senha)).to.be.true;
 
-    senha = fakerBr.senha({ size: 20});
+    senha = fakerBr.senha({ size: 20 });
     expect(validateBr.senha(senha)).to.be.true;
   });
 
@@ -243,11 +266,12 @@ describe('Faker test', () => {
     const telefone = fakerBr.telefone();
     expect(validateBr.telefone(telefone)).to.be.true;
   });
-  // it('Time', () => {
-  // expect(fakerBr.time()).to.exist;
-  //   const time = fakerBr.time();
-  //   expect(validateBr.time(time)).to.be.true;
-  // });
+
+  it('Time', () => {
+    expect(fakerBr.time()).to.exist;
+    const time = fakerBr.time();
+    expect(validateBr.time(time)).to.be.true;
+  });
   it('Titulo', () => {
     expect(fakerBr.titulo()).to.exist;
     const titulo = fakerBr.titulo();
