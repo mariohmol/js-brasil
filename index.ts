@@ -21,7 +21,6 @@ import {
   getSpecialProperty
 } from './src/utils';
 export { validateBr } from './src/validate';
-import faker from './src/faker';
 import * as mask from './src/mask';
 import { MASKS, MASKSIE } from './src/mask';
 import { PLACAS_RANGE } from './src/placa';
@@ -56,4 +55,3 @@ export const utilsBr = {
 };
 
 export const maskBr: BigObject<Function> = mask.maskBr;
-export const fakerBr: BigObject<Function> = faker;

@@ -1,5 +1,5 @@
 node_modules/
-dist/
+# dist/
 #*.js
 !docs/live.js
 package-lock.json

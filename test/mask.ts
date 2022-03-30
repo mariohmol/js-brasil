@@ -1,20 +1,6 @@
-import { maskBr, fakerBr, validateBr } from '../index';
+import { maskBr } from '../index';
 import { expect } from 'chai';
 
-
-const testGeneric = (key: string) => {
-  let val = fakerBr[key]();
-  val = val.replace(/[^\d\w]+/g, '');
-  const valMask = maskBr[key](val);
-  expect(validateBr[key](valMask)).to.be.true;
-}
-
-const testGenericIPTU = (estado: string, cidade: string) => {
-  let val = fakerBr['iptu'](estado, cidade);
-  val = val.replace(/[^\d\w]+/g, '');
-  const valMask = maskBr['iptu'](val, estado, cidade);
-  expect(validateBr['iptu'](valMask, estado, cidade)).to.be.true;
-}
 
 describe('Mask test', () => {
 
@@ -26,25 +12,21 @@ describe('Mask test', () => {
   it('endereco - TODO', () => {
     // const endereco = '12312345121';
     // expect(maskBr.endereco(endereco)).to.be.equal('123.12345.12-1');
-    // testGeneric('endereco');
   });
 
   it('contabanco - TODO', () => {
     // const contabanco = '12312345121';
     // expect(maskBr.contabanco(contabanco)).to.be.equal('123.12345.12-1');
-    // testGeneric('contabanco');
   });
 
   it('celular', () => {
     const celular = '31999915454';
     expect(maskBr.celular(celular)).to.be.equal('(31) 99991-5454');
-    testGeneric('celular');
   });
 
   it('CEP', () => {
     const cep = '30456098';
     expect(maskBr.cep(cep)).to.be.equal('30.456-098');
-    testGeneric('cep');
     expect(maskBr.cep('123')).to.exist;
   });
 
@@ -57,25 +39,21 @@ describe('Mask test', () => {
   it('CHASSI', () => {
     const chassi = '9BWZZZ377VT004251';
     expect(maskBr.chassi(chassi)).to.be.equal('9BW ZZZ377 VT 004251');
-    testGeneric('chassi');
   });
 
   it('cnae - TODO', () => {
     // const cnae = '12312345121';
     // expect(maskBr.cnae(cnae)).to.be.equal('123.12345.12-1');
-    // testGeneric('cnae');
   });
 
   it('CNH - BINCO', () => {
     const cnh = '99739507132';
     expect(maskBr.cnh(cnh)).to.be.equal('997395071-32');
-    testGeneric('cnh');
   });
 
   it('RENACH SEGURANÇA CNH', () => {
     const renachseguranca = '51474546854';
     expect(maskBr.renachseguranca(renachseguranca)).to.be.equal('51474546854');
-    testGeneric('renachseguranca');
   });
 
   it('RENACH ESTADUAL CNH', () => {
@@ -86,14 +64,12 @@ describe('Mask test', () => {
   it('ESPELHO CNH', () => {
     const cnhespelho = '2318339130';
     expect(maskBr.cnhespelho(cnhespelho)).to.be.equal('2318339130');
-    testGeneric('cnhespelho');
   });
 
   it('CNPJ', () => {
     const cnpj = '83529443183182';
     expect(maskBr.cnpj(cnpj)).to.be.equal('83.529.443/1831-82');
     expect(maskBr.cnpj('123')).to.exist;
-    testGeneric('cnpj');
   });
 
   it('CNS', () => {
@@ -104,25 +80,21 @@ describe('Mask test', () => {
   it('CPF', () => {
     const cpf = '92044202271';
     expect(maskBr.cpf(cpf)).to.be.equal('920.442.022-71');
-    testGeneric('cpf');
     expect(maskBr.cpf('123')).to.exist;
   });
 
   it('cpfcnpj - TODO', () => {
     // const cpfcnpj = '12312345121';
     // expect(maskBr.cpfcnpj(cpfcnpj)).to.be.equal('123.12345.12-1');
-    // testGeneric('cpfcnpj');
   });
 
   it('cartaocredito - TODO', () => {
     // const cartaocredito = '12312345121';
     // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
-    // testGeneric('cartaocredito');
   });
 
 
   it('DATA', () => {
-    testGeneric('data');
     const data = '01/12/1980';
     expect(maskBr.data(data)).to.be.equal(data);
     const dateObj = new Date('12/01/1980');
@@ -130,7 +102,6 @@ describe('Mask test', () => {
   });
 
   it('DATE', () => {
-    testGeneric('date');
     const date = '01/12/1980';
     expect(maskBr.date(date)).to.be.equal(date);
     const dateObj = new Date('12/01/1980');
@@ -138,7 +109,6 @@ describe('Mask test', () => {
   });
 
   it('DATAHORA', () => {
-    testGeneric('datahora');
     const datahora = '01/12/1980 12:33';
     expect(maskBr.datahora(datahora)).to.be.equal(datahora);
     const dateObj = new Date('12/01/1980 12:33');
@@ -146,7 +116,6 @@ describe('Mask test', () => {
   });
 
   it('DATETIME', () => {
-    testGeneric('datetime');
     const datetime = '01/12/1980 12:33';
     expect(maskBr.datetime(datetime)).to.be.equal(datetime);
     const dateObj = new Date('12/01/1980 12:33');
@@ -156,15 +125,11 @@ describe('Mask test', () => {
   it('ECT', () => {
     const ect = '315296490';
     expect(maskBr.ect(ect)).to.be.equal('31529649-0');
-    testGeneric('ect');
   });
 
   it('Inscricao estadual', () => {
     const estado = 'mg';
     expect(maskBr.inscricaoestadual(estado, '123')).to.exist;
-    const inscricaoestadual = fakerBr.inscricaoestadual(estado);
-    expect(validateBr.inscricaoestadual(inscricaoestadual, estado)).to.be.true;
-
     expect(maskBr.inscricaoestadual('1234567-48', 'ba')).to.be.equal('1234567-48');
     expect(maskBr.inscricaoestadual('123456-63', 'ba')).to.be.equal('123456-63');
     expect(maskBr.inscricaoestadual('1 6 2 3 4 5 6 -5 1', 'ba')).to.be.equal('1623456-51');
@@ -172,13 +137,10 @@ describe('Mask test', () => {
 
   it('IPTU', () => {
     expect(maskBr.iptu('1231234512132', 'minas-gerais', 'belo-horizonte')).to.be.equal('123.123.451.213.2');
-    testGenericIPTU('minas-gerais', 'belo-horizonte');
 
     expect(maskBr.iptu('123456789012', 'sao-paulo', 'sao-paulo')).to.be.equal('12345678901-2');
-    testGenericIPTU('sao-paulo', 'sao-paulo');
 
     expect(maskBr.iptu('123456789012', 'parana', 'curitiba')).to.be.equal('12345678901-2');
-    // testGenericIPTU('parana','curitiba');
   });
 
   it('Número', () => {
@@ -237,7 +199,6 @@ describe('Mask test', () => {
   it('PLACA', () => {
     const placa = 'ABC1234';
     expect(maskBr.placa(placa)).to.be.equal('ABC-1234');
-    testGeneric('placa');
     expect(maskBr.placa('123')).to.exist;
   });
 
@@ -262,20 +223,17 @@ describe('Mask test', () => {
   });
 
   it('Renavam', () => {
-    testGeneric('renavam');
   });
 
   it('RG MG', () => {
     const rg = 'mg11164324';
     expect(maskBr.rg(rg)).to.be.equal('mg-11.164.324');
-    testGeneric('rg');
     expect(maskBr.rg('123')).to.exist;
   });
 
   it('SPED', () => {
     const sped = '313500350012';
     expect(maskBr.sped(sped)).to.be.equal('3135.0035.0012');
-    // testGeneric('sped');
     expect(maskBr.sped('123')).to.exist;
   });
 
@@ -302,27 +260,23 @@ describe('Mask test', () => {
   it('Time', () => {
     expect(maskBr.time('23:51')).to.be.equal('23:51');
     expect(maskBr.time('23:61')).to.be.equal('23:1_');
-    testGeneric('time');
     const dateObj = new Date('12/01/1980 21:58');
     expect(maskBr.time(dateObj)).to.be.equal('21:58');
   });
 
-  it('Titulo', () => {
-    const titulo = fakerBr.titulo();
-    expect(validateBr.titulo(titulo)).to.be.true;
-    testGeneric('titulo');
-    expect(maskBr.titulo('123')).to.exist;
-  });
+  // it('Titulo', () => {
+  //   const titulo = fakerBr.titulo();
+  //   expect(validateBr.titulo(titulo)).to.be.true;
+  //   expect(maskBr.titulo('123')).to.exist;
+  // });
 
-  it('Others', () => {
-    // const currency  = fakerBr.currency();
-    // expect(validateBr.currency(currency)).to.be.true;
-    // const porcentagem  = fakerBr.porcentagem();
-    // expect(validateBr.porcentagem(porcentagem)).to.be.true;
-    // expect(maskBr.porcentagem('123')).to.exist;
-    // expect(maskBr.time('123')).to.exist;
-    // testGeneric('porcentagem');
-    // testGeneric('time');
-  });
+  // it('Others', () => {
+  //   const currency  = fakerBr.currency();
+  //   expect(validateBr.currency(currency)).to.be.true;
+  //   const porcentagem  = fakerBr.porcentagem();
+  //   expect(validateBr.porcentagem(porcentagem)).to.be.true;
+  //   expect(maskBr.porcentagem('123')).to.exist;
+  //   expect(maskBr.time('123')).to.exist;
+  // });
 
 });

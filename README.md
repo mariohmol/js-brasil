@@ -125,34 +125,6 @@ console.info(cpf) // '123.456.789-00'
 </script>  
 ```
 
-
-
-
-# FakerBR
-
-Gerador de dados de teste usando tipos de dados brasileiro, similar o fakerjs
-
-Node:
-```js
-const { fakerBr } = require('js-brasil');
-const cep = fakerBr.cep();
-```
-
-Typescript:
-```ts
-import { fakerBr } from 'js-brasil';
-const cep = fakerBr.cep();
-```
-
-Browser:
-```html
-<script src="js-brasil.js"></script>
-<script>
-var cep = jsbrasil.fakerBr.cep();
-</script>  
-```
-
-
 # UtilsBR
 
 Métodos úteis para todos apps brasileiros, veja alguns exemplos
@@ -187,6 +159,14 @@ Browser:
 var currency = jsbrasil.utilsBr.currencyToNumber(' 12 % '); // 12
 </script>  
 ```
+
+
+# FakerBR
+
+[FakerBR](https://github.com/mariohmol/fakerbr) é um gerador de dados de teste usando tipos de dados brasileiro, similar o fakerjs agora tem um repositório próprio
+para deixar o js-brasil bem enxuto em mask e validation.
+
+
 
 # Angular 
 
