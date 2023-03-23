@@ -244,7 +244,7 @@ export const maskBr = {
   cpfcnpj: makeGeneric('cpfcnpj'),
   cartaocredito: makeGeneric('cartaocredito'),
   currency: (currencyValueInput: string | number, decimalsFormat: number = 2) => {
-    return formatNumber(MASKS.currency, currencyValueInput, decimalsFormat);
+    return formatNumber(MASKS['currency'], currencyValueInput, decimalsFormat);
   },
   data: makeGeneric('data'),
   date: makeGeneric('date'),
@@ -285,10 +285,10 @@ export const maskBr = {
     ).conformedValue;
   },
   number: (numberValue: any, decimalsFormat: number = 2) => {
-    return formatNumber(MASKS.number, numberValue, decimalsFormat);
+    return formatNumber(MASKS['number'], numberValue, decimalsFormat);
   },
   porcentagem: (porcentagemValue: string, decimalsFormat: number = 2) => {
-    return formatNumber(MASKS.porcentagem, porcentagemValue, decimalsFormat);
+    return formatNumber(MASKS['porcentagem'], porcentagemValue, decimalsFormat);
   },
   pispasep: makeGeneric('pispasep'),
   placa: makeGeneric('placa'),
