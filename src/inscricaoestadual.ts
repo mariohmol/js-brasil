@@ -40,7 +40,7 @@ export const generateInscricaoEstadual: BigObject<Function> = {
     if (naoComecaCom(valor, '24')) {
       return false;
     }
-    
+
     // FORMAÇÃO: 24XNNNNND,  sendo:
     // 24 – Código do Estado
     // X – Tipo de empresa (0-Normal, 3-Produtor Rural, 5-Substituta, 7- Micro-Empresa Ambulante, 8-Micro-Empresa)
@@ -55,7 +55,7 @@ export const generateInscricaoEstadual: BigObject<Function> = {
     // Pesos 9 8 7 6 5 4 3 2
     // SOMA = (2 * 4) + (3 * 0) + (4 * 0) + (5 * 0) + (6 * 0) + (7 * 0) + (8 * 4) + (9 * 2) = 58
     const soma = base.split('').reduce((acc: number, v: string, i: number) => {
-      return acc + (9-i) * Number(v)
+      return acc + (9 - i) * Number(v)
     }, 0)
     // PRODUTO = 58 * 10 = 580
     const produto = soma * 10
@@ -454,104 +454,104 @@ export const generateInscricaoEstadual: BigObject<Function> = {
 
 const funcoes: BigObject<Function> = {
   ac: function (valor: any) {
-    return valor === generateInscricaoEstadual.ac(valor);
+    return valor === generateInscricaoEstadual['ac'](valor);
   },
 
   am: function (valor: any) {
-    return valor === generateInscricaoEstadual.am(valor);
+    return valor === generateInscricaoEstadual['am'](valor);
   },
 
   al: function (valor: any) {
-    return valor === generateInscricaoEstadual.al(valor);
+    return valor === generateInscricaoEstadual['al'](valor);
   },
 
   ap: function (valor: any) {
-    return valor === generateInscricaoEstadual.ap(valor);
+    return valor === generateInscricaoEstadual['ap'](valor);
   },
 
   ba: function (valor: any) {
-    return valor === generateInscricaoEstadual.ba(valor);
+    return valor === generateInscricaoEstadual['ba'](valor);
   },
 
   ce: function (valor: any) {
-    return valor === generateInscricaoEstadual.ce(valor);
+    return valor === generateInscricaoEstadual['ce'](valor);
   },
 
   df: function (valor: any) {
-    return valor === generateInscricaoEstadual.df(valor);
+    return valor === generateInscricaoEstadual['df'](valor);
   },
 
   es: function (valor: any) {
-    return valor === generateInscricaoEstadual.es(valor);
+    return valor === generateInscricaoEstadual['es'](valor);
   },
   go: function (valor: any) {
-    return valor === generateInscricaoEstadual.go(valor);
+    return valor === generateInscricaoEstadual['go'](valor);
   },
   ma: function (valor: any) {
-    return valor === generateInscricaoEstadual.ma(valor);
+    return valor === generateInscricaoEstadual['ma'](valor);
   },
 
   mg: function (valor: any) {
-    return valor === generateInscricaoEstadual.mg(valor);
+    return valor === generateInscricaoEstadual['mg'](valor);
   },
 
   ms: function (valor: any) {
-    return valor === generateInscricaoEstadual.ms(valor);
+    return valor === generateInscricaoEstadual['ms'](valor);
   },
   mt: function (valor: any) {
-    return valor === generateInscricaoEstadual.mt(valor);
+    return valor === generateInscricaoEstadual['mt'](valor);
   },
   pa: function (valor: any) {
-    return valor === generateInscricaoEstadual.pa(valor);
+    return valor === generateInscricaoEstadual['pa'](valor);
   },
 
   pb: function (valor: any) {
-    return valor === generateInscricaoEstadual.pb(valor);
+    return valor === generateInscricaoEstadual['pb'](valor);
   },
 
   pe: function (valor: any) {
-    return valor === generateInscricaoEstadual.pe(valor);
+    return valor === generateInscricaoEstadual['pe'](valor);
   },
 
   pi: function (valor: any) {
-    return valor === generateInscricaoEstadual.pi(valor);
+    return valor === generateInscricaoEstadual['pi'](valor);
   },
 
   pr: function (valor: any) {
-    return valor === generateInscricaoEstadual.pr(valor);
+    return valor === generateInscricaoEstadual['pr'](valor);
   },
   rj: function (valor: any) {
-    return valor === generateInscricaoEstadual.rj(valor);
+    return valor === generateInscricaoEstadual['rj'](valor);
   },
 
   rn: function (valor: any) {
-    return valor === generateInscricaoEstadual.rn(valor);
+    return valor === generateInscricaoEstadual['rn'](valor);
   },
   ro: function (valor: any) {
-    return valor === generateInscricaoEstadual.ro(valor);
+    return valor === generateInscricaoEstadual['ro'](valor);
   },
   rr: function (valor: any) {
-    return valor === generateInscricaoEstadual.rr(valor);
+    return valor === generateInscricaoEstadual['rr'](valor);
   },
 
   rs: function (valor: any) {
-    return valor === generateInscricaoEstadual.rs(valor);
+    return valor === generateInscricaoEstadual['rs'](valor);
   },
 
   sc: function (valor: any) {
-    return valor === generateInscricaoEstadual.sc(valor);
+    return valor === generateInscricaoEstadual['sc'](valor);
   },
 
   se: function (valor: any) {
-    return valor === generateInscricaoEstadual.se(valor);
+    return valor === generateInscricaoEstadual['se'](valor);
   },
 
   sp: function (valor: string | boolean) {
-    return valor === generateInscricaoEstadual.sp(valor);
+    return valor === generateInscricaoEstadual['sp'](valor);
   },
 
   to: function (valor: any) {
-    return valor === generateInscricaoEstadual.to(valor);
+    return valor === generateInscricaoEstadual['to'](valor);
   },
 };
 
