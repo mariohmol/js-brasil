@@ -10,7 +10,6 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "alwaysStrict": true,
@@ -25,12 +24,23 @@
       "dom"
     ],
     "paths": {
-      "js-brasil": [
-        "dist/js-brasil"
+      "js-brasil": [ "dist/js-brasil" ],
+      "@*": [
+        "src/*",
+        "dist/*"
       ]
     }
   },
   "exclude": [
-    ".ng_build"
+    ".ng_build",
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.graphql",
+    "cache/Cypress/**",
+    "addons",
+    "test"
   ]
 }

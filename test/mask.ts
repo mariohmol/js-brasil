@@ -1,4 +1,4 @@
-import { maskBr } from '../index';
+import { maskBr } from '../src/index';
 import { expect } from 'chai';
 
 

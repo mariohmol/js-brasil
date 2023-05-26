@@ -19,13 +19,13 @@ import {
   randomLetter,
   randomLetterOrNumber,
   getSpecialProperty
-} from './src/utils';
-export { validateBr } from './src/validate';
-import * as mask from './src/mask';
-import { MASKS, MASKSIE } from './src/mask';
-import { PLACAS_RANGE } from './src/placa';
-import { ESTADOS } from './src/estados';
-import { BigObject } from './src/interfaces';
+} from './utils';
+export { validateBr } from './validate';
+import * as mask from './mask';
+import { MASKS, MASKSIE } from './mask';
+import { PLACAS_RANGE } from './placa';
+import { ESTADOS } from './estados';
+import { BigObject } from './interfaces';
 
 export const utilsBr = {
   isPresent,

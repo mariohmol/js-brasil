@@ -7,7 +7,7 @@ import {
   create_renavam, create_ect, create_processo, create_titulo_atual, create_cnh, create_certidao, create_aih, create_pispasep, create_cnhespelho, create_renachestadual, create_renachseguranca
 } from './create';
 import RG from './rg';
-import { validate_iptu } from './iptu/iptu';
+import { validate_iptu } from './iptu';
 import { ESTADOS_SIGLA } from './estados';
 
 

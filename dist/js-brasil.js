@@ -1,47 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.maskBr = exports.utilsBr = exports.validateBr = void 0;
-var utils_1 = require("./src/utils");
-var validate_1 = require("./src/validate");
-Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
-var mask = require("./src/mask");
-var mask_1 = require("./src/mask");
-var placa_1 = require("./src/placa");
-var estados_1 = require("./src/estados");
-exports.utilsBr = {
-    isPresent: utils_1.isPresent,
-    isArray: utils_1.isArray,
-    isString: utils_1.isString,
-    isNumber: utils_1.isNumber,
-    isNil: utils_1.isNil,
-    processCaretTraps: utils_1.processCaretTraps,
-    allNumbersAreSame: utils_1.allNumbersAreSame,
-    getAllDigits: utils_1.getAllDigits,
-    getAllWords: utils_1.getAllWords,
-    currencyToNumber: utils_1.currencyToNumber,
-    modulo11: utils_1.modulo11,
-    numberToCurrency: utils_1.numberToCurrency,
-    slugify: utils_1.slugify,
-    fillString: utils_1.fillString,
-    randArray: utils_1.randArray,
-    rand: utils_1.rand,
-    randomNumber: utils_1.randomNumber,
-    randomLetter: utils_1.randomLetter,
-    randomLetterOrNumber: utils_1.randomLetterOrNumber,
-    getSpecialProperty: utils_1.getSpecialProperty,
-    MASKS: mask_1.MASKS,
-    MASKSIE: mask_1.MASKSIE,
-    PLACAS_RANGE: placa_1.PLACAS_RANGE,
-    ESTADOS: estados_1.ESTADOS
-};
-exports.maskBr = mask.maskBr;
-
-},{"./src/estados":4,"./src/mask":10,"./src/placa":11,"./src/utils":13,"./src/validate":14}],2:[function(require,module,exports){
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.createNumberMask=t():e.createNumberMask=t()}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var i=o[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(2)},,function(e,t){"use strict";function o(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,t=e.length;if(e===l||e[0]===y[0]&&1===t)return y.split(l).concat([v]).concat(g.split(l));if(e===k&&M)return y.split(l).concat(["0",k,v]).concat(g.split(l));var o=e[0]===s&&q;o&&(e=e.toString().substr(1));var c=e.lastIndexOf(k),u=c!==-1,a=void 0,b=void 0,h=void 0;if(e.slice(T*-1)===g&&(e=e.slice(0,T*-1)),u&&(M||$)?(a=e.slice(e.slice(0,R)===y?R:0,c),b=e.slice(c+1,t),b=n(b.replace(f,l))):a=e.slice(0,R)===y?e.slice(R):e,P&&("undefined"==typeof P?"undefined":r(P))===p){var S="."===j?"[.]":""+j,w=(a.match(new RegExp(S,"g"))||[]).length;a=a.slice(0,P+w*Z)}return a=a.replace(f,l),E||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?i(a,j):a,h=n(a),(u&&M||$===!0)&&(e[c-1]!==k&&h.push(m),h.push(k,m),b&&(("undefined"==typeof L?"undefined":r(L))===p&&(b=b.slice(0,L)),h=h.concat(b)),$===!0&&e[c-1]===k&&h.push(v)),R>0&&(h=y.split(l).concat(h)),o&&(h.length===R&&h.push(v),h=[d].concat(h)),g.length>0&&(h=h.concat(g.split(l))),h}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},o=t.prefix,y=void 0===o?c:o,b=t.suffix,g=void 0===b?l:b,h=t.includeThousandsSeparator,x=void 0===h||h,S=t.thousandsSeparatorSymbol,j=void 0===S?u:S,w=t.allowDecimal,M=void 0!==w&&w,N=t.decimalSymbol,k=void 0===N?a:N,D=t.decimalLimit,L=void 0===D?2:D,O=t.requireDecimal,$=void 0!==O&&O,_=t.allowNegative,q=void 0!==_&&_,B=t.allowLeadingZeroes,E=void 0!==B&&B,I=t.integerLimit,P=void 0===I?null:I,R=y&&y.length||0,T=g&&g.length||0,Z=j&&j.length||0;return e.instanceOf="createNumberMask",e}function n(e){return e.split(l).map(function(e){return v.test(e)?v:e})}function i(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=o;var c="$",l="",u=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,m="[]"}])});
-},{}],3:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh = exports.create_renachseguranca = exports.create_renachestadual = exports.create_cnhespelho = exports.create_certidao = exports.create_aih = void 0;
 var estados_1 = require("./estados");
 var utils_1 = require("./utils");
@@ -514,7 +473,7 @@ function create_titulo(titNum) {
 }
 exports.create_titulo = create_titulo;
 
-},{"./estados":4,"./utils":13}],4:[function(require,module,exports){
+},{"./estados":2,"./utils":12}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ESTADOS = exports.ESTADOS_SIGLA = void 0;
@@ -552,7 +511,46 @@ exports.ESTADOS = [
     { name: 'Tocantins', shortname: 'TO', slug: 'tocantins' }
 ];
 
-},{}],5:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.maskBr = exports.utilsBr = void 0;
+var utils_1 = require("./utils");
+var validate_1 = require("./validate");
+Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
+var mask = require("./mask");
+var mask_1 = require("./mask");
+var placa_1 = require("./placa");
+var estados_1 = require("./estados");
+exports.utilsBr = {
+    isPresent: utils_1.isPresent,
+    isArray: utils_1.isArray,
+    isString: utils_1.isString,
+    isNumber: utils_1.isNumber,
+    isNil: utils_1.isNil,
+    processCaretTraps: utils_1.processCaretTraps,
+    allNumbersAreSame: utils_1.allNumbersAreSame,
+    getAllDigits: utils_1.getAllDigits,
+    getAllWords: utils_1.getAllWords,
+    currencyToNumber: utils_1.currencyToNumber,
+    modulo11: utils_1.modulo11,
+    numberToCurrency: utils_1.numberToCurrency,
+    slugify: utils_1.slugify,
+    fillString: utils_1.fillString,
+    randArray: utils_1.randArray,
+    rand: utils_1.rand,
+    randomNumber: utils_1.randomNumber,
+    randomLetter: utils_1.randomLetter,
+    randomLetterOrNumber: utils_1.randomLetterOrNumber,
+    getSpecialProperty: utils_1.getSpecialProperty,
+    MASKS: mask_1.MASKS,
+    MASKSIE: mask_1.MASKSIE,
+    PLACAS_RANGE: placa_1.PLACAS_RANGE,
+    ESTADOS: estados_1.ESTADOS
+};
+exports.maskBr = mask.maskBr;
+
+},{"./estados":2,"./mask":9,"./placa":10,"./utils":12,"./validate":13}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MASKSIE = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
@@ -1263,12 +1261,41 @@ function lookup(ie) {
     }
 }
 
-},{"./utils":13}],6:[function(require,module,exports){
+},{"./utils":12}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validate_iptu = exports.mask_iptu = exports.create_iptu = void 0;
+var iptu_validate_1 = require("./iptu_validate");
+var iptu_mask_1 = require("./iptu_mask");
+var utils_1 = require("./utils");
+var iptu_create_1 = require("./iptu_create");
+exports.create_iptu = function (number, estado, cidade) {
+    if (!iptu_create_1.IPTUCREATE[estado] || !iptu_create_1.IPTUCREATE[estado][cidade]) {
+        return true;
+    }
+    number = utils_1.getAllDigits(number);
+    return iptu_create_1.IPTUCREATE[estado][cidade](number);
+};
+exports.mask_iptu = function (number, estado, cidade) {
+    if (!iptu_mask_1.IPTUMASKS[estado] || !iptu_mask_1.IPTUMASKS[estado][cidade]) {
+        return number;
+    }
+    return iptu_mask_1.IPTUMASKS[estado][cidade];
+};
+exports.validate_iptu = function (number, estado, cidade) {
+    if (!iptu_validate_1.IPTUVALIDATE[estado] || !iptu_validate_1.IPTUVALIDATE[estado][cidade]) {
+        return true;
+    }
+    number = utils_1.getAllDigits(number);
+    return iptu_validate_1.IPTUVALIDATE[estado][cidade](number);
+};
+
+},{"./iptu_create":6,"./iptu_mask":7,"./iptu_validate":8,"./utils":12}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IPTUCREATE = exports.faker_iptu = exports.create_iptu_sp = exports.create_iptu_ctba = void 0;
-var utils_1 = require("../utils");
-var mask_1 = require("./mask");
+var utils_1 = require("./utils");
+var iptu_mask_1 = require("./iptu_mask");
 function create_iptu_ctba(number) {
     number = utils_1.getAllDigits(number);
     var a1 = parseInt(number.slice(10));
@@ -1308,10 +1335,10 @@ function create_iptu_sp(number) {
 }
 exports.create_iptu_sp = create_iptu_sp;
 exports.faker_iptu = function (estado, cidade) {
-    if (!mask_1.IPTUMASKS[estado] || !mask_1.IPTUMASKS[estado][cidade]) {
+    if (!iptu_mask_1.IPTUMASKS[estado] || !iptu_mask_1.IPTUMASKS[estado][cidade]) {
         return;
     }
-    var iptu = utils_1.makeGenericFaker(mask_1.IPTUMASKS[estado][cidade])();
+    var iptu = utils_1.makeGenericFaker(iptu_mask_1.IPTUMASKS[estado][cidade])();
     if (exports.IPTUCREATE[estado] && exports.IPTUCREATE[estado][cidade]) {
         var dv = exports.IPTUCREATE[estado][cidade](iptu);
         var values = iptu.split('');
@@ -1329,36 +1356,7 @@ exports.IPTUCREATE = {
     }
 };
 
-},{"../utils":13,"./mask":8}],7:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_iptu = exports.mask_iptu = exports.create_iptu = void 0;
-var validate_1 = require("./validate");
-var mask_1 = require("./mask");
-var utils_1 = require("../utils");
-var create_1 = require("./create");
-exports.create_iptu = function (number, estado, cidade) {
-    if (!create_1.IPTUCREATE[estado] || !create_1.IPTUCREATE[estado][cidade]) {
-        return true;
-    }
-    number = utils_1.getAllDigits(number);
-    return create_1.IPTUCREATE[estado][cidade](number);
-};
-exports.mask_iptu = function (number, estado, cidade) {
-    if (!mask_1.IPTUMASKS[estado] || !mask_1.IPTUMASKS[estado][cidade]) {
-        return number;
-    }
-    return mask_1.IPTUMASKS[estado][cidade];
-};
-exports.validate_iptu = function (number, estado, cidade) {
-    if (!validate_1.IPTUVALIDATE[estado] || !validate_1.IPTUVALIDATE[estado][cidade]) {
-        return true;
-    }
-    number = utils_1.getAllDigits(number);
-    return validate_1.IPTUVALIDATE[estado][cidade](number);
-};
-
-},{"../utils":13,"./create":6,"./mask":8,"./validate":9}],8:[function(require,module,exports){
+},{"./iptu_mask":7,"./utils":12}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IPTUMASKS = void 0;
@@ -1400,12 +1398,12 @@ exports.IPTUMASKS = {
     }
 };
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IPTUVALIDATE = exports.validate_iptu_sp = exports.validate_iptu_contagem = exports.validate_iptu_ctba = void 0;
-var utils_1 = require("../utils");
-var create_1 = require("./create");
+var utils_1 = require("./utils");
+var iptu_create_1 = require("./iptu_create");
 var validateRemoveDigito = function (number, max) {
     number = utils_1.getAllDigits(number.toString());
     if (number.length > max) {
@@ -1421,7 +1419,7 @@ function validate_iptu_ctba(value) {
     if (!number) {
         return false;
     }
-    var dv = create_1.IPTUCREATE['parana']['curitiba'](number);
+    var dv = iptu_create_1.IPTUCREATE['parana']['curitiba'](number);
     return parseInt(value[value.length - 1]) === dv;
 }
 exports.validate_iptu_ctba = validate_iptu_ctba;
@@ -1443,7 +1441,7 @@ function validate_iptu_sp(value) {
     if (!number) {
         return false;
     }
-    var dv = create_1.IPTUCREATE['sao-paulo']['sao-paulo'](number);
+    var dv = iptu_create_1.IPTUCREATE['sao-paulo']['sao-paulo'](number);
     return parseInt(value[value.length - 1]) === dv;
 }
 exports.validate_iptu_sp = validate_iptu_sp;
@@ -1474,7 +1472,7 @@ exports.IPTUVALIDATE = {
     }
 };
 
-},{"../utils":13,"./create":6}],10:[function(require,module,exports){
+},{"./iptu_create":6,"./utils":12}],9:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -1488,12 +1486,12 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = exports.MASKSIE = void 0;
+exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 Object.defineProperty(exports, "MASKSIE", { enumerable: true, get: function () { return inscricaoestadual_1.MASKSIE; } });
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
-var iptu_1 = require("./iptu/iptu");
+var iptu_1 = require("./iptu");
 var inscricaoestadual_2 = require("./inscricaoestadual");
 var maskNumber = {
     decimalLimit: 2,
@@ -2060,7 +2058,7 @@ function formatNumber(maskType, numberValue, decimalsFormat) {
     return conformedValue + (decimalsFormat > 0 ? ',' + decimals : '') + suffix;
 }
 
-},{"./inscricaoestadual":5,"./iptu/iptu":7,"./utils":13,"text-mask-addons/dist/createNumberMask":2}],11:[function(require,module,exports){
+},{"./inscricaoestadual":4,"./iptu":5,"./utils":12,"text-mask-addons/dist/createNumberMask":14}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validate_placa = exports.PLACAS_INVALID = exports.PLACAS_RANGE = void 0;
@@ -2227,7 +2225,7 @@ function validate_placa(placa, incluiMercosul) {
 }
 exports.validate_placa = validate_placa;
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rg_rj = exports.rg_sp = void 0;
@@ -2296,7 +2294,7 @@ var RG = {
 };
 exports.default = RG;
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeGenericFaker = exports.getSpecialProperty = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11a = exports.modulo11Custom = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
@@ -2634,7 +2632,7 @@ var utilsBr = {
 };
 exports.default = utilsBr;
 
-},{"./estados":4}],14:[function(require,module,exports){
+},{"./estados":2}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBr = exports.validate_titulo = exports.validate_time = exports.validate_telefone = exports.validate_sped = exports.validate_rg = exports.validate_renavam = exports.validate_pispasep = exports.validate_processo = exports.validate_porcentagem = exports.validate_number = exports.validate_ect = exports.validate_datahora = exports.validate_datetime = exports.validate_currency = exports.creditCardValidator = exports.validate_cartaocredito = exports.validate_cns = exports.validate_cpf = exports.validate_cnpj = exports.validate_cnh = exports.validate_renachseguranca = exports.validate_renachestadual = exports.validate_cnhespelho = exports.validate_chassi = exports.validate_certidao = exports.cep_ranges = exports.validate_cep = exports.CEPRange = exports.validate_celular = exports.validate_aih = void 0;
@@ -2643,7 +2641,7 @@ var inscricaoestadual_1 = require("./inscricaoestadual");
 var placa_1 = require("./placa");
 var create_1 = require("./create");
 var rg_1 = require("./rg");
-var iptu_1 = require("./iptu/iptu");
+var iptu_1 = require("./iptu");
 var estados_1 = require("./estados");
 function validate_aih(aih) {
     var aihClean = aih.replace(/[^\d]+/g, '');
@@ -3298,5 +3296,7 @@ exports.validateBr = {
     username: validate_username
 };
 
-},{"./create":3,"./estados":4,"./inscricaoestadual":5,"./iptu/iptu":7,"./placa":11,"./rg":12,"./utils":13}]},{},[1])(1)
+},{"./create":1,"./estados":2,"./inscricaoestadual":4,"./iptu":5,"./placa":10,"./rg":11,"./utils":12}],14:[function(require,module,exports){
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.createNumberMask=t():e.createNumberMask=t()}(this,function(){return function(e){function t(n){if(o[n])return o[n].exports;var i=o[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){e.exports=o(2)},,function(e,t){"use strict";function o(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:l,t=e.length;if(e===l||e[0]===y[0]&&1===t)return y.split(l).concat([v]).concat(g.split(l));if(e===k&&M)return y.split(l).concat(["0",k,v]).concat(g.split(l));var o=e[0]===s&&q;o&&(e=e.toString().substr(1));var c=e.lastIndexOf(k),u=c!==-1,a=void 0,b=void 0,h=void 0;if(e.slice(T*-1)===g&&(e=e.slice(0,T*-1)),u&&(M||$)?(a=e.slice(e.slice(0,R)===y?R:0,c),b=e.slice(c+1,t),b=n(b.replace(f,l))):a=e.slice(0,R)===y?e.slice(R):e,P&&("undefined"==typeof P?"undefined":r(P))===p){var S="."===j?"[.]":""+j,w=(a.match(new RegExp(S,"g"))||[]).length;a=a.slice(0,P+w*Z)}return a=a.replace(f,l),E||(a=a.replace(/^0+(0$|[^0])/,"$1")),a=x?i(a,j):a,h=n(a),(u&&M||$===!0)&&(e[c-1]!==k&&h.push(m),h.push(k,m),b&&(("undefined"==typeof L?"undefined":r(L))===p&&(b=b.slice(0,L)),h=h.concat(b)),$===!0&&e[c-1]===k&&h.push(v)),R>0&&(h=y.split(l).concat(h)),o&&(h.length===R&&h.push(v),h=[d].concat(h)),g.length>0&&(h=h.concat(g.split(l))),h}var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},o=t.prefix,y=void 0===o?c:o,b=t.suffix,g=void 0===b?l:b,h=t.includeThousandsSeparator,x=void 0===h||h,S=t.thousandsSeparatorSymbol,j=void 0===S?u:S,w=t.allowDecimal,M=void 0!==w&&w,N=t.decimalSymbol,k=void 0===N?a:N,D=t.decimalLimit,L=void 0===D?2:D,O=t.requireDecimal,$=void 0!==O&&O,_=t.allowNegative,q=void 0!==_&&_,B=t.allowLeadingZeroes,E=void 0!==B&&B,I=t.integerLimit,P=void 0===I?null:I,R=y&&y.length||0,T=g&&g.length||0,Z=j&&j.length||0;return e.instanceOf="createNumberMask",e}function n(e){return e.split(l).map(function(e){return v.test(e)?v:e})}function i(e,t){return e.replace(/\B(?=(\d{3})+(?!\d))/g,t)}Object.defineProperty(t,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=o;var c="$",l="",u=",",a=".",s="-",d=/-/,f=/\D+/g,p="number",v=/\d/,m="[]"}])});
+},{}]},{},[3])(3)
 });

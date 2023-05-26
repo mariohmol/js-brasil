@@ -1,4 +1,4 @@
-import { validateBr } from '../index';
+import { validateBr } from '../src/index';
 import { expect } from 'chai';
 import CNH_DATA from './data/cnh'
 

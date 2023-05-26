@@ -1,21 +1,23 @@
 {
   "name": "js-brasil",
-  "version": "2.5.5",
+  "version": "2.6.0",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "npm run build & onchange 'src/**/*.ts' '*.ts' -- npm run build",
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
-    "clean": "find ./src -name \"*.js\" -type f -delete & rm *.js",
+    "clean": "find ./src -name \"*.js\" -type f -delete && rm -rf dist && mkdir dist",
     "test": "mocha -r ts-node/register test/**.ts",
-    "browserify": "npx simplifyify index.ts -s jsbrasil --outfile dist/js-brasil.js",
-    "browserify:uglify": "npx simplifyify index.ts -s jsbrasil --minify --outfile dist/js-brasil.js",
+    "simplifyify": "npx simplifyify src/index.ts -s jsbrasil --outfile dist/index.js",
+    "simplifyify:uglify": "npx simplifyify src/index.ts -s jsbrasil --minify --outfile dist/index.js",
+    "browserify": "browserify dist/index.js -r --standalone jsbrasil -o dist/js-brasil.js",
+    "b": "browserify src/index.ts -p [ tsify --noImplicitAny] --standalone jsbrasil -o js-brasil.js",
     "manual:compile": "tsc && tsc addons.ts && rm src/*.js && rm src/addons/*.js",
-    "dist": "npm run build && npm run browserify",
-    "a:build": "tsc -p addons",
-    "a:browserify": "browserify dist/addons/addons.js --standalone jsbrasil-addons -o js-brasil-addons.js",
-    "a:dist": "npm run a:build && npm run a:browserify && cp js-brasil-addons.js dist/",
+    "dist": "npm run clean && npm run build && npm run browserify",
+    "addon:build": "tsc -p addons",
+    "addon:browserify": "browserify dist/addons/addons.js --standalone jsbrasil-addons -o js-brasil-addons.js",
+    "addon:dist": "npm run a:build && npm run a:browserify && cp js-brasil-addons.js dist/",
     "publishnpm": "npm run dist && npm publish",
     "start": "cd docs && http-server",
     "demo": "cp js-brasil.js docs/ && npm run start",
@@ -33,17 +35,23 @@
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
   "dependencies": {
-    "text-mask-addons": "^3.8.0"
+    "@types/jest": "^29.5.1",
+    "babelify": "^10.0.0",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "realpathify": "^1.0.1",
+    "text-mask-addons": "^3.8.0",
+    "tsify": "^5.0.4",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.5",
-    "@types/mocha": "^5.2.5",
+    "@jsdevtools/simplifyify": "^8.0.4",
     "chai": "^4.1.2",
     "codelyzer": "^5.2.0",
     "mocha": "^8.3.2",
     "onchange": "^7.1.0",
     "ts-node": "^7.0.1",
-    "typescript": "~4.0.2",
-    "@jsdevtools/simplifyify": "^8.0.4"
+    "typescript": "^3.0.3"
   }
 }

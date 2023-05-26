@@ -1,4 +1,4 @@
-import * as jsbrasil from '../index';
+import * as jsbrasil from '../src/index';
 
 import addons from './main';
 

@@ -1,4 +1,4 @@
-import { utilsBr } from '../index';
+import { utilsBr } from '../src/index';
 import { expect } from 'chai';
 
 describe('Utils test', () => {

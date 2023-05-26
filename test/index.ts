@@ -1,5 +1,5 @@
 
-import { utilsBr, validateBr } from '../index';
+import { utilsBr, validateBr } from '../src/index';
 import { expect } from 'chai';
 
 describe('Initial test', () => {
