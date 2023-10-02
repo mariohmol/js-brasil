@@ -171,7 +171,10 @@ export const generateInscricaoEstadual: BigObject<Function> = {
       return false;
     }
 
-    if (['10', '11', '15'].indexOf(valor.substring(0, 2)) === -1) {
+    // Verifica os digitos iniciais do estado
+    // Fonte: https://appasp.economia.go.gov.br/Legislacao/arquivos/Secretario/IN/IN_1535_2022.htm
+
+    if (['10', '11', '15', '20'].indexOf(valor.substring(0, 2)) === -1) {
       return false;
     }
 

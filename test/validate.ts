@@ -308,6 +308,8 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('110790650', 'go')).to.be.true;
       expect(validateBr.inscricaoestadual('10.395.974-2', 'go')).to.be.true;
       expect(validateBr.inscricaoestadual('10.395.974-0', 'go')).to.be.false;
+      expect(validateBr.inscricaoestadual('20.024.521-0', 'go')).to.be.true;
+      expect(validateBr.inscricaoestadual('20.124.321-4', 'go')).to.be.false;
     });
     it('Maranhão', () => {
       expect(validateBr.inscricaoestadual('126405328', 'ma')).to.be.true;
