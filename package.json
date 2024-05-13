@@ -37,7 +37,7 @@
   "dependencies": {
     "@types/jest": "^29.5.1",
     "babelify": "^10.0.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "realpathify": "^1.0.1",
     "text-mask-addons": "^3.8.0",
