@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
   "dependencies": {
+    "@types/chai": "^4.3.16",
     "@types/jest": "^29.5.1",
     "babelify": "^10.0.0",
     "gulp": "^4.0.2",
