@@ -122,9 +122,10 @@ describe('Validate test', () => {
     expect(validateBr.cpfcnpj('127.529.875-46')).to.be.false;
     expect(validateBr.cpfcnpj('127.529.875-37')).to.be.false;
     expect(validateBr.cpfcnpj('00.000.000/0000-00')).to.be.false;
+    expect(validateBr.cpfcnpj('090.988.020-44')).to.be.true;
   });
 
-  context('Cartão de Crédito', () => {
+  describe('Cartão de Crédito', () => {
     it('Varios numeros', () => {
       const cards = [
         //Visa
@@ -212,7 +213,7 @@ describe('Validate test', () => {
     expect(validateBr.date('32/12/')).to.be.false;
   });
 
-  context('Moeda', () => {
+  describe('Moeda', () => {
     it('Pass when valid', () => {
       // expect(validateBr.currency('R$ 1234')).to.be.true;
       expect(validateBr.currency('R$ 1234,10')).to.be.true;
@@ -415,7 +416,7 @@ describe('Validate test', () => {
     expect(validateBr.number('473.12,48,28,1231231312')).to.be.false;
   });
 
-  context('Porcentagem', () => {
+  describe('Porcentagem', () => {
     it('Pass when valid', () => {
       expect(validateBr.porcentagem('10')).to.be.true;
       expect(validateBr.porcentagem('10%')).to.be.true;
@@ -427,7 +428,7 @@ describe('Validate test', () => {
     });
   });
 
-  context('PIS/PASEP', () => {
+  describe('PIS/PASEP', () => {
     it('Pass when valid', () => {
       expect(validateBr.pispasep('648.60185.98-9')).to.be.true;
     });
@@ -437,7 +438,7 @@ describe('Validate test', () => {
     });
   });
 
-  context('PLACA', () => {
+  describe('PLACA', () => {
     it('Legado BR', () => {
       expect(validateBr.placa('ABC1234')).to.be.true;
       expect(validateBr.placa('ABCD1234')).to.be.false;
@@ -537,7 +538,7 @@ describe('Validate test', () => {
     expect(validateBr.time('2361')).to.be.false;
   });
 
-  context('TITULO', () => {
+  describe('TITULO', () => {
     it('Test digito verificador', () => {
       expect(validateBr.titulo('6490.8084.2003')).to.be.true;
       expect(validateBr.titulo('6490.8084.2022')).to.be.false;

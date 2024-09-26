@@ -83,9 +83,13 @@ describe('Mask test', () => {
     expect(maskBr.cpf('123')).to.exist;
   });
 
-  it('cpfcnpj - TODO', () => {
-    // const cpfcnpj = '12312345121';
-    // expect(maskBr.cpfcnpj(cpfcnpj)).to.be.equal('123.12345.12-1');
+  it('CPFCNPJ', () => {
+    const cpfcnpj = '12312345121';
+    expect(maskBr.cpfcnpj(cpfcnpj)).to.be.equal('123.123.451-21');
+    expect(maskBr.cpfcnpj('123')).to.exist;
+    const cnpj = '83529443183182';
+    expect(maskBr.cpfcnpj(cnpj)).to.be.equal('83.529.443/1831-82');
+    expect(maskBr.cpfcnpj('123456')).to.exist;
   });
 
   it('cartaocredito - TODO', () => {
@@ -237,7 +241,7 @@ describe('Mask test', () => {
     expect(maskBr.sped('123')).to.exist;
   });
 
-  context('Telefone', () => {
+  describe('Telefone', () => {
     it('Fixo', () => {
       const telefone = '3135003500';
       expect(maskBr.telefone(telefone)).to.be.equal('(31) 3500-3500');

@@ -29,6 +29,7 @@ describe('Initial test', () => {
     expect(validateBr.cep).to.exist;
     expect(validateBr.cnpj).to.exist;
     expect(validateBr.cpf).to.exist;
+    expect(validateBr.cpfcnpj).to.exist;
     expect(validateBr.currency).to.exist;
     expect(validateBr.inscricaoestadual).to.exist;
     expect(validateBr.porcentagem).to.exist;
