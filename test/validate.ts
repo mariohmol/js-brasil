@@ -336,6 +336,7 @@ describe('Validate test', () => {
       expect(validateBr.inscricaoestadual('150462360', 'pa')).to.be.true;
       expect(validateBr.inscricaoestadual('15-150482-2', 'pa')).to.be.true;
       expect(validateBr.inscricaoestadual('15-150482-0', 'pa')).to.be.false;
+      expect(validateBr.inscricaoestadual('75-000001-5', 'pa')).to.be.true;
     });
     it('Paraíba', () => {
       expect(validateBr.inscricaoestadual('719171326', 'pb')).to.be.true;
