@@ -263,7 +263,7 @@ export const generateInscricaoEstadual: BigObject<Function> = {
       return false;
     }
 
-    if (naoComecaCom(valor, '15')) {
+    if (naoComecaCom(valor, '15') && naoComecaCom(valor, '75')) {
       return false;
     }
 
