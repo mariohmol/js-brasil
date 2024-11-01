@@ -17,6 +17,7 @@
     "noUnusedParameters": true,
     "skipLibCheck": true,
     "target": "es5",
+    "types": [],
     "typeRoots": [
       "node_modules/@types"
     ],

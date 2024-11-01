@@ -1,6 +1,6 @@
 {
   "name": "js-brasil",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
   "scripts": {
@@ -35,24 +35,25 @@
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
   "dependencies": {
-    "@types/chai": "^4.3.16",
-    "@types/jest": "^29.5.1",
-    "babelify": "^10.0.0",
-    "gulp": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "realpathify": "^1.0.1",
-    "text-mask-addons": "^3.8.0",
-    "tsify": "^5.0.4",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "text-mask-addons": "^3.8.0"
   },
   "devDependencies": {
     "@jsdevtools/simplifyify": "^8.0.4",
+    "@types/chai": "^4.3.16",
+    "@types/jest": "^29.5.1",
+    "@types/mocha": "^10.0.9",
+    "babelify": "^10.0.0",
     "chai": "^4.1.2",
     "codelyzer": "^5.2.0",
+    "gulp": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
     "mocha": "^8.3.2",
     "onchange": "^7.1.0",
+    "realpathify": "^1.0.1",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "tsify": "^5.0.4",
+    "typescript": "^3.0.3",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }

@@ -2,7 +2,7 @@
 
 Fork este projeto , clone no seu computador e instale as libs locais:
 
-`npm i`
+`npm i -D`
 
 Installe lib globais:
 

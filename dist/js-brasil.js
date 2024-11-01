@@ -1,7 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jsbrasil = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create_titulo = exports.create_titulo_atual = exports.create_processo = exports.create_renavam = exports.create_pispasep = exports.create_ect = exports.create_cartaocredito = exports.create_cpf = exports.create_cns = exports.create_cnpj = exports.create_cnh = exports.create_renachseguranca = exports.create_renachestadual = exports.create_cnhespelho = exports.create_certidao = exports.create_aih = void 0;
 var estados_1 = require("./estados");
 var utils_1 = require("./utils");
 /**
@@ -11,7 +10,7 @@ var utils_1 = require("./utils");
  * @param tipo - TIPO da guia. Aih = 1, APAC = 2
  */
 function create_aih(value) {
-    value = (0, utils_1.getAllDigits)(value.toString());
+    value = utils_1.getAllDigits(value.toString());
     if (value.length > 12) {
         value = value.toString().substr(0, value.length - 1);
     }
@@ -74,7 +73,7 @@ function create_certidao(value) {
 }
 exports.create_certidao = create_certidao;
 function create_cnhespelho(value) {
-    var v1 = (0, utils_1.modulo11Custom)(value.substr(0, value.length - 1), 1, 8, false);
+    var v1 = utils_1.modulo11Custom(value.substr(0, value.length - 1), 1, 8, false);
     return v1;
 }
 exports.create_cnhespelho = create_cnhespelho;
@@ -88,7 +87,7 @@ function create_renachestadual(value) {
     if (digits.length !== 9) {
         return false;
     }
-    var v1 = (0, utils_1.modulo11Custom)(digits.substr(0, digits.length - 1), 1, 11);
+    var v1 = utils_1.modulo11Custom(digits.substr(0, digits.length - 1), 1, 11);
     return '' + v1;
 }
 exports.create_renachestadual = create_renachestadual;
@@ -102,7 +101,7 @@ function create_renachseguranca(value) {
     if (value.length !== 11) {
         return false;
     }
-    var v1 = (0, utils_1.modulo11Custom)(value.substr(0, value.length - 1), 1, 11);
+    var v1 = utils_1.modulo11Custom(value.substr(0, value.length - 1), 1, 11);
     return "" + v1;
 }
 exports.create_renachseguranca = create_renachseguranca;
@@ -171,7 +170,7 @@ function create_cnpj(cnpj) {
 }
 exports.create_cnpj = create_cnpj;
 function create_cns(number) {
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     var somaInicial = 0;
     for (var i = 0; i < number.length - 1; i++) {
         somaInicial += parseInt(number[i]) * (15 - i);
@@ -195,7 +194,7 @@ function create_cpf(strCPF) {
     // const restos = [
     //   r1, r2
     // ];
-    var restoscustom = (0, utils_1.modulo11Custom)(strCPF.substr(0, strCPF.length - 2), 2, 12);
+    var restoscustom = utils_1.modulo11Custom(strCPF.substr(0, strCPF.length - 2), 2, 12);
     return restoscustom;
 }
 exports.create_cpf = create_cpf;
@@ -275,7 +274,7 @@ function create_cartaocredito(number) {
 }
 exports.create_cartaocredito = create_cartaocredito;
 function create_ect(number) {
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     number = "0000000" + number;
     number = number.slice(number.length - 8);
     var b1 = parseInt(number.slice(7));
@@ -298,8 +297,8 @@ function create_ect(number) {
 }
 exports.create_ect = create_ect;
 function create_pispasep(number) {
-    number = (0, utils_1.getAllDigits)(number);
-    var nis = (0, utils_1.fillString)(number, 11, '0');
+    number = utils_1.getAllDigits(number);
+    var nis = utils_1.fillString(number, 11, '0');
     var d;
     var p = 2, c = 9;
     for (d = 0; c >= 0; c--, (p < 9) ? p++ : p = 2) {
@@ -333,7 +332,7 @@ exports.create_renavam = create_renavam;
  * @param number
  */
 function create_processo(number) {
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     number = "00000000000000000" + number;
     number = number.slice(number.length - 18);
     var b1 = parseInt(number.slice(0, 1)) * 10000000000;
@@ -420,7 +419,7 @@ function create_titulo_atual(titulo) {
 }
 exports.create_titulo_atual = create_titulo_atual;
 function create_titulo(titNum) {
-    titNum = (0, utils_1.getAllDigits)(titNum);
+    titNum = utils_1.getAllDigits(titNum);
     if (titNum.length > 11) {
         titNum = titNum.substr(0, 11);
     }
@@ -476,7 +475,6 @@ exports.create_titulo = create_titulo;
 },{"./estados":2,"./utils":12}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ESTADOS = exports.ESTADOS_SIGLA = void 0;
 exports.ESTADOS_SIGLA = ['ac', 'al', 'am', 'ap', 'ba', 'ce', 'df', 'es', 'go', 'ma',
     'mg', 'ms', 'mt', 'pa', 'pb', 'pe', 'pi', 'pr', 'rj', 'rn', 'ro', 'rr', 'rs',
     'sc', 'se', 'sp', 'to'
@@ -514,10 +512,9 @@ exports.ESTADOS = [
 },{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.maskBr = exports.utilsBr = exports.validateBr = void 0;
 var utils_1 = require("./utils");
 var validate_1 = require("./validate");
-Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
+exports.validateBr = validate_1.validateBr;
 var mask = require("./mask");
 var mask_1 = require("./mask");
 var placa_1 = require("./placa");
@@ -553,7 +550,6 @@ exports.maskBr = mask.maskBr;
 },{"./estados":2,"./mask":9,"./placa":10,"./utils":12,"./validate":13}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MASKSIE = exports.validate_inscricaoestadual = exports.generateInscricaoEstadual = void 0;
 var utils_1 = require("./utils");
 /**
  * BASED ON https://github.com/gammasoft/ie/
@@ -769,7 +765,7 @@ exports.generateInscricaoEstadual = {
         if (tamanhoNaoE(valor)) {
             return false;
         }
-        if (naoComecaCom(valor, '15')) {
+        if (naoComecaCom(valor, '15') && naoComecaCom(valor, '75')) {
             return false;
         }
         return calculoTrivialGenerate(valor);
@@ -1020,7 +1016,7 @@ function validate_inscricaoestadual(ie, estado) {
     if (typeof ie !== 'string') {
         return new Error('ie deve ser string ou array de strings');
     }
-    if (!(0, utils_1.allNumbersAreSame)(ie)) {
+    if (!utils_1.allNumbersAreSame(ie)) {
         return new Error('ie com todos dígitos iguais');
     }
     if (ie.match(/^ISENTO$/i)) {
@@ -1266,43 +1262,38 @@ function lookup(ie) {
 },{"./utils":12}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_iptu = exports.mask_iptu = exports.create_iptu = void 0;
 var iptu_validate_1 = require("./iptu_validate");
 var iptu_mask_1 = require("./iptu_mask");
 var utils_1 = require("./utils");
 var iptu_create_1 = require("./iptu_create");
-var create_iptu = function (number, estado, cidade) {
+exports.create_iptu = function (number, estado, cidade) {
     if (!iptu_create_1.IPTUCREATE[estado] || !iptu_create_1.IPTUCREATE[estado][cidade]) {
         return true;
     }
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     return iptu_create_1.IPTUCREATE[estado][cidade](number);
 };
-exports.create_iptu = create_iptu;
-var mask_iptu = function (number, estado, cidade) {
+exports.mask_iptu = function (number, estado, cidade) {
     if (!iptu_mask_1.IPTUMASKS[estado] || !iptu_mask_1.IPTUMASKS[estado][cidade]) {
         return number;
     }
     return iptu_mask_1.IPTUMASKS[estado][cidade];
 };
-exports.mask_iptu = mask_iptu;
-var validate_iptu = function (number, estado, cidade) {
+exports.validate_iptu = function (number, estado, cidade) {
     if (!iptu_validate_1.IPTUVALIDATE[estado] || !iptu_validate_1.IPTUVALIDATE[estado][cidade]) {
         return true;
     }
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     return iptu_validate_1.IPTUVALIDATE[estado][cidade](number);
 };
-exports.validate_iptu = validate_iptu;
 
 },{"./iptu_create":6,"./iptu_mask":7,"./iptu_validate":8,"./utils":12}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUCREATE = exports.faker_iptu = exports.create_iptu_sp = exports.create_iptu_ctba = void 0;
 var utils_1 = require("./utils");
 var iptu_mask_1 = require("./iptu_mask");
 function create_iptu_ctba(number) {
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     var a1 = parseInt(number.slice(10));
     var a2 = parseInt(number.slice(9, 10));
     var a3 = parseInt(number.slice(8, 9));
@@ -1339,11 +1330,11 @@ function create_iptu_sp(number) {
     return iptuspDV;
 }
 exports.create_iptu_sp = create_iptu_sp;
-var faker_iptu = function (estado, cidade) {
+exports.faker_iptu = function (estado, cidade) {
     if (!iptu_mask_1.IPTUMASKS[estado] || !iptu_mask_1.IPTUMASKS[estado][cidade]) {
         return;
     }
-    var iptu = (0, utils_1.makeGenericFaker)(iptu_mask_1.IPTUMASKS[estado][cidade])();
+    var iptu = utils_1.makeGenericFaker(iptu_mask_1.IPTUMASKS[estado][cidade])();
     if (exports.IPTUCREATE[estado] && exports.IPTUCREATE[estado][cidade]) {
         var dv = exports.IPTUCREATE[estado][cidade](iptu);
         var values = iptu.split('');
@@ -1352,7 +1343,6 @@ var faker_iptu = function (estado, cidade) {
     }
     return iptu;
 };
-exports.faker_iptu = faker_iptu;
 exports.IPTUCREATE = {
     'sao-paulo': {
         'sao-paulo': create_iptu_sp,
@@ -1365,11 +1355,10 @@ exports.IPTUCREATE = {
 },{"./iptu_mask":7,"./utils":12}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUMASKS = void 0;
 exports.IPTUMASKS = {
     'minas-gerais': {
         'belo-horizonte': {
-            text: '000.000.000.000.0', //123.456.789.012.3
+            text: '000.000.000.000.0',
             textMask: [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
         },
         'contagem': {
@@ -1407,11 +1396,10 @@ exports.IPTUMASKS = {
 },{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IPTUVALIDATE = exports.validate_iptu_sp = exports.validate_iptu_contagem = exports.validate_iptu_ctba = void 0;
 var utils_1 = require("./utils");
 var iptu_create_1 = require("./iptu_create");
 var validateRemoveDigito = function (number, max) {
-    number = (0, utils_1.getAllDigits)(number.toString());
+    number = utils_1.getAllDigits(number.toString());
     if (number.length > max) {
         return false;
     }
@@ -1492,10 +1480,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertMaskToPlaceholder = exports.conformToMask = exports.strFunction = exports.placeholderChar = exports.maskBr = exports.MASKS = exports.MASKSIE = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
-Object.defineProperty(exports, "MASKSIE", { enumerable: true, get: function () { return inscricaoestadual_1.MASKSIE; } });
+exports.MASKSIE = inscricaoestadual_1.MASKSIE;
 var createNumberMask_1 = require("text-mask-addons/dist/createNumberMask");
 var iptu_1 = require("./iptu");
 var inscricaoestadual_2 = require("./inscricaoestadual");
@@ -1510,7 +1497,7 @@ var maskNumber = {
 };
 exports.MASKS = {
     aih: {
-        text: '000000000000-0', // 351923414312-8
+        text: '000000000000-0',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     },
     cartaocredito: {
@@ -1527,36 +1514,36 @@ exports.MASKS = {
     },
     // certidao Certidões de Nascimento, Casamento ou Óbito 
     certidao: {
-        text: '000000.00.00.0000.0.00000.000.0000000-00', // 104539.01.55.2013.1.00012.021.0000123-21
+        text: '000000.00.00.0000.0.00000.000.0000000-00',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.',
             /\d/, /\d/, /\d/, /\d/, '.', /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, '.',
             /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
     },
     chassi: {
-        text: 'AAA AAAAAA AA AA0000', // 9BW ZZZ377 VT 004251
+        text: 'AAA AAAAAA AA AA0000',
         textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
     },
     cid: {
         textMask: false
     },
     cnae: {
-        text: '0000-0/00', // 6821-8/01
+        text: '0000-0/00',
         textMask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, '/', /\d/, /\d/]
     },
     cnh: {
-        text: '000000000-00', // 123456789-1
+        text: '000000000-00',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
     },
     renachseguranca: {
-        text: '00000000000', // 51474546854
+        text: '00000000000',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
     renachestadual: {
-        text: 'AA000000000', // MG597812560
+        text: 'AA000000000',
         textMask: [/[A-S]/, /[A-Z]/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
     cnhespelho: {
-        text: '0000000000', // 123456789-1
+        text: '0000000000',
         textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     },
     cnpj: {
@@ -1595,7 +1582,7 @@ exports.MASKS = {
     },
     currency: {
         text: '0.000,00',
-        textMask: (0, createNumberMask_1.default)(__assign(__assign({}, maskNumber), { prefix: 'R$ ', allowNegative: true }))
+        textMask: createNumberMask_1.default(__assign({}, maskNumber, { prefix: 'R$ ', allowNegative: true }))
     },
     data: {
         text: '00/00/0000',
@@ -1627,11 +1614,11 @@ exports.MASKS = {
     },
     number: {
         text: '0.000,00',
-        textMask: (0, createNumberMask_1.default)(maskNumber)
+        textMask: createNumberMask_1.default(maskNumber)
     },
     porcentagem: {
         text: '00,00%',
-        textMask: (0, createNumberMask_1.default)(__assign(__assign({}, maskNumber), { suffix: '%' }))
+        textMask: createNumberMask_1.default(__assign({}, maskNumber, { suffix: '%' }))
     },
     pispasep: {
         text: '000.00000.00-0',
@@ -1760,7 +1747,7 @@ exports.maskBr = {
         return conformToMask(inscricaoestadualValue, mask, { guide: false }).conformedValue;
     },
     iptu: function (iptuValue, estado, cidade) {
-        var mask = (0, iptu_1.mask_iptu)(iptuValue, estado, cidade);
+        var mask = iptu_1.mask_iptu(iptuValue, estado, cidade);
         if (!mask || typeof mask === 'string') {
             return '';
         }
@@ -1808,7 +1795,7 @@ function conformToMask(inputValue, mask, config) {
     if (inputValue instanceof Date) {
         rawValue = inputValue.toLocaleString("pt-br");
     }
-    if (!(0, utils_1.isArray)(mask)) {
+    if (!utils_1.isArray(mask)) {
         // If someone passes a function as the mask property, we should call the
         // function to get the mask array - Normally this is handled by the
         // `createTextMaskInputElement:update` function - this allows mask functions
@@ -1818,7 +1805,7 @@ function conformToMask(inputValue, mask, config) {
             mask = mask(inputValue, config);
             // mask functions can setup caret traps to have some control over how the caret moves. We need to process
             // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask
-            mask = (0, utils_1.processCaretTraps)(mask).maskWithoutCaretTraps;
+            mask = utils_1.processCaretTraps(mask).maskWithoutCaretTraps;
         }
         else {
             throw new Error('Text-mask:conformToMask; The mask property must be an array.');
@@ -2023,14 +2010,14 @@ exports.conformToMask = conformToMask;
 function convertMaskToPlaceholder(mask, placeholderChar) {
     if (mask === void 0) { mask = emptyArray; }
     if (placeholderChar === void 0) { placeholderChar = defaultPlaceholderChar; }
-    if (!(0, utils_1.isArray)(mask)) {
+    if (!utils_1.isArray(mask)) {
         throw new Error('Text-mask:convertMaskToPlaceholder; The mask property must be an array.');
     }
     if (mask.indexOf(placeholderChar) !== -1) {
         throw new Error('Placeholder character must not be used as part of the mask. Please specify a character ' +
             'that is not present in your mask as your placeholder character.\n\n' +
-            "The placeholder character that was received is: ".concat(JSON.stringify(placeholderChar), "\n\n") +
-            "The mask that was received is: ".concat(JSON.stringify(mask)));
+            ("The placeholder character that was received is: " + JSON.stringify(placeholderChar) + "\n\n") +
+            ("The mask that was received is: " + JSON.stringify(mask)));
     }
     return mask.map(function (char) {
         return (char instanceof RegExp) ? placeholderChar : char;
@@ -2080,7 +2067,6 @@ function formatNumber(maskType, numberValue, decimalsFormat) {
 },{"./inscricaoestadual":4,"./iptu":5,"./utils":12,"text-mask-addons/dist/createNumberMask":14}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_placa = exports.PLACAS_INVALID = exports.PLACAS_RANGE = void 0;
 exports.PLACAS_RANGE = [
     ['AAA0001', 'BEZ9999', 'PR', '02/1990'],
     ['BFA0001', 'GKI9999', 'SP', '10/1991'],
@@ -2247,7 +2233,6 @@ exports.validate_placa = validate_placa;
 },{}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rg_rj = exports.rg_sp = void 0;
 function rg_sp(number) {
     // if(number.length>8){alert("Erro. Não existe RG SP\ncom mais de 8 dígitos.");}
     number = "0000000" + number;
@@ -2316,7 +2301,6 @@ exports.default = RG;
 },{}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makeGenericFaker = exports.getSpecialProperty = exports.CORES = exports.randomEstadoSigla = exports.randomLetterOrNumber = exports.randomLetter = exports.randomNumber = exports.rand = exports.randArray = exports.fillString = exports.slugify = exports.numberToCurrency = exports.currencyToNumber = exports.getAllWords = exports.getAllDigits = exports.allNumbersAreSame = exports.modulo11a = exports.modulo11Custom = exports.modulo11 = exports.processCaretTraps = exports.isNil = exports.isNumber = exports.isString = exports.isArray = exports.isPresent = void 0;
 var estados_1 = require("./estados");
 function isPresent(obj) {
     return obj !== undefined && obj !== null;
@@ -2349,7 +2333,7 @@ function processCaretTraps(mask) {
     return { maskWithoutCaretTraps: mask, indexes: indexes };
 }
 exports.processCaretTraps = processCaretTraps;
-var modulo11 = function (value) {
+exports.modulo11 = function (value) {
     var mults = [];
     var weightVal = 2;
     for (var i = 0; i < value.length; i++) {
@@ -2367,8 +2351,7 @@ var modulo11 = function (value) {
     var digit = (sum * 10) % 11;
     return digit;
 };
-exports.modulo11 = modulo11;
-var modulo11Custom = function (string, size, maxMult, by10) {
+exports.modulo11Custom = function (string, size, maxMult, by10) {
     if (maxMult === void 0) { maxMult = string.length; }
     if (by10 === void 0) { by10 = true; }
     if (!by10)
@@ -2395,8 +2378,7 @@ var modulo11Custom = function (string, size, maxMult, by10) {
     }
     return string.substr(string.length - size, size);
 };
-exports.modulo11Custom = modulo11Custom;
-var modulo11a = function (string, size, mod) {
+exports.modulo11a = function (string, size, mod) {
     var soma = 0;
     for (var i = 1; i <= size; i++) {
         // tslint:disable-next-line:radix
@@ -2408,7 +2390,6 @@ var modulo11a = function (string, size, mod) {
     }
     return resto;
 };
-exports.modulo11a = modulo11a;
 /**
  *
  * @param input
@@ -2572,11 +2553,10 @@ function randomLetterOrNumber(size, onlyCapitals) {
     return text;
 }
 exports.randomLetterOrNumber = randomLetterOrNumber;
-var randomEstadoSigla = function () {
+exports.randomEstadoSigla = function () {
     var total = estados_1.ESTADOS_SIGLA.length;
     return estados_1.ESTADOS_SIGLA[Math.floor(Math.random() * total)];
 };
-exports.randomEstadoSigla = randomEstadoSigla;
 exports.CORES = ["AMARELO", "AZUL", "BEGE", "BRANCA", "CINZA", "DOURADA", "GRENA", "LARANJA", "MARROM", "PRATA",
     "PRETA", "ROSA", "ROXA", "VERDE", "VERMELHA", "FANTASIA"];
 function getSpecialProperty(model, key) {
@@ -2586,7 +2566,7 @@ exports.getSpecialProperty = getSpecialProperty;
 /**
  *
  */
-var makeGenericFaker = function (val, options) {
+exports.makeGenericFaker = function (val, options) {
     if (options === void 0) { options = null; }
     return function () {
         if (!val.textMask || !val.textMask.map) {
@@ -2632,7 +2612,6 @@ var makeGenericFaker = function (val, options) {
         return newData.join('');
     };
 };
-exports.makeGenericFaker = makeGenericFaker;
 var utilsBr = {
     isPresent: isPresent,
     isArray: isArray,
@@ -2659,7 +2638,6 @@ exports.default = utilsBr;
 },{"./estados":2}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateBr = exports.validate_titulo = exports.validate_time = exports.validate_telefone = exports.validate_sped = exports.validate_rg = exports.validate_renavam = exports.validate_pispasep = exports.validate_processo = exports.validate_porcentagem = exports.validate_number = exports.validate_ect = exports.validate_datahora = exports.validate_datetime = exports.validate_currency = exports.creditCardValidator = exports.validate_cartaocredito = exports.validate_cns = exports.validate_cpf = exports.validate_cnpj = exports.validate_cnh = exports.validate_renachseguranca = exports.validate_renachestadual = exports.validate_cnhespelho = exports.validate_chassi = exports.validate_certidao = exports.cep_ranges = exports.validate_cep = exports.CEPRange = exports.validate_celular = exports.validate_aih = void 0;
 var utils_1 = require("./utils");
 var inscricaoestadual_1 = require("./inscricaoestadual");
 var placa_1 = require("./placa");
@@ -2670,7 +2648,7 @@ var estados_1 = require("./estados");
 function validate_aih(aih) {
     var aihClean = aih.replace(/[^\d]+/g, '');
     var dvOriginal = aihClean.substr(-1);
-    var dv = (0, create_1.create_aih)(aihClean);
+    var dv = create_1.create_aih(aihClean);
     return dvOriginal === dv;
 }
 exports.validate_aih = validate_aih;
@@ -2744,13 +2722,13 @@ function cep_ranges(cep) {
 }
 exports.cep_ranges = cep_ranges;
 function validate_certidao(value) {
-    var certidao = (0, utils_1.getAllDigits)(value);
+    var certidao = utils_1.getAllDigits(value);
     var format = /[0-9]{32}/;
     if (!format.test(certidao)) {
         return false;
     }
     var dvOriginal = certidao.substr(-2);
-    var dv = (0, create_1.create_certidao)(certidao);
+    var dv = create_1.create_certidao(certidao);
     return dv === dvOriginal;
 }
 exports.validate_certidao = validate_certidao;
@@ -2765,7 +2743,7 @@ function validate_chassi(chassi) {
         return false;
     }
     // 2 - Possuir espaço no chassi
-    chassi = (0, utils_1.getAllWords)(chassi); // espacoNoChassi
+    chassi = utils_1.getAllWords(chassi); // espacoNoChassi
     // 3 - Se, a partir do 4º dígito, houver uma repetição consecutiva, por mais de seis vezes, do mesmo dígito 
     // (alfabético ou numérico). Exemplos: 9BW11111119452687 e 9BWZZZ5268AAAAAAA.
     var repeticaoMaisDe6Vezes = /^.{4,}([0-9A-Z])\1{5,}/;
@@ -2809,7 +2787,7 @@ function validate_cnhespelho(value) {
     if (value.length !== 10) {
         return false;
     }
-    var check = (0, create_1.create_cnhespelho)(value);
+    var check = create_1.create_cnhespelho(value);
     if (check === '0' || check === '1')
         check = '0';
     return value.substr(-1) == check;
@@ -2841,7 +2819,7 @@ function validate_renachestadual(value) {
     if (digits.length !== 9) {
         return false;
     }
-    var check = (0, create_1.create_renachestadual)(value);
+    var check = create_1.create_renachestadual(value);
     if (check === '0' || check === '1')
         check = '0';
     return value.substr(-1) == check;
@@ -2852,7 +2830,7 @@ function validate_renachseguranca(value) {
     if (value.length !== 11) {
         return false;
     }
-    var check = (0, create_1.create_renachseguranca)(value);
+    var check = create_1.create_renachseguranca(value);
     return value.substr(-1) == check;
 }
 exports.validate_renachseguranca = validate_renachseguranca;
@@ -2872,7 +2850,7 @@ function validate_cnh(value) {
     if (value.length !== 11) {
         return false;
     }
-    var check = (0, create_1.create_cnh)(value);
+    var check = create_1.create_cnh(value);
     return value.substr(-2) == check;
 }
 exports.validate_cnh = validate_cnh;
@@ -2884,7 +2862,7 @@ function validate_cnpj(cnpj) {
     cnpj = cnpj.replace(/[^\d]+/g, '');
     var tamanho = cnpj.length - 2;
     var digitos = cnpj.substring(tamanho);
-    var resultados = (0, create_1.create_cnpj)(cnpj);
+    var resultados = create_1.create_cnpj(cnpj);
     if (!resultados ||
         resultados[0] !== parseInt(digitos.charAt(0), 10) ||
         resultados[1] !== parseInt(digitos.charAt(1), 10)) {
@@ -2918,7 +2896,7 @@ function validate_cpf(strCPF) {
         return false;
     }
     // valida digito verificados
-    var restos = (0, create_1.create_cpf)(strCPF);
+    var restos = create_1.create_cpf(strCPF);
     if (!restos || restos != strCPF.substr(-2)) {
         return false;
     }
@@ -2929,7 +2907,7 @@ function validate_cpfcnpj(number) {
     return validate_cpf(number) || validate_cnpj(number);
 }
 function validate_cns(value) {
-    var cns = (0, utils_1.getAllDigits)(value);
+    var cns = utils_1.getAllDigits(value);
     var definitivo = /[1-2][0-9]{10}00[0-1][0-9]/; // começam com 1 ou 2
     var provisorio = /[7-9][0-9]{14}/; // começam com 7,8 ou 9
     if (!definitivo.test(cns) && !provisorio.test(cns)) {
@@ -2945,7 +2923,7 @@ exports.validate_cns = validate_cns;
 function validate_cartaocredito(input) {
     var value;
     if (typeof input == 'string') {
-        value = (0, utils_1.getAllDigits)(input);
+        value = utils_1.getAllDigits(input);
     }
     else {
         value = input.toString();
@@ -3089,12 +3067,12 @@ function validate_datahora(time, options) {
 }
 exports.validate_datahora = validate_datahora;
 function validate_ect(number) {
-    number = (0, utils_1.getAllDigits)(number);
+    number = utils_1.getAllDigits(number);
     if (number.length > 9) {
         return false;
     }
     var nodigit = number.substr(0, number.length - 1);
-    var dg = (0, create_1.create_ect)(nodigit);
+    var dg = create_1.create_ect(nodigit);
     if (parseInt(number[number.length - 1]) === dg) {
         return true;
     }
@@ -3133,28 +3111,28 @@ function validate_processo(processo) {
     // if (!exp.test(processo) && !expClean.test(processoClean)) {
     //   return false;
     // }
-    var processoValidado = (0, create_1.create_processo)(processo);
-    if (parseInt(processoClean) !== parseInt((0, utils_1.getAllDigits)(processoValidado))) {
+    var processoValidado = create_1.create_processo(processo);
+    if (parseInt(processoClean) !== parseInt(utils_1.getAllDigits(processoValidado))) {
         return false;
     }
     return true;
 }
 exports.validate_processo = validate_processo;
 function validate_pispasep(number) {
-    number = (0, utils_1.getAllDigits)(number);
-    var nis = (0, utils_1.fillString)(number, 11, '0');
+    number = utils_1.getAllDigits(number);
+    var nis = utils_1.fillString(number, 11, '0');
     var regex = /\d{11}/; // /^\d{3}\.\d{5}\.\d{2}\-\d{1}$/;
     if (!regex.test(nis)) {
         return false;
     }
-    var digit = (0, create_1.create_pispasep)(number);
+    var digit = create_1.create_pispasep(number);
     return nis[10].toString() == digit.toString();
 }
 exports.validate_pispasep = validate_pispasep;
 function validate_renavam(renavam) {
     var renavamClean = renavam.replace(/\./g, '');
     renavamClean = renavamClean.replace(/\-/g, '');
-    var dv = (0, create_1.create_renavam)(renavam);
+    var dv = create_1.create_renavam(renavam);
     var tam = renavam.length;
     var digitos = renavam.substr(tam - 1, 1);
     if (digitos.charCodeAt(0) - 48 === dv) {
@@ -3205,7 +3183,7 @@ function validate_senha(value, options) {
     if (!options.size) {
         options.size = 8;
     }
-    finalregex = finalregex + "(?=.{".concat(options.size, ",})");
+    finalregex = finalregex + ("(?=.{" + options.size + ",})");
     var regex = new RegExp(finalregex);
     return regex.test(value);
 }
@@ -3257,7 +3235,7 @@ function validate_titulo(titulo) {
     var tam = tituloClean.length;
     var dig;
     try {
-        dig = (0, create_1.create_titulo_atual)(tituloClean);
+        dig = create_1.create_titulo_atual(tituloClean);
         // const noDv = tituloClean.substr(0, tam - 2);
         // dig = create_titulo(noDv);
     }

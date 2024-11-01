@@ -1,6 +1,7 @@
 
 import { utilsBr, validateBr } from '../src/index';
 import { expect } from 'chai';
+import 'mocha';
 
 describe('Initial test', () => {
   it('Import', () => {
