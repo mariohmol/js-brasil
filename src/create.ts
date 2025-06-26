@@ -120,7 +120,7 @@ export function create_cnh(value: string) {
 }
 
 export function create_cnpj(cnpj: string) {
-  cnpj = cnpj.replace(/[^\d]+/g, '');
+  cnpj = cnpj.replace(/[^0-9A-Z]/g, "");
 
   if (cnpj === '') {
     return false;
@@ -144,13 +144,21 @@ export function create_cnpj(cnpj: string) {
     return false;
   }
 
+  function valorDecimal(input: string, index: number): number {
+    const code = input.charCodeAt(index);
+
+    if (47 < code && code < 58) return parseInt(input.charAt(index), 10); // numeric (0-9)
+
+    return code - 48; // alphanumeric
+  }
+
   // Valida DVs
-  let tamanho: number = cnpj.length - 2
-  let numeros: any = cnpj.substring(0, tamanho);
+  let tamanho: number = cnpj.length - 2;
+  let entrada: any = cnpj.substring(0, tamanho);
   let soma: any = 0;
   let pos = tamanho - 7;
   for (let i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
+    soma += valorDecimal(entrada, (tamanho - i)) * pos--;
     if (pos < 2) {
       pos = 9;
     }
@@ -160,11 +168,11 @@ export function create_cnpj(cnpj: string) {
   resultados[0] = soma % 11 < 2 ? 0 : 11 - soma % 11;
 
   tamanho = tamanho + 1;
-  numeros = cnpj.substring(0, tamanho);
+  entrada = cnpj.substring(0, tamanho);
   soma = 0;
   pos = tamanho - 7;
   for (let i = tamanho; i >= 1; i--) {
-    soma += numeros.charAt(tamanho - i) * pos--;
+    soma += valorDecimal(entrada, (tamanho - i)) * pos--;
     if (pos < 2) {
       pos = 9;
     }

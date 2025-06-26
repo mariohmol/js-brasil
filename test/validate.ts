@@ -95,6 +95,8 @@ describe('Validate test', () => {
     expect(validateBr.cnpj('56.853.433/0001-44')).to.be.true;
     expect(validateBr.cnpj('56.853.433/0001-55')).to.be.false;
     expect(validateBr.cnpj('1234')).to.be.false;
+    expect(validateBr.cnpj("12.ABC.345/01DE-35")).to.be.true;
+    expect(validateBr.cnpj("12.ABC.345/01DE-33")).to.be.false;
   });
 
   it('CNS', () => {
