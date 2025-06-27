@@ -125,6 +125,8 @@ describe('Validate test', () => {
     expect(validateBr.cpfcnpj('127.529.875-37')).to.be.false;
     expect(validateBr.cpfcnpj('00.000.000/0000-00')).to.be.false;
     expect(validateBr.cpfcnpj('090.988.020-44')).to.be.true;
+    expect(validateBr.cpfcnpj("12.ABC.345/01DE-35")).to.be.true;
+    expect(validateBr.cpfcnpj("12.ABC.345/01DE-33")).to.be.false;
   });
 
   describe('Cartão de Crédito', () => {
