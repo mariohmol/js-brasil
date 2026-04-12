@@ -8,7 +8,7 @@
     "watch": "npm run build & onchange 'src/**/*.ts' '*.ts' -- npm run build",
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
     "clean": "find ./src -name \"*.js\" -type f -delete && rm -rf dist && mkdir dist",
-    "test": "mocha -r ts-node/register test/**.ts",
+    "test": "TS_NODE_TRANSPILE_ONLY=true mocha -r ts-node/register test/**.ts",
     "simplifyify": "npx simplifyify src/index.ts -s jsbrasil --outfile dist/index.js",
     "simplifyify:uglify": "npx simplifyify src/index.ts -s jsbrasil --minify --outfile dist/index.js",
     "browserify": "browserify dist/index.js -r --standalone jsbrasil -o dist/js-brasil.js",

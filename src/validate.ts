@@ -559,9 +559,9 @@ export function validate_pispasep(number: string) {
 export function validate_renavam(renavam: any) {
   let renavamClean = renavam.replace(/\./g, '');
   renavamClean = renavamClean.replace(/\-/g, '');
-  const dv = create_renavam(renavam);
-  const tam = renavam.length;
-  const digitos = renavam.substr(tam - 1, 1);
+  const dv = create_renavam(renavamClean);
+  const tam = renavamClean.length;
+  const digitos = renavamClean.substr(tam - 1, 1);
   if (digitos.charCodeAt(0) - 48 === dv) {
     return true;
   } else {
