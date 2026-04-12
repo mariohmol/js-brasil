@@ -68,7 +68,7 @@ export const MASKS: BigObject<MaskType> = {
   },
   cnpj: {
     text: '00.000.000/0000-00',
-    textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+    textMask: [/[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '/', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '-', /\d/, /\d/]
   },
   cns: {
     text: '000 0000 0000 00-00',
@@ -85,15 +85,15 @@ export const MASKS: BigObject<MaskType> = {
   },
   cpfcnpj: {
     text: '00.000.000/0000-00',
-    textMask: [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/],
+    textMask: [/[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '/', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '-', /\d/, /\d/],
     textMaskFunction: function mask(userInput: any) {
-      const numbers = userInput.match(/\d/g);
+      const numbers = userInput.match(/[0-9A-Z]/g);
       let numberLength = 0;
       if (numbers) {
         numberLength = numbers.join('').length;
       }
       if (!userInput || numberLength > 12) {
-        return [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+        return [/[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '.', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '/', /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, /[0-9A-Z]/, '-', /\d/, /\d/];
       } else {
         return [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
       }

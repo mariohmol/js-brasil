@@ -241,19 +241,26 @@ export function validate_cnh(value: string) {
 
 export function validate_cnpj(cnpj: any) {
   // Valida se tem apenas número, - ou .
-  let precisaFicarVazio = cnpj.replace(/^[0-9./-]*$/gm, '')
-  if (precisaFicarVazio != '')
-    return false
+  let precisaFicarVazio = cnpj.replace(/^[0-9A-Z./-]*$/gm, "");
+  if (precisaFicarVazio != "") return false;
 
-  cnpj = cnpj.replace(/[^\d]+/g, '');
+  function valorDecimal(input: string, index: number): number {
+    const code = input.charCodeAt(index);
+
+    if (47 < code && code < 58) return parseInt(input.charAt(index), 10); // numeric (0-9)
+
+    return code - 48; // alphanumeric
+  }
+
+  cnpj = cnpj.replace(/[^0-9A-Z]/g, '');
   let tamanho = cnpj.length - 2
   const digitos = cnpj.substring(tamanho);
   const resultados = create_cnpj(cnpj);
   if (!resultados ||
-    resultados[0] !== parseInt(digitos.charAt(0), 10) ||
-    resultados[1] !== parseInt(digitos.charAt(1), 10)
+    resultados[0] !== valorDecimal(digitos, 0) ||
+    resultados[1] !== valorDecimal(digitos, 1)
   ) {
-    return false
+    return false;
   }
 
   return true;

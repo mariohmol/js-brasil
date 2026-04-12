@@ -70,6 +70,12 @@ describe('Mask test', () => {
     const cnpj = '83529443183182';
     expect(maskBr.cnpj(cnpj)).to.be.equal('83.529.443/1831-82');
     expect(maskBr.cnpj('123')).to.exist;
+
+    const cnpjAlfanumerico = "12ABC34501DE35";
+    expect(maskBr.cnpj(cnpjAlfanumerico)).to.be.equal('12.ABC.345/01DE-35');
+    expect(maskBr.cnpj("12ABC34501DEAB")).to.be.equal('12.ABC.345/01DE-__');
+    expect(maskBr.cnpj("12ABC34501DEA1")).to.be.equal('12.ABC.345/01DE-1_');
+    expect(maskBr.cnpj('ABC')).to.exist;
   });
 
   it('CNS', () => {
@@ -90,6 +96,12 @@ describe('Mask test', () => {
     const cnpj = '83529443183182';
     expect(maskBr.cpfcnpj(cnpj)).to.be.equal('83.529.443/1831-82');
     expect(maskBr.cpfcnpj('123456')).to.exist;
+
+    const cnpjAlfanumerico = "12ABC34501DE35";
+    expect(maskBr.cpfcnpj(cnpjAlfanumerico)).to.be.equal('12.ABC.345/01DE-35');
+    expect(maskBr.cpfcnpj("12ABC34501DEAB")).to.be.equal('12.ABC.345/01DE-__');
+    expect(maskBr.cpfcnpj("12ABC34501DEA1")).to.be.equal('12.ABC.345/01DE-1_');
+    expect(maskBr.cpfcnpj('ABC')).to.exist;
   });
 
   it('cartaocredito - TODO', () => {
