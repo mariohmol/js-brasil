@@ -572,13 +572,12 @@ export function validate_renavam(renavam: any) {
 
 
 export function validate_rg(rg: string) {
-  let rgClean = rg.replace(/\./g, '');
-  rgClean = rgClean.replace(/-/g, '');
+  let rgClean = rg.replace(/[\.\-\s]/g, '');
   const exp = /[a-z]{2}\-\d{2}\.\d{3}\.\d{3}/;
   const expClean = /[a-z]{2}\d{8}/;
   const state = rg.substr(0, 2).toUpperCase();
 
-  if (!exp.test(rg) && !expClean.test(rgClean) && !(state in CEPRange)) {
+  if (!exp.test(rg) && !expClean.test(rgClean)) {
     return false;
   }
   const validateState = RG[state];

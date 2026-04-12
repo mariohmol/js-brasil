@@ -509,7 +509,11 @@ describe('Validate test', () => {
 
   it('RG', () => {
     expect(validateBr.rg('mg 11124567')).to.be.true;
+    expect(validateBr.rg('mg-11.124.567')).to.be.true;
+    expect(validateBr.rg('mg11124567')).to.be.true;
     expect(validateBr.rg('1234')).to.be.false;
+    expect(validateBr.rg('mg1012345')).to.be.false;   // 7 digits — must be rejected
+    expect(validateBr.rg('MG1012345')).to.be.false;   // uppercase, 7 digits — must be rejected
   });
 
   it('Senha', () => {

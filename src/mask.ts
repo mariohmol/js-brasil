@@ -41,7 +41,7 @@ export const MASKS: BigObject<MaskType> = {
   },
   chassi: {
     text: 'AAA AAAAAA AA AA0000', // 9BW ZZZ377 VT 004251
-    textMask: [/[1-9]/, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
+    textMask: [/[A-Z0-9]/i, /\w/, /\w/, ' ', /\w/, /\w/, /\w/, /\w/, /\w/, /\w/, ' ', /\w/, /\w/, ' ', /\w/, /\w/, /\d/, /\d/, /\d/, /\d/]
   },
   cid: {
     textMask: false
@@ -152,7 +152,16 @@ export const MASKS: BigObject<MaskType> = {
   },
   placa: {
     text: 'AAA-0000',
-    textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/]
+    textMask: [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/],
+    textMaskFunction: function mask(userInput: any) {
+      const clean = (userInput || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      if (clean.length >= 5 && /[A-Z]/.test(clean[4])) {
+        // Mercosul BR: ABC1D23
+        return [/[A-Z]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /[A-Z]/, /\d/, /\d/];
+      }
+      // Legado BR: ABC1234
+      return [/[A-S]/, /[A-Z]/, /[A-Z]/, '-', /\d/, /\d/, /\d/, /\d/];
+    }
   },
   processo: {
     text: '0000000-00.0000.AAA.0000',
