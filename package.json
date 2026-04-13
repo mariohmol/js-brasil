@@ -22,7 +22,8 @@
     "start": "cd docs && http-server",
     "demo": "cp js-brasil.js docs/ && npm run start",
     "demo-build": "npm run dist && cp js-brasil.js docs/",
-    "demo-full": "npm run dist && npm run demo"
+    "demo-full": "npm run dist && npm run demo",
+    "deploy:demo": "npm run dist && cp dist/js-brasil.js docs/ && mkdir -p /var/www/test/js-brasil && cp -r docs/. /var/www/test/js-brasil/"
   },
   "repository": {
     "type": "git",
@@ -34,9 +35,7 @@
     "url": "https://github.com/mariohmol/js-brasil/issues"
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
-  "dependencies": {
-    "text-mask-addons": "^3.8.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@jsdevtools/simplifyify": "^8.0.4",
     "@types/chai": "^4.3.16",
@@ -47,7 +46,7 @@
     "codelyzer": "^5.2.0",
     "gulp": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
-    "mocha": "^8.3.2",
+    "mocha": "^11.7.5",
     "onchange": "^7.1.0",
     "realpathify": "^1.0.1",
     "ts-node": "^7.0.1",

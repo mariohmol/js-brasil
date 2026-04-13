@@ -1,4 +1,5 @@
-import { maskBr } from '../src/index';
+import { maskBr, utilsBr } from '../src/index';
+const MASKS = utilsBr.MASKS;
 import { expect } from 'chai';
 
 
@@ -205,6 +206,31 @@ describe('Mask test', () => {
     expect(maskBr.currency(currencyNumberBig)).to.be.equal('R$ 1.239.999.999,99');
     expect(maskBr.currency(0)).to.be.equal('R$ 0,00');
     expect(maskBr.currency(25.5)).to.be.equal('R$ 25,50');
+  });
+
+  it('Moeda - MASKS.currency.textMask sempre inclui casas decimais', () => {
+    const textMaskFn = MASKS.currency.textMask as Function;
+
+    // The mask should always end with ',', /\d/, /\d/ to force decimal display
+    const maskFor100 = textMaskFn('100');
+    const lastThree = maskFor100.slice(-3);
+    expect(lastThree[0]).to.be.equal(',');
+    expect(lastThree[1]).to.be.instanceof(RegExp);
+    expect(lastThree[2]).to.be.instanceof(RegExp);
+
+    // Mask for value with thousands separator also includes decimals
+    const maskFor10500 = textMaskFn('R$ 10.500');
+    const lastThree2 = maskFor10500.slice(-3);
+    expect(lastThree2[0]).to.be.equal(',');
+    expect(lastThree2[1]).to.be.instanceof(RegExp);
+    expect(lastThree2[2]).to.be.instanceof(RegExp);
+
+    // Mask for value already with decimals also includes the decimal positions
+    const maskWith = textMaskFn('R$ 100,94');
+    const lastThree3 = maskWith.slice(-3);
+    expect(lastThree3[0]).to.be.equal(',');
+    expect(lastThree3[1]).to.be.instanceof(RegExp);
+    expect(lastThree3[2]).to.be.instanceof(RegExp);
   });
 
   it('PIS/PASEP', () => {
