@@ -494,13 +494,26 @@ describe('Validate test', () => {
   // });
 
   it('RENAVAM', () => {
+    // Valid — plain digits
     expect(validateBr.renavam('72176426415')).to.be.true;
+    expect(validateBr.renavam('77338872602')).to.be.true;   // gist Go test
+    expect(validateBr.renavam('65306981534')).to.be.true;   // gist Go test
+    expect(validateBr.renavam('12345678900')).to.be.true;   // check digit = 0 edge case
+    // Valid — formatted with dash (regression for the bug fix)
+    expect(validateBr.renavam('7217642641-5')).to.be.true;
+    // Invalid — wrong check digit
     expect(validateBr.renavam('72176426414')).to.be.false;
+    expect(validateBr.renavam('12345678909')).to.be.false;  // check digit should be 0
+    expect(validateBr.renavam('05115024925')).to.be.false;  // check digit should be 2
   });
 
   it('RG', () => {
     expect(validateBr.rg('mg 11124567')).to.be.true;
+    expect(validateBr.rg('mg-11.124.567')).to.be.true;
+    expect(validateBr.rg('mg11124567')).to.be.true;
     expect(validateBr.rg('1234')).to.be.false;
+    expect(validateBr.rg('mg1012345')).to.be.false;   // 7 digits — must be rejected
+    expect(validateBr.rg('MG1012345')).to.be.false;   // uppercase, 7 digits — must be rejected
   });
 
   it('Senha', () => {

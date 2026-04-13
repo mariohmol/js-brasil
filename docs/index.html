@@ -1,15 +1,387 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta name="description" content="Javascript Validate, Mask, Faker e Utils para Tipos do Brasil: Celular, CEP, Certidão, CNH, CNPJ, CNS, CPF, Currency, Date, ECT, EMAIL, Empresa, Endereço, Inscrição Estadual, Number, Percentage, Pessoa, PIS/PASEP, Placa de carro, Processo da justiça, RENAVAM , RG , Site, Telefone , Time (data/hora), Título de Eleitor , Veículo">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>js-brasil — Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f5f5; color: #333; }
+
+    header { background: #1a73e8; color: #fff; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+    header img { width: 32px; height: 32px; }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header a { color: #fff; text-decoration: none; font-size: 0.9rem; margin-left: auto; opacity: 0.85; }
+    header a:hover { opacity: 1; }
+
+    main { max-width: 900px; margin: 32px auto; padding: 0 16px 64px; }
+
+    .toolbar {
+      display: flex; align-items: center; gap: 16px;
+      background: #fff; border-radius: 8px; padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 28px;
+    }
+    .toolbar p { font-size: 0.9rem; color: #555; flex: 1; }
+    .btn-faker {
+      background: #1a73e8; color: #fff; border: none; cursor: pointer;
+      padding: 10px 22px; border-radius: 6px; font-size: 0.95rem; font-weight: 600;
+      transition: background .15s; white-space: nowrap;
+    }
+    .btn-faker:hover { background: #1558b0; }
+    .btn-faker:active { transform: scale(.97); }
+
+    h2 { font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase;
+         letter-spacing: .07em; margin: 28px 0 10px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+
+    .card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .card label { display: block; font-size: 0.72rem; font-weight: 700; color: #888;
+                  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .card input {
+      width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+      font-size: 0.95rem; font-family: monospace; outline: none; transition: border-color .2s;
+    }
+    .card input:focus { border-color: #1a73e8; }
+
+    .result { margin-top: 8px; display: flex; align-items: center; gap: 8px; min-height: 24px; }
+    .masked { font-family: monospace; font-size: 0.85rem; color: #555; flex: 1; word-break: break-all; }
+    .badge {
+      display: inline-block; padding: 2px 10px; border-radius: 12px;
+      font-weight: 700; font-size: 0.78rem; white-space: nowrap;
+    }
+    .badge-valid   { background: #dafbe1; color: #1a7f37; }
+    .badge-invalid { background: #ffe3e3; color: #cf222e; }
+  </style>
 </head>
 <body>
-    <script src="/dist/js-brasil.js" ></script>
-    <script src="/docs/demo.js" ></script>
-  
-</body>
+  <header>
+    <img src="github.png" alt="">
+    <h1>js-brasil</h1>
+    <a href="https://github.com/mariohmol/js-brasil" target="_blank">GitHub ↗</a>
+  </header>
 
+  <main>
+
+    <div class="toolbar">
+      <p>
+        Campos pré-preenchidos com dados gerados aleatoriamente. Edite qualquer campo para validar
+        em tempo real, ou clique em <strong>Gerar Dados</strong> para um novo conjunto.
+      </p>
+      <button class="btn-faker" id="btn-faker">⟳ Gerar Dados</button>
+    </div>
+
+    <h2>Documentos Pessoais</h2>
+    <div class="grid">
+      <div class="card"><label>CPF</label><input id="cpf" maxlength="14"><div class="result" id="cpf-r"></div></div>
+      <div class="card"><label>RG</label><input id="rg" maxlength="15"><div class="result" id="rg-r"></div></div>
+      <div class="card"><label>CNH</label><input id="cnh" maxlength="12"><div class="result" id="cnh-r"></div></div>
+      <div class="card"><label>PIS / PASEP</label><input id="pispasep" maxlength="14"><div class="result" id="pispasep-r"></div></div>
+      <div class="card"><label>Título de Eleitor</label><input id="titulo" maxlength="14"><div class="result" id="titulo-r"></div></div>
+      <div class="card"><label>CNS (Cartão Nacional de Saúde)</label><input id="cns" maxlength="18"><div class="result" id="cns-r"></div></div>
+    </div>
+
+    <h2>Empresa</h2>
+    <div class="grid">
+      <div class="card"><label>CNPJ</label><input id="cnpj" maxlength="18"><div class="result" id="cnpj-r"></div></div>
+      <div class="card"><label>CPF ou CNPJ</label><input id="cpfcnpj" maxlength="18"><div class="result" id="cpfcnpj-r"></div></div>
+    </div>
+
+    <h2>Endereço &amp; Localização</h2>
+    <div class="grid">
+      <div class="card"><label>CEP</label><input id="cep" maxlength="10"><div class="result" id="cep-r"></div></div>
+    </div>
+
+    <h2>Veículo</h2>
+    <div class="grid">
+      <div class="card"><label>RENAVAM</label><input id="renavam" maxlength="13"><div class="result" id="renavam-r"></div></div>
+      <div class="card"><label>Placa (legado ou Mercosul)</label><input id="placa" maxlength="8"><div class="result" id="placa-r"></div></div>
+      <div class="card"><label>CHASSI</label><input id="chassi" maxlength="17"><div class="result" id="chassi-r"></div></div>
+    </div>
+
+    <h2>Saúde</h2>
+    <div class="grid">
+      <div class="card"><label>AIH (Autorização de Internação)</label><input id="aih" maxlength="16"><div class="result" id="aih-r"></div></div>
+    </div>
+
+    <h2>Financeiro &amp; Contato</h2>
+    <div class="grid">
+      <div class="card"><label>Moeda (R$)</label><input id="currency" maxlength="20"><div class="result" id="currency-r"></div></div>
+      <div class="card"><label>Telefone / Celular</label><input id="telefone" maxlength="15"><div class="result" id="telefone-r"></div></div>
+      <div class="card"><label>E-mail</label><input id="email" maxlength="60"><div class="result" id="email-r"></div></div>
+    </div>
+
+  </main>
+
+  <script src="js-brasil.js?v=1776037740"></script>
+  <script>
+    const validateBr = jsbrasil.validateBr;
+    const maskBr     = jsbrasil.maskBr;
+
+    // ── random helpers ────────────────────────────────────────────────────────
+    function rnd(n)       { return Math.floor(Math.random() * n); }
+    function rndDigits(n) { let s=''; for(let i=0;i<n;i++) s+=rnd(10); return s; }
+    function rndLetter()  { return String.fromCharCode(65 + rnd(26)); }
+    function rndLetters(n){ let s=''; for(let i=0;i<n;i++) s+=rndLetter(); return s; }
+    function pick(arr)    { return arr[rnd(arr.length)]; }
+
+    // ── check-digit algorithms (inline — create_* not in browser bundle) ──────
+
+    // CPF: modulo11Custom(base9, size=2, maxMult=12, by10=true)
+    function cpfCheck(base9) {
+      let s = base9;
+      for (let n = 1; n <= 2; n++) {
+        let soma = 0, mult = 2;
+        for (let i = s.length - 1; i >= 0; i--) {
+          soma += mult * parseInt(s[i]);
+          mult++; if (mult > 12) mult = 2;
+        }
+        s += ((soma * 10) % 11) % 10;
+      }
+      return s; // 11-digit CPF
+    }
+
+    // CNPJ: two-pass modulo-11 with weights cycling 2–9
+    function cnpjCheck(base12) {
+      function calcDig(digits) {
+        let pos = digits.length - 7, soma = 0;
+        for (let i = digits.length; i >= 1; i--) {
+          soma += parseInt(digits[digits.length - i]) * pos--;
+          if (pos < 2) pos = 9;
+        }
+        return soma % 11 < 2 ? 0 : 11 - soma % 11;
+      }
+      const d1 = calcDig(base12);
+      const d2 = calcDig(base12 + d1);
+      return base12 + d1 + d2; // 14-digit CNPJ
+    }
+
+    // RENAVAM: weighted sum * 10 mod 11 (pass base10 + placeholder to align positions)
+    function renavamCheck(base10) {
+      const ren = base10 + '0'; // 11 chars; check uses positions 0–9
+      const w   = [3,2,9,8,7,6,5,4,3,2];
+      let dig = 0;
+      for (let i = 0; i < 10; i++) dig += parseInt(ren[i]) * w[i];
+      dig = (dig * 10) % 11;
+      return base10 + (dig === 10 ? 0 : dig); // 11-digit RENAVAM
+    }
+
+    // PIS/PASEP: weighted sum, positions 0–9 of full 11-digit number
+    function pisCheck(base10) {
+      let d = 0, p = 2;
+      for (let c = 9; c >= 0; c--, p < 9 ? p++ : p = 2) {
+        d += parseInt(base10[c]) * p;
+      }
+      return base10 + (((10 * d) % 11) % 10); // 11-digit PIS
+    }
+
+    // AIH: ceil(cod − cod/11), last digit
+    function aihCheck(base12) {
+      const cod = parseInt(base12);
+      return base12 + Math.ceil(cod - (cod / 11)).toString().slice(-1); // 13-digit AIH
+    }
+
+    // CNS provisório: starts 7–9, 15 digits, Σ d[i]*(15−i) divisible by 11
+    function fakeCNS() {
+      for (let a = 0; a < 200; a++) {
+        const first = String(7 + rnd(3));
+        const mid   = rndDigits(13);
+        for (let last = 0; last <= 9; last++) {
+          const cand = first + mid + last;
+          let soma = 0;
+          for (let i = 0; i < 15; i++) soma += parseInt(cand[i]) * (15 - i);
+          if (soma % 11 === 0) return cand;
+        }
+      }
+      return '755845919762262'; // fallback
+    }
+
+    // ── per-field faker functions ─────────────────────────────────────────────
+    function fakeCPF() {
+      let base, cpf;
+      do { base = rndDigits(9); cpf = cpfCheck(base); } while (cpf === base.repeat(11/base.length).slice(0,11));
+      return cpf;
+    }
+    function fakeCNPJ() {
+      let base, cnpj;
+      do { base = rndDigits(12); cnpj = cnpjCheck(base); } while (!cnpj);
+      return cnpj;
+    }
+    function fakeRG() {
+      const state = pick(['mg','sp','rj','rs','pr','ba','pe','go']);
+      return state + rndDigits(8);
+    }
+    function fakeCEP() {
+      const ranges = [
+        [10000,19999],[20000,28999],[30000,39999],[40000,48999],
+        [50000,56999],[60000,63999],[65000,65999],[66000,68999],
+        [70000,73699],[74000,76799],[80000,87999],[88000,89999],[90000,99999]
+      ];
+      const r = pick(ranges);
+      return String(r[0] + rnd(r[1] - r[0])) + rndDigits(3);
+    }
+    function fakeTelefone() {
+      const ddds = ['11','21','31','41','51','61','71','81','91','19','48','47','27','85'];
+      return pick(ddds) + '9' + rndDigits(8);
+    }
+    function fakePlaca() {
+      if (Math.random() < 0.5) {
+        // Legado: valid range is AAA0001–SAV9999; SAW0001–ZZZ9999 are unassigned/invalid
+        for (var _a = 0; _a < 30; _a++) {
+          var p = rndLetters(3) + rndDigits(4);
+          if (p < 'SAW0001') return p;
+        }
+        return 'AAA1234'; // fallback
+      } else {
+        // Mercosul BR: ABC1D23 — no range restriction
+        return rndLetters(3) + rndDigits(1) + rndLetter() + rndDigits(2);
+      }
+    }
+    function fakeRENAVAM()  { return renavamCheck(rndDigits(10)); }
+    function fakeCNH()      { return rndDigits(11); } // validator accepts any 11 digits
+    function fakePIS()      { return pisCheck(rndDigits(10)); }
+    // Título generator: 8-digit seq + 2-digit estado (01–28) + 2 computed check digits
+    // Mirrors create_titulo_atual from js-brasil/src/create.ts
+    function tituloCheck(seq8, estado2) {
+      var tit    = seq8 + estado2 + '00'; // placeholder check digits
+      var tam    = tit.length;            // 12
+      var exce   = (estado2 === '01') || (estado2 === '02');
+      var base   = ('000000000000' + tit.substr(0, tam - 2));
+      base = base.substr(base.length - 11);
+      function c(i) { return base.charCodeAt(i) - 48; }
+      var sum1 = c(0)*2 + c(1)*9 + c(2)*8 + c(3)*7 + c(4)*6 + c(5)*5 + c(6)*4 + c(7)*3 + c(8)*2;
+      var r1   = sum1 % 11;
+      var dig1 = (r1 === 0) ? (exce ? 1 : 0) : (r1 === 1 ? 0 : 11 - r1);
+      var sum2 = c(9)*4 + c(10)*3 + dig1*2;
+      var r2   = sum2 % 11;
+      var dig2 = (r2 === 0) ? (exce ? 1 : 0) : (r2 === 1 ? 0 : 11 - r2);
+      return seq8 + estado2 + dig1 + dig2;
+    }
+    var ESTADO_CODES = ['01','02','03','04','05','06','07','08','09','10',
+                        '11','12','13','14','15','16','17','18','19','20',
+                        '21','22','23','24','25','26','27','28'];
+    function fakeTitulo() {
+      for (var a = 0; a < 50; a++) {
+        var t = tituloCheck(rndDigits(8), pick(ESTADO_CODES));
+        if (t) return t;
+      }
+      return '649080842003'; // fallback
+    }
+    function fakeAIH()      { return aihCheck(rndDigits(12)); }
+    // CHASSI generator following DENATRAN rules:
+    //  - 17 alphanumeric chars, no I/O/Q, last 4 digits, no 6+ consecutive same char
+    var CHASSI_CHARS = 'ABCDEFGHJKLMNPRSTUVWXYZ0123456789';
+    var CHASSI_LETTERS = 'ABCDEFGHJKLMNPRSTUVWXYZ';
+    function fakeChassi() {
+      var attempts = 0;
+      while (++attempts < 500) {
+        // first char: letter 1–9 (not 0, not I/O/Q)
+        var c  = CHASSI_LETTERS[rnd(CHASSI_LETTERS.length)];
+        // chars 1–12: alphanumeric (no I/O/Q)
+        for (var i = 1; i <= 12; i++) c += CHASSI_CHARS[rnd(CHASSI_CHARS.length)];
+        // last 4: digits only
+        for (var j = 0; j < 4; j++) c += rnd(10);
+        // reject if 6+ consecutive same char from position 4 onward
+        if (/^.{4,}([0-9A-Z])\1{5,}/.test(c)) continue;
+        return c;
+      }
+      return '9BWZZZ377VT004251'; // fallback
+    }
+    function fakeCurrency() {
+      return (rnd(9990) + 10) + ',' + String(rnd(100)).padStart(2,'0');
+    }
+    function fakeEmail() {
+      const names   = ['joao','maria','pedro','ana','carlos','lucia','rafael','julia','marcos','claudia'];
+      const domains = ['gmail.com','hotmail.com','yahoo.com.br','outlook.com','empresa.com.br'];
+      return pick(names) + (rnd(999) || '') + '@' + pick(domains);
+    }
+
+    // ── generate a full snapshot ──────────────────────────────────────────────
+    function generateValues() {
+      const cpf = fakeCPF();
+      return {
+        cpf,
+        cnpj:     fakeCNPJ(),
+        cpfcnpj:  cpf,
+        rg:       fakeRG(),
+        cnh:      fakeCNH(),
+        pispasep: fakePIS(),
+        titulo:   fakeTitulo(),
+        cns:      fakeCNS(),
+        cep:      fakeCEP(),
+        renavam:  fakeRENAVAM(),
+        placa:    fakePlaca(),
+        chassi:   fakeChassi(),
+        aih:      fakeAIH(),
+        currency: fakeCurrency(),
+        telefone: fakeTelefone(),
+        email:    fakeEmail(),
+      };
+    }
+
+    // ── display helpers ───────────────────────────────────────────────────────
+    function tryCall(fn, v) { try { return fn(v); } catch(e) { return null; } }
+
+    function refresh(id, maskFn, validateFn, raw) {
+      const input = document.getElementById(id);
+      const res   = document.getElementById(id + '-r');
+      if (!input || !res) return;
+      input.value = raw;
+      const v = raw.trim();
+      if (!v) { res.innerHTML = ''; return; }
+      const masked  = maskFn    ? tryCall(maskFn, v)    : null;
+      const isValid = validateFn ? tryCall(validateFn,v) : null;
+      let html = masked ? '<span class="masked">' + masked + '</span>' : '';
+      if (isValid !== null) {
+        const cls   = isValid ? 'badge-valid' : 'badge-invalid';
+        const label = isValid ? '✓ válido'    : '✗ inválido';
+        html += '<span class="badge ' + cls + '">' + label + '</span>';
+      }
+      res.innerHTML = html;
+    }
+
+    // ── field registry ────────────────────────────────────────────────────────
+    var FIELDS = [
+      { id:'cpf',      mask: v=>maskBr.cpf(v),      val: v=>validateBr.cpf(v) },
+      { id:'cnpj',     mask: v=>maskBr.cnpj(v),     val: v=>validateBr.cnpj(v) },
+      { id:'cpfcnpj',  mask: v=>maskBr.cpfcnpj(v),  val: v=>validateBr.cpfcnpj(v) },
+      { id:'rg',       mask: v=>maskBr.rg(v),        val: v=>validateBr.rg(v) },
+      { id:'cnh',      mask: v=>maskBr.cnh(v),       val: v=>validateBr.cnh(v) },
+      { id:'pispasep', mask: v=>maskBr.pispasep(v),  val: v=>validateBr.pispasep(v) },
+      { id:'titulo',   mask: v=>maskBr.titulo(v),    val: v=>validateBr.titulo(v) },
+      { id:'cns',      mask: v=>maskBr.cns(v),       val: v=>validateBr.cns(v) },
+      { id:'cep',      mask: v=>maskBr.cep(v),       val: v=>validateBr.cep(v) },
+      { id:'renavam',  mask: v=>maskBr.renavam(v),   val: v=>validateBr.renavam(v) },
+      { id:'placa',    mask: v=>maskBr.placa(v),     val: v=>validateBr.placa(v) },
+      { id:'chassi',   mask: v=>maskBr.chassi(v),    val: v=>validateBr.chassi(v) },
+      { id:'aih',      mask: v=>maskBr.aih(v),       val: v=>validateBr.aih(v) },
+      { id:'currency', mask: v=>maskBr.currency(v),  val: v=>validateBr.currency(v) },
+      { id:'telefone', mask: v=>maskBr.telefone(v),  val: v=>validateBr.telefone(v) },
+      { id:'email',    mask: null,                   val: v=>validateBr.email(v) },
+    ];
+
+    // Attach live-edit listeners
+    FIELDS.forEach(function(f) {
+      var input = document.getElementById(f.id);
+      if (!input) return;
+      input.addEventListener('input', function() {
+        refresh(f.id, f.mask, f.val, this.value);
+      });
+    });
+
+    // Fill all inputs from a snapshot
+    function fillAll(values) {
+      FIELDS.forEach(function(f) {
+        var v = values[f.id];
+        if (v !== undefined) refresh(f.id, f.mask, f.val, v);
+      });
+    }
+
+    // Load initial data and wire up button
+    fillAll(generateValues());
+    document.getElementById('btn-faker').addEventListener('click', function() {
+      fillAll(generateValues());
+    });
+  </script>
+</body>
 </html>
