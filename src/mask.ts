@@ -101,11 +101,20 @@ export const MASKS: BigObject<MaskType> = {
   },
   currency: {
     text: '0.000,00',
-    textMask: createNumberMask({
-      ...maskNumber,
-      prefix: 'R$ ',
-      allowNegative: true
-    })
+    textMask: (() => {
+      const integerMaskFn = createNumberMask({
+        ...maskNumber,
+        prefix: 'R$ ',
+        allowNegative: true,
+        allowDecimal: false,
+      });
+      const fn: any = (rawValue: string) => {
+        const intPart = (rawValue || '').split(',')[0];
+        return [...integerMaskFn(intPart), ',', /\d/, /\d/];
+      };
+      fn.textMaskRaw = integerMaskFn;
+      return fn;
+    })()
   },
   data: {
     text: '00/00/0000',
@@ -640,7 +649,8 @@ function formatNumber(maskType: any, numberValue: any, decimalsFormat: number = 
     return '';
   }
 
-  const mask = maskType.textMask(vals[0]);
+  const maskFn = (maskType.textMask as any).textMaskRaw || maskType.textMask;
+  const mask = maskFn(vals[0]);
 
   let decimals = ''
   if (decimalsFormat == undefined) {
