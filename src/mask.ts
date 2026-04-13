@@ -1,9 +1,108 @@
 import { isArray, processCaretTraps } from './utils';
 import { BigObject, MaskType } from './interfaces';
 export { MASKSIE } from './inscricaoestadual';
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { mask_iptu } from './iptu';
 import { MASKSIE } from './inscricaoestadual';
+
+// Inlined from text-mask-addons/createNumberMask (MIT) — removes the external dependency
+const _caretTrap = '[]'
+const _digitRegExp = /\d/
+const _nonDigitsRegExp = /\D+/g
+const _minusRegExp = /-/
+
+function _convertToMask(strNumber: string): any[] {
+  return strNumber.split('').map((char: string) => _digitRegExp.test(char) ? _digitRegExp : char)
+}
+
+function _addThousandsSeparator(n: string, sep: string): string {
+  return n.replace(/\B(?=(\d{3})+(?!\d))/g, sep)
+}
+
+function createNumberMask({
+  prefix = '$',
+  suffix = '',
+  includeThousandsSeparator = true,
+  thousandsSeparatorSymbol = ',',
+  allowDecimal = false,
+  decimalSymbol = '.',
+  decimalLimit = 2,
+  requireDecimal = false,
+  allowNegative = false,
+  allowLeadingZeroes = false,
+  integerLimit = null as number | null,
+} = {}) {
+  const prefixLength = prefix ? prefix.length : 0
+  const suffixLength = suffix ? suffix.length : 0
+  const thousandsSepLen = thousandsSeparatorSymbol ? thousandsSeparatorSymbol.length : 0
+
+  function numberMask(rawValue: string = ''): any[] {
+    const rawValueLength = rawValue.length
+
+    if (rawValue === '' || (rawValue[0] === prefix[0] && rawValueLength === 1)) {
+      return (prefix.split('') as any[]).concat([_digitRegExp]).concat(suffix.split(''))
+    } else if (rawValue === decimalSymbol && allowDecimal) {
+      return (prefix.split('') as any[]).concat(['0', decimalSymbol, _digitRegExp]).concat(suffix.split(''))
+    }
+
+    const isNegative = rawValue[0] === '-' && allowNegative
+    if (isNegative) { rawValue = rawValue.toString().substr(1) }
+
+    const indexOfLastDecimal = rawValue.lastIndexOf(decimalSymbol)
+    const hasDecimal = indexOfLastDecimal !== -1
+
+    let integer: string
+    let fraction: any[]
+    let mask: any[]
+
+    if (suffix && rawValue.slice(suffixLength * -1) === suffix) {
+      rawValue = rawValue.slice(0, suffixLength * -1)
+    }
+
+    if (hasDecimal && (allowDecimal || requireDecimal)) {
+      integer = rawValue.slice(rawValue.slice(0, prefixLength) === prefix ? prefixLength : 0, indexOfLastDecimal)
+      fraction = _convertToMask(rawValue.slice(indexOfLastDecimal + 1, rawValueLength).replace(_nonDigitsRegExp, ''))
+    } else {
+      integer = rawValue.slice(0, prefixLength) === prefix ? rawValue.slice(prefixLength) : rawValue
+      fraction = []
+    }
+
+    if (integerLimit && typeof integerLimit === 'number') {
+      const sepRegex = thousandsSeparatorSymbol === '.' ? '[.]' : thousandsSeparatorSymbol
+      const numSeps = (integer.match(new RegExp(sepRegex, 'g')) || []).length
+      integer = integer.slice(0, integerLimit + numSeps * thousandsSepLen)
+    }
+
+    integer = integer.replace(_nonDigitsRegExp, '')
+    if (!allowLeadingZeroes) { integer = integer.replace(/^0+(0$|[^0])/, '$1') }
+    if (includeThousandsSeparator) { integer = _addThousandsSeparator(integer, thousandsSeparatorSymbol) }
+
+    mask = _convertToMask(integer)
+
+    if ((hasDecimal && allowDecimal) || requireDecimal === true) {
+      if (rawValue[indexOfLastDecimal - 1] !== decimalSymbol) { mask.push(_caretTrap) }
+      mask.push(decimalSymbol, _caretTrap)
+      if (fraction.length > 0) {
+        if (typeof decimalLimit === 'number') { fraction = fraction.slice(0, decimalLimit) }
+        mask = mask.concat(fraction)
+      }
+      if (requireDecimal === true && rawValue[indexOfLastDecimal - 1] === decimalSymbol) {
+        mask.push(_digitRegExp)
+      }
+    }
+
+    if (prefixLength > 0) { mask = (prefix.split('') as any[]).concat(mask) }
+    if (isNegative) {
+      if (mask.length === prefixLength) { mask.push(_digitRegExp) }
+      mask = ([_minusRegExp] as any[]).concat(mask)
+    }
+    if (suffix.length > 0) { mask = mask.concat(suffix.split('')) }
+
+    return mask
+  }
+
+  (numberMask as any).instanceOf = 'createNumberMask'
+  return numberMask
+}
 
 const maskNumber: any = {
   decimalLimit: 2,
