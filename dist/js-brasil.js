@@ -520,15 +520,14 @@ exports.ESTADOS = [
 },{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.maskBr = exports.utilsBr = void 0;
+exports.maskBr = exports.utilsBr = exports.createNumberMaskBr = exports.createCurrencyMask = void 0;
 var utils_1 = require("./utils");
 var validate_1 = require("./validate");
 Object.defineProperty(exports, "validateBr", { enumerable: true, get: function () { return validate_1.validateBr; } });
-var mask_1 = require("./mask");
-Object.defineProperty(exports, "createCurrencyMask", { enumerable: true, get: function () { return mask_1.createCurrencyMask; } });
-Object.defineProperty(exports, "createNumberMaskBr", { enumerable: true, get: function () { return mask_1.createNumberMaskBr; } });
 var mask = require("./mask");
-var mask_2 = require("./mask");
+exports.createCurrencyMask = mask.createCurrencyMask;
+exports.createNumberMaskBr = mask.createNumberMaskBr;
+var MASKS = mask.MASKS, MASKSIE = mask.MASKSIE;
 var placa_1 = require("./placa");
 var estados_1 = require("./estados");
 exports.utilsBr = {
@@ -552,8 +551,8 @@ exports.utilsBr = {
     randomLetter: utils_1.randomLetter,
     randomLetterOrNumber: utils_1.randomLetterOrNumber,
     getSpecialProperty: utils_1.getSpecialProperty,
-    MASKS: mask_2.MASKS,
-    MASKSIE: mask_2.MASKSIE,
+    MASKS: MASKS,
+    MASKSIE: MASKSIE,
     PLACAS_RANGE: placa_1.PLACAS_RANGE,
     ESTADOS: estados_1.ESTADOS
 };
