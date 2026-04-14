@@ -1,4 +1,4 @@
-import { maskBr, utilsBr } from '../src/index';
+import { maskBr, utilsBr, createCurrencyMask, createNumberMaskBr } from '../src/index';
 const MASKS = utilsBr.MASKS;
 import { expect } from 'chai';
 
@@ -231,6 +231,49 @@ describe('Mask test', () => {
     expect(lastThree3[0]).to.be.equal(',');
     expect(lastThree3[1]).to.be.instanceof(RegExp);
     expect(lastThree3[2]).to.be.instanceof(RegExp);
+  });
+
+  it('createCurrencyMask - configurable decimal places', () => {
+    const mask2 = createCurrencyMask(2);
+    const result2 = mask2('R$ 100');
+    const last3 = result2.slice(-3);
+    expect(last3[0]).to.be.equal(',');
+    expect(last3[1]).to.be.instanceof(RegExp);
+    expect(last3[2]).to.be.instanceof(RegExp);
+    expect(result2.filter((x: any) => x instanceof RegExp && x.source === '\\d').length).to.be.above(1);
+
+    const mask4 = createCurrencyMask(4);
+    const result4 = mask4('R$ 100');
+    const last5 = result4.slice(-5);
+    expect(last5[0]).to.be.equal(',');
+    expect(last5[1]).to.be.instanceof(RegExp);
+    expect(last5[2]).to.be.instanceof(RegExp);
+    expect(last5[3]).to.be.instanceof(RegExp);
+    expect(last5[4]).to.be.instanceof(RegExp);
+
+    // maskBr convenience method
+    const mask4b = maskBr.createCurrencyTextMask(4);
+    const result4b = mask4b('R$ 100');
+    expect(result4b.slice(-5)[0]).to.be.equal(',');
+    expect(result4b.length).to.be.equal(result4.length);
+  });
+
+  it('createNumberMaskBr - configurable decimal places', () => {
+    const mask2 = createNumberMaskBr(2);
+    // createNumberMask returns a function
+    expect(mask2).to.be.a('function');
+
+    const mask4 = createNumberMaskBr(4);
+    expect(mask4).to.be.a('function');
+
+    // 4-decimal mask should produce longer mask than 2-decimal for same value
+    const result2 = mask2('1234,56');
+    const result4 = mask4('1234,5678');
+    expect(result4.length).to.be.above(result2.length);
+
+    // maskBr convenience method
+    const mask4b = maskBr.createNumberTextMask(4);
+    expect(mask4b).to.be.a('function');
   });
 
   it('PIS/PASEP', () => {

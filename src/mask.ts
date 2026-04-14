@@ -114,6 +114,26 @@ const maskNumber: any = {
   suffix: ''
 }
 
+export function createCurrencyMask(decimals: number = 2) {
+  const integerMaskFn = createNumberMask({
+    ...maskNumber,
+    prefix: 'R$ ',
+    allowNegative: true,
+    allowDecimal: false,
+  });
+  const decimalDigits = Array(decimals).fill(/\d/);
+  const fn: any = (rawValue: string) => {
+    const intPart = (rawValue || '').split(',')[0];
+    return [...integerMaskFn(intPart), ',', ...decimalDigits];
+  };
+  fn.textMaskRaw = integerMaskFn;
+  return fn;
+}
+
+export function createNumberMaskBr(decimals: number = 2) {
+  return createNumberMask({ ...maskNumber, decimalLimit: decimals });
+}
+
 export const MASKS: BigObject<MaskType> = {
   aih: {
     text: '000000000000-0', // 351923414312-8
@@ -200,20 +220,7 @@ export const MASKS: BigObject<MaskType> = {
   },
   currency: {
     text: '0.000,00',
-    textMask: (() => {
-      const integerMaskFn = createNumberMask({
-        ...maskNumber,
-        prefix: 'R$ ',
-        allowNegative: true,
-        allowDecimal: false,
-      });
-      const fn: any = (rawValue: string) => {
-        const intPart = (rawValue || '').split(',')[0];
-        return [...integerMaskFn(intPart), ',', /\d/, /\d/];
-      };
-      fn.textMaskRaw = integerMaskFn;
-      return fn;
-    })()
+    textMask: createCurrencyMask(2)
   },
   data: {
     text: '00/00/0000',
@@ -245,7 +252,7 @@ export const MASKS: BigObject<MaskType> = {
   },
   number: {
     text: '0.000,00',
-    textMask: createNumberMask(maskNumber)
+    textMask: createNumberMaskBr(2)
   },
   porcentagem: {
     text: '00,00%',
@@ -432,7 +439,9 @@ export const maskBr = {
     }
     return makeGeneric('time')(value)
   },
-  titulo: makeGeneric('titulo')
+  titulo: makeGeneric('titulo'),
+  createCurrencyTextMask: (decimals: number = 2) => createCurrencyMask(decimals),
+  createNumberTextMask: (decimals: number = 2) => createNumberMaskBr(decimals),
 };
 
 

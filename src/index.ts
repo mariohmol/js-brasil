@@ -22,7 +22,9 @@ import {
 } from './utils';
 export { validateBr } from './validate';
 import * as mask from './mask';
-import { MASKS, MASKSIE } from './mask';
+export const createCurrencyMask = mask.createCurrencyMask;
+export const createNumberMaskBr = mask.createNumberMaskBr;
+const { MASKS, MASKSIE } = mask;
 import { PLACAS_RANGE } from './placa';
 import { ESTADOS } from './estados';
 import { BigObject } from './interfaces';

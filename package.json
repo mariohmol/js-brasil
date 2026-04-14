@@ -3,6 +3,15 @@
   "version": "2.7.1",
   "description": "Javascript Utils para Brasil (cpf, cnpj...)",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./faker": "./dist/faker.js"
+  },
+  "typesVersions": {
+    "*": {
+      "faker": ["dist/faker.d.ts"]
+    }
+  },
   "scripts": {
     "build": "tsc",
     "watch": "npm run build & onchange 'src/**/*.ts' '*.ts' -- npm run build",
