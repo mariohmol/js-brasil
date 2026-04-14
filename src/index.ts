@@ -21,6 +21,7 @@ import {
   getSpecialProperty
 } from './utils';
 export { validateBr } from './validate';
+export { createCurrencyMask, createNumberMaskBr } from './mask';
 import * as mask from './mask';
 import { MASKS, MASKSIE } from './mask';
 import { PLACAS_RANGE } from './placa';
