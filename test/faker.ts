@@ -1,5 +1,7 @@
 import { validateBr } from '../src/index';
-import { fakerBr } from '../src/faker';
+import { fakerBr, cpf, cnpj, cep, rg, renavam, pis, titulo, cnh, certidao, cns,
+  telefone, celular, placa, placaMercosul, nome, sobrenome, nomeCompleto, email,
+  estado, cidade, cor, endereco } from '../src/faker';
 import { expect } from 'chai';
 
 const RUNS = 20;  // run each generator multiple times to catch edge cases
@@ -9,6 +11,47 @@ function times(n: number, fn: () => void) {
 }
 
 describe('fakerBr', () => {
+
+  it('fakerBr object exposes all expected methods', () => {
+    const expected = [
+      'cpf', 'cnpj', 'cep', 'rg', 'renavam', 'pis', 'titulo', 'cnh', 'certidao', 'cns',
+      'telefone', 'celular', 'placa', 'placaMercosul',
+      'nome', 'sobrenome', 'nomeCompleto', 'email',
+      'estado', 'cidade', 'cor', 'endereco',
+    ];
+    expected.forEach(key => {
+      expect(fakerBr).to.have.property(key).that.is.a('function', `fakerBr.${key} is not a function`);
+    });
+  });
+
+  it('named exports match fakerBr object methods', () => {
+    // The module exports both a fakerBr object and individual named functions.
+    // Verify they are the same references so a consumer can use either form.
+    expect(cpf).to.equal(fakerBr.cpf);
+    expect(cnpj).to.equal(fakerBr.cnpj);
+    expect(cep).to.equal(fakerBr.cep);
+    expect(rg).to.equal(fakerBr.rg);
+    expect(renavam).to.equal(fakerBr.renavam);
+    expect(pis).to.equal(fakerBr.pis);
+    expect(titulo).to.equal(fakerBr.titulo);
+    expect(cnh).to.equal(fakerBr.cnh);
+    expect(certidao).to.equal(fakerBr.certidao);
+    expect(cns).to.equal(fakerBr.cns);
+    expect(telefone).to.equal(fakerBr.telefone);
+    expect(celular).to.equal(fakerBr.celular);
+    expect(placa).to.equal(fakerBr.placa);
+    expect(placaMercosul).to.equal(fakerBr.placaMercosul);
+    expect(nome).to.equal(fakerBr.nome);
+    expect(sobrenome).to.equal(fakerBr.sobrenome);
+    expect(nomeCompleto).to.equal(fakerBr.nomeCompleto);
+    expect(email).to.equal(fakerBr.email);
+    expect(estado).to.equal(fakerBr.estado);
+    expect(cidade).to.equal(fakerBr.cidade);
+    expect(cor).to.equal(fakerBr.cor);
+    expect(endereco).to.equal(fakerBr.endereco);
+  });
+
+
 
   it('cpf generates valid CPFs', () => {
     times(RUNS, () => {
@@ -26,10 +69,11 @@ describe('fakerBr', () => {
     });
   });
 
-  it('cep generates 8-digit strings', () => {
+  it('cep generates 8-digit strings that pass validateBr.cep', () => {
     times(RUNS, () => {
       const value = fakerBr.cep();
       expect(value).to.match(/^\d{8}$/, `not 8 digits: ${value}`);
+      expect(validateBr.cep(value)).to.equal(true, `invalid CEP: ${value}`);
     });
   });
 
@@ -73,10 +117,32 @@ describe('fakerBr', () => {
     });
   });
 
-  it('telefone generates 10-digit strings', () => {
+  it('rg generates 9-character strings (8 digits + check which may be X)', () => {
+    times(RUNS, () => {
+      const value = fakerBr.rg();
+      expect(value).to.match(/^\d{8}[\dX]$/, `unexpected RG format: ${value}`);
+      expect(value).to.have.lengthOf(9);
+    });
+  });
+
+  it('cnh generates 11-digit strings', () => {
+    times(RUNS, () => {
+      const value = fakerBr.cnh();
+      expect(value).to.match(/^\d{11}$/, `not 11 digits: ${value}`);
+    });
+  });
+
+  it('cpf generates unique values across calls', () => {
+    const values = new Set(Array.from({ length: RUNS }, () => fakerBr.cpf()));
+    expect(values.size).to.be.above(1, 'cpf() should not return the same value every time');
+  });
+
+  it('telefone generates 10-digit strings with DDD between 11 and 99', () => {
     times(RUNS, () => {
       const value = fakerBr.telefone();
       expect(value).to.match(/^\d{10}$/, `not 10 digits: ${value}`);
+      const ddd = parseInt(value.slice(0, 2), 10);
+      expect(ddd).to.be.gte(11).and.lte(99);
     });
   });
 
@@ -84,6 +150,8 @@ describe('fakerBr', () => {
     times(RUNS, () => {
       const value = fakerBr.celular();
       expect(value).to.match(/^\d{2}9\d{8}$/, `unexpected format: ${value}`);
+      const ddd = parseInt(value.slice(0, 2), 10);
+      expect(ddd).to.be.gte(11).and.lte(99);
     });
   });
 
