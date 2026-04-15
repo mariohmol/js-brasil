@@ -105,9 +105,44 @@ describe('Mask test', () => {
     expect(maskBr.cpfcnpj('ABC')).to.exist;
   });
 
-  it('cartaocredito - TODO', () => {
-    // const cartaocredito = '12312345121';
-    // expect(maskBr.cartaocredito(cartaocredito)).to.be.equal('123.12345.12-1');
+  describe('Cartão de Crédito', () => {
+    // Full format: number + expiry (MM/YY) + CVV
+    // Standard 16-digit: XXXX XXXX XXXX XXXX MM/YY CVV
+    // Amex 15-digit:      XXXX XXXXXX XXXXX MM/YY CVVV
+
+    it('Visa — número + vencimento + CVV', () => {
+      expect(maskBr.cartaocredito('4688966912267492012848 8')).to.be.equal('4688 9669 1226 7492 01/28 488');
+    });
+
+    it('Mastercard — número + vencimento + CVV', () => {
+      expect(maskBr.cartaocredito('55440413894659291228 123')).to.be.equal('5544 0413 8946 5929 12/28 123');
+    });
+
+    it('Discover — número + vencimento + CVV', () => {
+      expect(maskBr.cartaocredito('60115233199857550628 321')).to.be.equal('6011 5233 1998 5755 06/28 321');
+    });
+
+    it('JCB — número + vencimento + CVV', () => {
+      expect(maskBr.cartaocredito('35581580144982200328 456')).to.be.equal('3558 1580 1449 8220 03/28 456');
+    });
+
+    it('American Express — formato XXXX XXXXXX XXXXX com CVV de 4 dígitos', () => {
+      // starts with 37
+      expect(maskBr.cartaocredito('377746315429590 01281234')).to.be.equal('3777 463154 29590 01/28 1234');
+      // starts with 34
+      expect(maskBr.cartaocredito('349390722611337 06281234')).to.be.equal('3493 907226 11337 06/28 1234');
+    });
+
+    it('apenas número do cartão (sem vencimento/CVV) — retorna número formatado com slots restantes', () => {
+      // The mask includes expiry/CVV slots; without them the remaining positions show as placeholders
+      expect(maskBr.cartaocredito('4688966912267492')).to.include('4688 9669 1226 7492');
+      expect(maskBr.cartaocredito('377746315429590')).to.include('3777 463154 29590');
+    });
+
+    it('entrada parcial não quebra', () => {
+      expect(maskBr.cartaocredito('123')).to.exist;
+      expect(maskBr.cartaocredito('')).to.exist;
+    });
   });
 
 

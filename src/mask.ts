@@ -140,8 +140,20 @@ export const MASKS: BigObject<MaskType> = {
     textMask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
   },
   cartaocredito: {
+    // Full card data: number + expiry (MM/YY) + CVV
+    // Standard (16-digit): XXXX XXXX XXXX XXXX MM/YY CVV
+    // Amex (15-digit):     XXXX XXXXXX XXXXX MM/YY CVVV
     text: '0000 0000 0000 0000 00/00 000',
-    textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '0', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
+    textMask: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /[0-1]/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/],
+    textMaskFunction: function mask(userInput: any) {
+      const clean = (userInput || '').replace(/\D/g, '');
+      // American Express: starts with 34 or 37 — 15-digit number, 4-digit CVV
+      if (/^3[47]/.test(clean)) {
+        return [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, ' ', /[0-1]/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
+      }
+      // Standard: 16-digit number, 3-digit CVV
+      return [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /[0-1]/, /\d/, '/', /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
+    }
   },
   celular: {
     text: '(00) 00000-0000',
