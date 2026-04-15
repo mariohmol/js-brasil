@@ -1,6 +1,6 @@
 import { validateBr } from '../src/index';
 import { fakerBr, cpf, cnpj, cep, rg, renavam, pis, titulo, cnh, certidao, cns,
-  telefone, celular, placa, placaMercosul, nome, sobrenome, nomeCompleto, email,
+  telefone, celular, placa, placaMercosul, cartaocredito, nome, sobrenome, nomeCompleto, email,
   estado, cidade, cor, endereco } from '../src/faker';
 import { expect } from 'chai';
 
@@ -15,7 +15,7 @@ describe('fakerBr', () => {
   it('fakerBr object exposes all expected methods', () => {
     const expected = [
       'cpf', 'cnpj', 'cep', 'rg', 'renavam', 'pis', 'titulo', 'cnh', 'certidao', 'cns',
-      'telefone', 'celular', 'placa', 'placaMercosul',
+      'telefone', 'celular', 'placa', 'placaMercosul', 'cartaocredito',
       'nome', 'sobrenome', 'nomeCompleto', 'email',
       'estado', 'cidade', 'cor', 'endereco',
     ];
@@ -47,6 +47,7 @@ describe('fakerBr', () => {
     expect(email).to.equal(fakerBr.email);
     expect(estado).to.equal(fakerBr.estado);
     expect(cidade).to.equal(fakerBr.cidade);
+    expect(cartaocredito).to.equal(fakerBr.cartaocredito);
     expect(cor).to.equal(fakerBr.cor);
     expect(endereco).to.equal(fakerBr.endereco);
   });
@@ -214,6 +215,28 @@ describe('fakerBr', () => {
       'MARROM', 'PRATA', 'PRETA', 'ROSA', 'ROXA', 'VERDE', 'VERMELHA', 'FANTASIA'];
     times(RUNS, () => {
       expect(known).to.include(fakerBr.cor());
+    });
+  });
+
+  it('cartaocredito generates a 23-digit string that passes validateBr.cartaocredito', () => {
+    times(RUNS, () => {
+      const value = fakerBr.cartaocredito();
+      // 16-digit card + 2 month + 2 year + 3 CVV = 23 digits
+      expect(value).to.match(/^\d{23}$/, `unexpected format (want 23 digits): ${value}`);
+      expect(validateBr.cartaocredito(value)).to.equal(true, `invalid card: ${value}`);
+    });
+  });
+
+  it('cartaocredito masked output matches full card format', () => {
+    const { maskBr } = require('../src/index');
+    times(RUNS, () => {
+      const raw    = fakerBr.cartaocredito();
+      const masked = maskBr.cartaocredito(raw);
+      // Standard format: XXXX XXXX XXXX XXXX MM/YY CVV (29 chars)
+      expect(masked).to.match(
+        /^\d{4} \d{4} \d{4} \d{4} \d{2}\/\d{2} \d{3}$/,
+        `unexpected mask output: ${masked}`
+      );
     });
   });
 

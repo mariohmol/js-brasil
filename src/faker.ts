@@ -205,6 +205,27 @@ export function cidade(): string {
   return pickFrom(LOCALIZACAO_CIDADES)[0];
 }
 
+/**
+ * Random credit card data string — card number + expiry (MMYY) + CVV, digits only.
+ * Generates Visa, Mastercard, or Discover card numbers (patterns accepted by validateBr.cartaocredito).
+ * Feed the result directly into maskBr.cartaocredito to get the formatted string.
+ */
+export function cartaocredito(): string {
+  const year = ((new Date().getFullYear() - 2000) + 1 + Math.floor(Math.random() * 5));
+  const mm   = pad(1 + Math.floor(Math.random() * 12), 2);
+  const yy   = pad(year, 2);
+  const cvv  = rndDigits(3);
+
+  const brands = [
+    () => '4' + rndDigits(15),                                             // Visa 16-digit
+    () => String(51 + Math.floor(Math.random() * 5)) + rndDigits(14),      // Mastercard
+    () => '6011' + rndDigits(12),                                           // Discover
+  ];
+  const number = pickFrom(brands)();
+
+  return number + mm + yy + cvv;
+}
+
 /** Random Brazilian vehicle colour */
 export function cor(): string {
   return pickFrom(CORES);
@@ -251,6 +272,7 @@ export const fakerBr = {
   celular,
   placa,
   placaMercosul,
+  cartaocredito,
   nome,
   sobrenome,
   nomeCompleto,

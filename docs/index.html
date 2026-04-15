@@ -106,6 +106,7 @@
 
     <h2>Financeiro &amp; Contato</h2>
     <div class="grid">
+      <div class="card"><label>Cartão de Crédito (número · MM/AA · CVV)</label><input id="cartaocredito" maxlength="29"><div class="result" id="cartaocredito-r"></div></div>
       <div class="card"><label>Moeda (R$)</label><input id="currency" maxlength="20"><div class="result" id="currency-r"></div></div>
       <div class="card"><label>Telefone / Celular</label><input id="telefone" maxlength="15"><div class="result" id="telefone-r"></div></div>
       <div class="card"><label>E-mail</label><input id="email" maxlength="60"><div class="result" id="email-r"></div></div>
@@ -295,27 +296,42 @@
       const domains = ['gmail.com','hotmail.com','yahoo.com.br','outlook.com','empresa.com.br'];
       return pick(names) + (rnd(999) || '') + '@' + pick(domains);
     }
+    function fakeCartaoCredito() {
+      // card number (16 digits: Visa / MC / Discover) + MMYY + CVV
+      var brands = [
+        function() { return '4' + rndDigits(15); },                                   // Visa
+        function() { return String(51 + rnd(5)) + rndDigits(14); },                   // Mastercard
+        function() { return '6011' + rndDigits(12); },                                // Discover
+      ];
+      var number = pick(brands)();
+      var year   = ((new Date().getFullYear() - 2000) + 1 + rnd(5));
+      var mm     = String(1 + rnd(12)).padStart(2, '0');
+      var yy     = String(year).padStart(2, '0');
+      var cvv    = rndDigits(3);
+      return number + mm + yy + cvv;
+    }
 
     // ── generate a full snapshot ──────────────────────────────────────────────
     function generateValues() {
       const cpf = fakeCPF();
       return {
         cpf,
-        cnpj:     fakeCNPJ(),
-        cpfcnpj:  cpf,
-        rg:       fakeRG(),
-        cnh:      fakeCNH(),
-        pispasep: fakePIS(),
-        titulo:   fakeTitulo(),
-        cns:      fakeCNS(),
-        cep:      fakeCEP(),
-        renavam:  fakeRENAVAM(),
-        placa:    fakePlaca(),
-        chassi:   fakeChassi(),
-        aih:      fakeAIH(),
-        currency: fakeCurrency(),
-        telefone: fakeTelefone(),
-        email:    fakeEmail(),
+        cnpj:          fakeCNPJ(),
+        cpfcnpj:       cpf,
+        rg:            fakeRG(),
+        cnh:           fakeCNH(),
+        pispasep:      fakePIS(),
+        titulo:        fakeTitulo(),
+        cns:           fakeCNS(),
+        cep:           fakeCEP(),
+        renavam:       fakeRENAVAM(),
+        placa:         fakePlaca(),
+        chassi:        fakeChassi(),
+        aih:           fakeAIH(),
+        cartaocredito: fakeCartaoCredito(),
+        currency:      fakeCurrency(),
+        telefone:      fakeTelefone(),
+        email:         fakeEmail(),
       };
     }
 
@@ -355,6 +371,7 @@
       { id:'placa',    mask: v=>maskBr.placa(v),     val: v=>validateBr.placa(v) },
       { id:'chassi',   mask: v=>maskBr.chassi(v),    val: v=>validateBr.chassi(v) },
       { id:'aih',      mask: v=>maskBr.aih(v),       val: v=>validateBr.aih(v) },
+      { id:'cartaocredito', mask: v=>maskBr.cartaocredito(v), val: v=>validateBr.cartaocredito(v) },
       { id:'currency', mask: v=>maskBr.currency(v),  val: v=>validateBr.currency(v) },
       { id:'telefone', mask: v=>maskBr.telefone(v),  val: v=>validateBr.telefone(v) },
       { id:'email',    mask: null,                   val: v=>validateBr.email(v) },
