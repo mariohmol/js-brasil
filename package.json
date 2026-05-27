@@ -17,7 +17,7 @@
     "watch": "npm run build & onchange 'src/**/*.ts' '*.ts' -- npm run build",
     "watch:test": "onchange 'src/**/*.ts' '*.ts' -- npm run test",
     "clean": "find ./src -name \"*.js\" -type f -delete && rm -rf dist && mkdir dist",
-    "test": "TS_NODE_TRANSPILE_ONLY=true mocha -r ts-node/register test/**.ts",
+    "test": "cross-env TS_NODE_TRANSPILE_ONLY=true mocha -r ts-node/register \"test/**/*.ts\"",
     "simplifyify": "npx simplifyify src/index.ts -s jsbrasil --outfile dist/index.js",
     "simplifyify:uglify": "npx simplifyify src/index.ts -s jsbrasil --minify --outfile dist/index.js",
     "browserify": "browserify dist/index.js -r --standalone jsbrasil -o dist/js-brasil.js",
@@ -44,7 +44,6 @@
     "url": "https://github.com/mariohmol/js-brasil/issues"
   },
   "homepage": "https://github.com/mariohmol/js-brasil#readme",
-  "dependencies": {},
   "devDependencies": {
     "@jsdevtools/simplifyify": "^8.0.4",
     "@types/chai": "^4.3.16",
@@ -53,6 +52,7 @@
     "babelify": "^10.0.0",
     "chai": "^4.1.2",
     "codelyzer": "^5.2.0",
+    "cross-env": "^10.1.0",
     "gulp": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "mocha": "^11.7.5",
