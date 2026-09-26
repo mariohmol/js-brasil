@@ -664,6 +664,10 @@ export function validate_titulo(titulo: any) {
   }
 
   const tam = tituloClean.length;
+  const uf = tituloClean.substr(tam - 4, 2);
+  if (!(tam === 12 || (tam === 13 && (uf === '01' || uf === '02')))) {
+    return false;
+  }
 
   let dig;
   try {
