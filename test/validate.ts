@@ -570,6 +570,8 @@ describe('Validate test', () => {
 
       expect(validateBr.titulo('0072.0235.0116')).to.be.true;
       expect(validateBr.titulo('0674.0580.0116')).to.be.true;
+      expect(validateBr.titulo('3244567800167')).to.be.true;
+      expect(validateBr.titulo('3244567800166')).to.be.false;
     });
   });
 

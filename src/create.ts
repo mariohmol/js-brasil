@@ -371,6 +371,11 @@ export function create_processo(number: string) {
 
 
 export function create_titulo_atual(titulo: string) {
+  const digits = titulo.replace(/\D/g, '');
+  // SP and MG can carry a ninth sequential digit. The check uses the first eight.
+  if (digits.length === 13 && (digits.substr(9, 2) === '01' || digits.substr(9, 2) === '02')) {
+    titulo = digits.substr(0, 8) + digits.substr(9);
+  }
   const tit = titulo;
   let dig1 = 0;
   let dig2 = 0;
